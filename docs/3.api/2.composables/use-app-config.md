@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-## Usage
+## Использование
 
 ```ts
 const appConfig = useAppConfig()

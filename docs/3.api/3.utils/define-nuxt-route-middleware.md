@@ -20,7 +20,7 @@ interface RouteMiddleware {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `middleware`
 
@@ -30,7 +30,7 @@ A function that takes two Vue Router's route location objects as parameters: the
 
 Learn more about available properties of `RouteLocationNormalized` in the **[Vue Router docs](https://router.vuejs.org/api/interfaces/RouteLocationNormalized.html)**.
 
-## Examples
+## Примеры
 
 ### Showing Error Page
 
@@ -53,7 +53,7 @@ Use [`useState`](/docs/api/composables/use-state) in combination with `navigateT
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
   const auth = useState('auth')
-  
+
   if (!auth.value.isAuthenticated) {
     return navigateTo('/login')
   }

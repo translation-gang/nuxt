@@ -14,9 +14,9 @@ npx nuxi typecheck [--log-level] [rootDir]
 
 The `typecheck` command runs [`vue-tsc`](https://github.com/vuejs/language-tools/tree/master/packages/tsc) to check types throughout your app.
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The directory of the target application.
+Параметр  | По умолчанию | Описание
+----------|--------------|-----------------------------------------
+`rootDir` | `.`          | The directory of the target application.
 
 ::note
 This command sets `process.env.NODE_ENV` to `production`. To override, define `NODE_ENV` in a [`.env`](/docs/guide/directory-structure/env) file or as a command-line argument.

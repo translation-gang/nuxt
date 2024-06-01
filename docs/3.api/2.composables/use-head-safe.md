@@ -10,7 +10,7 @@ links:
 
 The `useHeadSafe` composable is a wrapper around the [`useHead`](/docs/api/composables/use-head) composable that restricts the input to only allow safe values.
 
-## Usage
+## Использование
 
 You can pass all the same values as [`useHead`](/docs/api/composables/use-head)
 

@@ -16,9 +16,9 @@ Nuxi provides a few utilities to work with [Nuxt modules](/modules) seamlessly.
 npx nuxi module add <NAME>
 ```
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`NAME` | - | The name of the module to install.
+Параметр | По умолчанию | Описание
+---------|--------------|-----------------------------------
+`NAME`   | -            | The name of the module to install.
 
 The command lets you install [Nuxt modules](/modules) in your application with no manual work.
 
@@ -30,8 +30,9 @@ When running the command, it will:
 **Example:**
 
 Installing the [`Pinia`](/modules/pinia) module
+
 ```bash [Terminal]
-npx nuxi module add pinia 
+npx nuxi module add pinia
 ```
 
 ## nuxi module search
@@ -40,9 +41,9 @@ npx nuxi module add pinia
 npx nuxi module search <QUERY>
 ```
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`QUERY` | - | The name of the module to search for.
+Параметр | По умолчанию | Описание
+---------|--------------|--------------------------------------
+`QUERY`  | -            | The name of the module to search for.
 
 The command searches for Nuxt modules matching your query that are compatible with your Nuxt version.
 

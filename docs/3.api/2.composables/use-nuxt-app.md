@@ -204,7 +204,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 })
 ```
 
-#### Usage
+#### Использование
 
 ```js
 const result = nuxtApp.runWithContext(() => functionWithContext())

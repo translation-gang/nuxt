@@ -18,7 +18,7 @@ By default, [`useFetch`](/docs/api/composables/use-fetch) blocks navigation unti
 
 :read-more{to="/docs/api/composables/use-fetch"}
 
-## Example
+## Пример
 
 ```vue [pages/index.vue]
 <script setup lang="ts">

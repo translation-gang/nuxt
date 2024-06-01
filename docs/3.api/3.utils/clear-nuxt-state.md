@@ -18,6 +18,6 @@ This method is useful if you want to invalidate the state of `useState`.
 clearNuxtState (keys?: string | string[] | ((key: string) => boolean)): void
 ```
 
-## Parameters
+## Параметры
 
 - `keys`: One or an array of keys that are used in [`useState`](/docs/api/composables/use-state) to delete their cached state. If no keys are provided, **all state** will be invalidated.

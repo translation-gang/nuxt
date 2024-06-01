@@ -52,7 +52,7 @@ const { enabled, state } = usePreviewMode({
 The `getState` function will append returned values to current state, so be careful not to accidentally overwrite important state.
 ::
 
-## Example
+## Пример
 
 The example below creates a page where part of a content is rendered only in preview mode.
 

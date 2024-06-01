@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-## Usage
+## Использование
 
 ```vue [app.vue]
 <script setup lang="ts">

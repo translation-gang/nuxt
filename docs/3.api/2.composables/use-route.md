@@ -12,7 +12,7 @@ links:
 Within the template of a Vue component, you can access the route using `$route`.
 ::
 
-## Example
+## Пример
 
 In the following example, we call an API via [`useFetch`](/docs/api/composables/use-fetch) using a dynamic page parameter - `slug` - as part of the URL.
 

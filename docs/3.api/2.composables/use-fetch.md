@@ -15,7 +15,7 @@ It automatically generates a key based on URL and fetch options, provides type h
 `useFetch` is a composable meant to be called directly in a setup function, plugin, or route middleware. It returns reactive composables and handles adding responses to the Nuxt payload so they can be passed from server to client without re-fetching the data on client side when the page hydrates.
 ::
 
-## Usage
+## Использование
 
 ```vue [pages/modules.vue]
 <script setup lang="ts">

@@ -14,6 +14,6 @@ npx nuxi prepare [--log-level] [rootDir]
 
 The `prepare` command creates a [`.nuxt`](/docs/guide/directory-structure/nuxt) directory in your application and generates types. This can be useful in a CI environment or as a `postinstall` command in your [`package.json`](/docs/guide/directory-structure/package).
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The root directory of the application to prepare.
+Параметр  | По умолчанию | Описание
+----------|--------------|--------------------------------------------------
+`rootDir` | `.`          | The root directory of the application to prepare.

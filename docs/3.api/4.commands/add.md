@@ -12,12 +12,12 @@ links:
 npx nuxi add [--cwd] [--force] <TEMPLATE> <NAME>
 ```
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`TEMPLATE` | - | Specify a template of the file to be generated.
-`NAME` | - | Specify a name of the file that will be created.
-`--cwd` | `.` | The directory of the target application.
-`--force` | `false` | Force override file if it already exists.
+Option     | Default | Description
+-----------|---------|-------------------------------------------------
+`TEMPLATE` | -       | Specify a template of the file to be generated.
+`NAME`     | -       | Specify a name of the file that will be created.
+`--cwd`    | `.`     | The directory of the target application.
+`--force`  | `false` | Force override file if it already exists.
 
 **Modifiers:**
 

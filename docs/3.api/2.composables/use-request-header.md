@@ -19,7 +19,7 @@ const authorization = useRequestHeader('authorization')
 In the browser, `useRequestHeader` will return `undefined`.
 ::
 
-## Example
+## Пример
 
 We can use `useRequestHeader` to easily figure out if a user is authorized or not.
 

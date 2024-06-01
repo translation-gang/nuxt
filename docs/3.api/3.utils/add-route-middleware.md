@@ -18,7 +18,7 @@ Route middleware are navigation guards stored in the [`middleware/`](/docs/guide
 addRouteMiddleware (name: string | RouteMiddleware, middleware?: RouteMiddleware, options: AddRouteMiddlewareOptions = {})
 ```
 
-## Parameters
+## Параметры
 
 ### `name`
 
@@ -40,7 +40,7 @@ The second argument is a function of type `RouteMiddleware`. Same as above, it p
 
 An optional `options` argument lets you set the value of `global` to `true` to indicate whether the router middleware is global or not (set to `false` by default).
 
-## Examples
+## Примеры
 
 ### Anonymous Route Middleware
 

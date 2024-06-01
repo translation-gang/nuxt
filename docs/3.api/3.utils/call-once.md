@@ -22,7 +22,7 @@ The `callOnce` function is designed to execute a given function or block of code
 
 This is useful for code that should be executed only once, such as logging an event or setting up a global state.
 
-## Usage
+## Использование
 
 ```vue [app.vue]
 <script setup lang="ts">

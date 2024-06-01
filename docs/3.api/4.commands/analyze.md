@@ -14,9 +14,9 @@ npx nuxi analyze [--log-level] [rootDir]
 
 The `analyze` command builds Nuxt and analyzes the production bundle (experimental).
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The directory of the target application.
+Параметр  | По умолчанию | Описание
+----------|--------------|-----------------------------------------
+`rootDir` | `.`          | The directory of the target application.
 
 ::note
 This command sets `process.env.NODE_ENV` to `production`.

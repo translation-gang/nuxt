@@ -18,6 +18,6 @@ The `cleanup` command removes common generated Nuxt files and caches, including:
 - `node_modules/.vite`
 - `node_modules/.cache`
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The root directory of the project.
+Параметр  | По умолчанию | Описание
+----------|--------------|-----------------------------------
+`rootDir` | `.`          | The root directory of the project.

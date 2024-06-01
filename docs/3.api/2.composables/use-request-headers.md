@@ -22,7 +22,7 @@ const headers = useRequestHeaders(['cookie'])
 In the browser, `useRequestHeaders` will return an empty object.
 ::
 
-## Example
+## Пример
 
 We can use `useRequestHeaders` to access and proxy the initial request's `authorization` header to any future internal requests during SSR.
 

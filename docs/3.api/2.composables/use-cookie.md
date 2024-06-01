@@ -22,7 +22,7 @@ const cookie = useCookie(name, options)
 `useCookie` ref will automatically serialize and deserialize cookie value to JSON.
 ::
 
-## Example
+## Пример
 
 The example below creates a cookie called `counter`. If the cookie doesn't exist, it is initially set to a random value. Whenever we update the `counter` variable, the cookie will be updated accordingly.
 

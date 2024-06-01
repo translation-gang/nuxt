@@ -13,7 +13,7 @@ links:
 A composable which returns the loading state of the page. Used by [`<NuxtLoadingIndicator>`](/docs/api/components/nuxt-loading-indicator) and controllable.
 It hooks into [`page:loading:start`](/docs/api/advanced/hooks#app-hooks-runtime) and [`page:loading:end`](/docs/api/advanced/hooks#app-hooks-runtime) to change its state.
 
-## Parameters
+## Параметры
 
 - `duration`: Duration of the loading bar, in milliseconds (default `2000`).
 - `throttle`: Throttle the appearing and hiding, in milliseconds (default `200`).
@@ -50,7 +50,7 @@ Set the `progress` value to `100`, stop all timers and intervals then reset the 
 
 Used by `finish()`. Clear all timers and intervals used by the composable.
 
-## Example
+## Пример
 
 ```vue
 <script setup lang="ts">

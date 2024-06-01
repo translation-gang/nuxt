@@ -33,7 +33,7 @@ const id = useId()
 `useId` must be used in a component with a single root element, as it uses this root element's attributes to pass the id from server to client.
 ::
 
-## Parameters
+## Параметры
 
 `useId` does not take any parameters.
 

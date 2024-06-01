@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-## Usage
+## Использование
 
 ```ts
 // Create a reactive state and set default value

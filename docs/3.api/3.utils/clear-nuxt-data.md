@@ -18,6 +18,6 @@ This method is useful if you want to invalidate the data fetching for another pa
 clearNuxtData (keys?: string | string[] | ((key: string) => boolean)): void
 ```
 
-## Parameters
+## Параметры
 
 * `keys`: One or an array of keys that are used in [`useAsyncData`](/docs/api/composables/use-async-data) to delete their cached data. If no keys are provided, **all data** will be invalidated.

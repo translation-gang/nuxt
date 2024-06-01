@@ -12,7 +12,7 @@ links:
 This feature is experimental and in order to use it you must enable the `experimental.inlineRouteRules` option in your `nuxt.config`.
 ::
 
-## Usage
+## Использование
 
 ```vue [pages/index.vue]
 <script setup lang="ts">

@@ -20,18 +20,18 @@ Nuxt hydrates the page.
 This is an advanced utility and should be used with care. For example, [`nuxt-time`](https://github.com/danielroe/nuxt-time/pull/251) and [`@nuxtjs/color-mode`](https://github.com/nuxt-modules/color-mode/blob/main/src/script.js) manipulate the DOM to avoid hydration mismatches.
 ::
 
-## Usage
+## Использование
 
 `onPrehydrate` can be called directly in the setup function of a Vue component (for example, in `<script setup>`), or in a plugin.
 It will only have an effect when it is called on the server, and it will not be included in your client build.
 
-## Parameters
+## Параметры
 
 - `callback`: A function that will be stringified and inlined in the HTML. It should not have any external
 dependencies (such as auto-imports) or refer to variables defined outside the callback. The callback will run
 before Nuxt runtime initializes so it should not rely on the Nuxt or Vue context.
 
-## Example
+## Пример
 
 ```vue twoslash [app.vue]
 <script setup lang="ts">

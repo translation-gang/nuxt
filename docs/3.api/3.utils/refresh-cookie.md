@@ -20,7 +20,7 @@ The `refreshCookie` function is designed to refresh cookie value returned by `us
 
 This is useful for updating the `useCookie` ref when we know the new cookie value has been set in the browser.
 
-## Usage
+## Использование
 
 ```vue [app.vue]
 <script setup lang="ts">

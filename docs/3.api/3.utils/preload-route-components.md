@@ -16,7 +16,7 @@ Nuxt already automatically preloads the necessary routes if you're using the `Nu
 
 :read-more{to="/docs/api/components/nuxt-link"}
 
-## Example
+## Пример
 
 Preload a route when using `navigateTo`.
 

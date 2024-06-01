@@ -16,7 +16,7 @@ This is the recommended way to add meta tags to your site as it is XSS safe and 
 
 :read-more{to="/docs/getting-started/seo-meta"}
 
-## Usage
+## Использование
 
 ```vue [app.vue]
 <script setup lang="ts">
@@ -44,7 +44,7 @@ useSeoMeta({
 </script>
 ```
 
-## Parameters
+## Параметры
 
 There are over 100 parameters. See the [full list of parameters in the source code](https://github.com/harlan-zw/zhead/blob/main/packages/zhead/src/metaFlat.ts#L1035).
 

@@ -12,7 +12,7 @@ links:
 `navigateTo` is available on both server side and client side.
 ::
 
-## Usage
+## Использование
 
 `navigateTo` is available on both server side and client side. It can be used within the [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context), or directly, to perform page navigation.
 
@@ -99,7 +99,7 @@ interface NavigateToOptions {
 Make sure to always use `await` or `return` on result of `navigateTo` when calling it.
 ::
 
-## Parameters
+## Параметры
 
 ### `to`
 

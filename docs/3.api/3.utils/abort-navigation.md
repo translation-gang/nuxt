@@ -18,7 +18,7 @@ links:
 abortNavigation(err?: Error | string): false
 ```
 
-## Parameters
+## Параметры
 
 ### `err`
 
@@ -26,7 +26,7 @@ abortNavigation(err?: Error | string): false
 
   Optional error to be thrown by `abortNavigation`.
 
-## Examples
+## Примеры
 
 The example below shows how you can use `abortNavigation` in a route middleware to prevent unauthorized route access:
 

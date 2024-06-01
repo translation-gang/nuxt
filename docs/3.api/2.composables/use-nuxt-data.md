@@ -12,7 +12,7 @@ links:
 `useNuxtData` gives you access to the current cached value of [`useAsyncData`](/docs/api/composables/use-async-data) , `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) and [`useLazyFetch`](/docs/api/composables/use-lazy-fetch) with explicitly provided key.
 ::
 
-## Usage
+## Использование
 
 The example below shows how you can use cached data as a placeholder while the most recent data is being fetched from the server.
 

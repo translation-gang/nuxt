@@ -18,7 +18,7 @@ By default, [`useAsyncData`](/docs/api/composables/use-async-data) blocks naviga
 
 :read-more{to="/docs/api/composables/use-async-data"}
 
-## Example
+## Пример
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
