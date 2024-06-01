@@ -142,7 +142,7 @@ Allows _accessing_ a cookie value without the ability to set it.
 
 ### `watch`
 
-Specifies the `boolean` or `string` value for [watch](https://vuejs.org/api/reactivity-core.html#watch) cookie ref data.
+Specifies the `boolean` or `string` value for [watch](https://ru.vuejs.org/api/reactivity-core.html#watch) cookie ref data.
 
 - `true` - Will watch cookie ref data changes and its nested properties (default).
 - `shallow` - Will watch cookie ref data changes for only top level properties

@@ -18,7 +18,7 @@ export default defineUntypedSchema({
     },
     /**
      * Options for the Vue compiler that will be passed at build time.
-     * @see [documentation](https://vuejs.org/api/application.html#app-config-compileroptions)
+     * @see [documentation](https://ru.vuejs.org/api/application.html#app-config-compileroptions)
      * @type {typeof import('@vue/compiler-core').CompilerOptions}
      */
     compilerOptions: {},
@@ -158,7 +158,7 @@ export default defineUntypedSchema({
      *
      * This can be overridden with `definePageMeta` on an individual page.
      * Only JSON-serializable values are allowed.
-     * @see https://vuejs.org/api/built-in-components.html#transition
+     * @see https://ru.vuejs.org/api/built-in-components.html#transition
      * @type {typeof import('../src/types/config').NuxtAppConfig['layoutTransition']}
      */
     layoutTransition: false,
@@ -168,7 +168,7 @@ export default defineUntypedSchema({
      *
      * This can be overridden with `definePageMeta` on an individual page.
      * Only JSON-serializable values are allowed.
-     * @see https://vuejs.org/api/built-in-components.html#transition
+     * @see https://ru.vuejs.org/api/built-in-components.html#transition
      * @type {typeof import('../src/types/config').NuxtAppConfig['pageTransition']}
      */
     pageTransition: false,
@@ -194,7 +194,7 @@ export default defineUntypedSchema({
      *
      * This can be overridden with `definePageMeta` on an individual page.
      * Only JSON-serializable values are allowed.
-     * @see https://vuejs.org/api/built-in-components.html#keepalive
+     * @see https://ru.vuejs.org/api/built-in-components.html#keepalive
      * @type {typeof import('../src/types/config').NuxtAppConfig['keepalive']}
      */
     keepalive: false,
