@@ -1,8 +1,8 @@
 ---
 title: "nuxi upgrade"
-description: The upgrade command upgrades Nuxt 3 to the latest version.
+description: Команда upgrade обновляет Nuxt 3 до последней версии.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/upgrade.ts
     size: xs
@@ -12,8 +12,8 @@ links:
 npx nuxi upgrade [--force|-f]
 ```
 
-The `upgrade` command upgrades Nuxt 3 to the latest version.
+Команда `upgrade` обновляет Nuxt 3 до последней версии.
 
 Параметр      | По умолчанию | Описание
 --------------|--------------|------------------------------------------------------
-`--force, -f` | `false`      | Removes `node_modules` and lock files before upgrade.
+`--force, -f` | `false`      | Удаляет `node_modules` и `.lock-файл` перед обновлением.

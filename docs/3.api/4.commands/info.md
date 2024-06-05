@@ -1,8 +1,8 @@
 ---
 title: "nuxi info"
-description: The info command logs information about the current or specified Nuxt project.
+description: Команда info выводит сведения о текущем или указанном проекте Nuxt.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/info.ts
     size: xs
@@ -12,8 +12,8 @@ links:
 npx nuxi info [rootDir]
 ```
 
-The `info` command logs information about the current or specified Nuxt project.
+Команда `info` выводит сведения о текущем или указанном проекте Nuxt.
 
 Параметр  | По умолчанию | Описание
 ----------|--------------|-----------------------------------------
-`rootDir` | `.`          | The directory of the target application.
+`rootDir` | `.`          | Директория целевого приложения.

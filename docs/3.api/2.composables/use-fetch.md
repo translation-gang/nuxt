@@ -2,7 +2,7 @@
 title: 'useFetch'
 description: 'Fetch data from an API endpoint with an SSR-friendly composable.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/fetch.ts
     size: xs

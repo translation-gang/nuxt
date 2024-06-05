@@ -1,14 +1,14 @@
 ---
 title: "nuxi module"
-description: "Search and add modules to your Nuxt application with the command line."
+description: "Поиск и добавление модулей в приложение Nuxt с помощью командной строки."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/module/
     size: xs
 ---
 
-Nuxi provides a few utilities to work with [Nuxt modules](/modules) seamlessly.
+Nuxi предоставляет несколько утилит для беспрепятственной работы с [модулями Nuxt](/modules).
 
 ## nuxi module add
 
@@ -18,18 +18,18 @@ npx nuxi module add <NAME>
 
 Параметр | По умолчанию | Описание
 ---------|--------------|-----------------------------------
-`NAME`   | -            | The name of the module to install.
+`NAME`   | -            | Имя модуля, который необходимо установить.
 
-The command lets you install [Nuxt modules](/modules) in your application with no manual work.
+Эта команда позволяет установить [модули Nuxt](/modules) в ваше приложение без ручной работы.
 
-When running the command, it will:
-- install the module as a dependency using your package manager
-- add it to your [package.json](/docs/guide/directory-structure/package) file
-- update your [`nuxt.config`](/docs/guide/directory-structure/nuxt-config) file
+При выполнении команды:
+- установит модуль в качестве зависимости с помощью вашего менеджера пакетов
+- добавит его в файл [package.json](/docs/guide/directory-structure/package)
+- обновит файл [`nuxt.config`](/docs/guide/directory-structure/nuxt-config)
 
-**Example:**
+**Пример:**
 
-Installing the [`Pinia`](/modules/pinia) module
+Установка модуля [`Pinia`](/modules/pinia).
 
 ```bash [Terminal]
 npx nuxi module add pinia
@@ -43,11 +43,11 @@ npx nuxi module search <QUERY>
 
 Параметр | По умолчанию | Описание
 ---------|--------------|--------------------------------------
-`QUERY`  | -            | The name of the module to search for.
+`QUERY`  | -            | Имя модуля для поиска.
 
-The command searches for Nuxt modules matching your query that are compatible with your Nuxt version.
+Команда ищет модули Nuxt, соответствующие вашему запросу, которые совместимы с вашей версией Nuxt.
 
-**Example:**
+**Пример:**
 
 ```bash [Terminal]
 npx nuxi module search pinia

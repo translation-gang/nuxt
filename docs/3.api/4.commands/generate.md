@@ -1,8 +1,8 @@
 ---
 title: "nuxi generate"
-description: Pre-renders every route of the application and stores the result in plain HTML files.
+description: Предварительная рендеринг каждого маршрута приложения и сохранение результата в обычных HTML-файлах.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/generate.ts
     size: xs
@@ -12,13 +12,13 @@ links:
 npx nuxi generate [rootDir] [--dotenv]
 ```
 
-The `generate` command pre-renders every route of your application and stores the result in plain HTML files that you can deploy on any static hosting services. The command triggers the `nuxi build` command with the `prerender` argument set to `true`
+Команда `generate` предварительно рендерит каждый маршрут вашего приложения и сохраняет результат в обычных HTML-файлах, которые вы можете разместить на любых статических хостинговых сервисах. Команда запускает `nuxi build` с аргументом `prerender` установленным в `true`
 
 Параметр   | По умолчанию | Описание
 -----------|--------------|--------------------------------------------------------------------------
-`rootDir`  | `.`          | The root directory of the application to generate
-`--dotenv` | `.`          | Point to another `.env` file to load, **relative** to the root directory.
+`rootDir`  | `.`          | Корневая директория приложения для генерации
+`--dotenv` | `.`          | Указывает на другой файл `.env` для загрузки, **относительно** корневой директории.
 
 ::read-more{to="/docs/getting-started/deployment#static-hosting"}
-Read more about pre-rendering and static hosting.
+Узнайте больше о предварительном рендеринге и статическом хостинге.
 ::

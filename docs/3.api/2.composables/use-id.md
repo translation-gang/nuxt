@@ -2,7 +2,7 @@
 title: "useId"
 description: Generate an SSR-friendly unique identifier that can be passed to accessibility attributes.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/id.ts
     size: xs

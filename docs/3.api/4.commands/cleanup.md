@@ -1,8 +1,8 @@
 ---
 title: 'nuxi cleanup'
-description: "Remove common generated Nuxt files and caches."
+description: "Удалите общие сгенерированные файлы Nuxt и кэши."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/cleanup.ts
     size: xs
@@ -12,7 +12,7 @@ links:
 npx nuxi cleanup [rootDir]
 ```
 
-The `cleanup` command removes common generated Nuxt files and caches, including:
+Команда `cleanup` удаляет общие сгенерированные файлы Nuxt и кэши, включая:
 - `.nuxt`
 - `.output`
 - `node_modules/.vite`
@@ -20,4 +20,4 @@ The `cleanup` command removes common generated Nuxt files and caches, including:
 
 Параметр  | По умолчанию | Описание
 ----------|--------------|-----------------------------------
-`rootDir` | `.`          | The root directory of the project.
+`rootDir` | `.`          | Корневая директория проекта.

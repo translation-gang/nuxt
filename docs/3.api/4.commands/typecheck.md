@@ -1,8 +1,8 @@
 ---
 title: "nuxi typecheck"
-description: The typecheck command runs vue-tsc to check types throughout your app.
+description: Команда typecheck запускает vue-tsc для проверки типов в вашем приложении.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/typecheck.ts
     size: xs
@@ -12,16 +12,16 @@ links:
 npx nuxi typecheck [--log-level] [rootDir]
 ```
 
-The `typecheck` command runs [`vue-tsc`](https://github.com/vuejs/language-tools/tree/master/packages/tsc) to check types throughout your app.
+Команда `typecheck` запускает [`vue-tsc`](https://github.com/vuejs/language-tools/tree/master/packages/tsc) для проверки типов в вашем приложении.
 
 Параметр  | По умолчанию | Описание
 ----------|--------------|-----------------------------------------
-`rootDir` | `.`          | The directory of the target application.
+`rootDir` | `.`          | Директория целевого приложения.
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`. To override, define `NODE_ENV` in a [`.env`](/docs/guide/directory-structure/env) file or as a command-line argument.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`. Для переопределения определите `NODE_ENV` в файле [`.env`](/docs/guide/directory-structure/env) или в качестве аргумента командной строки.
 ::
 
 ::read-more{to="/docs/guide/concepts/typescript#type-checking"}
-Read more on how to enable type-checking at build or development time.
+Прочтите подробнее о том, как включить проверку типов во время сборки или разработки.
 ::

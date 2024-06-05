@@ -4,7 +4,7 @@ description: "Refresh useCookie values manually when a cookie has changed"
 navigation:
   badge: New
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/cookie.ts
     size: xs

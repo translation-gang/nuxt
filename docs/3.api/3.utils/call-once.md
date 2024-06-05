@@ -4,7 +4,7 @@ description: "Run a given function or block of code once during SSR or CSR."
 navigation:
   badge: New
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/once.ts
     size: xs

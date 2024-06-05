@@ -2,7 +2,7 @@
 title: "useRequestHeader"
 description: "Use useRequestHeader to access a certain incoming request header."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
