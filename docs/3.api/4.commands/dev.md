@@ -1,6 +1,6 @@
 ---
 title: 'nuxi dev'
-description: Команда dev запускает сервер разработки с HMR по адресу at http://localhost:3000
+description: Команда dev запускает сервер разработки с HMR по адресу http://localhost:3000
 links:
   - label: Исходники
     icon: i-simple-icons-github
