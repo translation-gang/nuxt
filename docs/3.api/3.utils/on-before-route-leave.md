@@ -2,7 +2,7 @@
 title: "onBeforeRouteLeave"
 description: The onBeforeRouteLeave composable allows registering a route guard within a component.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs

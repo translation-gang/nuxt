@@ -2,7 +2,7 @@
 title: 'useLoadingIndicator'
 description: This composable gives you access to the loading state of the app page.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/loading-indicator.ts
     size: xs

@@ -1,8 +1,8 @@
 ---
 title: 'nuxi dev'
-description: The dev command starts a development server with hot module replacement at http://localhost:3000
+description: Команда dev запускает сервер разработки с HMR по адресу at http://localhost:3000
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/dev.ts
     size: xs
@@ -12,28 +12,28 @@ links:
 npx nuxi dev [rootDir] [--dotenv] [--log-level] [--clipboard] [--open, -o] [--no-clear] [--port, -p] [--host, -h] [--https] [--ssl-cert] [--ssl-key] [--tunnel]
 ```
 
-The `dev` command starts a development server with hot module replacement at [http://localhost:3000](https://localhost:3000)
+Команда dev запускает сервер разработки с HMR на [http://localhost:3000](https://localhost:3000)
 
 Параметр      | По умолчанию | Описание
 --------------|--------------|------------------------------------------------------------------------------------------
-`rootDir`     | `.`          | The root directory of the application to serve.
-`--dotenv`    | `.`          | Point to another `.env` file to load, **relative** to the root directory.
-`--open, -o`  | `false`      | Open URL in browser.
-`--clipboard` | `false`      | Copy URL to clipboard.
-`--no-clear`  | `false`      | Does not clear the console after startup.
-`--port, -p`  | `3000`       | Port to listen.
-`--host, -h`  | `localhost`  | Hostname of the server.
-`--https`     | `false`      | Listen with `https` protocol with a self-signed certificate by default.
-`--ssl-cert`  | `null`       | Specify a certificate for https.
-`--ssl-key`   | `null`       | Specify the key for the https certificate.
-`--tunnel`    | `false`      | Tunnel your local server to the internet with [unjs/untun](https://github.com/unjs/untun)
+`rootDir`     | `.`          | Корневая директория приложения для запуска.
+`--dotenv`    | `.`          | Укажите другой файл `.env` для загрузки, относительно корневой директории.
+`--open, -o`  | `false`      | Открыть URL-адрес в браузере.
+`--clipboard` | `false`      | Копировать URL-адрес в буфер обмена.
+`--no-clear`  | `false`      | Не очищает консоль после запуска.
+`--port, -p`  | `3000`       | Порт для прослушивания.
+`--host, -h`  | `localhost`  | Имя хоста сервера.
+`--https`     | `false`      | Прослушивание с протоколом `https` с самозаверенным сертификатом по умолчанию.
+`--ssl-cert`  | `null`       | Укажите сертификат для https.
+`--ssl-key`   | `null`       | Укажите ключ для сертификата https.
+`--tunnel`    | `false`      | Туннелирование вашего локального сервера в Интернет с помощью [unjs/untun](https://github.com/unjs/untun)
 
-The port and host can also be set via NUXT_PORT, PORT, NUXT_HOST or HOST environment variables.
+Порт и хост также могут быть установлены с помощью переменных среды `NUXT_PORT`, `PORT`, `NUXT_HOST` или `HOST`.
 
-Additionally to the above options, `nuxi` can pass options through to `listhen`, e.g. `--no-qr` to turn off the dev server QR code. You can find the list of `listhen` options in the [unjs/listhen](https://github.com/unjs/listhen) docs.
+Дополнительно к вышеуказанным опциям, `nuxi` может передавать опции в `listhen`, например `--no-qr`, чтобы отключить QR-код сервера разработки. Вы можете найти список опций `listhen` в документации
 
-This command sets `process.env.NODE_ENV` to `development`.
+Эта команда устанавливает `process.env.NODE_ENV` в `development`.
 
 ::note
-If you are using a self-signed certificate in development, you will need to set `NODE_TLS_REJECT_UNAUTHORIZED=0` in your environment.
+Если вы используете самозаверенный сертификат в разработке, вам необходимо установить `NODE_TLS_REJECT_UNAUTHORIZED=0` в вашей среде.
 ::

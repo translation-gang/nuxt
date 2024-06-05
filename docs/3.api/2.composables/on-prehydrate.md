@@ -3,7 +3,7 @@ title: "onPrehydrate"
 description: "Use onPrehydrate to run a callback on the client immediately before
 Nuxt hydrates the page."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs

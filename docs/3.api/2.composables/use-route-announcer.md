@@ -4,7 +4,7 @@ description: This composable observes the page title changes and updates the ann
 navigation:
   badge: New
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/route-announcer.ts
     size: xs
