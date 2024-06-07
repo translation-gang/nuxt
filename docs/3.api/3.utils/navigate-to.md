@@ -66,7 +66,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 ```vue
 <script setup lang="ts">
-// произойдет ошибка;
+// выкинет ошибку;
 // переход на внешний URL по умолчанию запрещен
 await navigateTo('https://nuxt.com')
 
