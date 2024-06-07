@@ -175,7 +175,7 @@ interface NavigateToOptions {
 
     **Тип**: `OpenWindowFeatures`
 
-    An object accepting the following properties:
+    Объект, принимающий следующие свойства:
 
     - `popup` (необязательно)
 
