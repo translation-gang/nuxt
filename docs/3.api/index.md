@@ -1,31 +1,31 @@
 ---
-title: 'Nuxt API Reference'
+title: 'Справочник по API Nuxt'
 titleTemplate: '%s'
-description: 'Explore all Nuxt Internals: Components, Composables, Utils, Commands and more.'
+description: 'Изучите все внутренние компоненты Nuxt: компоненты, композаблы, утилиты, команды и многое другое.'
 navigation: false
 surround: false
 ---
 
 ::card-group
-  ::card{icon="i-ph-cube-duotone" title="Components" to="/docs/api/components/client-only"}
-  Explore Nuxt built-in components for pages, layouts, head, and more.
+  ::card{icon="i-ph-cube-duotone" title="Компоненты" to="/docs/api/components/client-only"}
+  Изучите встроенные компоненты Nuxt для страниц, лейаут, head и многого другого.
   ::
-  ::card{icon="i-ph-arrows-left-right-duotone" title="Composables" to="/docs/api/composables/use-app-config"}
-  Discover Nuxt composable functions for data-fetching, head management and more.
+  ::card{icon="i-ph-arrows-left-right-duotone" title="Композаблы" to="/docs/api/composables/use-app-config"}
+  Открытие композабл функций Nuxt для загрузки данных, управления тегом head и многое другое.
   ::
-  ::card{icon="i-ph-function-duotone" title="Utils" to="/docs/api/utils/dollarfetch"}
-  Learn about Nuxt utility functions for navigation, error handling and more.
+  ::card{icon="i-ph-function-duotone" title="Утилиты" to="/docs/api/utils/dollarfetch"}
+  Узнайте о вспомогательных функциях Nuxt для навигации, обработки ошибок и многое другое.
   ::
-  ::card{icon="i-ph-terminal-window-duotone" title="Commands" to="/docs/api/commands/add"}
-  List of Nuxt CLI commands to init, analyze, build, and preview your application.
+  ::card{icon="i-ph-terminal-window-duotone" title="Команды" to="/docs/api/commands/add"}
+  Список команд Nuxt CLI для инициализации, анализа, сборки и просмотра вашего приложения.
   ::
   ::card{icon="i-ph-toolbox-duotone" title="Nuxt Kit" to="/docs/api/kit/modules"}
-  Understand Nuxt Kit utilities to create modules and control Nuxt.
+  Понимание утилит Nuxt Kit для создания модулей и управления Nuxt.
   ::
-  ::card{icon="i-ph-brain-duotone" title="Advanced" to="/docs/api/advanced/hooks"}
-  Go deep in Nuxt internals with Nuxt lifecycle hooks.
+  ::card{icon="i-ph-brain-duotone" title="Продвинутые" to="/docs/api/advanced/hooks"}
+  Глубокое изучение внутренних механизмов Nuxt с помощью хуков цикла жизни Nuxt.
   ::
-  ::card{icon="i-ph-gear-duotone" title="Nuxt Configuration" to="/docs/api/nuxt-config"}
-  Explore all Nuxt configuration options to customize your application.
+  ::card{icon="i-ph-gear-duotone" title="Конфигурация Nuxt" to="/docs/api/nuxt-config"}
+  Исследование всех параметров конфигурации Nuxt для настройки вашего приложения.
   ::
 ::
