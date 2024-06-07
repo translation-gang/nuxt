@@ -11,10 +11,10 @@ surround: false
   Изучите встроенные компоненты Nuxt для страниц, лейаутов, тега head и многого другого.
   ::
   ::card{icon="i-ph-arrows-left-right-duotone" title="Композаблы" to="/docs/api/composables/use-app-config"}
-  Откройте для себя композаблы Nuxt для загрузки данных, управления тегом head и многое другое.
+  Откройте для себя композабл-функции Nuxt для загрузки данных, управления тегом head и прочего.
   ::
   ::card{icon="i-ph-function-duotone" title="Утилиты" to="/docs/api/utils/dollarfetch"}
-  Узнайте о вспомогательных функциях Nuxt для навигации, обработки ошибок и многое другое.
+  Узнайте о вспомогательных функциях Nuxt для навигации, обработки ошибок и многого другого.
   ::
   ::card{icon="i-ph-terminal-window-duotone" title="Команды" to="/docs/api/commands/add"}
   Список команд Nuxt CLI для инициализации, анализа, сборки и просмотра вашего приложения.
