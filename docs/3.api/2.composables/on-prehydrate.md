@@ -1,6 +1,6 @@
 ---
 title: "onPrehydrate"
-description: "Используйте onPrehydrate, чтобы запустить колбэк-функцию на клиенте непосредственно перед тем. Nuxt гидратирует страницу."
+description: "Используйте onPrehydrate, чтобы запустить коллбэк-функцию на клиенте непосредственно перед тем, как Nuxt гидратирует страницу."
 links:
   - label: Исходники
     icon: i-simple-icons-github
