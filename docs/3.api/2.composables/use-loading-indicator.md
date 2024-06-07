@@ -1,6 +1,6 @@
 ---
 title: 'useLoadingIndicator'
-description: This composable gives you access to the loading state of the app page.
+description: Этот композабл дает вам доступ к состоянию загрузки страницы приложения.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -10,45 +10,45 @@ links:
 
 ## Описание
 
-A composable which returns the loading state of the page. Used by [`<NuxtLoadingIndicator>`](/docs/api/components/nuxt-loading-indicator) and controllable.
-It hooks into [`page:loading:start`](/docs/api/advanced/hooks#app-hooks-runtime) and [`page:loading:end`](/docs/api/advanced/hooks#app-hooks-runtime) to change its state.
+Композабл, возвращающий состояние загрузки страницы. Используется [`<NuxtLoadingIndicator>`](/docs/api/components/nuxt-loading-indicator) и является управляемым.
+Он подключается к [`page:loading:start`](/docs/api/advanced/hooks#app-hooks-runtime) и [`page:loading:end`](/docs/api/advanced/hooks#app-hooks-runtime) для изменения своего состояния.
 
 ## Параметры
 
-- `duration`: Duration of the loading bar, in milliseconds (default `2000`).
-- `throttle`: Throttle the appearing and hiding, in milliseconds (default `200`).
-- `estimatedProgress`: By default Nuxt will back off as it approaches 100%. You can provide a custom function to customize the progress estimation, which is a function that receives the duration of the loading bar (above) and the elapsed time. It should return a value between 0 and 100.
+- `duration`: Длительность полосы загрузки в миллисекундах (по умолчанию `2000`).
+- `throttle`: Регулировка отображения и скрытия в миллисекундах (по умолчанию `200`).
+- `estimatedProgress`: По умолчанию Nuxt будет уменьшать значение по мере приближения к 100%. Вы можете предоставить пользовательскую функцию для настройки оценки прогресса, которая представляет собой функцию, получающую длительность полосы загрузки (выше) и прошедшее время. Она должна возвращать значение от 0 до 100.
 
-## Properties
+## Свойства
 
 ### `isLoading`
 
-- **type**: `Ref<boolean>`
-- **description**: The loading state
+- **тип**: `Ref<boolean>`
+- **описание**: Состояние загрузки
 
 ### `error`
 
-- **type**: `Ref<boolean>`
-- **description**: The error state
+- **тип**: `Ref<boolean>`
+- **описание**: Состояние ошибки
 
 ### `progress`
 
-- **type**: `Ref<number>`
-- **description**: The progress state. From `0` to `100`.
+- **тип**: `Ref<number>`
+- **описание**: Состояние загрузки. От `0` до `100`.
 
-## Methods
+## Методы
 
 ### `start()`
 
-Set `isLoading` to true and start to increase the `progress` value.
+Установит `isLoading` в `true` и начнет увеличивать значение `progress`.
 
 ### `finish()`
 
-Set the `progress` value to `100`, stop all timers and intervals then reset the loading state `500` ms later. `finish` accepts a `{ force: true }` option to skip the interval before the state is reset, and `{ error: true }` to change the loading bar color and set the error property to true.
+Установит значение `progress` в `100`, остановит все таймеры и интервалы, а затем сбросит состояние загрузки на `500` мс позже. `finish` принимает опцию `{ force: true }`, чтобы пропустить интервал до сброса состояния, и `{ error: true }`, чтобы изменить цвет полосы загрузки и установить свойство ошибки в `true`.
 
 ### `clear()`
 
-Used by `finish()`. Clear all timers and intervals used by the composable.
+Используется функцией `finish()`. Очищает все таймеры и интервалы, используемые композаблом.
 
 ## Пример
 
@@ -57,7 +57,7 @@ Used by `finish()`. Clear all timers and intervals used by the composable.
   const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
     duration: 2000,
     throttle: 200,
-    // This is how progress is calculated by default
+    // Вот как рассчитывается прогресс по умолчанию:
     estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50)
   })
 </script>
