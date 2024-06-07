@@ -12,7 +12,7 @@ The [`useHead`](/docs/api/composables/use-head) composable function allows you t
 
 :read-more{to="/docs/getting-started/seo-meta"}
 
-## Type
+## Тип
 
 ```ts
 useHead(meta: MaybeComputedRef<MetaObject>): void
@@ -41,7 +41,7 @@ See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/sr
 The properties of `useHead` can be dynamic, accepting `ref`, `computed` and `reactive` properties. `meta` parameter can also accept a function returning an object to make the entire object reactive.
 ::
 
-## Params
+## Параметры
 
 ### `meta`
 

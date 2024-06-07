@@ -82,7 +82,7 @@ await navigateTo('https://nuxt.com', {
 </script>
 ```
 
-## Type
+## Тип
 
 ```ts
 navigateTo(to: RouteLocationRaw | undefined | null, options?: NavigateToOptions) => Promise<void | NavigationFailure> | RouteLocationRaw

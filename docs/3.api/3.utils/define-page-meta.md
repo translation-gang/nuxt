@@ -20,7 +20,7 @@ definePageMeta({
 
 :read-more{to="/docs/guide/directory-structure/pages/#page-metadata"}
 
-## Type
+## Тип
 
 ```ts
 definePageMeta(meta: PageMeta) => void

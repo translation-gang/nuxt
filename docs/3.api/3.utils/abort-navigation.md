@@ -12,7 +12,7 @@ links:
 `abortNavigation` is only usable inside a [route middleware handler](/docs/guide/directory-structure/middleware).
 ::
 
-## Type
+## Тип
 
 ```ts
 abortNavigation(err?: Error | string): false

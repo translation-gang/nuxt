@@ -14,7 +14,7 @@ links:
 This is an advanced composable and is mostly used internally (`useAsyncData`) or by Nuxt modules.
 ::
 
-## Type
+## Тип
 
 ```ts [signature]
 useHydration <T> (key: string, get: () => T, set: (value: T) => void) => {}

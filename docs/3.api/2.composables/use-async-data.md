@@ -55,7 +55,7 @@ const { data: posts } = await useAsyncData(
 
 :read-more{to="/docs/getting-started/data-fetching#useasyncdata"}
 
-## Params
+## Параметры
 
 - `key`: a unique key to ensure that data fetching can be properly de-duplicated across requests. If you do not provide a key, then a key that is unique to the file name and line number of the instance of `useAsyncData` will be generated for you.
 - `handler`: an asynchronous function that must return a truthy value (for example, it should not be `undefined` or `null`) or the request may be duplicated on the client side
@@ -99,7 +99,7 @@ By default, Nuxt waits until a `refresh` is finished before it can be executed a
 If you have not fetched data on the server (for example, with `server: false`), then the data _will not_ be fetched until hydration completes. This means even if you await [`useAsyncData`](/docs/api/composables/use-async-data) on the client side, `data` will remain `null` within `<script setup>`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 function useAsyncData<DataT, DataE>(

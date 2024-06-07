@@ -18,7 +18,7 @@ You can use the built-in `usePreviewMode` composable to access and control previ
 const { enabled, state } = usePreviewMode()
 ```
 
-## Options
+## Параметры
 
 ### Custom `enable` check
 

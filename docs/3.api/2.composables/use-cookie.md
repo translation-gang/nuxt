@@ -45,7 +45,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 :link-example{to="/docs/examples/advanced/use-cookie"}
 
-## Options
+## Параметры
 
 Cookie composable accepts several options which let you modify the behavior of cookies.
 

@@ -76,7 +76,7 @@ Watch the video from Alexander Lichter to avoid using `useFetch` the wrong way!
 
 :link-example{to="/docs/examples/features/data-fetching"}
 
-## Params
+## Параметры
 
 - `URL`: The URL to fetch.
 - `Options` (extends [unjs/ofetch](https://github.com/unjs/ofetch) options & [AsyncDataOptions](/docs/api/composables/use-async-data#params)):
@@ -135,7 +135,7 @@ By default, Nuxt waits until a `refresh` is finished before it can be executed a
 If you have not fetched data on the server (for example, with `server: false`), then the data _will not_ be fetched until hydration completes. This means even if you await `useFetch` on client-side, `data` will remain null within `<script setup>`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 function useFetch<DataT, ErrorT>(

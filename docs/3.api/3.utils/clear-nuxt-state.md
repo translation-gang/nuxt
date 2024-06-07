@@ -12,7 +12,7 @@ links:
 This method is useful if you want to invalidate the state of `useState`.
 ::
 
-## Type
+## Тип
 
 ```ts
 clearNuxtState (keys?: string | string[] | ((key: string) => boolean)): void

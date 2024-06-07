@@ -12,7 +12,7 @@ links:
 `refreshNuxtData` re-fetches all data from the server and updates the page as well as invalidates the cache of [`useAsyncData`](/docs/api/composables/use-async-data) , `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) and `useLazyFetch`.
 ::
 
-## Type
+## Тип
 
 ```ts
 refreshNuxtData(keys?: string | string[])

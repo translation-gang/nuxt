@@ -77,7 +77,7 @@ const { data } = await useFetch('/api/addTodo', {
 </script>
 ```
 
-## Type
+## Тип
 
 ```ts
 useNuxtData<DataT = any> (key: string): { data: Ref<DataT | null> }

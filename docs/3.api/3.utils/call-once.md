@@ -49,7 +49,7 @@ Note that `callOnce` doesn't return anything. You should use [`useAsyncData`](/d
 `callOnce` is a composable meant to be called directly in a setup function, plugin, or route middleware, because it needs to add data to the Nuxt payload to avoid re-calling the function on the client when the page hydrates.
 ::
 
-## Type
+## Тип
 
 ```ts
 callOnce(fn?: () => any | Promise<any>): Promise<void>

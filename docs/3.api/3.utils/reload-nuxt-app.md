@@ -18,7 +18,7 @@ By default, it will also save the current `state` of your app (that is, any stat
 You can enable experimental restoration of this state by enabling the `experimental.restoreState` option in your `nuxt.config` file.
 ::
 
-## Type
+## Тип
 
 ```ts
 reloadNuxtApp(options?: ReloadNuxtAppOptions)

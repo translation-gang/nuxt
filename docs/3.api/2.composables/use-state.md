@@ -38,7 +38,7 @@ const state = useState('my-shallow-state', () => shallowRef({ deep: 'not reactiv
 // isShallow(state) === true
 ```
 
-## Type
+## Тип
 
 ```ts
 useState<T>(init?: () => T | Ref<T>): Ref<T>

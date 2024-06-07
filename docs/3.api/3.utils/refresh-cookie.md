@@ -39,7 +39,7 @@ const loggedIn = computed(() => !!tokenCookie.value)
 You can enable experimental `cookieStore` option to automatically refresh `useCookie` value when cookie changes in the browser.
 ::
 
-## Type
+## Тип
 
 ```ts
 refreshCookie(name: string): void

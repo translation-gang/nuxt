@@ -32,7 +32,7 @@ useHeadSafe({
 Read more on `unhead` documentation.
 ::
 
-## Type
+## Тип
 
 ```ts
 useHeadSafe(input: MaybeComputedRef<HeadSafe>): void

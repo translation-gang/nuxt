@@ -10,7 +10,7 @@ links:
 
 Route middleware are stored in the [`middleware/`](/docs/guide/directory-structure/middleware) of your Nuxt application (unless [set otherwise](/docs/api/nuxt-config#middleware)).
 
-## Type
+## Тип
 
 ```ts
 defineNuxtRouteMiddleware(middleware: RouteMiddleware) => RouteMiddleware

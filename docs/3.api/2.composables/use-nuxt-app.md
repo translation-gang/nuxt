@@ -22,7 +22,7 @@ If runtime context is unavailable in your scope, `useNuxtApp` will throw an exce
 note
 By default, the shared runtime context of Nuxt is namespaced under the [`buildId`](/docs/api/nuxt-config#buildid) option. It allows the support of multiple runtime contexts.
 
-## Params
+## Параметры
 
 - `appName`: an optional application name. If you do not provide it, the Nuxt `buildId` option is used. Otherwise, it must match with an existing `buildId`. -->
 
@@ -291,6 +291,6 @@ export function useStandType() {
 }
 ```
 
-<!-- ### Params
+<!-- ### Параметры
 
 - `appName`: an optional application name. If you do not provide it, the Nuxt `buildId` option is used. Otherwise, it must match with an existing `buildId`. -->

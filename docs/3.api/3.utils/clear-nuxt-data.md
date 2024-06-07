@@ -12,7 +12,7 @@ links:
 This method is useful if you want to invalidate the data fetching for another page.
 ::
 
-## Type
+## Тип
 
 ```ts
 clearNuxtData (keys?: string | string[] | ((key: string) => boolean)): void
