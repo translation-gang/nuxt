@@ -11,7 +11,7 @@ surround: false
   Изучите встроенные компоненты Nuxt для страниц, лейаутов, тега head и многого другого.
   ::
   ::card{icon="i-ph-arrows-left-right-duotone" title="Композаблы" to="/docs/api/composables/use-app-config"}
-  Открытие композабл функций Nuxt для загрузки данных, управления тегом head и многое другое.
+  Откройте для себя композаблы Nuxt для загрузки данных, управления тегом head и многое другое.
   ::
   ::card{icon="i-ph-function-duotone" title="Утилиты" to="/docs/api/utils/dollarfetch"}
   Узнайте о вспомогательных функциях Nuxt для навигации, обработки ошибок и многое другое.
