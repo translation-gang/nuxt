@@ -8,7 +8,7 @@ surround: false
 
 ::card-group
   ::card{icon="i-ph-cube-duotone" title="Компоненты" to="/docs/api/components/client-only"}
-  Изучите встроенные компоненты Nuxt для страниц, лейаут, head и многого другого.
+  Изучите встроенные компоненты Nuxt для страниц, лейаутов, тега head и многого другого.
   ::
   ::card{icon="i-ph-arrows-left-right-duotone" title="Композаблы" to="/docs/api/composables/use-app-config"}
   Открытие композабл функций Nuxt для загрузки данных, управления тегом head и многое другое.
