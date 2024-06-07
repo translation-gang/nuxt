@@ -186,7 +186,7 @@ definePageMeta({
   // ... или строка
   middleware: 'auth'
 
-  // ... или несколько строк
+  // ... или в виде нескольких строк
   middleware: ['auth', 'another-named-middleware']
 })
 </script>
