@@ -97,7 +97,7 @@ interface PageMeta {
 
   - **Тип**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/NavigationGuard.html#navigationguard) | `Array<MiddlewareKey | NavigationGuard>`
 
-    DОпределение анонимного или именованного middleware непосредственно в definePageMeta. Узнайте больше о [middleware маршрутизации](/docs/guide/directory-structure/middleware).
+    Определение анонимного или именованного middleware непосредственно в definePageMeta. Узнайте больше о [middleware маршрутизации](/docs/guide/directory-structure/middleware).
 
   **`pageTransition`**
 
