@@ -1,6 +1,6 @@
 ---
 title: 'useAppConfig'
-description: 'Access the reactive app config defined in the project.'
+description: 'Получите доступ к реактивной конфигурации приложения, определенной в проекте.'
 links:
   - label: Исходники
     icon: i-simple-icons-github
