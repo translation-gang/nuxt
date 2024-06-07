@@ -1,6 +1,6 @@
 ---
 title: "useRequestHeader"
-description: "Use useRequestHeader to access a certain incoming request header."
+description: "Используйте useRequestHeader, чтобы получить доступ к определенному заголовку входящего запроса."
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,22 +8,22 @@ links:
     size: xs
 ---
 
-You can use the built-in [`useRequestHeader`](/docs/api/composables/use-request-header) composable to access any incoming request header within your pages, components, and plugins.
+Вы можете использовать встроенный компонент [`useRequestHeader`](/docs/api/composables/use-request-header) для доступа к любому заголовку входящего запроса на ваших страницах, в компонентах и плагинах.
 
 ```ts
-// Get the authorization request header
+// Получите заголовок запроса авторизации
 const authorization = useRequestHeader('authorization')
 ```
 
 ::tip
-In the browser, `useRequestHeader` will return `undefined`.
+В браузере `useRequestHeader` вернет `undefined`.
 ::
 
 ## Пример
 
-We can use `useRequestHeader` to easily figure out if a user is authorized or not.
+Мы можем использовать `useRequestHeader`, чтобы легко выяснить, авторизован ли пользователь или нет.
 
-The example below reads the `authorization` request header to find out if a person can access a restricted resource.
+В примере ниже читается заголовок запроса `authorization`, чтобы узнать, может ли человек получить доступ к ограниченному ресурсу.
 
 ```ts [middleware/authorized-only.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
