@@ -1,6 +1,6 @@
 ---
 title: "useError"
-description: useError композабл возвращает глобальную ошибку Nuxt, которая обрабатывается.
+description: useError композабл возвращает глобальную ошибку Nuxt, которая может быть обработана.
 links:
   - label: Исходники
     icon: i-simple-icons-github
