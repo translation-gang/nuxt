@@ -1,6 +1,6 @@
 ---
 title: useHeadSafe
-description: The recommended way to provide head data with user input.
+description: Рекомендуемый способ предоставления данных head с помощью ввода пользователя.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,11 +8,11 @@ links:
     size: xs
 ---
 
-The `useHeadSafe` composable is a wrapper around the [`useHead`](/docs/api/composables/use-head) composable that restricts the input to only allow safe values.
+Композабл `useHeadSafe` - это обертка вокруг композабла [`useHead`](/docs/api/composables/use-head), который ограничивает входные данные, позволяя использовать только безопасные значения.
 
 ## Использование
 
-You can pass all the same values as [`useHead`](/docs/api/composables/use-head)
+Вы можете передать все те же значения, что и [`useHead`](/docs/api/composables/use-head)
 
 ```ts
 useHeadSafe({
@@ -23,16 +23,16 @@ useHeadSafe({
     { 'http-equiv': 'refresh', content: '0;javascript:alert(1)' }
   ]
 })
-// Will safely generate
+// Будет безопасно генерироваться
 // <script id="xss-script"></script>
 // <meta content="0;javascript:alert(1)">
 ```
 
 ::read-more{to="https://unhead.unjs.io/usage/composables/use-head-safe" target="_blank"}
-Read more on `unhead` documentation.
+Подробнее о документации к `unhead`.
 ::
 
-## Type
+## Тип
 
 ```ts
 useHeadSafe(input: MaybeComputedRef<HeadSafe>): void
@@ -51,4 +51,4 @@ export default {
 }
 ```
 
-See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/src/safeSchema.ts) for more detailed types.
+Более подробную информацию о типах см. в [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/src/safeSchema.ts).
