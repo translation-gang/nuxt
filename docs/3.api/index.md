@@ -23,7 +23,7 @@ surround: false
   Понимание утилит Nuxt Kit для создания модулей и управления Nuxt.
   ::
   ::card{icon="i-ph-brain-duotone" title="Продвинутые" to="/docs/api/advanced/hooks"}
-  Глубокое изучение внутренних механизмов Nuxt с помощью хуков цикла жизни Nuxt.
+  Глубокое изучение внутренних механизмов Nuxt с помощью хуков жизненного цикла.
   ::
   ::card{icon="i-ph-gear-duotone" title="Конфигурация Nuxt" to="/docs/api/nuxt-config"}
   Исследование всех параметров конфигурации Nuxt для настройки вашего приложения.
