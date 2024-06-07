@@ -10,7 +10,7 @@ links:
 
 ## Описание
 
-По умолчанию, [`useAsyncData`](/docs/api/composables/use-async-data) блокирует навигацию до тех пор, пока его асинхронный обработчик не будет разрешен. `useLazyAsyncData` предоставляет обертку вокруг [`useAsyncData`](/docs/api/composables/use-async-data) которая запускает навигацию до разрешения обработчика, установив опцию `lazy` в `true`.
+По умолчанию, [`useAsyncData`](/docs/api/composables/use-async-data) блокирует навигацию до тех пор, пока его асинхронный обработчик не будет разрешен. `useLazyAsyncData` предоставляет обертку[`useAsyncData`](/docs/api/composables/use-async-data), которая запускает навигацию до разрешения обработчика, установив опцию `lazy` в `true`.
 
 ::note
 `useLazyAsyncData` имеет ту же сигнатуру, что и [`useAsyncData`](/docs/api/composables/use-async-data).
