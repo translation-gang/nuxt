@@ -26,7 +26,7 @@ const { data, pending, error, refresh } = await useAsyncData(
 ```
 
 ::note
-`data`, `pending`, `status` и `error` являются `ref``, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` являются обычными функциями для повторной загрузки данных.
+`data`, `pending`, `status` и `error` являются `ref`, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` являются обычными функциями для повторной загрузки данных.
 ::
 
 ### Наблюдение за параметрами
