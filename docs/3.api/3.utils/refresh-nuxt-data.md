@@ -22,7 +22,7 @@ refreshNuxtData(keys?: string | string[])
 
 * `keys`:
 
-    **Type**: `String | String[]`
+    **Тип**: `String | String[]`
 
     `refreshNuxtData` accepts a single or an array of strings as `keys` that are used to fetch the data. This parameter is **optional**. All [`useAsyncData`](/docs/api/composables/use-async-data) and [`useFetch`](/docs/api/composables/use-fetch) are re-fetched when no `keys` are specified.
 

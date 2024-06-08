@@ -45,25 +45,25 @@ The properties of `useHead` can be dynamic, accepting `ref`, `computed` and `rea
 
 ### `meta`
 
-**Type**: `MetaObject`
+**Тип**: `MetaObject`
 
 An object accepting the following head metadata:
 
 - `meta`: Each element in the array is mapped to a newly-created `<meta>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
+  - **Тип**: `Array<Record<string, any>>`
 - `link`: Each element in the array is mapped to a newly-created `<link>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
+  - **Тип**: `Array<Record<string, any>>`
 - `style`: Each element in the array is mapped to a newly-created `<style>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
+  - **Тип**: `Array<Record<string, any>>`
 - `script`: Each element in the array is mapped to a newly-created `<script>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
+  - **Тип**: `Array<Record<string, any>>`
 - `noscript`: Each element in the array is mapped to a newly-created `<noscript>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
+  - **Тип**: `Array<Record<string, any>>`
 - `titleTemplate`: Configures dynamic template to customize the page title on an individual page.
-  - **Type**: `string` | `((title: string) => string)`
+  - **Тип**: `string` | `((title: string) => string)`
 - `title`: Sets static page title on an individual page.
-  - **Type**: `string`
+  - **Тип**: `string`
 - `bodyAttrs`: Sets attributes of the `<body>` tag. Each object property is mapped to the corresponding attribute.
-  - **Type**: `Record<string, any>`
+  - **Тип**: `Record<string, any>`
 - `htmlAttrs`: Sets attributes of the `<html>` tag. Each object property is mapped to the corresponding attribute.
-  - **Type**: `Record<string, any>`
+  - **Тип**: `Record<string, any>`

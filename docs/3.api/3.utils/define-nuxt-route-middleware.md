@@ -24,7 +24,7 @@ interface RouteMiddleware {
 
 ### `middleware`
 
-- **Type**: `RouteMiddleware`
+- **Тип**: `RouteMiddleware`
 
 A function that takes two Vue Router's route location objects as parameters: the next route `to` as the first, and the current route `from` as the second.
 

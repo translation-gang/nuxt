@@ -33,13 +33,13 @@ interface ReloadNuxtAppOptions {
 
 ### `options` (optional)
 
-**Type**: `ReloadNuxtAppOptions`
+**Тип**: `ReloadNuxtAppOptions`
 
 An object accepting the following properties:
 
 - `path` (optional)
 
-  **Type**: `string`
+  **Тип**: `string`
 
   **Default**: `window.location.pathname`
 
@@ -48,7 +48,7 @@ An object accepting the following properties:
 
 - `ttl` (optional)
 
-  **Type**: `number`
+  **Тип**: `number`
 
   **Default**: `10000`
 
@@ -57,7 +57,7 @@ An object accepting the following properties:
 
 - `force` (optional)
 
-  **Type**: `boolean`
+  **Тип**: `boolean`
 
   **Default**: `false`
 
@@ -66,7 +66,7 @@ An object accepting the following properties:
 
 - `persistState` (optional)
 
-  **Type**: `boolean`
+  **Тип**: `boolean`
 
   **Default**: `false`
 
