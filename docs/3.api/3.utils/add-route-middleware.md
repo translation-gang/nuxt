@@ -22,7 +22,7 @@ addRouteMiddleware (name: string | RouteMiddleware, middleware?: RouteMiddleware
 
 ### `name`
 
-- **Type:** `string` | `RouteMiddleware`
+- **Тип:** `string` | `RouteMiddleware`
 
 Middleware маршрута может быть либо строкой, либо функцией типа `RouteMiddleware`. Функция принимает следующий маршрут `to` в качестве первого аргумента и текущий маршрут `from` в качестве второго аргумента, оба из которых являются объектами маршрута Vue.
 
