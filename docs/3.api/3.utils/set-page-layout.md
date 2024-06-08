@@ -9,7 +9,7 @@ links:
 ---
 
 ::important
-`setPageLayout` позволяет динамически изменять лейаут страницы. Она зависит от доступа к контексту Nuxt и поэтому может быть вызвана только в пределах [контекста Nuxt](/docs/guide/going-further/nuxt-app#the-nuxt-context).
+`setPageLayout` позволяет динамически изменять лейаут страницы. Функция зависит от доступа к контексту Nuxt и поэтому может быть вызвана только в пределах [Nuxt-контекста](/docs/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ```ts [middleware/custom-layout.ts]
