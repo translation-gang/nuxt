@@ -1,6 +1,6 @@
 ---
 title: 'refreshNuxtData'
-description: refreshNuxtData refetches all data from the server and updates the page.
+description: refreshNuxtData заново получает все данные с сервера и обновляет страницу.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -9,7 +9,7 @@ links:
 ---
 
 ::note
-`refreshNuxtData` re-fetches all data from the server and updates the page as well as invalidates the cache of [`useAsyncData`](/docs/api/composables/use-async-data) , `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) and `useLazyFetch`.
+`refreshNuxtData` повторно получает все данные с сервера и обновляет страницу, а также аннулирует кэш [`useAsyncData`](/docs/api/composables/use-async-data) , `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) и `useLazyFetch`.
 ::
 
 ## Тип
@@ -18,17 +18,17 @@ links:
 refreshNuxtData(keys?: string | string[])
 ```
 
-**Parameters:**
+**Параметры:**
 
 * `keys`:
 
-    **тип**: `String | String[]`
+    **Тип**: `String | String[]`
 
-    `refreshNuxtData` accepts a single or an array of strings as `keys` that are used to fetch the data. This parameter is **optional**. All [`useAsyncData`](/docs/api/composables/use-async-data) and [`useFetch`](/docs/api/composables/use-fetch) are re-fetched when no `keys` are specified.
+    `refreshNuxtData` принимает одиночную строку или массив строк в качестве `ключей`, которые используются для получения данных. Этот параметр является **опциональным**. Все [`useAsyncData`](/docs/api/composables/use-async-data) и [`useFetch`](/docs/api/composables/use-fetch) будут повторно получены, если не указаны `ключи`.
 
-## Refresh All Data
+## Обновление всех данных
 
-This example below refreshes all data being fetched using [`useAsyncData`](/docs/api/composables/use-async-data) and [`useFetch`](/docs/api/composables/use-fetch) on the current page.
+Приведенный ниже пример обновляет все данные, получаемые с помощью [`useAsyncData`](/docs/api/composables/use-async-data) и [`useFetch`](/docs/api/composables/use-fetch) на текущей странице.
 
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
@@ -46,15 +46,15 @@ const refreshAll = async () => {
 <template>
   <div>
     <button :disabled="refreshing" @click="refreshAll">
-      Refetch All Data
+      Обновить все данные
     </button>
   </div>
 </template>
 ```
 
-## Refresh Specific Data
+## Обновление определенных данных
 
-This example below refreshes only data where the key matches to `count`.
+В приведенном ниже примере обновляются только те данные, ключ которых совпадает с `count`.
 
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
@@ -64,9 +64,9 @@ const refresh = () => refreshNuxtData('count')
 
 <template>
   <div>
-    {{ pending ? 'Loading' : count }}
+    {{ pending ? 'Загрузка' : count }}
   </div>
-  <button @click="refresh">Refresh</button>
+  <button @click="refresh">Обновить</button>
 </template>
 ```
 

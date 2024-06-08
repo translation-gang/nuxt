@@ -10,7 +10,7 @@ links:
 
 Within your pages, components, and plugins, you can use `clearError` to clear all errors and redirect the user.
 
-**Parameters:**
+**Параметры:**
 
 - `options?: { redirect?: string }`
 
