@@ -1,6 +1,6 @@
 ---
 title: 'useAsyncData'
-description: useAsyncData provides access to data that resolves asynchronously in an SSR-friendly composable.
+description: useAsyncData предоставляет доступ к данным, которые разрешаются асинхронно, в композабле, соответствующем серверному рендерингу (SSR).
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,10 +8,10 @@ links:
     size: xs
 ---
 
-Within your pages, components, and plugins you can use useAsyncData to get access to data that resolves asynchronously.
+Вы можете использовать useAsyncData на страницах, в компонентах и плагинах, чтобы получить доступ к данным, которые разрешаются асинхронно.
 
 ::note
-[`useAsyncData`](/docs/api/composables/use-async-data) is a composable meant to be called directly in the [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context). It returns reactive composables and handles adding responses to the Nuxt payload so they can be passed from server to client **without re-fetching the data on client side** when the page hydrates.
+[`useAsyncData`](/docs/api/composables/use-async-data) это композабл, предназначенный для вызова непосредственно в [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context). Этот метод возвращает реактивные композаблы и обрабатывает добавление ответов в Nuxt payload, чтобы они могли быть переданы от сервера к клиенту **без повторной загрузки данных** на клиенте при гидратации страницы.
 ::
 
 ## Использование
@@ -26,12 +26,12 @@ const { data, pending, error, refresh } = await useAsyncData(
 ```
 
 ::note
-`data`, `pending`, `status` and `error` are Vue refs and they should be accessed with `.value` when used within the `<script setup>`, while `refresh`/`execute` is a plain function for refetching data.
+`data`, `pending`, `status` и `error` являются `ref`, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` являются обычными функциями для повторной загрузки данных.
 ::
 
-### Watch Params
+### Наблюдение за параметрами
 
-The built-in `watch` option allows automatically rerunning the fetcher function when any changes are detected.
+Встроенный параметр `watch` позволяет автоматически повторно выполнять функцию-загрузчик при обнаружении любых изменений.
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
@@ -50,53 +50,53 @@ const { data: posts } = await useAsyncData(
 ```
 
 ::warning
-[`useAsyncData`](/docs/api/composables/use-async-data) is a reserved function name transformed by the compiler, so you should not name your own function [`useAsyncData`](/docs/api/composables/use-async-data) .
+[`useAsyncData`](/docs/api/composables/use-async-data) является зарезервированным именем функции, которое трансформируется компилятором, поэтому вы не должны называть свою собственную функцию с этим именем [`useAsyncData`](/docs/api/composables/use-async-data) .
 ::
 
 :read-more{to="/docs/getting-started/data-fetching#useasyncdata"}
 
 ## Параметры
 
-- `key`: a unique key to ensure that data fetching can be properly de-duplicated across requests. If you do not provide a key, then a key that is unique to the file name and line number of the instance of `useAsyncData` will be generated for you.
-- `handler`: an asynchronous function that must return a truthy value (for example, it should not be `undefined` or `null`) or the request may be duplicated on the client side
+- `key`: уникальный ключ, который гарантирует, что получение данных может быть правильно дедуплицировано между запросами. Если вы не предоставляете ключ, то ключ, уникальный для имени файла и номера строки экземпляра `useAsyncData`, будет сгенерирован для вас.
+- `handler`: асинхронная функция, которая должна возвращать истинное значение (например, она не должна быть `undefined` или `null`), иначе запрос может быть дублирован на клиенте.
 - `options`:
-  - `server`: whether to fetch the data on the server (defaults to `true`)
-  - `lazy`: whether to resolve the async function after loading the route, instead of blocking client-side navigation (defaults to `false`)
-  - `immediate`: when set to `false`, will prevent the request from firing immediately. (defaults to `true`)
-  - `default`: a factory function to set the default value of the `data`, before the async function resolves - useful with the `lazy: true` or `immediate: false` option
-  - `transform`: a function that can be used to alter `handler` function result after resolving
-  - `getCachedData`: Provide a function which returns cached data. A _null_ or _undefined_ return value will trigger a fetch. By default, this is: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, which only caches data when `payloadExtraction` is enabled.
-  - `pick`: only pick specified keys in this array from the `handler` function result
-  - `watch`: watch reactive sources to auto-refresh
-  - `deep`: return data in a deep ref object (it is `true` by default). It can be set to `false` to return data in a shallow ref object, which can improve performance if your data does not need to be deeply reactive.
-  - `dedupe`: avoid fetching same key more than once at a time (defaults to `cancel`). Possible options:
-    - `cancel` - cancels existing requests when a new one is made
-    - `defer` - does not make new requests at all if there is a pending request
+  - `server`: параметр, определяющий, следует ли получать данные на сервере (по умолчанию `true`)
+  - `lazy`: параметр, определяющий, следует ли разрешать асинхронную функцию после загрузки маршрута, вместо блокировки навигации на клиенте. (по умолчанию `false`)
+  - `immediate`: если установить значение `false`, это предотвратит немедленное выполнение запроса. (по умолчанию `true`)
+  - `default`: функция-фабрика для установки значения по умолчанию для data перед тем, как асинхронная функция будет разрешена. Это полезно при использовании параметров `lazy: true` или `immediate: false`.
+  - `transform`: функция, которая может быть использована для изменения результата функции-обработчика после ее разрешения.
+  - `getCachedData`: функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет вызывать выборку данных. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
+  - `pick`: выбрать из результата функции `handler` только указанные ключи в этом массиве
+  - `watch`: следить за реактивными источниками для автоматического обновления
+  - `deep`: возвращать данные в виде глубокого ref-объекта (по умолчанию это `true`). Можно установить значение `false`, чтобы возвращать данные в виде объекта с неглубокой реактивностью, что может повысить производительность, если ваши данные не нуждаются в этом.
+  - `dedupe`: избегайте получения одного и того же ключа более одного раза за раз (по умолчанию `cancel`). Возможные параметры:
+    - `cancel` - отменяет существующие запросы при поступлении нового
+    - `defer` - вообще не делает новых запросов, если есть отложенный запрос
 
 ::note
-Under the hood, `lazy: false` uses `<Suspense>` to block the loading of the route before the data has been fetched. Consider using `lazy: true` and implementing a loading state instead for a snappier user experience.
+Под капотом `lazy: false` использует `<Suspense>` для блокировки загрузки маршрута до того, как данные будут получены. Рассмотрите возможность использования `lazy: true` и реализации состояния загрузки вместо этого для более быстрого пользовательского опыта.
 ::
 
 ::read-more{to="/docs/api/composables/use-lazy-async-data"}
-You can use `useLazyAsyncData` to have the same behavior as `lazy: true` with `useAsyncData`.
+Вы можете использовать `useLazyAsyncData`, чтобы получить то же поведение, что и `lazy: true` с `useAsyncData`.
 ::
 
 ::tip{icon="i-simple-icons-youtube" color="gray" to="https://www.youtube.com/watch?v=aQPR0xn-MMk" target="_blank"}
-Learn how to use `transform` and `getCachedData` to avoid superfluous calls to an API and cache data for visitors on the client.
+Узнайте, как использовать `transform` и `getCachedData`, чтобы избежать лишних обращений к API и кэшировать данные для посетителей на клиенте.
 ::
 
-## Return Values
+## Возвращаемые значения
 
-- `data`: the result of the asynchronous function that is passed in.
-- `pending`: a boolean indicating whether the data is still being fetched.
-- `refresh`/`execute`: a function that can be used to refresh the data returned by the `handler` function.
-- `error`: an error object if the data fetching failed.
-- `status`: a string indicating the status of the data request (`"idle"`, `"pending"`, `"success"`, `"error"`).
+- `data`: результат работы переданной асинхронной функции.
+- `pending`: булево значение, указывающее, продолжается ли получение данных.
+- `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
+- `error`: объект ошибки, если получение данных не удалось.
+- `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
 
-By default, Nuxt waits until a `refresh` is finished before it can be executed again.
+По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
 
 ::note
-If you have not fetched data on the server (for example, with `server: false`), then the data _will not_ be fetched until hydration completes. This means even if you await [`useAsyncData`](/docs/api/composables/use-async-data) on the client side, `data` will remain `null` within `<script setup>`.
+Если вы не извлекали данные на сервере (например, с `server: false`), то данные _не_ будут извлечены до завершения гидратации. Это означает, что даже если вы ожидаете [`useAsyncData`](/docs/api/composables/use-async-data) на стороне клиента, `data` останется `null` внутри `<script setup>`.
 ::
 
 ## Тип
