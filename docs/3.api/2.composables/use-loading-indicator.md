@@ -11,7 +11,7 @@ links:
 ## Описание
 
 Композабл, возвращающий состояние загрузки страницы. Используется [`<NuxtLoadingIndicator>`](/docs/api/components/nuxt-loading-indicator) и является управляемым.
-Он подключается к [`page:loading:start`](/docs/api/advanced/hooks#app-hooks-runtime) и [`page:loading:end`](/docs/api/advanced/hooks#app-hooks-runtime) для изменения своего состояния.
+Он подключается к событиям [`page:loading:start`](/docs/api/advanced/hooks#app-hooks-runtime) и [`page:loading:end`](/docs/api/advanced/hooks#app-hooks-runtime) для изменения своего состояния.
 
 ## Параметры
 
