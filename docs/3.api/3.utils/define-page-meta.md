@@ -47,67 +47,67 @@ interface PageMeta {
 
 ### `meta`
 
-- **Тип**: `PageMeta`
+- **тип**: `PageMeta`
 
   Объект, принимающий следующие метаданные страницы:
 
   **`name`**
 
-  - **Тип**: `string`
+  - **тип**: `string`
 
     Вы можете задать имя для маршрута этой страницы. По умолчанию имя генерируется на основе пути внутри директории [`pages/`](/docs/guide/directory-structure/pages).
 
   **`path`**
 
-  - **Тип**: `string`
+  - **тип**: `string`
 
     Вы можете определить [пользовательское регулярное выражение](#using-a-custom-regular-expression), если у вас более сложный шаблон, чем имя файла.
 
   **`alias`**
 
-  - **Тип**: `string | string[]`
+  - **тип**: `string | string[]`
 
     Псевдонимы для записи. Позволяет определять дополнительные пути, которые будут вести себя как копия записи. Позволяет использовать сокращенные пути, такие как `/users/:id` и `/u/:id`. Все значения `alias` и `path` должны иметь одинаковые параметры.
 
   **`keepalive`**
 
-  - **Тип**: `boolean` | [`KeepAliveProps`](https://ru.vuejs.org/api/built-in-components.html#keepalive)
+  - **тип**: `boolean` | [`KeepAliveProps`](https://ru.vuejs.org/api/built-in-components.html#keepalive)
 
     Установите значение `true`, если вы хотите сохранить состояние страницы при изменении маршрута, или используйте [`KeepAliveProps`](https://ru.vuejs.org/api/built-in-components.html#keepalive) для более тонкого контроля.
 
   **`key`**
 
-  - **Тип**: `false` | `string` | `((route: RouteLocationNormalizedLoaded) => string)`
+  - **тип**: `false` | `string` | `((route: RouteLocationNormalizedLoaded) => string)`
 
     Установите значение `key`, если вам нужно больше контроля над тем, когда компонент `<NuxtPage>` будет перерисовываться.
 
   **`layout`**
 
-  - **Тип**: `false` | `LayoutKey` | `Ref<LayoutKey>` | `ComputedRef<LayoutKey>`
+  - **тип**: `false` | `LayoutKey` | `Ref<LayoutKey>` | `ComputedRef<LayoutKey>`
 
     Задайте статическое или динамическое имя лейаута для каждого маршрута. Это значение может быть установлено в `false` в случае, если макет по умолчанию должен быть отключен.
 
   **`layoutTransition`**
 
-  - **Тип**: `boolean` | [`TransitionProps`](https://ru.vuejs.org/api/built-in-components.html#transition)
+  - **тип**: `boolean` | [`TransitionProps`](https://ru.vuejs.org/api/built-in-components.html#transition)
 
     Задайте имя перехода, который будет применяться для текущего лейаута. Вы также можете установить это значение в `false`, чтобы отключить transition лейаута.
 
   **`middleware`**
 
-  - **Тип**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/NavigationGuard.html#navigationguard) | `Array<MiddlewareKey | NavigationGuard>`
+  - **тип**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/NavigationGuard.html#navigationguard) | `Array<MiddlewareKey | NavigationGuard>`
 
     Определение анонимного или именованного middleware непосредственно в definePageMeta. Узнайте больше о [middleware маршрутизации](/docs/guide/directory-structure/middleware).
 
   **`pageTransition`**
 
-  - **Тип**: `boolean` | [`TransitionProps`](https://ru.vuejs.org/api/built-in-components.html#transition)
+  - **тип**: `boolean` | [`TransitionProps`](https://ru.vuejs.org/api/built-in-components.html#transition)
 
     Установите имя перехода, которое будет применено для текущей страницы. Вы также можете установить это значение равным `false`, чтобы отключить переход страницы.
 
   **`viewTransition`**
 
-  - **Тип**: `boolean | 'always'`
+  - **тип**: `boolean | 'always'`
 
     **Экспериментальная функция, доступна только в том случае, если [включена в вашем файле nuxt.config](/docs/getting-started/transitions#view-transitions-api-experimental)**</br>
     Включить/выключить View Transitions для текущей страницы.
@@ -115,25 +115,25 @@ interface PageMeta {
 
   **`redirect`**
 
-  - **Тип**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias.html#redirect-and-alias)
+  - **тип**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias.html#redirect-and-alias)
 
     Куда перенаправить, если маршрут соответствует напрямую. Перенаправление происходит до любого навигационного защитника и вызывает новую навигацию с новым целевым расположением.
 
   **`validate`**
 
-  - **Тип**: `(route: RouteLocationNormalized) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>`
+  - **тип**: `(route: RouteLocationNormalized) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>`
 
     Проверьте, может ли данный маршрут быть правильно отображен с этой страницей. Верните `true`, если он действителен, или `false`, если нет. Если другого соответствия не будет найдено, это будет означать 404. Вы также можете непосредственно вернуть объект с `statusCode`/`statusMessage`, чтобы немедленно ответить с ошибкой (другие соответствия не будут проверяться).
 
   **`scrollToTop`**
 
-  - **Тип**: `boolean | (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean`
+  - **тип**: `boolean | (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean`
 
     Укажите Nuxt, следует ли прокрутить страницу вверх перед ее отображением или нет. Если вы хотите переопределить стандартное поведение прокрутки Nuxt, вы можете сделать это в `~/app/router.options.ts` (см. [настраиваемая маршрутизация](/docs/guide/going-further/custom-routing#using-approuteroptions) для получения дополнительной информации).
 
   **`[key: string]`**
 
-  - **Тип**: `any`
+  - **тип**: `any`
 
     Кроме вышеуказанных свойств, вы также можете задать пользовательские метаданные. Вам может потребоваться сделать это в безопасном для типов способе, [расширив тип объекта meta](/docs/guide/directory-structure/pages/#typing-custom-metadata).
 
