@@ -1,6 +1,6 @@
 ---
 title: 'setResponseStatus'
-description: setResponseStatus sets the statusCode (and optionally the statusMessage) of the response.
+description: setResponseStatus устанавливает statusCode (и, опционально, statusMessage) ответа.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,29 +8,29 @@ links:
     size: xs
 ---
 
-Nuxt provides composables and utilities for first-class server-side-rendering support.
+Nuxt предоставляет композаблы и утилиты для первоклассной поддержки серверного рендеринга.
 
-`setResponseStatus` sets the statusCode (and optionally the statusMessage) of the response.
+`setResponseStatus` задает statusCode (и необязательно statusMessage) ответа.
 
 ::important
-`setResponseStatus` can only be called in the [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context).
+`setResponseStatus` может быть вызван только в [контексте Nuxt](/docs/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ```js
 const event = useRequestEvent()
 
-// event will be undefined in the browser
+// event будет undefined в браузере
 if (event) {
-  // Set the status code to 404 for a custom 404 page
+  // Установите статус код 404 для пользовательской страницы 404
   setResponseStatus(event, 404)
 
-  // Set the status message as well
-  setResponseStatus(event, 404, 'Page Not Found')
+  // Установите также статусное сообщение
+  setResponseStatus(event, 404, 'Страница не найдена')
 }
 ```
 
 ::note
-In the browser, `setResponseStatus` will have no effect.
+В браузере `setResponseStatus` не будет иметь никакого эффекта.
 ::
 
 :read-more{to="/docs/getting-started/error-handling"}

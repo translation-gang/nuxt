@@ -1,6 +1,6 @@
 ---
 title: 'updateAppConfig'
-description: 'Update the App Config at runtime.'
+description: 'Обновите конфигурацию приложения в runtime.'
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -9,7 +9,7 @@ links:
 ---
 
 ::note
-Updates the [`app.config`](/docs/guide/directory-structure/app-config) using deep assignment. Existing (nested) properties will be preserved.
+Обновляет [`app.config`](/docs/guide/directory-structure/app-config) с помощью глубокого присваивания. Существующие (вложенные) свойства будут сохранены.
 ::
 
 ## Использование
