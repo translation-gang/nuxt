@@ -27,12 +27,12 @@ It hooks into Unhead's [`dom:rendered`](https://unhead.unjs.io/api/core/hooks#do
 
 ### `message`
 
-- **type**: `Ref<string>`
+- **Тип**: `Ref<string>`
 - **description**: The message to announce
 
 ### `politeness`
 
-- **type**: `Ref<string>`
+- **Тип**: `Ref<string>`
 - **description**: Screen reader announcement urgency level `off`, `polite`, or `assertive`
 
 ## Methods
