@@ -13,7 +13,7 @@ Nuxt предоставляет композаблы и утилиты для п
 `setResponseStatus` задает statusCode (и необязательно statusMessage) ответа.
 
 ::important
-`setResponseStatus` может быть вызван только в [контексте Nuxt](/docs/guide/going-further/nuxt-app#the-nuxt-context).
+`setResponseStatus` может быть вызван только в [Nuxt-контексте](/docs/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ```js
