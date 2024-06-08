@@ -27,7 +27,7 @@ links:
 */
 const { pending, data: posts } = await useLazyFetch('/api/posts')
 watch(posts, (newPosts) => {
-  // Поскольку posts могут начинаться с null, у вас не будет доступа
+  // Поскольку posts может быть изначально равным null, у вас не будет доступа
   // к его содержимому сразу, но вы сможете наблюдать за ним.
 })
 </script>
