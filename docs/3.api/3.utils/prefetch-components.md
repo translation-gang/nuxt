@@ -20,7 +20,7 @@ await prefetchComponents(['MyGlobalComponent1', 'MyGlobalComponent2'])
 ```
 
 ::note
-Текущая реализация ведет себя точно так же, как и [`preloadComponents`](/docs/api/utils/preload-components) предзагружая компоненты вместо их предварительной загрузки. Мы работаем над улучшением этого поведения.
+Текущая реализация ведет себя точно так же, как и [`preloadComponents`](/docs/api/utils/preload-components), предзагружая компоненты вместо их предварительной загрузки. Мы работаем над улучшением этого поведения.
 ::
 
 ::note
