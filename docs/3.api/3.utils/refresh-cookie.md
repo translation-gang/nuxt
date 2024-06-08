@@ -1,8 +1,8 @@
 ---
 title: "refreshCookie"
-description: "Refresh useCookie values manually when a cookie has changed"
+description: "Обновляйте значения useCookie вручную, когда cookie изменились"
 navigation:
-  badge: New
+  badge: Новое
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -11,14 +11,14 @@ links:
 ---
 
 ::important
-This utility is available since [Nuxt v3.10](/blog/v3-10).
+Эта утилита доступна с [Nuxt v3.10](/blog/v3-10).
 ::
 
-## Purpose
+## Назначение
 
-The `refreshCookie` function is designed to refresh cookie value returned by `useCookie`.
+Функция `refreshCookie` предназначена для обновления значения куки, возвращаемой функцией `useCookie`.
 
-This is useful for updating the `useCookie` ref when we know the new cookie value has been set in the browser.
+Это полезно для обновления ref-ссылки `useCookie`, когда мы знаем, что новое значение cookie было установлено в браузере.
 
 ## Использование
 
@@ -27,7 +27,7 @@ This is useful for updating the `useCookie` ref when we know the new cookie valu
 const tokenCookie = useCookie('token')
 
 const login = async (username, password) => {
-  const token = await $fetch('/api/token', { ... }) // Sets `token` cookie on response
+  const token = await $fetch('/api/token', { ... }) // Устанавливает cookie `token` в ответ на запрос
   refreshCookie('token')
 }
 
@@ -36,7 +36,7 @@ const loggedIn = computed(() => !!tokenCookie.value)
 ```
 
 ::note{to="/docs/guide/going-further/experimental-features#cookiestore"}
-You can enable experimental `cookieStore` option to automatically refresh `useCookie` value when cookie changes in the browser.
+Вы можете включить экспериментальную опцию `cookieStore`, чтобы автоматически обновлять значение `useCookie` при изменении cookie в браузере.
 ::
 
 ## Тип

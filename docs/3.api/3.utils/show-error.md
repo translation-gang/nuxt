@@ -10,7 +10,7 @@ links:
 
 В рамках [Nuxt-контекста](/docs/guide/going-further/nuxt-app#the-nuxt-context) вы можете использовать `showError`, чтобы показать ошибку.
 
-**Parameters:**
+**Параметры:**
 
 - `error`: `string | Error | Partial<{ cause, data, message, name, stack, statusCode, statusMessage }>`
 
