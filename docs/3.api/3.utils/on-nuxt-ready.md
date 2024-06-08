@@ -1,6 +1,6 @@
 ---
 title: "onNuxtReady"
-description: The onNuxtReady composable allows running a callback after your app has finished initializing.
+description: Композабл onNuxtReady позволяет выполнить колбэк после завершения инициализации вашего приложения..
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -9,17 +9,17 @@ links:
 ---
 
 ::important
-`onNuxtReady` only runs on the client-side. :br
-It is ideal for running code that should not block the initial rendering of your app.
+`onNuxtReady` выполняется только на клиенте. :br
+Это идеально для выполнения кода, который не должен блокировать начальный рендеринг вашего приложения.
 ::
 
 ```ts [plugins/ready.client.ts]
 export default defineNuxtPlugin(() => {
   onNuxtReady(async () => {
     const myAnalyticsLibrary = await import('my-big-analytics-library')
-    // do something with myAnalyticsLibrary
+    // сделать что-то с myAnalyticsLibrary
   })
 })
 ```
 
-It is 'safe' to run even after your app has initialized. In this case, then the code will be registered to run in the next idle callback.
+Это "безопасно" запускать даже после того, как ваше приложение будет инициализировано. В этом случае код будет зарегистрирован для выполнения в следующем тике выполнения колбэков.

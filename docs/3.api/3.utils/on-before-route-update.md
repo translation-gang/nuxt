@@ -1,6 +1,6 @@
 ---
 title: "onBeforeRouteUpdate"
-description: The onBeforeRouteUpdate composable allows registering a route guard within a component.
+description: Композабл onBeforeRouteUpdate позволяет регистрировать защитника маршрута внутри компонента.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,4 +8,4 @@ links:
     size: xs
 ---
 
-:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/#onBeforeRouteUpdate" title="Vue Router Docs" target="_blank"}
+:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/#onBeforeRouteUpdate" title="Vue Router документация" target="_blank"}

@@ -1,6 +1,6 @@
 ---
 title: "onBeforeRouteLeave"
-description: The onBeforeRouteLeave composable allows registering a route guard within a component.
+description: Композабл onBeforeRouteLeave позволяет регистрировать защитника маршрута внутри компонента.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,4 +8,4 @@ links:
     size: xs
 ---
 
-:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/#onBeforeRouteLeave" title="Vue Router Docs" target="_blank"}
+:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/#onBeforeRouteLeave" title="Vue Router документация" target="_blank"}
