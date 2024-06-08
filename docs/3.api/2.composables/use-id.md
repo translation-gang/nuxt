@@ -1,6 +1,6 @@
 ---
 title: "useId"
-description: Generate an SSR-friendly unique identifier that can be passed to accessibility attributes.
+description: Сгенерировать идентификатор, совместимый с SSR, который можно передать в атрибуты доступности.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -9,12 +9,12 @@ links:
 ---
 
 ::important
-This composable is available since [Nuxt v3.10](/blog/v3-10#ssr-safe-accessible-unique-id-creation).
+Этот композабл доступен с тех пор, как вышел [Nuxt v3.10](/blog/v3-10#ssr-safe-accessible-unique-id-creation).
 ::
 
-`useId` generates an SSR-friendly unique identifier that can be passed to accessibility attributes.
+`useId` генерирует удобный для SSR уникальный идентификатор, который можно передавать в атрибуты доступности.
 
-Call `useId` at the top level of your component to generate a unique string identifier:
+Вызовите `useId` на верхнем уровне вашего компонента, чтобы сгенерировать уникальный строковый идентификатор:
 
 ```vue [components/EmailField.vue]
 <script setup lang="ts">
@@ -30,13 +30,13 @@ const id = useId()
 ```
 
 ::note
-`useId` must be used in a component with a single root element, as it uses this root element's attributes to pass the id from server to client.
+`useId` должен использоваться в компоненте с одним корневым элементом, так как он использует атрибуты этого корневого элемента для передачи идентификатора от сервера к клиенту.
 ::
 
 ## Параметры
 
-`useId` does not take any parameters.
+`useId` не принимает никаких параметров.
 
-## Returns
+## Возвращаемое значение
 
-`useId` returns a unique string associated with this particular `useId` call in this particular component.
+`useId` возвращает уникальную строку, связанную с этим конкретным вызовом `useId` в этом конкретном компоненте.
