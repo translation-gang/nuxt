@@ -2,7 +2,7 @@
 title: 'useRouteAnnouncer'
 description: This composable observes the page title changes and updates the announcer message accordingly.
 navigation:
-  badge: New
+  badge: Новое
 links:
   - label: Исходники
     icon: i-simple-icons-github

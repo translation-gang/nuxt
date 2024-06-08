@@ -1,6 +1,6 @@
 ---
 title: 'prerenderRoutes'
-description: prerenderRoutes hints to Nitro to prerender an additional route.
+description: prerenderRoutes указывает Nitro на необходимость проложить дополнительный маршрут.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,14 +8,14 @@ links:
     size: xs
 ---
 
-When prerendering, you can hint to Nitro to prerender additional paths, even if their URLs do not show up in the HTML of the generated page.
+При предварительном рендеринге вы можете подсказать Nitro, чтобы предварительно отрендерить дополнительные пути, даже если их URL-адреса не отображаются в HTML-коде сгенерированной страницы.
 
 ::important
-`prerenderRoutes` can only be called within the [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context).
+`prerenderRoutes` может быть вызвана только в рамках [контекста Nuxt](/docs/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ::note
-`prerenderRoutes` has to be executed during prerendering. If the `prerenderRoutes` is used in dynamic pages/routes which are not prerendered, then it will not be executed.
+`prerenderRoutes` должен быть выполнен во время пререндеринга. Если `prerenderRoutes` используется в динамических страницах/роутах, которые не подвергаются пререндерингу, то он не будет выполнен.
 ::
 
 ```js
@@ -26,5 +26,5 @@ prerenderRoutes(['/', '/about'])
 ```
 
 ::note
-In the browser, or if called outside prerendering, `prerenderRoutes` will have no effect.
+В браузере или при вызове вне пререндеринга `prerenderRoutes` не будет иметь никакого эффекта.
 ::

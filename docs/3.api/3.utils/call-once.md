@@ -2,7 +2,7 @@
 title: "callOnce"
 description: "Run a given function or block of code once during SSR or CSR."
 navigation:
-  badge: New
+  badge: Новое
 links:
   - label: Исходники
     icon: i-simple-icons-github
