@@ -1,6 +1,6 @@
 ---
 title: "useState"
-description: The useState composable creates a reactive and SSR-friendly shared state.
+description: Композабл useState создает реактивное и совместимое с SSR общее состояние.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -11,27 +11,27 @@ links:
 ## Использование
 
 ```ts
-// Create a reactive state and set default value
+// Создайте реактивное состояние и установите значение по умолчанию
 const count = useState('counter', () => Math.round(Math.random() * 100))
 ```
 
 :read-more{to="/docs/getting-started/state-management"}
 
 ::important
-Because the data inside `useState` will be serialized to JSON, it is important that it does not contain anything that cannot be serialized, such as classes, functions or symbols.
+Поскольку данные внутри `useState` будут сериализованы в JSON, важно, чтобы они не содержали ничего, что нельзя сериализовать, например, классы, функции или symbol.
 ::
 
 ::warning
-`useState` is a reserved function name transformed by the compiler, so you should not name your own function `useState`.
+`useState` это зарезервированное имя функции, преобразуемое компилятором, поэтому вы не должны называть свою собственную функцию `useState`.
 ::
 
 ::tip{icon="i-ph-video-duotone" to="https://www.youtube.com/watch?v=mv0WcBABcIk" target="_blank"}
-Watch a video from Alexander Lichter about why and when to use `useState()`.
+Посмотрите видео Александра Лихтера о том, почему и когда следует использовать  `useState()`.
 ::
 
-## Using `shallowRef`
+## Использование `shallowRef`
 
-If you don't need your state to be deeply reactive, you can combine `useState` with [`shallowRef`](https://ru.vuejs.org/api/reactivity-advanced.html#shallowref). This can improve performance when your state contains large objects and arrays.
+Если вам не нужно, чтобы ваше состояние было глубоко реактивным, вы можете объединить  `useState` с [`shallowRef`](https://ru.vuejs.org/api/reactivity-advanced.html#shallowref). Это может улучшить производительность, когда ваше состояние содержит большие объекты и массивы.
 
 ```ts
 const state = useState('my-shallow-state', () => shallowRef({ deep: 'not reactive' }))
@@ -45,6 +45,6 @@ useState<T>(init?: () => T | Ref<T>): Ref<T>
 useState<T>(key: string, init?: () => T | Ref<T>): Ref<T>
 ```
 
-- `key`: A unique key ensuring that data fetching is properly de-duplicated across requests. If you do not provide a key, then a key that is unique to the file and line number of the instance of [`useState`](/docs/api/composables/use-state) will be generated for you.
-- `init`: A function that provides initial value for the state when not initiated. This function can also return a `Ref`.
-- `T`: (typescript only) Specify the type of state
+- `key`: Уникальный ключ, который гарантирует, что получение данных правильно дедублируется по запросам. Если вы не предоставите ключ, то будет сгенерирован ключ, уникальный для файла и номера строки экземпляра [`useState`](/docs/api/composables/use-state).
+- `init`: Функция, которая предоставляет начальное значение для состояния, когда оно не инициализировано. Эта функция также может возвращать `Ref`.
+- `T`: (только для TypeScript) Укажите тип состояния

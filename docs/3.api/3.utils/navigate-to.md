@@ -121,13 +121,13 @@ interface NavigateToOptions {
 
 `to` может быть простой строкой или объектом маршрута, на который нужно перенаправить. Если передать `undefined` или `null`, то по умолчанию будет указано `'/'`.
 
-### `options` (необязательно)
+### `options` (опционально)
 
 **Тип**: `NavigateToOptions`
 
 Объект, принимающий следующие свойства:
 
-- `replace` (необязательно)
+- `replace` (опционально)
 
   **Тип**: `boolean`
 
@@ -137,7 +137,7 @@ interface NavigateToOptions {
 
   Это поведение можно изменить, установив `replace` в `true`, чтобы указать, что данный маршрут должен быть заменен.
 
-- `redirectCode` (необязательно)
+- `redirectCode` (опционально)
 
   **Тип**: `number`
 
@@ -147,7 +147,7 @@ interface NavigateToOptions {
 
   Это поведение по умолчанию можно изменить, указав другой `redirectCode`. Обычно для постоянных перенаправлений используется [`301 Moved Permanently`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301).
 
-- `external` (необязательно)
+- `external` (опционально)
 
   **Тип**: `boolean`
 
@@ -155,7 +155,7 @@ interface NavigateToOptions {
 
   Позволяет переходить на внешний URL, если установлено значение `true`. В противном случае `navigateTo` выдаст ошибку, так как внешняя навигация по умолчанию запрещена.
 
-- `open` (необязательно)
+- `open` (опционально)
 
   **Тип**: `OpenOptions`
 
@@ -171,37 +171,37 @@ interface NavigateToOptions {
 
     Строка без пробелов, указывающая имя контекста просмотра, в который загружается ресурс.
 
-  - `windowFeatures` (необязательно)
+  - `windowFeatures` (опционально)
 
     **Тип**: `OpenWindowFeatures`
 
     Объект, принимающий следующие свойства:
 
-    - `popup` (необязательно)
+    - `popup` (опционально)
 
       **Тип**: `boolean`
 
-    - `width` или `innerWidth` (необязательно)
+    - `width` или `innerWidth` (опционально)
 
       **Тип**: `number`
 
-    - `height` или `innerHeight` (необязательно)
+    - `height` или `innerHeight` (опционально)
 
       **Тип**: `number`
 
-    - `left` или `screenX` (необязательно)
+    - `left` или `screenX` (опционально)
 
       **Тип**: `number`
 
-    - `top` или `screenY` (необязательно)
+    - `top` или `screenY` (опционально)
 
       **Тип**: `number`
 
-    - `noopener` (необязательно)
+    - `noopener` (опционально)
 
       **Тип**: `boolean`
 
-    - `noreferrer` (необязательно)
+    - `noreferrer` (опционально)
 
       **Тип**: `boolean`
 

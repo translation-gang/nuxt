@@ -1,6 +1,6 @@
 ---
 title: 'useServerSeoMeta'
-description: The useServerSeoMeta composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+description: Композабл useServerSeoMeta позволяет определить SEO-метатеги вашего сайта в виде плоского объекта с полной поддержкой TypeScript.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,11 +8,11 @@ links:
     size: xs
 ---
 
-Just like [`useSeoMeta`](/docs/api/composables/use-seo-meta), `useServerSeoMeta` composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+Как и [`useSeoMeta`](/docs/api/composables/use-seo-meta), композабл `useServerSeoMeta` позволяет определить SEO-метатеги вашего сайта в виде плоского объекта с полной поддержкой TypeScript.
 
 :read-more{to="/docs/api/composables/use-seo-meta"}
 
-In most instances, the meta doesn't need to be reactive as robots will only scan the initial load. So we recommend using [`useServerSeoMeta`](/docs/api/composables/use-server-seo-meta) as a performance-focused utility that will not do anything (or return a `head` object) on the client.
+В большинстве случаев мета не должна быть реактивной, так как роботы будут сканировать только начальную загрузку. Поэтому мы рекомендуем использовать [`useServerSeoMeta`](/docs/api/composables/use-server-seo-meta) как утилиту, ориентированную на производительность, которая не будет ничего делать (или возвращать объект `head`) на клиенте.
 
 ```vue [app.vue]
 <script setup lang="ts">
@@ -22,6 +22,6 @@ useServerSeoMeta({
 </script>
 ```
 
-Parameters are exactly the same as with [`useSeoMeta`](/docs/api/composables/use-seo-meta)
+Параметры точно такие же, как и у [`useSeoMeta`](/docs/api/composables/use-seo-meta)
 
 :read-more{to="/docs/getting-started/seo-meta"}

@@ -1,6 +1,6 @@
 ---
 title: "useRoute"
-description: The useRoute composable returns the current route.
+description: Композабл useRoute возвращает текущий маршрут.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -9,12 +9,12 @@ links:
 ---
 
 ::note
-Within the template of a Vue component, you can access the route using `$route`.
+В шаблоне компонента Vue вы можете получить доступ к маршруту с помощью `$route`.
 ::
 
 ## Пример
 
-In the following example, we call an API via [`useFetch`](/docs/api/composables/use-fetch) using a dynamic page parameter - `slug` - as part of the URL.
+В следующем примере мы вызываем API через [`useFetch`](/docs/api/composables/use-fetch), используя динамический параметр страницы - `slug` - как часть URL.
 
 ```html [~/pages/[slug\\].vue]
 <script setup lang="ts">
@@ -30,22 +30,22 @@ const { data: mountain } = await useFetch(`/api/mountains/${route.params.slug}`)
 </template>
 ```
 
-If you need to access the route query parameters (for example `example` in the path `/test?example=true`), then you can use `useRoute().query` instead of `useRoute().params`.
+Если вам нужно получить доступ к параметрам запроса маршрута (например, `example` в пути `/test?example=true`), то вы можете использовать `useRoute().query` вместо `useRoute().params`.
 
 ## API
 
-Apart from dynamic parameters and query parameters, `useRoute()` also provides the following computed references related to the current route:
+Помимо динамических параметров и query-параметров, `useRoute()` также предоставляет следующие вычисляемые ссылки, связанные с текущим маршрутом:
 
-- `fullPath`: encoded URL associated with the current route that contains path, query and hash
-- `hash`: decoded hash section of the URL that starts with a #
-- `matched`: array of normalized matched routes with current route location
-- `meta`: custom data attached to the record
-- `name`: unique name for the route record
-- `path`: encoded pathname section of the URL
-- `redirectedFrom`: route location that was attempted to access before ending up on the current route location
+- `fullPath`: кодированный URL, связанный с текущим маршрутом, который содержит путь, запрос и хэш
+- `hash`: декодированная секция хэша URL, начинающаяся с #
+- `matched`: массив нормализованных совпадающих маршрутов с текущим местоположением маршрута
+- `meta`: пользовательские данные, прикрепленные к записи
+- `name`: уникальное имя для записи маршрута
+- `path`: закодированное имя пути в разделе URL
+- `redirectedFrom`: местоположение маршрута, к которому пытались получить доступ, прежде чем попасть в текущее местоположение маршрута
 
 ::note
-Browsers don't send [URL fragments](https://url.spec.whatwg.org/#concept-url-fragment) (for example `#foo`) when making requests. So using `route.fullPath` in your template can trigger hydration issues because this will include the fragment on client but not the server.
+Браузеры не отправляют [фрагменты URL](https://url.spec.whatwg.org/#concept-url-fragment) (например, `#foo`) при выполнении запросов. Поэтому использование `route.fullPath` в вашем шаблоне может вызвать проблемы с гидрацией, так как это будет включать фрагмент на клиенте, но не на сервере.
 ::
 
 :read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/interfaces/RouteLocationNormalizedLoaded.html"}
