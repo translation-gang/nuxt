@@ -1,6 +1,6 @@
 ---
 title: "callOnce"
-description: "Run a given function or block of code once during SSR or CSR."
+description: "Запустите заданную функцию или блок кода один раз во время SSR или CSR."
 navigation:
   badge: Новое
 links:
@@ -11,16 +11,17 @@ links:
 ---
 
 ::important
-This utility is available since [Nuxt v3.9](/blog/v3-9).
+Эта утилита доступна с [Nuxt v3.9](/blog/v3-9).
 ::
 
-## Purpose
+## Назначение
 
-The `callOnce` function is designed to execute a given function or block of code only once during:
-- server-side rendering but not hydration
-- client-side navigation
+Функция `callOnce` предназначена для выполнения заданной функции или блока кода только один раз во время:
 
-This is useful for code that should be executed only once, such as logging an event or setting up a global state.
+- серверного рендеринга, но не гидратации,
+- навигации на клиенте.
+
+Это полезно для кода, который должен выполняться только один раз, например, для регистрации события или настройки глобального состояния.
 
 ## Использование
 
@@ -29,24 +30,24 @@ This is useful for code that should be executed only once, such as logging an ev
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('This will only be logged once')
+  console.log('Это будет выведено только один раз')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 })
 </script>
 ```
 
 ::tip{to="/docs/getting-started/state-management#usage-with-pinia"}
-`callOnce` is useful in combination with the [Pinia module](/modules/pinia) to call store actions.
+`callOnce` полезен в сочетании с [модулем Pinia](/modules/pinia) для вызова действий хранилища.
 ::
 
 :read-more{to="/docs/getting-started/state-management"}
 
 ::warning
-Note that `callOnce` doesn't return anything. You should use [`useAsyncData`](/docs/api/composables/use-async-data) or [`useFetch`](/docs/api/composables/use-fetch) if you want to do data fetching during SSR.
+Обратите внимание, что `callOnce` ничего не возвращает. Если вы хотите выполнять получение данных во время SSR, вы должны использовать [`useAsyncData`](/docs/api/composables/use-async-data) или [`useFetch`](/docs/api/composables/use-fetch).
 ::
 
 ::note
-`callOnce` is a composable meant to be called directly in a setup function, plugin, or route middleware, because it needs to add data to the Nuxt payload to avoid re-calling the function on the client when the page hydrates.
+`callOnce` это композабл, предназначенная для непосредственного вызова в функции setup, плагине или маршрутном middleware, потому что она должна добавлять данные в полезную нагрузку Nuxt, чтобы избежать повторного вызова функции на стороне клиента при гидратации страницы.
 ::
 
 ## Тип
@@ -56,5 +57,5 @@ callOnce(fn?: () => any | Promise<any>): Promise<void>
 callOnce(key: string, fn?: () => any | Promise<any>): Promise<void>
 ```
 
-- `key`: A unique key ensuring that the code is run once. If you do not provide a key, then a key that is unique to the file and line number of the instance of `callOnce` will be generated for you.
-- `fn`: The function to run once. This function can also return a `Promise` and a value.
+- `key`: Уникальный ключ, гарантирующий, что код выполняется один раз. Если вы не предоставите ключ, то будет сгенерирован ключ, уникальный для файла и номера строки экземпляра `callOnce`.
+- `fn`: Функция, которую нужно выполнить один раз. Эта функция также может возвращать `Promise` и значение.
