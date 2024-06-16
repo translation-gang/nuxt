@@ -18,7 +18,7 @@ links:
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-const { data, pending, error, refresh } = await useAsyncData(
+const { data, pending, error, refresh, clear } = await useAsyncData(
   'mountains',
   () => $fetch('https://api.nuxtjs.dev/mountains')
 )
@@ -26,7 +26,7 @@ const { data, pending, error, refresh } = await useAsyncData(
 ```
 
 ::note
-`data`, `pending`, `status` и `error` являются `ref`, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` являются обычными функциями для повторной загрузки данных.
+`data`, `pending`, `status` и `error` являются `ref`, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` и `clear` являются обычными функциями.
 ::
 
 ### Наблюдение за параметрами
@@ -92,6 +92,7 @@ const { data: posts } = await useAsyncData(
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если получение данных не удалось.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
+`clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `idle`, и отметит любые текущие ожидающие запросы как отмененные.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
 
