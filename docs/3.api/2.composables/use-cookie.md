@@ -45,6 +45,10 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 :link-example{to="/docs/examples/advanced/use-cookie"}
 
+::note
+Обновите значения `useCookie` вручную, когда cookies изменились, используя [`refreshCookie`](/api/utils/refresh-cookie).
+::
+
 ## Параметры
 
 Данный композабл принимает несколько опций, которые позволяют изменять поведение cookie.
@@ -147,6 +151,10 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 - `true` - Будет следить за изменениями данных cookie ref и их вложенных свойств (по умолчанию).
 - `shallow` - Будет следить за изменениями данных cookie ref только для свойств верхнего уровня.
 - `false` - Не будет следить за изменениями данных cookie ref.
+
+::note
+Обновите значения `useCookie` вручную, когда cookies изменились, используя [`refreshCookie`](/api/utils/refresh-cookie).
+::
 
 **Пример 1:**
 
