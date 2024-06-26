@@ -1,6 +1,6 @@
 ---
 title: "defineNuxtComponent"
-description: defineNuxtComponent() is a helper function for defining type safe components with Options API.
+description: defineNuxtComponent() - это хелпер для определения компонентов с безопасным типом с использованием Options API.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -9,18 +9,18 @@ links:
 ---
 
 ::note
-`defineNuxtComponent()` is a helper function for defining type safe Vue components using options API similar to [`defineComponent()`](https://ru.vuejs.org/api/general.html#definecomponent). `defineNuxtComponent()` wrapper also adds support for `asyncData` and `head` component options.
+`defineNuxtComponent()` - это хелпер для определения безопасных с точки зрения типов компонентов Vue с использованием Options API, аналогично  [`defineComponent()`](https://ru.vuejs.org/api/general.html#definecomponent). Обертка `defineNuxtComponent()` также добавляет поддержку опций компонента  `asyncData` и `head`.
 ::
 
 ::note
-Using `<script setup lang="ts">` is the recommended way of declaring Vue components in Nuxt 3.
+Использование `<script setup lang="ts">` является рекомендуемым способом объявления компонентов Vue в Nuxt 3.
 ::
 
 :read-more{to=/docs/getting-started/data-fetching}
 
 ## `asyncData()`
 
-If you choose not to use `setup()` in your app, you can use the `asyncData()` method within your component definition:
+Если вы решите не использовать`setup()` в своем приложении, вы можете использовать метод `asyncData()` в определении компонента:
 
 ```vue [pages/index.vue]
 <script lang="ts">
@@ -28,7 +28,7 @@ export default defineNuxtComponent({
   async asyncData() {
     return {
       data: {
-        greetings: 'hello world!'
+        greetings: 'привет мир!'
       }
     }
   },
@@ -38,14 +38,14 @@ export default defineNuxtComponent({
 
 ## `head()`
 
-If you choose not to use `setup()` in your app, you can use the `head()` method within your component definition:
+Если вы решите не использовать`setup()` в своем приложении, вы можете использовать метод `head()` в определении компонента:
 
 ```vue [pages/index.vue]
 <script lang="ts">
 export default defineNuxtComponent({
   head(nuxtApp) {
     return {
-      title: 'My site'
+      title: 'Мой сайт'
     }
   },
 })
