@@ -1,6 +1,6 @@
 ---
 title: "defineNuxtRouteMiddleware"
-description: "Создайте middleware маршрута с помощью хеелпера defineNuxtRouteMiddleware и присвойте ему имя."
+description: "Создайте middleware маршрута с помощью хелпера defineNuxtRouteMiddleware и присвойте ему имя."
 links:
   - label: Исходники
     icon: i-simple-icons-github
