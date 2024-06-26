@@ -45,7 +45,7 @@ export default defineNuxtConfig({
 - Правило, определенное в `~/pages/foo/bar.vue`, будет применено к запросам `/foo/bar`.
 - Правило в `~/pages/foo/[id].vue` будет применено к запросам `/foo/**`.
 
-Для более точного управления, например, если вы используете настраиваемый `path` или `alias` установленный в [`definePageMeta`](/docs/api/utils/define-page-meta) страницы, вы должны установить `routeRules` непосредственно в вашем `nuxt.config`.
+Для более точного управления, например, если вы используете настраиваемый `path` или `alias`, установленный в [`definePageMeta`](/docs/api/utils/define-page-meta) страницы, вы должны установить `routeRules` непосредственно в вашем `nuxt.config`.
 
 ::read-more{to="/docs/guide/concepts/rendering#hybrid-rendering" icon="i-ph-medal-duotone"}
 Узнайте больше о `routeRules`.
