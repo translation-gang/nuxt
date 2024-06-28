@@ -48,4 +48,4 @@ const { data: mountain } = await useFetch(`/api/mountains/${route.params.slug}`)
 Браузеры не отправляют [фрагменты URL](https://url.spec.whatwg.org/#concept-url-fragment) (например, `#foo`) при выполнении запросов. Поэтому использование `route.fullPath` в вашем шаблоне может вызвать проблемы с гидрацией, так как это будет включать фрагмент на клиенте, но не на сервере.
 ::
 
-:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/interfaces/RouteLocationNormalizedLoaded.html"}
+:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/#RouteLocationNormalizedLoaded"}

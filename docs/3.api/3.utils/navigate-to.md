@@ -115,7 +115,7 @@ interface NavigateToOptions {
 
 ### `to`
 
-**Тип**: [`RouteLocationRaw`](https://router.vuejs.org/api/interfaces/RouteLocation.html) | `undefined` | `null`
+**Тип**: [`RouteLocationRaw`](https://router.vuejs.org/api/interfaces/RouteLocationOptions.html#Interface-RouteLocationOptions) | `undefined` | `null`
 
 **По умолчанию**: `'/'`
 

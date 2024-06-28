@@ -28,7 +28,7 @@ interface RouteMiddleware {
 
 Функция, которая принимает два объекта нормализованного расположения маршрута Vue Router в качестве параметров: следующий маршрут `to` в качестве первого и текущий маршрут `from` в качестве второго.
 
-Узнайте больше о доступных свойствах `RouteLocationNormalized` в **[документации Vue Router](https://router.vuejs.org/api/interfaces/RouteLocationNormalized.html)**.
+Узнайте больше о доступных свойствах `RouteLocationNormalized` в **[документации Vue Router](https://router.vuejs.org/api/#RouteLocationNormalized)**.
 
 ## Примеры
 
