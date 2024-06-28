@@ -1,6 +1,6 @@
 ---
 title: 'useRuntimeConfig'
-description: 'Access runtime config variables with the useRuntimeConfig composable.'
+description: 'Доступ к переменным runtime конфигурации с помощью композабла useRuntimeConfig.'
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -24,19 +24,19 @@ export default defineEventHandler((event) => {
 
 :read-more{to="/docs/guide/going-further/runtime-config"}
 
-## Define Runtime Config
+## Определение runtime конфигурации
 
-The example below shows how to set a public API base URL and a secret API token that is only accessible on the server.
+В примере ниже показано, как задать публичный базовый URL-адрес API и секретный API-токен, доступный только на сервере.
 
-We should always define `runtimeConfig` variables inside `nuxt.config`.
+Мы всегда должны определять переменные `runtimeConfig` внутри `nuxt.config`.
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   runtimeConfig: {
-    // Private keys are only available on the server
+    // Приватные ключи доступны только на сервере
     apiSecret: '123',
 
-    // Public keys that are exposed to the client
+    // Публичные ключи, которые доступны для клиента
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
     }
@@ -45,24 +45,24 @@ export default defineNuxtConfig({
 ```
 
 ::note
-Variables that need to be accessible on the server are added directly inside `runtimeConfig`. Variables that need to be accessible on both the client and the server are defined in `runtimeConfig.public`.
+Переменные, которые должны быть доступны на сервере, добавляются непосредственно в `runtimeConfig`. Переменные, которые должны быть доступны как на клиенте, так и на сервере, определяются в `runtimeConfig.public`.
 ::
 
 :read-more{to="/docs/guide/going-further/runtime-config"}
 
-## Access Runtime Config
+## Доступ к runtime конфигурации
 
-To access runtime config, we can use `useRuntimeConfig()` composable:
+Чтобы получить доступ к runtime конфигурации, мы можем использовать композабл `useRuntimeConfig()`:
 
 ```ts [server/api/test.ts]
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig(event)
 
-  // Access public variables
+  // Доступ к публичным переменным
   const result = await $fetch(`/test`, {
     baseURL: config.public.apiBase,
     headers: {
-      // Access a private variable (only available on the server)
+      // Доступ к приватной переменной (доступна только на сервере)
       Authorization: `Bearer ${config.apiSecret}`
     }
   })
@@ -70,17 +70,17 @@ export default defineEventHandler((event) => {
 }
 ```
 
-In this example, since `apiBase` is defined within the `public` namespace, it is universally accessible on both server and client-side, while `apiSecret` **is only accessible on the server-side**.
+В данном примере, поскольку `apiBase` определен в пространстве имен `public`, он универсально доступен как на стороне сервера, так и на стороне клиента, в то время как `apiSecret` **доступен только на стороне сервера**.
 
-## Environment Variables
+## Переменные окружения
 
-It is possible to update runtime config values using a matching environment variable name prefixed with `NUXT_`.
+Можно обновлять значения runtime конфигурации, используя соответствующее имя переменной окружения с префиксом `NUXT_`.
 
 :read-more{to="/docs/guide/going-further/runtime-config"}
 
-### Using the `.env` File
+### Использование файла `.env`
 
-We can set the environment variables inside the `.env` file to make them accessible during **development** and **build/generate**.
+Мы можем задать переменные окружения в файле `.env`, чтобы они были доступны во время **разработки** и **сборки/генерации**.
 
 ``` [.env]
 NUXT_PUBLIC_API_BASE = "https://api.localhost:5555"
@@ -88,53 +88,53 @@ NUXT_API_SECRET = "123"
 ```
 
 ::note
-Any environment variables set within `.env` file are accessed using `process.env` in the Nuxt app during **development** and **build/generate**.
+Любые переменные окружения, установленные в файле `.env` доступны с помощью `process.env` в приложении Nuxt во время **разработки** and **сборки/генерации**.
 ::
 
 ::warning
-In **production runtime**, you should use platform environment variables and `.env` is not used.
+В **продакшен runtime**, следует использовать переменные окружения платформы, а `.env` не используется.
 ::
 
 :read-more{to="/docs/guide/directory-structure/env"}
 
-## `app` namespace
+## Пространство имен `app`
 
-Nuxt uses `app` namespace in runtime-config with keys including `baseURL` and `cdnURL`. You can customize their values at runtime by setting environment variables.
+Nuxt использует пространство имен `app` в runtime конфигурации с ключами, включая `baseURL` и `cdnURL`. Вы можете настроить их значения во время выполнения программы, установив переменные окружения.
 
 ::note
-This is a reserved namespace. You should not introduce additional keys inside `app`.
+Это зарезервированное пространство имен. Не следует вводить дополнительные ключи внутри `app`.
 ::
 
 ### `app.baseURL`
 
-By default, the `baseURL` is set to `'/'`.
+По умолчанию `baseURL` имеет значение `'/'`.
 
-However, the `baseURL` can be updated at runtime by setting the `NUXT_APP_BASE_URL` as an environment variable.
+Однако `baseURL` можно обновить во время runtime, установив `NUXT_APP_BASE_URL` в качестве переменной окружения.
 
-Then, you can access this new base URL using `config.app.baseURL`:
+Затем вы можете получить доступ к этому новому базовому URL с помощью `config.app.baseURL`:
 
 ```ts [/plugins/my-plugin.ts]
 export default defineNuxtPlugin((NuxtApp) => {
   const config = useRuntimeConfig()
 
-  // Access baseURL universally
+  // Универсальный доступ к базовому URL
   const baseURL = config.app.baseURL
 })
 ```
 
 ### `app.cdnURL`
 
-This example shows how to set a custom CDN url and access them using `useRuntimeConfig()`.
+В этом примере показано, как задать пользовательский CDN url и получить к нему доступ с помощью `useRuntimeConfig()`.
 
-You can use a custom CDN for serving static assets inside `.output/public` using the `NUXT_APP_CDN_URL` environment variable.
+Вы можете использовать пользовательский CDN для обслуживания статических ассетов внутри `.output/public`, используя переменную окружения `NUXT_APP_CDN_URL`.
 
-And then access the new CDN url using `config.app.cdnURL`.
+И затем получите доступ к новому CDN url с помощью `config.app.cdnURL`.
 
 ```ts [server/api/foo.ts]
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig(event)
 
-  // Access cdnURL universally
+  // Универсальный доступ к cdnURL
   const cdnURL = config.app.cdnURL
 })
 ```
