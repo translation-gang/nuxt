@@ -123,7 +123,7 @@ Nuxt раскрывает следующие свойства через `ssrCon
   При обращении к тому же `payload.data` из [`ssrcontext`](#ssrcontext), вы можете получить доступ к тому же значению и на стороне сервера.
 
 - `state` (object) - Когда вы используете композабл [`useState`](/docs/api/composables/use-state) в Nuxt для установки общего состояния, доступ к этим данным состояния осуществляется через `payload.state.[название-вашего-состояния]`.
-- 
+-
   ```ts [plugins/my-plugin.ts]
   export const useColor = () => useState<string>('color', () => 'pink')
 
