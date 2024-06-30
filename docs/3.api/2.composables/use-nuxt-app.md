@@ -82,7 +82,6 @@ await nuxtApp.callHook('my-plugin:init')
 
 `vueApp` - это глобальный Vue.js [экземпляр приложения](https://ru.vuejs.org/api/application.html#application-api), к которому вы можете получить доступ через `nuxtApp`.
 
-
 Некоторые полезные методы:
 - [`component()`](https://ru.vuejs.org/api/application.html#app-component) - Регистрирует глобальный компонент, если передается имя в виде строки и определение компонента, или извлекает уже зарегистрированный компонент, если передается только имя.
 - [`directive()`](https://ru.vuejs.org/api/application.html#app-directive) - Регистрирует глобальную пользовательскую директиву, если передается имя в виде строки и определение директивы, или извлекает уже зарегистрированную, если передано только имя [(пример)](/docs/guide/directory-structure/plugins#vue-directives).
