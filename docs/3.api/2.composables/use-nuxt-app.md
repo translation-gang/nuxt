@@ -252,7 +252,7 @@ getCurrentInstance() // Все ещё работает!
 
 Именно здесь можно использовать `runWithContext` для восстановления контекста, аналогично тому, как работает `<script setup>`.
 
-Nuxt 3 внутренне использует [unjs/unctx](https://github.com/unjs/unctx) для поддержки композаблов, подобных Vue, для плагинов и middleware. Это позволяет композаблам, таким как `navigateTo()`, работать без непосредственной передачи им `nuxtApp` - привнося DX и преимущества производительности Composition API во весь фреймворк Nuxt.
+Nuxt внутренне использует [unjs/unctx](https://github.com/unjs/unctx) для поддержки композаблов, подобных Vue, для плагинов и middleware. Это позволяет композаблам, таким как `navigateTo()`, работать без непосредственной передачи им `nuxtApp` - привнося DX и преимущества производительности Composition API во весь фреймворк Nuxt.
 
 Nuxt-композаблы имеют тот же дизайн, что и Vue Composition API, и поэтому нуждаются в аналогичном решении, чтобы волшебным образом выполнять это преобразование. Посмотрите [unjs/unctx#2](https://github.com/unjs/unctx/issues/2) (предложение), [unjs/unctx#4](https://github.com/unjs/unctx/pull/4) (реализация трансформации) и [nuxt/framework#3884](https://github.com/nuxt/framework/pull/3884) (интеграция в Nuxt).
 

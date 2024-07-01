@@ -1,6 +1,6 @@
 ---
 title: "nuxi upgrade"
-description: Команда upgrade обновляет Nuxt 3 до последней версии.
+description: Команда upgrade обновляет Nuxt до последней версии.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -12,7 +12,7 @@ links:
 npx nuxi upgrade [--force|-f]
 ```
 
-Команда `upgrade` обновляет Nuxt 3 до последней версии.
+Команда `upgrade` обновляет Nuxt до последней версии.
 
 Параметр      | По умолчанию | Описание
 --------------|--------------|------------------------------------------------------
