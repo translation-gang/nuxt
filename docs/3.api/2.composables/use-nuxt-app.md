@@ -164,7 +164,7 @@ Nuxt раскрывает следующие свойства через `ssrCon
 
 ### `isHydrating`
 
-Используйте `nuxtApp.isHydrating` (boolean), чтобы проверить, гидрируется ли приложение Nuxt на стороне клиента.
+Используйте `nuxtApp.isHydrating` (boolean), чтобы проверить, гидрируется ли приложение Nuxt на клиенте.
 
 ```ts [components/nuxt-error-boundary.ts]
 export default defineComponent({
