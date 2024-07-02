@@ -28,7 +28,7 @@ const dataTwice = await $fetch('/api/item')
 // Во время SSR данные извлекаются только на сервере и передаются клиенту.
 const { data } = await useAsyncData('item', () => $fetch('/api/item'))
 
-// Вы также можете использовать useFetch в качестве шорката для useAsyncData + $fetch
+// Вы также можете использовать useFetch в качестве шортката для useAsyncData + $fetch
 const { data } = await useFetch('/api/item')
 </script>
 ```
