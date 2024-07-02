@@ -1,6 +1,6 @@
 ---
 title: "clearError"
-description: "Композабл API clearError очищает все обработанные ошибки."
+description: "Композабл clearError очищает все обработанные ошибки."
 links:
   - label: Исходники
     icon: i-simple-icons-github
