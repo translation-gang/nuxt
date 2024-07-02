@@ -1,6 +1,6 @@
 ---
 title: 'abortNavigation'
-description: 'abortNavigation это хелпер функция, которая предотвращает навигацию и выбрасывает ошибку, если она задана в качестве параметра.'
+description: 'abortNavigation - это хелпер функция, которая предотвращает навигацию и выбрасывает ошибку, если она задана в качестве параметра.'
 links:
   - label: Исходники
     icon: i-simple-icons-github
