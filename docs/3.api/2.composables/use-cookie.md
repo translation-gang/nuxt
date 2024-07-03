@@ -46,7 +46,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 :link-example{to="/docs/examples/advanced/use-cookie"}
 
 ::note
-Обновите значения `useCookie` вручную, когда cookies изменились, используя [`refreshCookie`](/api/utils/refresh-cookie).
+Обновите значения `useCookie` вручную, когда cookies изменились, используя [`refreshCookie`](/docs/api/utils/refresh-cookie).
 ::
 
 ## Параметры
@@ -153,7 +153,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 - `false` - Не будет следить за изменениями данных cookie ref.
 
 ::note
-Обновите значения `useCookie` вручную, когда cookies изменились, используя [`refreshCookie`](/api/utils/refresh-cookie).
+Обновите значения `useCookie` вручную, когда cookies изменились, используя [`refreshCookie`](/docs/api/utils/refresh-cookie).
 ::
 
 **Пример 1:**
