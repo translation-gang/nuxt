@@ -58,13 +58,13 @@ const refreshAll = async () => {
 
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
-const { pending, data: count } = await useLazyAsyncData('count', () => $fetch('/api/count'))
+const { status, data: count } = await useLazyAsyncData('count', () => $fetch('/api/count'))
 const refresh = () => refreshNuxtData('count')
 </script>
 
 <template>
   <div>
-    {{ pending ? 'Загрузка' : count }}
+    {{ status === 'pending' ? 'Загрузка' : count }}
   </div>
   <button @click="refresh">Обновить</button>
 </template>

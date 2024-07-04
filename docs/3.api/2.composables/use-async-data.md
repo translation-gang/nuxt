@@ -18,7 +18,7 @@ links:
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-const { data, pending, error, refresh, clear } = await useAsyncData(
+const { data, status, error, refresh, clear } = await useAsyncData(
   'mountains',
   () => $fetch('https://api.nuxtjs.dev/mountains')
 )
@@ -30,7 +30,7 @@ const { data, pending, error, refresh, clear } = await useAsyncData(
 ::
 
 ::note
-`data`, `pending`, `status` и `error` являются `ref`, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` и `clear` являются обычными функциями.
+`data`, `status` и `error` являются `ref`, и они должны быть получены с помощью `.value` при использовании внутри `<script setup>`, в то время как `refresh`/`execute` и `clear` являются обычными функциями.
 ::
 
 ### Наблюдение за параметрами
@@ -92,7 +92,6 @@ const { data: posts } = await useAsyncData(
 ## Возвращаемые значения
 
 - `data`: результат работы переданной асинхронной функции.
-- `pending`: булево значение, указывающее, продолжается ли получение данных.
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если получение данных не удалось.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
@@ -132,7 +131,6 @@ type AsyncDataOptions<DataT> = {
 
 type AsyncData<DataT, ErrorT> = {
   data: Ref<DataT | null>
-  pending: Ref<boolean>
   refresh: (opts?: AsyncDataExecuteOptions) => Promise<void>
   execute: (opts?: AsyncDataExecuteOptions) => Promise<void>
   clear: () => void

@@ -23,7 +23,7 @@ links:
 ```vue [pages/index.vue]
 <script setup lang="ts">
 /* Навигация будет происходить до завершения получения данных.
-  Обрабатывайте состояния ожидания и ошибки непосредственно в шаблоне вашего компонента
+  Обрабатывайте состояния 'pending' и 'error' непосредственно в шаблоне вашего компонента
 */
 const { pending, data: posts } = await useLazyFetch('/api/posts')
 watch(posts, (newPosts) => {
@@ -33,7 +33,7 @@ watch(posts, (newPosts) => {
 </script>
 
 <template>
-  <div v-if="pending">
+  <div v-if="status === 'pending'">
     Loading ...
   </div>
   <div v-else>

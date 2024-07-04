@@ -23,9 +23,9 @@ links:
 ```vue [pages/index.vue]
 <script setup lang="ts">
 /* Навигация произойдет до завершения загрузки.
-  Обрабатывайте состояния загрузки и ошибки непосредственно в шаблоне компонента.
+  Обрабатывайте состояния 'pending' и 'error' непосредственно в шаблоне компонента.
 */
-const { pending, data: count } = await useLazyAsyncData('count', () => $fetch('/api/count'))
+const { status, data: count } = await useLazyAsyncData('count', () => $fetch('/api/count'))
 
 watch(count, (newCount) => {
   // Поскольку count может быть изначально равным null, вы не сможете получить доступ
@@ -35,7 +35,7 @@ watch(count, (newCount) => {
 
 <template>
   <div>
-    {{ pending ? 'Loading' : count }}
+    {{ status === 'pending' ? 'Loading' : count }}
   </div>
 </template>
 ```

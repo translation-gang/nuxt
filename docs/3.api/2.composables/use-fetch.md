@@ -19,7 +19,7 @@ links:
 
 ```vue [pages/modules.vue]
 <script setup lang="ts">
-const { data, pending, error, refresh, clear } = await useFetch('/api/modules', {
+const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
   pick: ['title']
 })
 </script>
@@ -30,14 +30,14 @@ const { data, pending, error, refresh, clear } = await useFetch('/api/modules', 
 ::
 
 ::note
-`data`, `pending`, `status` и `error` - это ref из Vue, и к ним следует обращаться с помощью `.value` при использовании внутри `<script setup>`, а `refresh`/`execute` и `clear` - это обычные функции...
+`data`, `status` и `error` - это ref из Vue, и к ним следует обращаться с помощью `.value` при использовании внутри `<script setup>`, а `refresh`/`execute` и `clear` - это обычные функции...
 ::
 
 Используя свойство `query`, вы можете добавить параметры поиска в запрос. Эта опция расширена из [unjs/ofetch](https://github.com/unjs/ofetch) и использует [unjs/ufo](https://github.com/unjs/ufo) для создания URL. Объекты автоматически превращаются в строку.
 
 ```ts
 const param1 = ref('value1')
-const { data, pending, error, refresh } = await useFetch('/api/modules', {
+const { data, status, error, refresh } = await useFetch('/api/modules', {
   query: { param1, param2: 'value2' }
 })
 ```
@@ -47,7 +47,7 @@ const { data, pending, error, refresh } = await useFetch('/api/modules', {
 Вы также можете использовать [перехватчики](https://github.com/unjs/ofetch#%EF%B8%8F-interceptors):
 
 ```ts
-const { data, pending, error, refresh, clear } = await useFetch('/api/auth/login', {
+const { data, status, error, refresh, clear } = await useFetch('/api/auth/login', {
   onRequest({ request, options }) {
     // Устанавливает заголовки запроса
     options.headers = options.headers || {}
@@ -128,7 +128,6 @@ const { data, pending, error, refresh, clear } = await useFetch('/api/auth/login
 ## Возвращаемые значения
 
 - `data`: результат работы переданной асинхронной функции.
-- `pending`: булево значение, указывающее, продолжается ли извлечение данных.
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если запрос данных не удался.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
@@ -170,7 +169,6 @@ type UseFetchOptions<DataT> = {
 
 type AsyncData<DataT, ErrorT> = {
   data: Ref<DataT | null>
-  pending: Ref<boolean>
   refresh: (opts?: AsyncDataExecuteOptions) => Promise<void>
   execute: (opts?: AsyncDataExecuteOptions) => Promise<void>
   clear: () => void
