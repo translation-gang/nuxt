@@ -61,7 +61,7 @@
     "@types/eslint__js": "8.42.3",
     "@types/node": "20.14.9",
     "@types/semver": "7.5.8",
-    "@unhead/schema": "1.9.14",
+    "@unhead/schema": "1.9.15",
     "@vitejs/plugin-vue": "5.0.5",
     "@vitest/coverage-v8": "1.6.0",
     "@vue/test-utils": "2.4.6",
@@ -69,7 +69,7 @@
     "case-police": "0.6.1",
     "changelogen": "0.5.5",
     "consola": "3.2.3",
-    "cssnano": "7.0.3",
+    "cssnano": "7.0.4",
     "devalue": "5.0.0",
     "eslint": "9.6.0",
     "eslint-plugin-no-only-tests": "3.1.0",
@@ -97,7 +97,7 @@
     "vitest-environment-nuxt": "1.0.0",
     "vue": "3.4.31",
     "vue-router": "4.4.0",
-    "vue-tsc": "2.0.24"
+    "vue-tsc": "2.0.26"
   },
   "packageManager": "pnpm@9.4.0",
   "engines": {
