@@ -9,12 +9,16 @@ links:
 ---
 
 ::note
-`navigateTo` доступен как на сервере, так и на клиенте.
+`navigateTo` доступен как на сервере, так и на клиенте (but not within Nitro routes).
 ::
 
 ## Использование
 
 Функция `navigateTo` доступна как на сервере, так и на клиенте. Ее можно использовать внутри [Nuxt-контекста](/docs/guide/going-further/nuxt-app#the-nuxt-context) или напрямую для осуществления постраничной навигации.
+
+::tip
+To send a redirect from a server endpoint, use [`sendRedirect`](https://h3.unjs.io/utils/response#sendredirectevent-location-code) instead.
+::
 
 ### Внутри компонента Vue
 
