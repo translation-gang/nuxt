@@ -51,7 +51,7 @@ links:
 
 ## Пример
 
-```ts
+```vue [pages/index.vue]
 <script setup lang="ts">
   const { message, politeness, set, polite, assertive } = useRouteAnnouncer({
     politeness: 'assertive'

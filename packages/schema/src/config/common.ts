@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 import { defineUntypedSchema } from 'untyped'
-import { basename, join, relative, resolve } from 'pathe'
+import { basename, relative, resolve } from 'pathe'
 import { isDebug, isDevelopment, isTest } from 'std-env'
 import { defu } from 'defu'
 import { findWorkspaceDir } from 'pkg-types'
@@ -158,7 +158,7 @@ export default defineUntypedSchema({
     $resolve: async (val: string | undefined, get): Promise<string> => {
       const isV4 = ((await get('future') as Record<string, unknown>).compatibilityVersion === 4)
 
-      return resolve(await get('rootDir') as string, (val || isV4) ? 'server' : resolve(await get('srcDir') as string, 'server'))
+      return resolve(isV4 ? await get('rootDir') as string : await get('srcDir') as string, val ?? 'server')
     },
   },
 
@@ -422,7 +422,7 @@ export default defineUntypedSchema({
         '@': srcDir,
         '~~': rootDir,
         '@@': rootDir,
-        [basename(assetsDir)]: join(srcDir, assetsDir),
+        [basename(assetsDir)]: resolve(srcDir, assetsDir),
         [basename(publicDir)]: resolve(srcDir, publicDir),
         ...val,
       }
