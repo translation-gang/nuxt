@@ -1,6 +1,6 @@
 ---
 title: 'nuxi cleanup'
-description: "Удалите общие сгенерированные файлы Nuxt и кэши."
+description: "Удаляет общие сгенерированные файлы Nuxt и кэши."
 links:
   - label: Исходники
     icon: i-simple-icons-github

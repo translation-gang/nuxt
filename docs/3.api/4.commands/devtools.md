@@ -1,6 +1,6 @@
 ---
 title: "nuxi devtools"
-description: Команда devtools позволяет включить или отключить Nuxt DevTools для каждого проекта..
+description: Команда devtools позволяет включить или отключить Nuxt DevTools для каждого проекта.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -19,5 +19,5 @@ npx nuxi devtools enable|disable [rootDir]
 `rootDir` | `.`          | Корневая директория приложения, для которого вы хотите включить devtools.
 
 ::read-more{icon="i-simple-icons-nuxtdotjs" to="https://devtools.nuxt.com" target="_blank"}
-Подробнее об **Nuxt DevTools**.
+Подробнее о **Nuxt DevTools**.
 ::
