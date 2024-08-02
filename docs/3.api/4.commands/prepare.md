@@ -1,6 +1,6 @@
 ---
 title: 'nuxi prepare'
-description: Команда prepare создает каталог .nuxt в вашем приложении и генерирует типы.
+description: Команда prepare создает директорию .nuxt в вашем приложении и генерирует типы.
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -12,8 +12,8 @@ links:
 npx nuxi prepare [--log-level] [rootDir]
 ```
 
-Команда `prepare` создает каталог [`.nuxt`](/docs/guide/directory-structure/nuxt) в вашем приложении и генерирует типы. Это может быть полезно в среде CI или в качестве команды `postinstall` в вашем [`package.json`](/docs/guide/directory-structure/package).
+Команда `prepare` создает директорию [`.nuxt`](/docs/guide/directory-structure/nuxt) в вашем приложении и генерирует типы. Это может быть полезно в среде CI или в качестве команды `postinstall` в вашем [`package.json`](/docs/guide/directory-structure/package).
 
 Параметр  | По умолчанию | Описание
 ----------|--------------|--------------------------------------------------
-`rootDir` | `.`          | Корневой каталог приложения для подготовки.
+`rootDir` | `.`          | Корневая директория приложения для подготовки.
