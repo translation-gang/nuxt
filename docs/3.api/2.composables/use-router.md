@@ -14,11 +14,11 @@ const router = useRouter()
 </script>
 ```
 
-Если вам нужен только инстанс маршрутизатора в вашем шаблоне, используйте `$router`:
+Если в шаблоне вам нужен только инстанс маршрутизатора, используйте `$router`:
 
 ```vue [pages/index.vue]
 <template>
-  <button @click="$router.back()">Back</button>
+  <button @click="$router.back()">Назад</button>
 </template>
 ```
 
@@ -32,7 +32,7 @@ const router = useRouter()
 
 - [`addRoute()`](https://router.vuejs.org/api/interfaces/Router.html#addRoute): Добавляет новый маршрут в инстанс маршрутизатора. Можно указать `parentName`, чтобы добавить новый маршрут в качестве дочернего для существующего маршрута.
 - [`removeRoute()`](https://router.vuejs.org/api/interfaces/Router.html#removeRoute): Удаляет существующий маршрут по его имени.
-- [`getRoutes()`](https://router.vuejs.org/api/interfaces/Router.html#getRoutes): Получает полный список всех записей маршрута.
+- [`getRoutes()`](https://router.vuejs.org/api/interfaces/Router.html#getRoutes): Получает полный список всех записей маршрутов.
 - [`hasRoute()`](https://router.vuejs.org/api/interfaces/Router.html#hasRoute): Проверяет, существует ли маршрут с заданным именем.
 - [`resolve()`](https://router.vuejs.org/api/interfaces/Router.html#resolve): Возвращает нормализованную версию местоположения маршрута. Также содержит свойство `href`, которое включает любую существующую базу.
 
@@ -47,16 +47,16 @@ router.resolve({ name: 'home' })
 ```
 
 ::note
-`router.addRoute()` добавляет детали маршрута в массив маршрутов и полезен при создании [Nuxt плагинов](/docs/guide/directory-structure/plugins), в то время как `router.push()`, напротив, запускает новую навигацию немедленно и полезен в страницах, компонентах Vue и композаблах.
+`router.addRoute()` добавляет детали маршрута в массив маршрутов и полезен при создании [Nuxt-плагинов](/docs/guide/directory-structure/plugins), в то время как `router.push()`, напротив, запускает новую навигацию немедленно и полезен в страницах, компонентах Vue и композаблах.
 ::
 
-## Основано на History API
+## Основанные на History API
 
 - [`back()`](https://router.vuejs.org/api/interfaces/Router.html#back): Возвращает назад в history, если это возможно, аналогично `router.go(-1)`.
 - [`forward()`](https://router.vuejs.org/api/interfaces/Router.html#forward): Переходит вперед в history, если это возможно, аналогично `router.go(1)`.
 - [`go()`](https://router.vuejs.org/api/interfaces/Router.html#go): Перемещение вперед или назад по hitory без иерархических ограничений, применяемых в `router.back()` и `router.forward()`.
-- [`push()`](https://router.vuejs.org/api/interfaces/Router.html#push): Программно переходит к новому URL-адресу, проталкивая запись в history стек. **Вместо этого рекомендуется использовать [`navigateTo`](/docs/api/utils/navigate-to).**
-- [`replace()`](https://router.vuejs.org/api/interfaces/Router.html#replace): Программно переходит к новому URL-адресу, заменяя текущую запись в history стеке маршрутов. **Вместо этого рекомендуется использовать [`navigateTo`](/docs/api/utils/navigate-to).**
+- [`push()`](https://router.vuejs.org/api/interfaces/Router.html#push): Программно переходит к новому URL-адресу, проталкивая запись в стек history. **Вместо этого рекомендуется использовать [`navigateTo`](/docs/api/utils/navigate-to).**
+- [`replace()`](https://router.vuejs.org/api/interfaces/Router.html#replace): Программно переходит к новому URL-адресу, заменяя текущую запись в стеке history маршрутов. **Вместо этого рекомендуется использовать [`navigateTo`](/docs/api/utils/navigate-to).**
 
 ```ts [Example]
 const router = useRouter()
@@ -85,8 +85,8 @@ router.replace({ hash: "#bio" })
 - [`isReady()`](https://router.vuejs.org/api/interfaces/Router.html#isReady): Возвращает промис, который выполняется, когда маршрутизатор завершит первоначальную навигацию.
 - [`onError`](https://router.vuejs.org/api/interfaces/Router.html#onError): Добавляет обработчик ошибок, который вызывается каждый раз, когда во время навигации возникает не перехваченная ошибка.
 
-:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/interfaces/Router.html#Methods" title="Vue Router Docs" target="_blank"}
+:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/interfaces/Router.html#Methods" title="Документация Vue Router" target="_blank"}
 
 ## Универсальный инстанс маршрутизатора
 
-Если у вас нет папки `pages/`, то [`useRouter`](/docs/api/composables/use-router) вернет универсальный инстанс маршрутизатора с аналогичными вспомогательными методами, но имейте в виду, что не все функции могут поддерживаться или вести себя точно так же, как в `vue-router`.
+Если у вас нет папки `pages/`, то [`useRouter`](/docs/api/composables/use-router) вернет универсальный инстанс маршрутизатора с аналогичными вспомогательными методами, но имейте в виду, что не все функции могут поддерживаться или вести себя точно так же, как во `vue-router`.
