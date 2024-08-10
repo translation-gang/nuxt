@@ -1,6 +1,6 @@
 ---
 title: "defineNuxtComponent"
-description: defineNuxtComponent() - это хелпер для определения компонентов с безопасным типом с использованием Options API.
+description: defineNuxtComponent() - это хелпер для определения типобезопасных компонентов с использованием Options API.
 links:
   - label: Исходники
     icon: i-simple-icons-github
