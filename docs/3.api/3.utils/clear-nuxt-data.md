@@ -20,4 +20,4 @@ clearNuxtData (keys?: string | string[] | ((key: string) => boolean)): void
 
 ## Параметры
 
-* `keys`: Один или массив ключей, которые используются в [`useAsyncData`](/docs/api/composables/use-async-data) для удаления их кэшированных данных. Если ключи не указаны, **все данные** будут аннулированы.
+* `keys`: Ключ или массив ключей, которые используются в [`useAsyncData`](/docs/api/composables/use-async-data) для удаления их кэшированных данных. Если ключи не указаны, **все данные** будут аннулированы.
