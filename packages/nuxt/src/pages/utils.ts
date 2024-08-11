@@ -13,7 +13,7 @@ import { walk } from 'estree-walker'
 import type { CallExpression, ExpressionStatement, ObjectExpression, Program, Property } from 'estree'
 import type { NuxtPage } from 'nuxt/schema'
 
-import { uniqueBy } from '../core/utils'
+import { getLoader, uniqueBy } from '../core/utils'
 import { toArray } from '../utils'
 import { distDir } from '../dirs'
 
@@ -58,7 +58,7 @@ export async function resolvePagesRoutes (): Promise<NuxtPage[]> {
   // sort scanned files using en-US locale to make the result consistent across different system locales
   scannedFiles.sort((a, b) => a.relativePath.localeCompare(b.relativePath, 'en-US'))
 
-  const allRoutes = await generateRoutesFromFiles(uniqueBy(scannedFiles, 'relativePath'), {
+  const allRoutes = generateRoutesFromFiles(uniqueBy(scannedFiles, 'relativePath'), {
     shouldUseServerComponents: !!nuxt.options.experimental.componentIslands,
   })
 
@@ -188,7 +188,8 @@ export async function getRouteMeta (contents: string, absolutePath: string): Pro
 
   if (absolutePath in metaCache) { return metaCache[absolutePath] }
 
-  const script = extractScriptContent(contents)
+  const loader = getLoader(absolutePath)
+  const script = !loader ? null : loader === 'vue' ? extractScriptContent(contents) : { code: contents, loader }
   if (!script) {
     metaCache[absolutePath] = {}
     return {}

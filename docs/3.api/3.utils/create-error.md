@@ -41,7 +41,7 @@ if (!data.value) {
 
 ### Пример
 
-```js
+```ts [server/api/error.ts]
 export default eventHandler(() => {
   throw createError({
     statusCode: 404,

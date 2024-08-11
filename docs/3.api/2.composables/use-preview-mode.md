@@ -52,6 +52,25 @@ const { enabled, state } = usePreviewMode({
 Функция `getState` будет добавлять возвращаемые значения к текущему состоянию, поэтому будьте осторожны, чтобы случайно не переписать важное состояние.
 ::
 
+### Customize the `onEnable` and `onDisable` callbacks
+
+By default, when `usePreviewMode` is enabled, it will call `refreshNuxtData()` to re-fetch all data from the server.
+
+When preview mode is disabled, the composable will attach a callback to call `refreshNuxtData()` to run after a subsequent router navigation.
+
+You can specify custom callbacks to be triggered by providing your own functions for the `onEnable` and `onDisable` options.
+
+```js
+const { enabled, state } = usePreviewMode({
+  onEnable: () => {
+    console.log('preview mode has been enabled')
+  },
+  onDisable: () => {
+    console.log('preview mode has been disabled')
+  }
+})
+```
+
 ## Пример
 
 В приведенном ниже примере создается страница, на которой часть содержимого рендерится только в режиме предварительного просмотра.
