@@ -60,7 +60,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 ### `err` в виде Error Object
 
-Вы можете передать ошибку в виде объекта [`Error`](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Error), например, пойманную блоком `catch`:
+Вы можете передать ошибку в виде объекта [`Error`](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Error), например, перехваченного блоком `catch`:
 
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {

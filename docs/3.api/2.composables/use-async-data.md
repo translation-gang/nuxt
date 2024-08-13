@@ -54,7 +54,7 @@ const { data: posts } = await useAsyncData(
 ```
 
 ::warning
-[`useAsyncData`](/docs/api/composables/use-async-data) является зарезервированным именем функции, которое трансформируется компилятором, поэтому вы не должны называть свою собственную функцию с этим именем [`useAsyncData`](/docs/api/composables/use-async-data) .
+[`useAsyncData`](/docs/api/composables/use-async-data) - это зарезервированное имя функции, преобразованное компилятором, поэтому вам не следует называть свою собственную функцию [`useAsyncData`](/docs/api/composables/use-async-data).
 ::
 
 :read-more{to="/docs/getting-started/data-fetching#useasyncdata"}
@@ -95,7 +95,7 @@ const { data: posts } = await useAsyncData(
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если получение данных не удалось.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
-`clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `idle`, и отметит любые текущие ожидающие запросы как отмененные.
+- `clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `idle`, и отметит любые текущие ожидающие запросы как отмененные.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
 
