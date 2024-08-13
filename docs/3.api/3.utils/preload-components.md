@@ -19,5 +19,5 @@ await preloadComponents(['MyGlobalComponent1', 'MyGlobalComponent2'])
 ```
 
 ::note
-На сервере `prefetchComponents` не будет иметь никакого эффекта.
+На сервере `preloadComponents` не будет иметь никакого эффекта.
 ::
