@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-Маршрутные middleware хранятся в директории[`middleware/`](/docs/guide/directory-structure/middleware) вашего приложения Nuxt (если не [задано иное](/docs/api/nuxt-config#middleware)).
+Маршрутные middleware хранятся в директории [`middleware/`](/docs/guide/directory-structure/middleware) вашего приложения Nuxt (если не [задано иное](/docs/api/nuxt-config#middleware)).
 
 ## Тип
 

@@ -1,6 +1,6 @@
 ---
 title: 'clearNuxtState'
-description: Удалите кэшированное состояние useState.
+description: Удаляет кэшированное состояние useState.
 links:
   - label: Исходники
     icon: i-simple-icons-github

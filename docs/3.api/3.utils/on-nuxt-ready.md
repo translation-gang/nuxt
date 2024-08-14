@@ -1,6 +1,6 @@
 ---
 title: "onNuxtReady"
-description: Композабл onNuxtReady позволяет выполнить коллбэк после завершения инициализации вашего приложения..
+description: Композабл onNuxtReady позволяет выполнить коллбэк после завершения инициализации вашего приложения.
 links:
   - label: Исходники
     icon: i-simple-icons-github

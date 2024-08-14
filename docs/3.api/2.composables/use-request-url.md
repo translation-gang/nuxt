@@ -29,7 +29,7 @@ const url = useRequestURL()
 </template>
 ```
 
-```html [Result in development]
+```html [Результат в разработке]
 <p>URL-адрес: http://localhost:3000/about</p>
 <p>Путь: /about</p>
 ```
