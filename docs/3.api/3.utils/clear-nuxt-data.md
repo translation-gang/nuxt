@@ -1,6 +1,6 @@
 ---
 title: 'clearNuxtData'
-description: Удалить кэшированные данные, статус ошибки и ожидающиеся промисы useAsyncData и useFetch.
+description: Удаляет кэшированные данные, статус ошибки и ожидающиеся промисы useAsyncData и useFetch.
 links:
   - label: Исходники
     icon: i-simple-icons-github

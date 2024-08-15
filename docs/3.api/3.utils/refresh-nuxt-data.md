@@ -9,7 +9,7 @@ links:
 ---
 
 ::note
-`refreshNuxtData` повторно получает все данные с сервера и обновляет страницу, а также аннулирует кэш [`useAsyncData`](/docs/api/composables/use-async-data) , `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) и `useLazyFetch`.
+`refreshNuxtData` повторно получает все данные с сервера и обновляет страницу, а также аннулирует кэш [`useAsyncData`](/docs/api/composables/use-async-data), `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) и `useLazyFetch`.
 ::
 
 ## Тип

@@ -1,6 +1,6 @@
 ---
 title: 'updateAppConfig'
-description: 'Обновите конфигурацию приложения в runtime.'
+description: 'Обновляет конфигурацию приложения в runtime.'
 links:
   - label: Исходники
     icon: i-simple-icons-github
