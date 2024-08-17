@@ -4,7 +4,7 @@ description: 'Доступ к переменным runtime конфигурац�
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
+    to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/nuxt.ts
     size: xs
 ---
 
