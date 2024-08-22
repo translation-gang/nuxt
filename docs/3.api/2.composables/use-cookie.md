@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-В своих страницах, компонентах и плагинах вы можете использовать `useCookie`, SSR-дружественный композабл для чтения и записи cookies.
+В своих страницах, компонентах и плагинах вы можете использовать `useCookie`, SSR-совместимый композабл для чтения и записи cookies.
 
 ```ts
 const cookie = useCookie(name, options)
@@ -19,7 +19,7 @@ const cookie = useCookie(name, options)
 ::
 
 ::tip
-`useCookie`-ref автоматически сериализует и десериализует значение cookie в JSON.
+Ref `useCookie` автоматически сериализует и десериализует значение cookie в JSON.
 ::
 
 ## Пример
@@ -59,10 +59,10 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 Используйте эти параметры для установки срока действия cookie.
 
-`maxAge`: Указывает `number` (в секундах), которое будет значением для атрибута [`Max-Age` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.2).
+`maxAge`: Определяет `number` (в секундах), которое будет значением для атрибута [`Max-Age` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.2).
 Указанное число будет преобразовано в целое число путем округления вниз. По умолчанию maxAge не задается.
 
-`expires`: Указывает объект `Date` в качестве значения для атрибута [`Expires` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.1).
+`expires`: Определяет объект `Date` в качестве значения для атрибута [`Expires` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.1).
 По умолчанию срок действия не установлен. Большинство клиентов (браузеров) будут считать это «непостоянным cookie» и удалят его при определенном условии, например, при выходе из приложения веб-браузера.
 
 ::note
@@ -75,7 +75,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `httpOnly`
 
-Указывает `boolean` значение для атрибута [`HttpOnly` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.6). Если значение истинно, атрибут `HttpOnly` устанавливается, в противном случае - нет. По умолчанию атрибут `HttpOnly` не установлен.
+Определяет `boolean` значение для атрибута [`HttpOnly` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.6). Если значение истинно, атрибут `HttpOnly` устанавливается, в противном случае - нет. По умолчанию атрибут `HttpOnly` не установлен.
 
 ::warning
 Будьте осторожны при установке значения `true`, так как некоторые клиенты не позволят JavaScript на стороне клиента видеть cookie в `document.cookie`.
@@ -83,7 +83,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `secure`
 
-Указывает `boolean` значение для атрибута [`Secure` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.5). Если значение истинно, атрибут `Secure` устанавливается, в противном случае - нет. По умолчанию атрибут `Secure` не установлен.
+Определяет `boolean` значение для атрибута [`Secure` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.5). Если значение истинно, атрибут `Secure` устанавливается, в противном случае - нет. По умолчанию атрибут `Secure` не установлен.
 
 ::warning
 Будьте осторожны при установке значения `true`, так как некоторые клиенты не будут отправлять cookie обратно на сервер в будущем, если браузер не имеет HTTPS-соединения. Это может привести к ошибкам гидратации.
@@ -91,7 +91,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `partitioned`
 
-Указывает `boolean` значение для атрибута [`Partitioned` `Set-Cookie`](https://datatracker.ietf.org/doc/html/draft-cutler-httpbis-partitioned-cookies#section-2.1). Если значение истинно, атрибут `Partitioned` устанавливается, в противном случае - нет. По умолчанию атрибут `Partitioned` не установлен.
+Определяет `boolean` значение для атрибута [`Partitioned` `Set-Cookie`](https://datatracker.ietf.org/doc/html/draft-cutler-httpbis-partitioned-cookies#section-2.1). Если значение истинно, атрибут `Partitioned` устанавливается, в противном случае - нет. По умолчанию атрибут `Partitioned` не установлен.
 
 ::note
 Это атрибут, который еще не полностью стандартизирован и может измениться в будущем.
@@ -102,7 +102,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `domain`
 
-Указывает значение для атрибута [`Domain` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.3). По умолчанию домен не задается, и большинство клиентов будут считать, что cookie применяется только к текущему домену.
+Определяет значение для атрибута [`Domain` `Set-Cookie`](https://tools.ietf.org/html/rfc6265#section-5.2.3). По умолчанию домен не задается, и большинство клиентов будут считать, что cookie применяется только к текущему домену.
 
 ### `path`
 
@@ -110,7 +110,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `sameSite`
 
-Указывает `boolean` или `string` значение для атрибута [`SameSite` `Set-Cookie`](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.2.7).
+Определяет `boolean` или `string` значение для атрибута [`SameSite` `Set-Cookie`](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.2.7).
 
 - `true` установит для атрибута `SameSite` значение `Strict` для строгого соблюдения same-site.
 - `false` не будет устанавливать атрибут `SameSite`.
@@ -138,7 +138,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `default`
 
-Указывает функцию, которая возвращает значение cookie по умолчанию. Функция также может возвращать `Ref`.
+Определяет функцию, которая возвращает значение cookie по умолчанию. Функция также может возвращать `Ref`.
 
 ### `readonly`
 
@@ -146,7 +146,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 ### `watch`
 
-Указывает `boolean` или `string` значение для [watch](https://ru.vuejs.org/api/reactivity-core.html#watch) даты ref cookie.
+Определяет `boolean` или `string` значение для [слежения](https://ru.vuejs.org/api/reactivity-core.html#watch) за данными cookie ref.
 
 - `true` - Будет следить за изменениями данных cookie ref и их вложенных свойств (по умолчанию).
 - `shallow` - Будет следить за изменениями данных cookie ref только для свойств верхнего уровня.
