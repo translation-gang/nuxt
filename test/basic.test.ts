@@ -7,6 +7,7 @@ import { join, normalize } from 'pathe'
 import { $fetch as _$fetch, createPage, fetch, isDev, setup, startServer, url, useTestContext } from '@nuxt/test-utils/e2e'
 import { $fetchComponent } from '@nuxt/test-utils/experimental'
 
+import { resolveUnrefHeadInput } from '@unhead/vue'
 import { expectNoClientErrors, expectWithPolling, gotoPath, isRenderingJson, parseData, parsePayload, renderPage } from './utils'
 
 import type { NuxtIslandResponse } from '#app'
@@ -137,7 +138,7 @@ describe('pages', () => {
     // should apply attributes to client-only components
     expect(html).toContain('<div style="color:red;" class="client-only"></div>')
     // should render server-only components
-    expect(html.replace(/ data-island-uid="[^"]*"/, '')).toContain('<div class="server-only" style="background-color:gray;"> server-only component <div> server-only component child (non-server-only) </div></div>')
+    expect(html.replaceAll(/ data-island-uid="[^"]*"/g, '')).toContain('<div class="server-only" style="background-color:gray;"> server-only component <div> server-only component child (non-server-only) </div></div>')
     // should register global components automatically
     expect(html).toContain('global component registered automatically')
     expect(html).toContain('global component via suffix')
@@ -207,6 +208,45 @@ describe('pages', () => {
     expect(await page.getByRole('heading').textContent()).toMatchInlineSnapshot('"[...slug].vue"')
 
     await page.close()
+  })
+
+  it('validates routes with custom statusCode and statusMessage', async () => {
+    const CUSTOM_ERROR_CODE = 401
+    const CUSTOM_ERROR_MESSAGE = 'Custom error message'
+    const ERROR_PAGE_TEXT = 'This is the error page'
+    const PAGE_TEXT = 'You should not see this'
+
+    // Check status code and message on fetch
+    const res = await fetch('/validate-custom-error')
+    const serverText = await res.text()
+
+    expect(res.status).toEqual(CUSTOM_ERROR_CODE)
+    expect(serverText).toContain(CUSTOM_ERROR_MESSAGE)
+    expect(serverText).not.toContain(PAGE_TEXT)
+
+    // Client-side navigation
+    const { page } = await renderPage('/navigate-to-validate-custom-error')
+    await page.getByText('should throw a 401 error with custom message').click()
+    // error.vue has an h1 tag
+    await page.waitForSelector('h1')
+
+    const clientText = await page.innerText('body')
+
+    expect(clientText).toContain(CUSTOM_ERROR_MESSAGE)
+    expect(clientText).toContain(ERROR_PAGE_TEXT)
+    expect(clientText).not.toContain(PAGE_TEXT)
+
+    await page.close()
+
+    // Server-side navigation
+    const { page: serverPage } = await renderPage('/validate-custom-error')
+    const serverPageText = await serverPage.innerText('body')
+
+    expect(serverPageText).toContain(CUSTOM_ERROR_MESSAGE)
+    expect(serverPageText).toContain(ERROR_PAGE_TEXT)
+    expect(serverPageText).not.toContain(PAGE_TEXT)
+
+    await serverPage.close()
   })
 
   it('returns 500 when there is an infinite redirect', async () => {
@@ -600,7 +640,7 @@ describe('nuxt composables', () => {
       },
     })
     const cookies = res.headers.get('set-cookie')
-    expect(cookies).toMatchInlineSnapshot('"set-in-plugin=true; Path=/, accessed-with-default-value=default; Path=/, set=set; Path=/, browser-set=set; Path=/, browser-set-to-null=; Max-Age=0; Path=/, browser-set-to-null-with-default=; Max-Age=0; Path=/, browser-object-default=%7B%22foo%22%3A%22bar%22%7D; Path=/"')
+    expect(cookies).toMatchInlineSnapshot('"set-in-plugin=true; Path=/, accessed-with-default-value=default; Path=/, set=set; Path=/, browser-set=set; Path=/, browser-set-to-null=; Max-Age=0; Path=/, browser-set-to-null-with-default=; Max-Age=0; Path=/, browser-object-default=%7B%22foo%22%3A%22bar%22%7D; Path=/, theCookie=show; Path=/"')
   })
   it('updates cookies when they are changed', async () => {
     const { page } = await renderPage('/cookies')
@@ -620,6 +660,26 @@ describe('nuxt composables', () => {
     await page.getByText('Refresh cookie').click()
     text = await page.innerText('pre')
     expect(text).toContain('foobar')
+    await page.close()
+  })
+
+  it('sets cookies in composable to null in all components', async () => {
+    const { page } = await renderPage('/cookies')
+    const parentBannerText = await page.locator('#parent-banner').textContent()
+    expect(parentBannerText).toContain('parent banner')
+
+    const childBannerText = await page.locator('#child-banner').innerText()
+    expect(childBannerText).toContain('child banner')
+
+    // Clear the composable cookie
+    await page.getByText('Toggle cookie banner').click()
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 10)))
+
+    const parentBannerAfterToggle = await page.locator('#parent-banner').isVisible()
+    expect(parentBannerAfterToggle).toBe(false)
+
+    const childBannerAfterToggle = await page.locator('#child-banner').isVisible()
+    expect(childBannerAfterToggle).toBe(false)
     await page.close()
   })
 
@@ -1890,6 +1950,12 @@ describe('server components/islands', () => {
     await page.close()
   })
 
+  it('/server-page', async () => {
+    const html = await $fetch<string>('/server-page')
+    // test island head
+    expect(html).toContain('<meta name="author" content="Nuxt">')
+  })
+
   it.skipIf(isDev)('should allow server-only components to set prerender hints', async () => {
     // @ts-expect-error ssssh! untyped secret property
     const publicDir = useTestContext().nuxt._nitro.options.output.publicDir
@@ -2099,7 +2165,7 @@ describe('component islands', () => {
 
     result.html = result.html.replace(/ data-island-uid="[^"]*"/g, '')
     if (isDev()) {
-      result.head.link = result.head.link.filter(l => !l.href!.includes('@nuxt+ui-templates') && (l.href!.startsWith('_nuxt/components/islands/') && l.href!.includes('_nuxt/components/islands/RouteComponent')))
+      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/RouteComponent') && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
     }
 
     expect(result).toMatchInlineSnapshot(`
@@ -2121,7 +2187,7 @@ describe('component islands', () => {
       }),
     }))
     if (isDev()) {
-      result.head.link = result.head.link.filter(l => !l.href!.includes('@nuxt+ui-templates') && (l.href!.startsWith('_nuxt/components/islands/') && l.href!.includes('_nuxt/components/islands/LongAsyncComponent')))
+      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/LongAsyncComponent') && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
     }
     result.html = result.html.replaceAll(/ (data-island-uid|data-island-component)="([^"]*)"/g, '')
     expect(result).toMatchInlineSnapshot(`
@@ -2179,7 +2245,7 @@ describe('component islands', () => {
       }),
     }))
     if (isDev()) {
-      result.head.link = result.head.link.filter(l => !l.href!.includes('@nuxt+ui-templates') && (l.href!.startsWith('_nuxt/components/islands/') && l.href!.includes('_nuxt/components/islands/AsyncServerComponent')))
+      result.head.link = result.head.link?.filter(l => typeof l.href === 'string' && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */ && (!l.href.startsWith('_nuxt/components/islands/') || l.href.includes('AsyncServerComponent')))
     }
     result.props = {}
     result.components = {}
@@ -2204,7 +2270,11 @@ describe('component islands', () => {
     it('render server component with selective client hydration', async () => {
       const result = await $fetch<NuxtIslandResponse>('/__nuxt_island/ServerWithClient')
       if (isDev()) {
-        result.head.link = result.head.link.filter(l => !l.href!.includes('@nuxt+ui-templates') && (l.href!.startsWith('_nuxt/components/islands/') && l.href!.includes('_nuxt/components/islands/AsyncServerComponent')))
+        result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/LongAsyncComponent') && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
+
+        if (!result.head.link) {
+          delete result.head.link
+        }
       }
       const { components } = result
       result.components = {}
@@ -2227,10 +2297,10 @@ describe('component islands', () => {
       expect(teleportsEntries).toHaveLength(1)
       expect(teleportsEntries[0]![0].startsWith('Counter-')).toBeTruthy()
       expect(teleportsEntries[0]![1].props).toMatchInlineSnapshot(`
-      {
-        "multiplier": 1,
-      }
-    `)
+        {
+          "multiplier": 1,
+        }
+      `)
       expect(teleportsEntries[0]![1].html).toMatchInlineSnapshot(`"<div class="sugar-counter"> Sugar Counter 12 x 1 = 12 <button> Inc </button></div><!--teleport anchor-->"`)
     })
   }
@@ -2248,11 +2318,16 @@ describe('component islands', () => {
 
     if (isDev()) {
       const fixtureDir = normalize(fileURLToPath(new URL('./fixtures/basic', import.meta.url)))
-      for (const link of result.head.link) {
-        link.href = link.href!.replace(fixtureDir, '/<rootDir>').replaceAll('//', '/')
-        link.key = link.key!.replace(/-[a-z0-9]+$/i, '')
+      for (const key in result.head) {
+        if (key === 'link') {
+          result.head[key] = result.head[key]?.map((h) => {
+            if (h.href) {
+              h.href = resolveUnrefHeadInput(h.href).replace(fixtureDir, '/<rootDir>').replaceAll('//', '/')
+            }
+            return h
+          })
+        }
       }
-      result.head.link.sort((a, b) => b.href!.localeCompare(a.href!))
     }
 
     // TODO: fix rendering of styles in webpack
@@ -2263,7 +2338,6 @@ describe('component islands', () => {
           "style": [
             {
               "innerHTML": "pre[data-v-xxxxx]{color:blue}",
-              "key": "island-style",
             },
           ],
         }
@@ -2271,13 +2345,13 @@ describe('component islands', () => {
     } else if (isDev() && !isWebpack) {
       // TODO: resolve dev bug triggered by earlier fetch of /vueuse-head page
       // https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/core/runtime/nitro/renderer.ts#L139
-      result.head.link = result.head.link.filter(h => !h.href!.includes('SharedComponent'))
+      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || !l.href.includes('SharedComponent'))
+
       expect(result.head).toMatchInlineSnapshot(`
         {
           "link": [
             {
               "href": "/_nuxt/components/islands/PureComponent.vue?vue&type=style&index=0&scoped=c0c0cf89&lang.css",
-              "key": "island-link",
               "rel": "stylesheet",
             },
           ],
@@ -2627,17 +2701,19 @@ describe('Node.js compatibility for client-side', () => {
 })
 
 function normaliseIslandResult (result: NuxtIslandResponse) {
-  return {
-    ...result,
-    head: {
-      ...result.head,
-      style: result.head.style.map(s => ({
-        ...s,
-        innerHTML: (s.innerHTML || '').replace(/data-v-[a-z0-9]+/, 'data-v-xxxxx').replace(/\.[a-zA-Z0-9]+\.svg/, '.svg'),
-        key: s.key.replace(/-[a-z0-9]+$/i, ''),
-      })),
-    },
+  if (result.head.style) {
+    for (const style of result.head.style) {
+      if (typeof style !== 'string') {
+        if (style.innerHTML) {
+          style.innerHTML = (style.innerHTML as string).replace(/data-v-[a-z0-9]+/g, 'data-v-xxxxx')
+        }
+        if (style.key) {
+          style.key = style.key.replace(/-[a-z0-9]+$/i, '')
+        }
+      }
+    }
   }
+  return result
 }
 
 describe('import components', () => {
