@@ -158,9 +158,7 @@ const getSPARenderer = lazyCachedFunction(async () => {
   const renderToString = (ssrContext: NuxtSSRContext) => {
     const config = useRuntimeConfig(ssrContext.event)
     ssrContext.modules = ssrContext.modules || new Set<string>()
-    ssrContext!.payload = {
-      serverRendered: false,
-    }
+    ssrContext.payload.serverRendered = false
     ssrContext.config = {
       public: config.public,
       app: config.app,
@@ -305,7 +303,7 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
     error: !!ssrError,
     nuxt: undefined!, /* NuxtApp */
     payload: (ssrError ? { error: ssrError } : {}) as NuxtPayload,
-    _payloadReducers: {},
+    _payloadReducers: Object.create(null),
     modules: new Set(),
     islandContext,
   }

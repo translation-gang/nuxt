@@ -104,7 +104,7 @@ async function initNuxt (nuxt: Nuxt) {
 
     const shouldShowPrompt = nuxt.options.dev && hasTTY && !isCI
     if (!shouldShowPrompt) {
-      console.log(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
+      logger.info(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
     }
 
     async function promptAndUpdate () {
@@ -113,7 +113,7 @@ async function initNuxt (nuxt: Nuxt) {
         default: true,
       })
       if (result !== true) {
-        console.log(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
+        logger.info(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
         return
       }
 
@@ -147,7 +147,7 @@ async function initNuxt (nuxt: Nuxt) {
         consola.error(`Failed to update config: ${message}`)
       }
 
-      console.log(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
+      logger.info(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
     }
 
     nuxt.hooks.hookOnce('nitro:init', (nitro) => {
@@ -156,7 +156,7 @@ async function initNuxt (nuxt: Nuxt) {
       nitro.hooks.hookOnce('compiled', () => {
         warnedAboutCompatDate = true
         // Print warning
-        console.info(`Nuxt now supports pinning the behavior of provider and deployment presets with a compatibility date. We recommend you specify a \`compatibilityDate\` in your \`nuxt.config\` file, or set an environment variable, such as \`COMPATIBILITY_DATE=${todaysDate}\`.`)
+        logger.info(`Nuxt now supports pinning the behavior of provider and deployment presets with a compatibility date. We recommend you specify a \`compatibilityDate\` in your \`nuxt.config\` file, or set an environment variable, such as \`COMPATIBILITY_DATE=${todaysDate}\`.`)
         if (shouldShowPrompt) { promptAndUpdate() }
       })
     })
@@ -257,7 +257,8 @@ async function initNuxt (nuxt: Nuxt) {
   addWebpackPlugin(() => ImpoundPlugin.webpack(config))
 
   // add resolver for modules used in virtual files
-  addVitePlugin(() => resolveDeepImportsPlugin(nuxt))
+  addVitePlugin(() => resolveDeepImportsPlugin(nuxt), { client: false })
+  addVitePlugin(() => resolveDeepImportsPlugin(nuxt), { server: false })
 
   // Add transform for `onPrehydrate` lifecycle hook
   addBuildPlugin(prehydrateTransformPlugin(nuxt))
@@ -665,7 +666,7 @@ async function initNuxt (nuxt: Nuxt) {
   // Show compatibility version banner when Nuxt is running with a compatibility version
   // that is different from the current major version
   if (!(satisfies(nuxt._version, nuxt.options.future.compatibilityVersion + '.x'))) {
-    console.info(`Running with compatibility version \`${nuxt.options.future.compatibilityVersion}\``)
+    logger.info(`Running with compatibility version \`${nuxt.options.future.compatibilityVersion}\``)
   }
 
   await nuxt.callHook('ready', nuxt)
