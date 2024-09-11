@@ -71,7 +71,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 ::
 
 ::warning
-If you encounter the `data` variable destructured from a `useFetch` returns a string and not a JSON parsed object then make sure your component doesn't include an import statement like `import { useFetch } from '@vueuse/core`.
+Если вы столкнулись с тем, что переменная `data`, деструктурированная из `useFetch`, возвращает строку, а не разобранный JSON-объект, убедитесь, что ваш компонент не включает оператор импорта, подобный `import { useFetch } from '@vueuse/core'`.
 ::
 
 ::tip{icon="i-ph-video-duotone" to="https://www.youtube.com/watch?v=njsGVmcWviY" target="_blank"}
