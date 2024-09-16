@@ -147,7 +147,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 
 ```ts [Signature]
 function useFetch<DataT, ErrorT>(
-  url: string | Request | Ref<string | Request> | () => string | Request,
+  url: string | Request | Ref<string | Request> | (() => string) | Request,
   options?: UseFetchOptions<DataT>
 ): Promise<AsyncData<DataT, ErrorT>>
 
