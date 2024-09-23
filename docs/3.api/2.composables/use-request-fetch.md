@@ -1,6 +1,6 @@
 ---
 title: 'useRequestFetch'
-description: 'Forward the request context and headers for server-side fetch requests with the useRequestFetch composable.'
+description: 'Передавайте контекст запроса и заголовки для серверных fetch запросов с помощью композабла useRequestFetch.'
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -8,31 +8,31 @@ links:
     size: xs
 ---
 
-You can use `useRequestFetch` to forward the request context and headers when making server-side fetch requests.
+Вы можете использовать `useRequestFetch` для передачи контекста запроса и заголовков при выполнении fetch запросов на стороне сервера.
 
-When making a client-side fetch request, the browser automatically sends the necessary headers.
-However, when making a request during server-side rendering, because the request is made on the server, we need to forward the headers manually.
+При выполнении fetch запроса на стороне клиента, браузер автоматически отправляет необходимые заголовки.
+Однако при выполнении запроса во время рендеринга на стороне сервера, поскольку запрос выполняется на сервере, нам нужно пересылать заголовки вручную.
 
 ::note
-Headers that are **not meant to be forwarded** will **not be included** in the request. These headers include, for example:
+Заголовки, которые **не предназначены для пересылки**, **не будут включены** в запрос. К таким заголовкам относятся, например:
 `transfer-encoding`, `connection`, `keep-alive`, `upgrade`, `expect`, `host`, `accept`
 ::
 
 ::tip
-The [`useFetch`](/docs/api/composables/use-fetch) composable uses `useRequestFetch` under the hood to automatically forward the request context and headers.
+Композабл [`useFetch`](/docs/api/composables/use-fetch) использует `useRequestFetch` под капотом для автоматической передачи контекста и заголовков запроса.
 ::
 
 ::code-group
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-  // This will forward the user's headers to the `/api/foo` event handler
-  // Result: { cookies: { foo: 'bar' } }
+  // Это перенаправит заголовки пользователя в обработчик события `/api/foo`
+  // Результат: { cookies: { foo: 'bar' } }
   const requestFetch = useRequestFetch()
   const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))
   
-  // This will NOT forward anything
-  // Result: { cookies: {} }
+  // Это НЕ пересылает ничего
+  // Результат: { cookies: {} }
   const { data: notForwarded } = await useAsyncData(() => $fetch('/api/cookies')) 
 </script>
 ```
@@ -48,5 +48,5 @@ export default defineEventHandler((event) => {
 ::
 
 ::tip
-In the browser during client-side navigation, `useRequestFetch` will behave just like regular [`$fetch`](/docs/api/utils/dollarfetch).
+В браузере при навигации на клиенте, `useRequestFetch` будет вести себя так же, как и обычный [`$fetch`](/docs/api/utils/dollarfetch).
 ::
