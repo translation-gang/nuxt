@@ -138,7 +138,7 @@ Nuxt предоставляет следующие свойства через `
 
   Начиная с [Nuxt v3.4](https://nuxt.com/blog/v3-4#payload-enhancements), можно определить свой собственный редьюсер/ревайвер для типов, которые не поддерживаются Nuxt.
 
-  ::tip{icon="i-ph-video-duotone" to="https://www.youtube.com/watch?v=8w6ffRBs8a4" target="_blank"}
+  ::tip{icon="i-ph-video" to="https://www.youtube.com/watch?v=8w6ffRBs8a4" target="_blank"}
   Посмотрите видео от Александра Лихтера о сериализации полезной нагрузки, особенно в отношении классов.
   ::
 

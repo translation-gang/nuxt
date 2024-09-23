@@ -7,25 +7,25 @@ surround: false
 ---
 
 ::card-group
-  ::card{icon="i-ph-cube-duotone" title="Компоненты" to="/docs/api/components/client-only"}
+  ::card{icon="i-ph-cube" title="Компоненты" to="/docs/api/components/client-only"}
   Изучите встроенные компоненты Nuxt для страниц, лейаутов, тега head и многого другого.
   ::
-  ::card{icon="i-ph-arrows-left-right-duotone" title="Композаблы" to="/docs/api/composables/use-app-config"}
+  ::card{icon="i-ph-arrows-left-right" title="Композаблы" to="/docs/api/composables/use-app-config"}
   Откройте для себя композабл-функции Nuxt для загрузки данных, управления тегом head и прочего.
   ::
-  ::card{icon="i-ph-function-duotone" title="Утилиты" to="/docs/api/utils/dollarfetch"}
+  ::card{icon="i-ph-function" title="Утилиты" to="/docs/api/utils/dollarfetch"}
   Узнайте о вспомогательных функциях Nuxt для навигации, обработки ошибок и многого другого.
   ::
-  ::card{icon="i-ph-terminal-window-duotone" title="Команды" to="/docs/api/commands/add"}
+  ::card{icon="i-ph-terminal-window" title="Команды" to="/docs/api/commands/add"}
   Список команд Nuxt CLI для инициализации, анализа, сборки и просмотра вашего приложения.
   ::
-  ::card{icon="i-ph-toolbox-duotone" title="Nuxt Kit" to="/docs/api/kit/modules"}
+  ::card{icon="i-ph-toolbox" title="Nuxt Kit" to="/docs/api/kit/modules"}
   Понимание утилит Nuxt Kit для создания модулей и управления Nuxt.
   ::
-  ::card{icon="i-ph-brain-duotone" title="Продвинутые" to="/docs/api/advanced/hooks"}
+  ::card{icon="i-ph-brain" title="Продвинутые" to="/docs/api/advanced/hooks"}
   Глубокое изучение внутренних механизмов Nuxt с помощью хуков жизненного цикла.
   ::
-  ::card{icon="i-ph-gear-duotone" title="Конфигурация Nuxt" to="/docs/api/nuxt-config"}
+  ::card{icon="i-ph-gear" title="Конфигурация Nuxt" to="/docs/api/nuxt-config"}
   Исследование всех параметров конфигурации Nuxt для настройки вашего приложения.
   ::
 ::

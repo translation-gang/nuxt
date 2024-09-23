@@ -74,7 +74,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 Если вы столкнулись с тем, что переменная `data`, деструктурированная из `useFetch`, возвращает строку, а не разобранный JSON-объект, убедитесь, что ваш компонент не включает оператор импорта, подобный `import { useFetch } from '@vueuse/core'`.
 ::
 
-::tip{icon="i-ph-video-duotone" to="https://www.youtube.com/watch?v=njsGVmcWviY" target="_blank"}
+::tip{icon="i-ph-video" to="https://www.youtube.com/watch?v=njsGVmcWviY" target="_blank"}
 Посмотрите видео от Александра Лихтера, чтобы избежать неправильного использования `useFetch`!
 ::
 

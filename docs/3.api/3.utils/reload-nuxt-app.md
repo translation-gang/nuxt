@@ -14,7 +14,7 @@ links:
 
 По умолчанию он также сохраняет текущий `state` вашего приложения (то есть любое состояние, к которому вы могли получить доступ с помощью `useState`).
 
-::read-more{to="/docs/guide/going-further/experimental-features#restorestate" icon="i-ph-star-duotone"}
+::read-more{to="/docs/guide/going-further/experimental-features#restorestate" icon="i-ph-star"}
 Вы можете включить экспериментальное восстановление этого состояния, включив опцию `experimental.restoreState` в файле `nuxt.config`.
 ::
 

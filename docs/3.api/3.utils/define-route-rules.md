@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-::read-more{to="/docs/guide/going-further/experimental-features#inlinerouterules" icon="i-ph-star-duotone"}
+::read-more{to="/docs/guide/going-further/experimental-features#inlinerouterules" icon="i-ph-star"}
 Эта функция является экспериментальной, и для ее использования необходимо включить опцию `experimental.inlineRouteRules` в вашем `nuxt.config`.
 ::
 
@@ -47,6 +47,6 @@ export default defineNuxtConfig({
 
 Для более точного управления, например, если вы используете настраиваемый `path` или `alias`, установленный в [`definePageMeta`](/docs/api/utils/define-page-meta) страницы, вы должны установить `routeRules` непосредственно в вашем `nuxt.config`.
 
-::read-more{to="/docs/guide/concepts/rendering#hybrid-rendering" icon="i-ph-medal-duotone"}
+::read-more{to="/docs/guide/concepts/rendering#hybrid-rendering" icon="i-ph-medal"}
 Узнайте больше о `routeRules`.
 ::
