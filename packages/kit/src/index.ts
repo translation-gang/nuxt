@@ -34,4 +34,3 @@ export { logger, useLogger } from './logger'
 // Internal Utils
 export { resolveModule, tryResolveModule, importModule, tryImportModule, requireModule, tryRequireModule } from './internal/esm'
 export type { ImportModuleOptions, ResolveModuleOptions } from './internal/esm'
-export * from './internal/template'

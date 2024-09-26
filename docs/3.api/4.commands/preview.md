@@ -1,8 +1,8 @@
 ---
 title: "nuxi preview"
-description: The preview command starts a server to preview your application after the build command.
+description: Команда preview запускает сервер для предварительного просмотра вашего приложения после выполнения команды build.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/preview.ts
     size: xs
@@ -12,15 +12,15 @@ links:
 npx nuxi preview|start [rootDir] [--dotenv]
 ```
 
-The `preview` command starts a server to preview your Nuxt application after running the `build` command. The `start` command is an alias for `preview`. When running your application in production refer to the [Deployment section](/docs/getting-started/deployment).
+Команда `preview` запускает сервер для предварительного просмотра вашего приложения Nuxt после выполнения команды `build`. Команда `start` является псевдонимом для `preview`. При запуске приложения в продакшен обратитесь к разделу [Развертывание](/docs/getting-started/deployment).
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The root directory of the application to preview.
-`--dotenv` | `.` | Point to another `.env` file to load, **relative** to the root directory.
+Параметр   | По умолчанию | Описание
+-----------|--------------|--------------------------------------------------------------------------
+`rootDir`  | `.`          | Корневая директория приложения для предварительного просмотра.
+`--dotenv` | `.`          | Указывает на другой файл `.env` для загрузки, **относительно** корневой директории.
 
-This command sets `process.env.NODE_ENV` to `production`. To override, define `NODE_ENV` in a `.env` file or as command-line argument.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`. Для переопределения определите `NODE_ENV` в файле `.env` или в качестве аргумента командной строки.
 
 ::note
-For convenience, in preview mode, your [`.env`](/docs/guide/directory-structure/env) file will be loaded into `process.env`. (However, in production you will need to ensure your environment variables are set yourself.)
+Для удобства в режиме предварительного просмотра ваш файл [`.env`](/docs/guide/directory-structure/env) будет загружен в `process.env`. (Однако в продакшене вам придется убедиться, что ваши переменные окружения установлены самостоятельно).
 ::

@@ -1,31 +1,31 @@
 ---
 title: 'showError'
-description: Nuxt provides a quick and simple way to show a full screen error page if needed.
+description: Nuxt предоставляет быстрый и простой способ показать страницу ошибки на весь экран, если это необходимо.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/error.ts
     size: xs
 ---
 
-Within the [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context) you can use `showError` to show an error.
+В рамках [Nuxt-контекста](/docs/guide/going-further/nuxt-app#the-nuxt-context) вы можете использовать `showError`, чтобы показать ошибку.
 
-**Parameters:**
+**Параметры:**
 
 - `error`: `string | Error | Partial<{ cause, data, message, name, stack, statusCode, statusMessage }>`
 
 ```ts
-showError("😱 Oh no, an error has been thrown.")
+showError("😱 О нет, произошла ошибка.")
 showError({
   statusCode: 404,
-  statusMessage: "Page Not Found"
+  statusMessage: "Страница не найдена"
 })
 ```
 
-The error is set in the state using [`useError()`](/docs/api/composables/use-error) to create a reactive and SSR-friendly shared error state across components.
+Ошибка устанавливается в состоянии с помощью [`useError()`](/docs/api/composables/use-error) для создания реактивного и подходящего для SSR общего состояния ошибки между компонентами.
 
 ::tip
-`showError` calls the `app:error` hook.
+`showError` вызывает хук `app:error`.
 ::
 
 :read-more{to="/docs/getting-started/error-handling"}

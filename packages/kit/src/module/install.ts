@@ -3,7 +3,6 @@ import type { ModuleMeta, Nuxt, NuxtConfig, NuxtModule } from '@nuxt/schema'
 import { dirname, isAbsolute, join, resolve } from 'pathe'
 import { defu } from 'defu'
 import { createJiti } from 'jiti'
-import { isNuxt2 } from '../compatibility'
 import { useNuxt } from '../context'
 import { resolveAlias } from '../resolve'
 import { logger } from '../logger'
@@ -26,12 +25,7 @@ export async function installModule<
   }
 
   // Call module
-  const res = (
-    isNuxt2()
-      // @ts-expect-error Nuxt 2 `moduleContainer` is not typed
-      ? await nuxtModule.call(nuxt.moduleContainer, inlineOptions, nuxt)
-      : await nuxtModule(inlineOptions, nuxt)
-  ) ?? {}
+  const res = await nuxtModule(inlineOptions || {}, nuxt) ?? {}
   if (res === false /* setup aborted */) {
     return
   }

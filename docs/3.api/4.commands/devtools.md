@@ -1,8 +1,8 @@
 ---
 title: "nuxi devtools"
-description: The devtools command allows you to enable or disable Nuxt DevTools on a per-project basis.
+description: Команда devtools позволяет включить или отключить Nuxt DevTools для каждого проекта.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/devtools.ts
     size: xs
@@ -12,12 +12,12 @@ links:
 npx nuxi devtools enable|disable [rootDir]
 ```
 
-Running `nuxi devtools enable` will install the Nuxt DevTools globally, and also enable it within the particular project you are using. It is saved as a preference in your user-level `.nuxtrc`. If you want to remove devtools support for a particular project, you can run `nuxi devtools disable`.
+Запуск `nuxi devtools enable` установит Nuxt DevTools глобально и также включит его в конкретном проекте, который вы используете. Он сохраняется как параметр в вашем файле `.nuxtrc` на уровне пользователя. Если вы хотите удалить поддержку devtools для конкретного проекта, вы можете запустить `nuxi devtools disable`.
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The root directory of the app you want to enable devtools for.
+Параметр  | По умолчанию | Описание
+----------|--------------|---------------------------------------------------------------
+`rootDir` | `.`          | Корневая директория приложения, для которого вы хотите включить devtools.
 
 ::read-more{icon="i-simple-icons-nuxtdotjs" to="https://devtools.nuxt.com" target="_blank"}
-Read more about the **Nuxt DevTools**.
+Подробнее о **Nuxt DevTools**.
 ::

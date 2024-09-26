@@ -1,8 +1,8 @@
 ---
 title: "nuxi analyze"
-description: "Analyze the production bundle or your Nuxt application."
+description: "Проанализируйте продакшен бандл или ваше приложение Nuxt."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/analyze.ts
     size: xs
@@ -12,12 +12,12 @@ links:
 npx nuxi analyze [--log-level] [rootDir]
 ```
 
-The `analyze` command builds Nuxt and analyzes the production bundle (experimental).
+Команда `analyze` собирает Nuxt и анализирует продакшен бандл (экспериментально).
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The directory of the target application.
+Параметр  | По умолчанию | Описание
+----------|--------------|-----------------------------------------
+`rootDir` | `.`          | Директория целевого приложения.
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`.
 ::

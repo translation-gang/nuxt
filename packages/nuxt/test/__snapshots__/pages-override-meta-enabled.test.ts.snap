@@ -329,7 +329,6 @@
   "should properly override route name if definePageMeta name override is defined.": [
     {
       "component": "() => import("pages/index.vue")",
-      "meta": "mockMeta || {}",
       "name": ""home"",
       "path": ""/"",
     },

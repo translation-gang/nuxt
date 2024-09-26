@@ -1,55 +1,55 @@
 ---
 title: 'createError'
-description: Create an error object with additional metadata.
+description: Создает объект ошибки с дополнительными мета-данными.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/error.ts
     size: xs
 ---
 
-You can use this function to create an error object with additional metadata. It is usable in both the Vue and Nitro portions of your app, and is meant to be thrown.
+Эту функцию можно использовать для создания объекта ошибки с дополнительными мета-данными. Она может использоваться как во Vue, так и в Nitro частях вашего приложения и предназначена для генерации исключений.
 
-## Parameters
+## Параметры
 
 - `err`: `string | { cause, data, message, name, stack, statusCode, statusMessage, fatal }`
 
-You can pass either a string or an object to the `createError` function. If you pass a string, it will be used as the error `message`, and the `statusCode` will default to `500`. If you pass an object, you can set multiple properties of the error, such as `statusCode`, `message`, and other error properties.
+В функцию `createError` можно передать либо строку, либо объект. Если вы передадите строку, она будет использована в качестве сообщения об ошибке  `message`, а код состояния `statusCode` по умолчанию будет равен `500`. Если вы передадите объект, вы сможете задать несколько свойств ошибки, таких как `statusCode`, `message` и другие свойства ошибки.
 
-## In Vue App
+## В приложении Vue
 
-If you throw an error created with `createError`:
+Если вы генерируете исключение, созданное с помощью `createError`:
 
-- on server-side, it will trigger a full-screen error page which you can clear with `clearError`.
-- on client-side, it will throw a non-fatal error for you to handle. If you need to trigger a full-screen error page, then you can do this by setting `fatal: true`.
+- на сервере это приведет к отображению полноэкранной страницы ошибки, которую можно очистить с помощью `clearError`.
+- на клиенте это приведет к генерации нефатальной ошибки для вашей обработки. Если вам нужно вызвать полноэкранную страницу ошибки, то вы можете сделать это, установив `fatal: true`.
 
-### Example
+### Пример
 
 ```vue [pages/movies/[slug\\].vue]
 <script setup lang="ts">
 const route = useRoute()
 const { data } = await useFetch(`/api/movies/${route.params.slug}`)
 if (!data.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+  throw createError({ statusCode: 404, statusMessage: 'Страница не найдена' })
 }
 </script>
 ```
 
-## In API Routes
+## В API-маршрутах
 
-Use `createError` to trigger error handling in server API routes.
+Используйте `createError` для активации обработки ошибок в API-маршрутах на сервере.
 
-### Example
+### Пример
 
 ```ts [server/api/error.ts]
 export default eventHandler(() => {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Page Not Found'
+    statusMessage: 'Страница не найдена'
   })
 })
 ```
 
-In API routes, using `createError` by passing an object with a short `statusMessage` is recommended because it can be accessed on the client side. Otherwise, a `message` passed to `createError` on an API route will not propagate to the client. Alternatively, you can use the `data` property to pass data back to the client. In any case, always consider avoiding to put dynamic user input to the message to avoid potential security issues.
+В API-маршрутах рекомендуется использовать `createError`, передавая объект с коротким `statusMessage`, потому что он может быть получен на клиенте. В противном случае сообщение `message`, переданное в `createError` в API-маршруте, не будет распространяться на клиенте. Альтернативно, вы можете использовать свойство `data`, чтобы передать данные на клиент. В любом случае, всегда старайтесь избегать размещения динамического ввода пользователя в сообщении, чтобы избежать потенциальных проблем безопасности.
 
 :read-more{to="/docs/getting-started/error-handling"}

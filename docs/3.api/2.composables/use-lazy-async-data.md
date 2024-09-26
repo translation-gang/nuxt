@@ -1,35 +1,35 @@
 ---
 title: useLazyAsyncData
-description: This wrapper around useAsyncData triggers navigation immediately.
+description: Это обертка вокруг useAsyncData запускает навигацию немедленно.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
     size: xs
 ---
 
-## Description
+## Описание
 
-By default, [`useAsyncData`](/docs/api/composables/use-async-data) blocks navigation until its async handler is resolved. `useLazyAsyncData` provides a wrapper around [`useAsyncData`](/docs/api/composables/use-async-data) that triggers navigation before the handler is resolved by setting the `lazy` option to `true`.
+По умолчанию, [`useAsyncData`](/docs/api/composables/use-async-data) блокирует навигацию до тех пор, пока его асинхронный обработчик не будет разрешен. `useLazyAsyncData` предоставляет обертку [`useAsyncData`](/docs/api/composables/use-async-data), которая запускает навигацию до разрешения обработчика, установив опцию `lazy` в `true`.
 
 ::note
-`useLazyAsyncData` has the same signature as [`useAsyncData`](/docs/api/composables/use-async-data).
+`useLazyAsyncData` имеет ту же сигнатуру, что и [`useAsyncData`](/docs/api/composables/use-async-data).
 ::
 
 :read-more{to="/docs/api/composables/use-async-data"}
 
-## Example
+## Пример
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-/* Navigation will occur before fetching is complete.
-  Handle 'pending' and 'error' states directly within your component's template
+/* Навигация произойдет до завершения загрузки.
+  Обрабатывайте состояния 'pending' и 'error' непосредственно в шаблоне компонента.
 */
 const { status, data: count } = await useLazyAsyncData('count', () => $fetch('/api/count'))
 
 watch(count, (newCount) => {
-  // Because count might start out null, you won't have access
-  // to its contents immediately, but you can watch it.
+  // Поскольку count может быть изначально равным null, вы не сможете получить доступ
+  // к его содержимому немедленно, но вы можете наблюдать за ним.
 })
 </script>
 
@@ -41,7 +41,7 @@ watch(count, (newCount) => {
 ```
 
 ::warning
-`useLazyAsyncData` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyAsyncData`.
+`useLazyAsyncData` - это зарезервированное имя функции, которое трансформируется компилятором, поэтому вы не должны называть свою собственную функцию `useLazyAsyncData`.
 ::
 
 :read-more{to="/docs/getting-started/data-fetching"}

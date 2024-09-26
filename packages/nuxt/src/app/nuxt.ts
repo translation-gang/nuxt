@@ -7,7 +7,7 @@ import { getContext } from 'unctx'
 import type { SSRContext, createRenderer } from 'vue-bundle-renderer/runtime'
 import type { EventHandlerRequest, H3Event } from 'h3'
 import type { AppConfig, AppConfigInput, RuntimeConfig } from 'nuxt/schema'
-import type { RenderResponse } from 'nitropack'
+import type { RenderResponse } from 'nitro/types'
 import type { LogObject } from 'consola'
 import type { MergeHead, VueHeadClient } from '@unhead/vue'
 
@@ -22,8 +22,6 @@ import type { RouteAnnouncer } from '../app/composables/route-announcer'
 // @ts-expect-error virtual file
 import { appId, chunkErrorEvent, multiApp } from '#build/nuxt.config.mjs'
 
-// TODO: temporary module for backwards compatibility
-import type { DefaultAsyncDataErrorValue, DefaultErrorValue } from '#app/defaults'
 import type { NuxtAppLiterals } from '#app'
 
 function getNuxtAppCtx (id = appId || 'nuxt-app') {
@@ -93,14 +91,13 @@ export interface NuxtPayload {
   state: Record<string, any>
   once: Set<string>
   config?: Pick<RuntimeConfig, 'public' | 'app'>
-  error?: NuxtError | DefaultErrorValue
-  _errors: Record<string, NuxtError | DefaultAsyncDataErrorValue>
+  error?: NuxtError | undefined
+  _errors: Record<string, NuxtError | undefined>
   [key: string]: unknown
 }
 
 interface _NuxtApp {
   vueApp: App<Element>
-  globalName: string
   versions: Record<string, string>
 
   hooks: Hookable<RuntimeNuxtHooks>
@@ -133,7 +130,7 @@ interface _NuxtApp {
      * @deprecated This may be removed in a future major version.
      */
     pending: Ref<boolean>
-    error: Ref<Error | DefaultAsyncDataErrorValue>
+    error: Ref<Error | undefined>
     status: Ref<AsyncDataRequestStatus>
     /** @internal */
     _default: () => unknown
@@ -251,7 +248,6 @@ export type ObjectPluginInput<Injections extends Record<string, unknown> = Recor
 export interface CreateOptions {
   vueApp: NuxtApp['vueApp']
   ssrContext?: NuxtApp['ssrContext']
-  globalName?: NuxtApp['globalName']
   /**
    * The id of the Nuxt application, overrides the default id specified in the Nuxt config (default: `nuxt-app`).
    */
@@ -265,7 +261,6 @@ export function createNuxtApp (options: CreateOptions) {
     _id: options.id || appId || 'nuxt-app',
     _scope: effectScope(),
     provide: undefined,
-    globalName: 'nuxt',
     versions: {
       get nuxt () { return __NUXT_VERSION__ },
       get vue () { return nuxtApp.vueApp.version },

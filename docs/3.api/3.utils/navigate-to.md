@@ -1,36 +1,36 @@
 ---
 title: "navigateTo"
-description: navigateTo is a helper function that programmatically navigates users.
+description: navigateTo - это вспомогательная функция, которая осуществляет программную навигацию пользователей.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs
 ---
 
 ::note
-`navigateTo` is available on both client and server side (but not within Nitro routes).
+`navigateTo` доступен как на сервере, так и на клиенте (но не в маршрутах Nitro).
 ::
 
-## Usage
+## Использование
 
-`navigateTo` is available on both server side and client side. It can be used within the [Nuxt context](/docs/guide/going-further/nuxt-app#the-nuxt-context), or directly, to perform page navigation.
+Функция `navigateTo` доступна как на сервере, так и на клиенте. Ее можно использовать внутри [Nuxt-контекста](/docs/guide/going-further/nuxt-app#the-nuxt-context) или напрямую для осуществления постраничной навигации.
 
 ::tip
-To send a redirect from a server endpoint, use [`sendRedirect`](https://h3.unjs.io/utils/response#sendredirectevent-location-code) instead.
+Чтобы отправить редирект с эндпоинта сервера, используйте вместо этого [`sendRedirect`](https://h3.unjs.io/utils/response#sendredirectevent-location-code).
 ::
 
-### Within a Vue Component
+### Внутри компонента Vue
 
 ```vue
 <script setup lang="ts">
-// passing 'to' as a string
+// передаем 'to' в виде строки
 await navigateTo('/search')
 
-// ... or as a route object
+// ... или в виде объекта маршрута
 await navigateTo({ path: '/search' })
 
-// ... or as a route object with query parameters
+// ... или как объект маршрута с параметрами запроса
 await navigateTo({
   path: '/search',
   query: {
@@ -41,12 +41,12 @@ await navigateTo({
 </script>
 ```
 
-### Within Route Middleware
+### Внутри Route Middleware
 
 ```ts
 export default defineNuxtRouteMiddleware((to, from) => {
   if (to.path !== '/search') {
-    // setting the redirect code to '301 Moved Permanently'
+    // установка кода редиректа на '301 Moved Permanently'
     return navigateTo('/search', { redirectCode: 301 })
   }
 })
@@ -54,38 +54,38 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 :read-more{to="/docs/guide/directory-structure/middleware"}
 
-### External URL
+### Внешний URL
 
-The `external` parameter in `navigateTo` influences how navigating to URLs is handled:
+Параметр `external` в `navigateTo` влияет на то, как будет осуществляться переход по URL:
 
-- **Without `external: true`**:
-  - Internal URLs navigate as expected.
-  - External URLs throw an error.
+- **Без параметра `external: true`**:
+  - Внутренние URL переходят, как и ожидалось.
+  - Внешние URL-адреса выдают ошибку.
 
-- **With `external: true`**:
-  - Internal URLs navigate with a full-page reload.
-  - External URLs navigate as expected.
+- **С `external: true`**:
+  - Внутренние URL переходят с полной перезагрузкой страницы.
+  - Внешние URL переходят, как и ожидалось.
 
-#### Example
+#### Пример
 
 ```vue
 <script setup lang="ts">
-// will throw an error;
-// navigating to an external URL is not allowed by default
+// выкинет ошибку;
+// переход на внешний URL по умолчанию запрещен
 await navigateTo('https://nuxt.com')
 
-// will redirect successfully with the 'external' parameter set to 'true'
+// произойдет успешная переадресация с параметром 'external', установленным в значение 'true'
 await navigateTo('https://nuxt.com', {
   external: true
 })
 </script>
 ```
 
-### Using open()
+### Использование open()
 
 ```vue
 <script setup lang="ts">
-// will open 'https://nuxt.com' in a new tab
+// откроет 'https://nuxt.com' в новой вкладке
 await navigateTo('https://nuxt.com', {
   open: {
     target: '_blank',
@@ -98,7 +98,7 @@ await navigateTo('https://nuxt.com', {
 </script>
 ```
 
-## Type
+## Тип
 
 ```ts
 navigateTo(to: RouteLocationRaw | undefined | null, options?: NavigateToOptions) => Promise<void | NavigationFailure> | RouteLocationRaw
@@ -112,101 +112,101 @@ interface NavigateToOptions {
 ```
 
 ::warning
-Make sure to always use `await` or `return` on result of `navigateTo` when calling it.
+Обязательно используйте `await` или `return` для результата `navigateTo` при его вызове.
 ::
 
-## Parameters
+## Параметры
 
 ### `to`
 
-**Type**: [`RouteLocationRaw`](https://router.vuejs.org/api/interfaces/RouteLocationOptions.html#Interface-RouteLocationOptions) | `undefined` | `null`
+**Тип**: [`RouteLocationRaw`](https://router.vuejs.org/api/interfaces/RouteLocationOptions.html#Interface-RouteLocationOptions) | `undefined` | `null`
 
-**Default**: `'/'`
+**По умолчанию**: `'/'`
 
-`to` can be a plain string or a route object to redirect to. When passed as `undefined` or `null`, it will default to `'/'`.
+`to` может быть простой строкой или объектом маршрута, на который нужно перенаправить. Если передать `undefined` или `null`, то по умолчанию будет указано `'/'`.
 
-### `options` (optional)
+### `options` (опционально)
 
-**Type**: `NavigateToOptions`
+**Тип**: `NavigateToOptions`
 
-An object accepting the following properties:
+Объект, принимающий следующие свойства:
 
-- `replace` (optional)
+- `replace` (опционально)
 
-  **Type**: `boolean`
+  **Тип**: `boolean`
 
-  **Default**: `false`
+  **По умолчанию**: `false`
 
-  By default, `navigateTo` pushes the given route into the Vue Router's instance on the client side.
+  По умолчанию `navigateTo` пробрасывает заданный маршрут в экземпляр Vue Router на стороне клиента.
 
-  This behavior can be changed by setting `replace` to `true`, to indicate that given route should be replaced.
+  Это поведение можно изменить, установив `replace` в `true`, чтобы указать, что данный маршрут должен быть заменен.
 
-- `redirectCode` (optional)
+- `redirectCode` (опционально)
 
-  **Type**: `number`
+  **Тип**: `number`
 
-  **Default**: `302`
+  **По умолчанию**: `302`
 
-  `navigateTo` redirects to the given path and sets the redirect code to [`302 Found`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302) by default when the redirection takes place on the server side.
+  `navigateTo` перенаправляет на указанный путь и устанавливает код перенаправления на [`302 Found`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302) по умолчанию, когда перенаправление происходит на стороне сервера.
 
-  This default behavior can be modified by providing different `redirectCode`. Commonly, [`301 Moved Permanently`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301) can be used for permanent redirections.
+  Это поведение по умолчанию можно изменить, указав другой `redirectCode`. Обычно для постоянных перенаправлений используется [`301 Moved Permanently`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301).
 
-- `external` (optional)
+- `external` (опционально)
 
-  **Type**: `boolean`
+  **Тип**: `boolean`
 
-  **Default**: `false`
+  **По умолчанию**: `false`
 
-  Allows navigating to an external URL when set to `true`. Otherwise, `navigateTo` will throw an error, as external navigation is not allowed by default.
+  Позволяет переходить на внешний URL, если установлено значение `true`. В противном случае `navigateTo` выдаст ошибку, так как внешняя навигация по умолчанию запрещена.
 
-- `open` (optional)
+- `open` (опционально)
 
-  **Type**: `OpenOptions`
+  **Тип**: `OpenOptions`
 
-  Allows navigating to the URL using the [open()](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) method of the window. This option is only applicable on the client side and will be ignored on the server side.
+  Позволяет перейти к URL с помощью метода [open()](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) окна. Этот параметр применим только на стороне клиента и будет игнорироваться на стороне сервера.
 
-  An object accepting the following properties:
+  Объект, принимающий следующие свойства:
 
   - `target`
 
-    **Type**: `string`
+    **Тип**: `string`
 
-    **Default**: `'_blank'`
+    **По умолчанию**: `'_blank'`
 
-    A string, without whitespace, specifying the name of the browsing context the resource is being loaded into.
+    Строка без пробелов, указывающая имя контекста просмотра, в который загружается ресурс.
 
-  - `windowFeatures` (optional)
+  - `windowFeatures` (опционально)
 
-    **Type**: `OpenWindowFeatures`
+    **Тип**: `OpenWindowFeatures`
 
-    An object accepting the following properties:
+    Объект, принимающий следующие свойства:
 
-    - `popup` (optional)
+    - `popup` (опционально)
 
-      **Type**: `boolean`
+      **Тип**: `boolean`
 
-    - `width` or `innerWidth` (optional)
+    - `width` или `innerWidth` (опционально)
 
-      **Type**: `number`
+      **Тип**: `number`
 
-    - `height` or `innerHeight` (optional)
+    - `height` или `innerHeight` (опционально)
 
-      **Type**: `number`
+      **Тип**: `number`
 
-    - `left` or `screenX` (optional)
+    - `left` или `screenX` (опционально)
 
-      **Type**: `number`
+      **Тип**: `number`
 
-    - `top` or `screenY` (optional)
+    - `top` или `screenY` (опционально)
 
-      **Type**: `number`
+      **Тип**: `number`
 
-    - `noopener` (optional)
+    - `noopener` (опционально)
 
-      **Type**: `boolean`
+      **Тип**: `boolean`
 
-    - `noreferrer` (optional)
+    - `noreferrer` (опционально)
 
-      **Type**: `boolean`
+      **Тип**: `boolean`
 
-    Refer to the [documentation](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) for more detailed information on the **windowFeatures** properties.
+    Более подробную информацию о свойствах **windowFeatures** см. в [документации](https://developer.mozilla.org/en-US/docs/Web/API/Window/open).

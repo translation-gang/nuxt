@@ -1,8 +1,8 @@
 ---
 title: "nuxi build"
-description: "Build your Nuxt application."
+description: "Собирает ваше приложение Nuxt."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/build.ts
     size: xs
@@ -12,20 +12,20 @@ links:
 npx nuxi build [--prerender] [--preset] [--dotenv] [--log-level] [rootDir]
 ```
 
-The `build` command creates a `.output` directory with all your application, server and dependencies ready for production.
+Команда `build` создает директорию `.output` со всем вашим приложением, сервером и зависимостями, готовыми для продакшена.
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The root directory of the application to bundle.
-`--prerender` | `false` | Pre-render every route of your application. (**note:** This is an experimental flag. The behavior might be changed.)
-`--preset` | - | Set a [Nitro preset](https://nitro.unjs.io/deploy#changing-the-deployment-preset)
-`--dotenv` | `.` | Point to another `.env` file to load, **relative** to the root directory.
-`--log-level` | `info` | Specify build-time logging level, allowing `silent` \| `info` \| `verbose`.
+Параметр      | По умолчанию | Описание
+--------------|--------------|---------------------------------------------------------------------------------------------------------------------
+`rootDir`     | `.`          | Корневая директория приложения для пакетирования.
+`--prerender` | `false`      | Предварительный рендеринг всех маршрутов вашего приложения. (**Примечание:** это экспериментальный флаг. Поведение может быть изменено.)
+`--preset`    | -            | Установить [пресет Nitro](https://nitro.unjs.io/deploy#changing-the-deployment-preset)
+`--dotenv`    | `.`          | Укажите другой файл `.env` для загрузки, **относительно** корневой директории.
+`--log-level` | `info`       | Укажите уровень журналирования во время сборки, допускается `silent` \| `info` \| `verbose`.
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`.
 ::
 
 ::note
-`--prerender` will always set the `preset` to `static`
+`--prerender` всегда будет устанавливать `preset` в `static`
 ::

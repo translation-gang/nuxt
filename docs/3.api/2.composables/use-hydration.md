@@ -1,36 +1,36 @@
 ---
 title: 'useHydration'
-description: 'Allows full control of the hydration cycle to set and receive data from the server.'
+description: 'Позволяет полностью контролировать цикл гидратации, задавать и получать данные с сервера.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/hydrate.ts
     size: xs
 ---
 
-`useHydration` is a built-in composable that provides a way to set data on the server side every time a new HTTP request is made and receive that data on the client side. This way `useHydration` allows you to take full control of the hydration cycle.
+`useHydration` - это встроенный композабл, который предоставляет возможность задавать данные на стороне сервера при каждом новом HTTP-запросе и получать их на стороне клиента. Таким образом, `useHydration` позволяет вам полностью контролировать цикл гидратации.
 
 ::note
-This is an advanced composable and is mostly used internally (`useAsyncData`) or by Nuxt modules.
+Это продвинутый композабл, который в основном используется внутри (`useAsyncData`) или модулями Nuxt.
 ::
 
-## Type
+## Тип
 
 ```ts [signature]
 useHydration <T> (key: string, get: () => T, set: (value: T) => void) => {}
 ```
 
-You can use `useHydration()` within composables, plugins and components.
+Вы можете использовать `useHydration()` в композаблах, плагинах и компонентах.
 
-`useHydration` accepts three parameters:
+`useHydration` принимает три параметра:
 
-- `key`: unique key that identifies the data in your Nuxt application
-  - **Type**: `String`
-- `get`: function that returns the value to set the initial data
-  - **Type**: `Function`
-- `set`: function that receives the data on the client-side
-  - **Type**: `Function`
+- `key`: уникальный ключ, идентифицирующий данные в вашем Nuxt-приложении.
+  - **тип**: `String`.
+- `get`: функция, возвращающая значение для установки исходных данных
+  - **тип**: `Function`
+- `set`: функция, которая получает данные на стороне клиента
+  - **тип**: `Function`
 
-Once the initial data is returned using the `get` function on the server side, you can access that data within `nuxtApp.payload` using the unique key that is passed as the first parameter in `useHydration` composable.
+После возврата исходных данных с помощью функции `get` на стороне сервера, вы можете получить доступ к этим данным внутри `nuxtApp.payload`, используя уникальный ключ, который передается в качестве первого параметра в композабле `useHydration`.
 
 :read-more{to="/docs/getting-started/data-fetching"}

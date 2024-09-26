@@ -18,7 +18,7 @@ export default defineUntypedSchema({
     },
     /**
      * Options for the Vue compiler that will be passed at build time.
-     * @see [Vue documentation](https://vuejs.org/api/application.html#app-config-compileroptions)
+     * @see [Vue documentation](https://ru.vuejs.org/api/application.html#app-config-compileroptions)
      * @type {typeof import('@vue/compiler-core').CompilerOptions}
      */
     compilerOptions: {},
@@ -35,6 +35,13 @@ export default defineUntypedSchema({
      * @type {boolean}
      */
     propsDestructure: true,
+
+    /**
+     * It is possible to pass configure the Vue app globally. Only serializable options
+     * may be set in your `nuxt.config`. All other options should be set at runtime in a Nuxt plugin..
+     * @see [Vue app config documentation](https://vuejs.org/api/application.html#app-config)
+     */
+    config: undefined,
   },
 
   /**
@@ -157,7 +164,7 @@ export default defineUntypedSchema({
      *
      * This can be overridden with `definePageMeta` on an individual page.
      * Only JSON-serializable values are allowed.
-     * @see [Vue Transition docs](https://vuejs.org/api/built-in-components.html#transition)
+     * @see [Vue Transition docs](https://ru.vuejs.org/api/built-in-components.html#transition)
      * @type {typeof import('../src/types/config').NuxtAppConfig['layoutTransition']}
      */
     layoutTransition: false,
@@ -167,7 +174,7 @@ export default defineUntypedSchema({
      *
      * This can be overridden with `definePageMeta` on an individual page.
      * Only JSON-serializable values are allowed.
-     * @see [Vue Transition docs](https://vuejs.org/api/built-in-components.html#transition)
+     * @see [Vue Transition docs](https://ru.vuejs.org/api/built-in-components.html#transition)
      * @type {typeof import('../src/types/config').NuxtAppConfig['pageTransition']}
      */
     pageTransition: false,
@@ -193,7 +200,7 @@ export default defineUntypedSchema({
      *
      * This can be overridden with `definePageMeta` on an individual page.
      * Only JSON-serializable values are allowed.
-     * @see [Vue KeepAlive](https://vuejs.org/api/built-in-components.html#keepalive)
+     * @see [Vue KeepAlive](https://ru.vuejs.org/api/built-in-components.html#keepalive)
      * @type {typeof import('../src/types/config').NuxtAppConfig['keepalive']}
      */
     keepalive: false,

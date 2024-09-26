@@ -10,6 +10,7 @@ import htmlnano from 'htmlnano'
 import { glob } from 'tinyglobby'
 import { camelCase } from 'scule'
 
+import { version } from '../../nuxt/package.json'
 import genericMessages from '../templates/messages.json'
 
 const r = (path: string) => fileURLToPath(new URL(join('..', path), import.meta.url))
@@ -92,6 +93,8 @@ export const RenderPlugin = () => {
           html = html.replace('<html><head></head><body>', '')
           html = html.replace('</body></html>', '')
         }
+
+        html = html.replace(/\{\{ version \}\}/g, version)
 
         // Load messages
         const messages = JSON.parse(readFileSync(r(`templates/${templateName}/messages.json`), 'utf-8'))

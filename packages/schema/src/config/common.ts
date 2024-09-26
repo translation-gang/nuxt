@@ -178,7 +178,10 @@ export default defineUntypedSchema({
    * ```
    */
   buildDir: {
-    $resolve: async (val: string | undefined, get): Promise<string> => resolve(await get('rootDir') as string, val || '.nuxt'),
+    $resolve: async (val: string | undefined, get) => {
+      const rootDir = await get('rootDir') as string
+      return resolve(rootDir, val ?? '.nuxt')
+    },
   },
 
   /**

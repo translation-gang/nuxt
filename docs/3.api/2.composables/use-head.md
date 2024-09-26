@@ -1,24 +1,24 @@
 ---
 title: useHead
-description: useHead customizes the head properties of individual pages of your Nuxt app.
+description: useHead настраивает свойства заголовка отдельных страниц вашего приложения Nuxt.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/unjs/unhead/blob/main/packages/unhead/src/composables/useHead.ts
     size: xs
 ---
 
-The [`useHead`](/docs/api/composables/use-head) composable function allows you to manage your head tags in a programmatic and reactive way, powered by [Unhead](https://unhead.unjs.io). If the data comes from a user or other untrusted source, we recommend you check out [`useHeadSafe`](/docs/api/composables/use-head-safe).
+Композабл [`useHead`](/docs/api/composables/use-head) позволяет управлять тегами head программным и реактивным способом, опираясь на [Unhead](https://unhead.unjs.io). Если данные поступают от пользователя или из другого ненадежного источника, мы рекомендуем ознакомиться с композаблом [`useHeadSafe`](/docs/api/composables/use-head-safe).
 
 :read-more{to="/docs/getting-started/seo-meta"}
 
-## Type
+## Тип
 
 ```ts
 useHead(meta: MaybeComputedRef<MetaObject>): void
 ```
 
-Below are the non-reactive types for [`useHead`](/docs/api/composables/use-head) .
+Ниже приведены нереактивные типы для [`useHead`](/docs/api/composables/use-head).
 
 ```ts
 interface MetaObject {
@@ -35,35 +35,35 @@ interface MetaObject {
 }
 ```
 
-See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/src/schema.ts) for more detailed types.
+Более подробную информацию о типах см. в [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/src/schema.ts).
 
 ::note
-The properties of `useHead` can be dynamic, accepting `ref`, `computed` and `reactive` properties. `meta` parameter can also accept a function returning an object to make the entire object reactive.
+Свойства `useHead` могут быть динамическими, принимая свойства `ref`, `computed` и `reactive`. Параметр `meta` может также принимать функцию, возвращающую объект, чтобы сделать весь объект реактивным.
 ::
 
-## Params
+## Параметры
 
 ### `meta`
 
-**Type**: `MetaObject`
+**Тип**: `MetaObject`
 
-An object accepting the following head metadata:
+Объект, принимающий следующие мета-данные head:
 
-- `meta`: Each element in the array is mapped to a newly-created `<meta>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
-- `link`: Each element in the array is mapped to a newly-created `<link>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
-- `style`: Each element in the array is mapped to a newly-created `<style>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
-- `script`: Each element in the array is mapped to a newly-created `<script>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
-- `noscript`: Each element in the array is mapped to a newly-created `<noscript>` tag, where object properties are mapped to the corresponding attributes.
-  - **Type**: `Array<Record<string, any>>`
-- `titleTemplate`: Configures dynamic template to customize the page title on an individual page.
-  - **Type**: `string` | `((title: string) => string)`
-- `title`: Sets static page title on an individual page.
-  - **Type**: `string`
-- `bodyAttrs`: Sets attributes of the `<body>` tag. Each object property is mapped to the corresponding attribute.
-  - **Type**: `Record<string, any>`
-- `htmlAttrs`: Sets attributes of the `<html>` tag. Each object property is mapped to the corresponding attribute.
-  - **Type**: `Record<string, any>`
+- `meta`: Каждый элемент массива сопоставляется с вновь созданным тегом `<meta>`, где свойства объекта сопоставляются с соответствующими атрибутами.
+  - **тип**: `Array<Record<string, any>>`.
+- `link`: Каждый элемент массива сопоставляется с вновь созданным тегом `<link>`, где свойства объекта сопоставляются с соответствующими атрибутами.
+  - **тип**: `Array<Record<string, any>>`.
+- `style`: Каждый элемент массива сопоставляется с вновь созданным тегом `<style>`, где свойства объекта сопоставляются с соответствующими атрибутами.
+  - **тип**: `Array<Record<string, any>>`.
+- `script`: Каждый элемент массива сопоставляется с вновь созданным тегом `<script>`, где свойства объекта сопоставляются с соответствующими атрибутами.
+  - **тип**: `Array<Record<string, any>>`.
+- `noscript`: Каждый элемент массива сопоставляется с вновь созданным тегом `<noscript>`, где свойства объекта сопоставляются с соответствующими атрибутами.
+  - **тип**: `Array<Record<string, any>>`.
+- `titleTemplate`: Конфигурирует динамический шаблон для настройки заголовка страницы на отдельной странице.
+  - **тип**: `string` | `((title: string) => string)`.
+- `title`: Устанавливает статический заголовок страницы на отдельной странице.
+  - **тип**: `string`
+- `bodyAttrs`: Задаёт атрибуты тега `<body>`. Каждое свойство объекта сопоставляется с соответствующим атрибутом.
+  - **тип**: `Record<string, any>`.
+- `htmlAttrs`: Задаёт атрибуты тега `<html>`. Каждое свойство объекта сопоставляется с соответствующим атрибутом.
+  - **тип**: `Record<string, any>`.

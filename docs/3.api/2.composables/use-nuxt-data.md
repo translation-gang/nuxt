@@ -1,50 +1,50 @@
 ---
 title: 'useNuxtData'
-description: 'Access the current cached value of data fetching composables.'
+description: 'Предоставляет доступ к текущему кэшированному значению композаблов получения данных.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
     size: xs
 ---
 
 ::note
-`useNuxtData` gives you access to the current cached value of [`useAsyncData`](/docs/api/composables/use-async-data) , `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) and [`useLazyFetch`](/docs/api/composables/use-lazy-fetch) with explicitly provided key.
+`useNuxtData` предоставляет доступ к текущему кэшированному значению [`useAsyncData`](/docs/api/composables/use-async-data), `useLazyAsyncData`, [`useFetch`](/docs/api/composables/use-fetch) и [`useLazyFetch`](/docs/api/composables/use-lazy-fetch) с явно указанным ключом.
 ::
 
-## Usage
+## Использование
 
-The example below shows how you can use cached data as a placeholder while the most recent data is being fetched from the server.
+В приведенном ниже примере показано, как вы можете использовать кэшированные данные в качестве placeholder при загрузке самых последних данных с сервера.
 
 ```vue [pages/posts.vue]
 <script setup lang="ts">
-// We can access same data later using 'posts' key
+// Мы можем получить доступ к тем же данным позже, используя ключ 'posts'
 const { data } = await useFetch('/api/posts', { key: 'posts' })
 </script>
 ```
 
 ```vue [pages/posts/[id\\].vue]
 <script setup lang="ts">
-// Access to the cached value of useFetch in posts.vue (parent route)
+// Доступ к кэшированному значению useFetch в posts.vue (родительский маршрут)
 const { id } = useRoute().params
 const { data: posts } = useNuxtData('posts')
 const { data } = useLazyFetch(`/api/posts/${id}`, {
   key: `post-${id}`,
   default() {
-    // Find the individual post from the cache and set it as the default value.
+    // Найдите отдельный пост из кэша и установите его в качестве значения по умолчанию.
     return posts.value.find(post => post.id === id)
   }
 })
 </script>
 ```
 
-## Optimistic Updates
+## Оптимистичные обновления
 
-We can leverage the cache to update the UI after a mutation, while the data is being invalidated in the background.
+Мы можем использовать кэш для обновления пользовательского интерфейса после мутации, в то время как данные становятся недействительными в фоновом режиме.
 
 ```vue [pages/todos.vue]
 <script setup lang="ts">
-// We can access same data later using 'todos' key
+// Мы можем получить доступ к тем же данным позже, используя ключ 'todos'
 const { data } = await useAsyncData('todos', () => $fetch('/api/todos'))
 </script>
 ```
@@ -54,7 +54,7 @@ const { data } = await useAsyncData('todos', () => $fetch('/api/todos'))
 const newTodo = ref('')
 const previousTodos = ref([])
 
-// Access to the cached value of useFetch in todos.vue
+// Доступ к кэшированному значению useFetch в файле todos.vue
 const { data: todos } = useNuxtData('todos')
 
 const { data } = await useFetch('/api/addTodo', {
@@ -63,21 +63,21 @@ const { data } = await useFetch('/api/addTodo', {
     todo: newTodo.value
   },
   onRequest () {
-    previousTodos.value = todos.value // Store the previously cached value to restore if fetch fails.
+    previousTodos.value = todos.value // Сохраните ранее кэшированное значение, чтобы восстановить его в случае неудачного получения данных
 
-    todos.value.push(newTodo.value) // Optimistically update the todos.
+    todos.value.push(newTodo.value) // Оптимистично обновите todos.
   },
   onRequestError () {
-    todos.value = previousTodos.value // Rollback the data if the request failed.
+    todos.value = previousTodos.value // Откатите данные, если запрос не был выполнен.
   },
   async onResponse () {
-    await refreshNuxtData('todos') // Invalidate todos in the background if the request succeeded.
+    await refreshNuxtData('todos') // Аннулирует todos в фоновом режиме, если запрос выполнен успешно.
   }
 })
 </script>
 ```
 
-## Type
+## Тип
 
 ```ts
 useNuxtData<DataT = any> (key: string): { data: Ref<DataT | null> }

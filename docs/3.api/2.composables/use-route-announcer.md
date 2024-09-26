@@ -1,55 +1,55 @@
 ---
 title: 'useRouteAnnouncer'
-description: This composable observes the page title changes and updates the announcer message accordingly.
+description: Этот композабл отслеживает изменения заголовка страницы и соответствующим образом обновляет сообщение объявителя.
 navigation:
-  badge: New
+  badge: Новое
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/route-announcer.ts
     size: xs
 ---
 
 ::important
-This composable is available in Nuxt v3.12+.
+Данный композабл доступен в Nuxt v3.12+.
 ::
 
-## Description
+## Описание
 
-A composable which observes the page title changes and updates the announcer message accordingly. Used by [`<NuxtRouteAnnouncer>`](/docs/api/components/nuxt-route-announcer) and controllable.
-It hooks into Unhead's [`dom:rendered`](https://unhead.unjs.io/api/core/hooks#dom-hooks) to read the page's title and set it as the announcer message.
+Композабл, который отслеживает изменения заголовка страницы и соответствующим образом  обновляет сообщение объявителя. Используется [`<NuxtRouteAnnouncer>`](/docs/api/components/nuxt-route-announcer) и является управляемым.
+Он подключается к Unhead [`dom:rendered`](https://unhead.unjs.io/api/core/hooks#dom-hooks), чтобы прочитать заголовок страницы и установить его в качестве сообщения объявителя.
 
-## Parameters
+## Параметры
 
-- `politeness`: Sets the urgency for screen reader announcements: `off` (disable the announcement), `polite` (waits for silence), or `assertive` (interrupts immediately).  (default `polite`).
+- `politeness`: Устанавливает степень срочности для объявлений программы чтения с экрана: `off` (отключение объявления), `polite` (ожидание тишины) или `assertive` (немедленное прерывание).  (по умолчанию `polite`).
 
-## Properties
+## Свойства
 
 ### `message`
 
-- **type**: `Ref<string>`
-- **description**: The message to announce
+- **тип**: `Ref<string>`
+- **описание**: Сообщение, которое нужно объявить
 
 ### `politeness`
 
-- **type**: `Ref<string>`
-- **description**: Screen reader announcement urgency level `off`, `polite`, or `assertive`
+- **тип**: `Ref<string>`
+- **описание**: Уровень срочности объявления считывателя экрана `off`, `polite` или `assertive`
 
-## Methods
+## Методы
 
 ### `set(message, politeness = "polite")`
 
-Sets the message to announce with its urgency level.
+Устанавливает сообщение для объявления с уровнем срочности.
 
 ### `polite(message)`
 
-Sets the message with `politeness = "polite"`
+Устанавливает сообщение с `politeness = "polite"`
 
 ### `assertive(message)`
 
-Sets the message with `politeness = "assertive"`
+Устанавливает сообщение с `politeness = "assertive"`
 
-## Example
+## Пример
 
 ```vue [pages/index.vue]
 <script setup lang="ts">

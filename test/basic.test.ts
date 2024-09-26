@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { joinURL, withQuery } from 'ufo'
 import { isCI, isWindows } from 'std-env'
 import { join, normalize } from 'pathe'
-import { $fetch, createPage, fetch, isDev, setup, startServer, url, useTestContext } from '@nuxt/test-utils/e2e'
+import { $fetch as _$fetch, createPage, fetch, isDev, setup, startServer, url, useTestContext } from '@nuxt/test-utils/e2e'
 import { $fetchComponent } from '@nuxt/test-utils/experimental'
 
 import { resolveUnrefHeadInput } from '@unhead/vue'
@@ -12,9 +12,11 @@ import { expectNoClientErrors, expectWithPolling, gotoPath, isRenderingJson, par
 
 import type { NuxtIslandResponse } from '#app'
 
+// TODO: update @nuxt/test-utils
+const $fetch = _$fetch as import('nitro/types').$Fetch<unknown, import('nitro/types').NitroFetchRequest>
+
 const isWebpack = process.env.TEST_BUILDER === 'webpack'
 const isTestingAppManifest = process.env.TEST_MANIFEST !== 'manifest-off'
-const isV4 = process.env.TEST_V4 === 'true'
 
 await setup({
   rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
@@ -998,17 +1000,12 @@ describe('head tags', () => {
     expect(headHtml).toContain('<meta content="0;javascript:alert(1)">')
   })
 
-  it.skipIf(isV4)('SPA should render appHead tags', async () => {
-    const headHtml = await $fetch<string>('/head', { headers: { 'x-nuxt-no-ssr': '1' } })
+  it('SPA should render appHead tags', async () => {
+    const headHtml = await $fetch<string>('/head-spa')
 
     expect(headHtml).toContain('<meta name="description" content="Nuxt Fixture">')
     expect(headHtml).toContain('<meta charset="utf-8">')
     expect(headHtml).toContain('<meta name="viewport" content="width=1024, initial-scale=1">')
-  })
-
-  it.skipIf(isV4)('legacy vueuse/head works', async () => {
-    const headHtml = await $fetch<string>('/vueuse-head')
-    expect(headHtml).toContain('<title>using provides usehead and updateDOM - VueUse head polyfill test</title>')
   })
 
   it('should render http-equiv correctly', async () => {
@@ -1813,7 +1810,7 @@ describe.skipIf(isDev() || isWebpack)('inlining component styles', () => {
 
   it('should not include inlined CSS in generated CSS file', async () => {
     const html: string = await $fetch<string>('/styles')
-    const cssFiles = new Set([...html.matchAll(/<link [^>]*href="([^"]*\.css)">/g)].map(m => m[1]!))
+    const cssFiles = new Set([...html.matchAll(/<link [^>]*href="([^"]*\.css)"(?: crossorigin)?>/g)].map(m => m[1]!))
     let css = ''
     for (const file of cssFiles || []) {
       css += await $fetch<string>(file)
@@ -1834,11 +1831,7 @@ describe.skipIf(isDev() || isWebpack)('inlining component styles', () => {
 
   it('does not load stylesheet for page styles', async () => {
     const html: string = await $fetch<string>('/styles')
-    expect(html.match(/<link [^>]*href="[^"]*\.css">/g)?.filter(m => m.includes('entry'))?.map(m => m.replace(/\.[^.]*\.css/, '.css'))).toMatchInlineSnapshot(`
-      [
-        "<link rel="stylesheet" href="/_nuxt/entry.css">",
-      ]
-    `)
+    expect(html.match(/<link [^>]*href="[^"]*\.css">(?: crossorigin)?/g)?.filter(m => m.includes('entry'))?.map(m => m.replace(/\.[^.]*\.css/, '.css'))).toMatchInlineSnapshot(`undefined`)
   })
 
   it('still downloads client-only styles', async () => {
@@ -2182,7 +2175,7 @@ describe('component islands', () => {
 
     result.html = result.html.replace(/ data-island-uid="[^"]*"/g, '')
     if (isDev()) {
-      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/RouteComponent') && !l.href.includes('PureComponent') && !l.href.includes('SharedComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
+      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/RouteComponent') && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
     }
 
     expect(result).toMatchInlineSnapshot(`
@@ -2204,7 +2197,7 @@ describe('component islands', () => {
       }),
     }))
     if (isDev()) {
-      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/LongAsyncComponent') && !l.href.includes('PureComponent') && !l.href.includes('SharedComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
+      result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/LongAsyncComponent') && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
     }
     result.html = result.html.replaceAll(/ (data-island-uid|data-island-component)="([^"]*)"/g, '')
     expect(result).toMatchInlineSnapshot(`
@@ -2262,7 +2255,7 @@ describe('component islands', () => {
       }),
     }))
     if (isDev()) {
-      result.head.link = result.head.link?.filter(l => typeof l.href === 'string' && !l.href.includes('PureComponent') && !l.href.includes('SharedComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */ && (!l.href.startsWith('_nuxt/components/islands/') || l.href.includes('AsyncServerComponent')))
+      result.head.link = result.head.link?.filter(l => typeof l.href === 'string' && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */ && (!l.href.startsWith('_nuxt/components/islands/') || l.href.includes('AsyncServerComponent')))
     }
     result.props = {}
     result.components = {}
@@ -2287,7 +2280,7 @@ describe('component islands', () => {
     it('render server component with selective client hydration', async () => {
       const result = await $fetch<NuxtIslandResponse>('/__nuxt_island/ServerWithClient')
       if (isDev()) {
-        result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/LongAsyncComponent') && !l.href.includes('PureComponent') && !l.href.includes('SharedComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
+        result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || (!l.href.includes('_nuxt/components/islands/LongAsyncComponent') && !l.href.includes('PureComponent') /* TODO: fix dev bug triggered by previous fetch of /islands */))
 
         if (!result.head.link) {
           delete result.head.link
@@ -2368,6 +2361,7 @@ describe('component islands', () => {
         {
           "link": [
             {
+              "crossorigin": "",
               "href": "/_nuxt/components/islands/PureComponent.vue?vue&type=style&index=0&scoped=c0c0cf89&lang.css",
               "rel": "stylesheet",
             },
@@ -2576,7 +2570,7 @@ describe.skipIf(isWindows)('useAsyncData', () => {
   })
 
   it('data is null after navigation when immediate false', async () => {
-    const defaultValue = isV4 ? 'undefined' : 'null'
+    const defaultValue = 'undefined'
 
     const { page } = await renderPage('/useAsyncData/immediate-remove-unmounted')
     expect(await page.locator('#immediate-data').getByText(defaultValue).textContent()).toBe(defaultValue)

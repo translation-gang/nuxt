@@ -1,8 +1,8 @@
 ---
 title: 'nuxi prepare'
-description: The prepare command creates a .nuxt directory in your application and generates types.
+description: Команда prepare создает директорию .nuxt в вашем приложении и генерирует типы.
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/prepare.ts
     size: xs
@@ -12,8 +12,8 @@ links:
 npx nuxi prepare [--log-level] [rootDir]
 ```
 
-The `prepare` command creates a [`.nuxt`](/docs/guide/directory-structure/nuxt) directory in your application and generates types. This can be useful in a CI environment or as a `postinstall` command in your [`package.json`](/docs/guide/directory-structure/package).
+Команда `prepare` создает директорию [`.nuxt`](/docs/guide/directory-structure/nuxt) в вашем приложении и генерирует типы. Это может быть полезно в среде CI или в качестве команды `postinstall` в вашем [`package.json`](/docs/guide/directory-structure/package).
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`rootDir` | `.` | The root directory of the application to prepare.
+Параметр  | По умолчанию | Описание
+----------|--------------|--------------------------------------------------
+`rootDir` | `.`          | Корневая директория приложения для подготовки.

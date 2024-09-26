@@ -1,21 +1,21 @@
 ---
 title: 'useFetch'
-description: 'Fetch data from an API endpoint with an SSR-friendly composable.'
+description: 'Получение данных из эндпоинта API с помощью SSR-композабла.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/fetch.ts
     size: xs
 ---
 
-This composable provides a convenient wrapper around [`useAsyncData`](/docs/api/composables/use-async-data) and [`$fetch`](/docs/api/utils/dollarfetch).
-It automatically generates a key based on URL and fetch options, provides type hints for request url based on server routes, and infers API response type.
+Этот композабл представляет собой удобную обертку для [`useAsyncData`](/docs/api/composables/use-async-data) и [`$fetch`](/docs/api/utils/dollarfetch).
+Он автоматически генерирует ключ на основе URL и параметров выборки, предоставляет подсказки типов для url-запроса на основе маршрутов сервера и определяет тип ответа API.
 
 ::note
-`useFetch` is a composable meant to be called directly in a setup function, plugin, or route middleware. It returns reactive composables and handles adding responses to the Nuxt payload so they can be passed from server to client without re-fetching the data on client side when the page hydrates.
+`useFetch` - это композабл, предназначенный для прямого вызова в функции setup, плагине или мидлваре маршрута. Он возвращает реактивные композаблы и обрабатывает добавление ответов в полезную нагрузку Nuxt, чтобы их можно было передавать от сервера к клиенту без повторной выборки данных на стороне клиента, когда на странице происходит гидратация.
 ::
 
-## Usage
+## Использование
 
 ```vue [pages/modules.vue]
 <script setup lang="ts">
@@ -26,14 +26,14 @@ const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
 ```
 
 ::warning
-If you're using a custom useFetch wrapper, do not await it in the composable, as that can cause unexpected behavior. Please follow [this recipe](/docs/guide/recipes/custom-usefetch#custom-usefetch) for more information on how to make a custom async data fetcher.
+Если вы используете пользовательскую обертку `useFetch`, не используйте await внутри нее, так как это может привести к неожиданному поведению. Пожалуйста, следуйте [этому рецепту](/docs/guide/recipes/custom-usefetch#custom-usefetch) для получения дополнительной информации о том, как сделать пользовательскую асинхронную функцию для получения данных.
 ::
 
 ::note
-`data`, `status` and `error` are Vue refs and they should be accessed with `.value` when used within the `<script setup>`, while `refresh`/`execute` and `clear` are plain functions..
+`data`, `status` и `error` - это ref из Vue, и к ним следует обращаться с помощью `.value` при использовании внутри `<script setup>`, а `refresh`/`execute` и `clear` - это обычные функции...
 ::
 
-Using the `query` option, you can add search parameters to your query. This option is extended from [unjs/ofetch](https://github.com/unjs/ofetch) and is using [unjs/ufo](https://github.com/unjs/ufo) to create the URL. Objects are automatically stringified.
+Используя свойство `query`, вы можете добавить параметры поиска в запрос. Эта опция расширена из [unjs/ofetch](https://github.com/unjs/ofetch) и использует [unjs/ufo](https://github.com/unjs/ufo) для создания URL. Объекты автоматически превращаются в строку.
 
 ```ts
 const param1 = ref('value1')
@@ -42,40 +42,40 @@ const { data, status, error, refresh } = await useFetch('/api/modules', {
 })
 ```
 
-The above example results in `https://api.nuxt.com/modules?param1=value1&param2=value2`.
+В результате приведенного выше примера получается `https://api.nuxt.com/modules?param1=value1&param2=value2`.
 
-You can also use [interceptors](https://github.com/unjs/ofetch#%EF%B8%8F-interceptors):
+Вы также можете использовать [перехватчики](https://github.com/unjs/ofetch#%EF%B8%8F-interceptors):
 
 ```ts
 const { data, status, error, refresh, clear } = await useFetch('/api/auth/login', {
   onRequest({ request, options }) {
-    // Set the request headers
+    // Устанавливает заголовки запроса
     options.headers = options.headers || {}
     options.headers.authorization = '...'
   },
   onRequestError({ request, options, error }) {
-    // Handle the request errors
+    // Обрабатывает ошибки запроса
   },
   onResponse({ request, response, options }) {
-    // Process the response data
+    // Обрабатывает данные ответа
     localStorage.setItem('token', response._data.token)
   },
   onResponseError({ request, response, options }) {
-    // Handle the response errors
+    // Обрабатывает ошибки ответа
   }
 })
 ```
 
 ::warning
-`useFetch` is a reserved function name transformed by the compiler, so you should not name your own function `useFetch`.
+`useFetch` - это зарезервированное имя функции, преобразованное компилятором, поэтому вы не должны называть свою функцию `useFetch`.
 ::
 
 ::warning
-If you encounter the `data` variable destructured from a `useFetch` returns a string and not a JSON parsed object then make sure your component doesn't include an import statement like `import { useFetch } from '@vueuse/core`.
+Если вы столкнулись с тем, что переменная `data`, деструктурированная из `useFetch`, возвращает строку, а не разобранный JSON-объект, убедитесь, что ваш компонент не включает оператор импорта, подобный `import { useFetch } from '@vueuse/core'`.
 ::
 
 ::tip{icon="i-ph-video" to="https://www.youtube.com/watch?v=njsGVmcWviY" target="_blank"}
-Watch the video from Alexander Lichter to avoid using `useFetch` the wrong way!
+Посмотрите видео от Александра Лихтера, чтобы избежать неправильного использования `useFetch`!
 ::
 
 :link-example{to="/docs/examples/advanced/use-custom-fetch-composable"}
@@ -84,66 +84,66 @@ Watch the video from Alexander Lichter to avoid using `useFetch` the wrong way!
 
 :link-example{to="/docs/examples/features/data-fetching"}
 
-## Params
+## Параметры
 
-- `URL`: The URL to fetch.
-- `Options` (extends [unjs/ofetch](https://github.com/unjs/ofetch) options & [AsyncDataOptions](/docs/api/composables/use-async-data#params)):
-  - `method`: Request method.
-  - `query`: Adds query search params to URL using [ufo](https://github.com/unjs/ufo)
-  - `params`: Alias for `query`
-  - `body`: Request body - automatically stringified (if an object is passed).
-  - `headers`: Request headers.
-  - `baseURL`: Base URL for the request.
-  - `timeout`: Milliseconds to automatically abort request
-  - `cache`: Handles cache control according to [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch#cache)
-    - You can pass boolean to disable the cache or you can pass one of the following values: `default`, `no-store`, `reload`, `no-cache`, `force-cache`, and `only-if-cached`.
+- `URL`: URL-адрес для получения данных.
+- `Options` (расширяет опции [unjs/ofetch](https://github.com/unjs/ofetch) и [опции AsyncData](/docs/api/composables/use-async-data#params)):
+  - `method`: Метод запроса.
+  - `query`: Добавляет query-параметры запроса к URL с помощью [ufo](https://github.com/unjs/ufo).
+  - `params`: Псевдоним для `query`.
+  - `body`: Тело запроса - автоматически превращается в строку (если передан объект).
+  - `headers`: Заголовки запроса.
+  - `baseURL`: Базовый URL для запроса.
+  - `timeout`: Миллисекунды для автоматического прерывания запроса.
+  - `cache`: Управляет кэшем в соответствии с [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch#cache).
+    - Вы можете передать boolean, чтобы отключить кэш, или передать одно из следующих значений: `default`, `no-store`, `reload`, `no-cache`, `force-cache` и `only-if-cached`.
 
 ::note
-All fetch options can be given a `computed` or `ref` value. These will be watched and new requests made automatically with any new values if they are updated.
+Все параметры запроса могут быть `computed` или `ref`. Они будут отслеживаться, и новые запросы будут автоматически выполняться с новыми значениями, если они будут обновлены.
 ::
 
-- `Options` (from [`useAsyncData`](/docs/api/composables/use-async-data)):
-  - `key`: a unique key to ensure that data fetching can be properly de-duplicated across requests, if not provided, it will be automatically generated based on URL and fetch options
-  - `server`: whether to fetch the data on the server (defaults to `true`)
-  - `lazy`: whether to resolve the async function after loading the route, instead of blocking client-side navigation (defaults to `false`)
-  - `immediate`: when set to `false`, will prevent the request from firing immediately. (defaults to `true`)
-  - `default`: a factory function to set the default value of the `data`, before the async function resolves - useful with the `lazy: true` or `immediate: false` option
-  - `transform`: a function that can be used to alter `handler` function result after resolving
-  - `getCachedData`: Provide a function which returns cached data. A _null_ or _undefined_ return value will trigger a fetch. By default, this is: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, which only caches data when `payloadExtraction` is enabled.
-  - `pick`: only pick specified keys in this array from the `handler` function result
-  - `watch`: watch an array of reactive sources and auto-refresh the fetch result when they change. Fetch options and URL are watched by default. You can completely ignore reactive sources by using `watch: false`. Together with `immediate: false`, this allows for a fully-manual `useFetch`. (You can [see an example here](/docs/getting-started/data-fetching#watch) of using `watch`.)
-  - `deep`: return data in a deep ref object (it is `true` by default). It can be set to `false` to return data in a shallow ref object, which can improve performance if your data does not need to be deeply reactive.
-  - `dedupe`: avoid fetching same key more than once at a time (defaults to `cancel`). Possible options:
-    - `cancel` - cancels existing requests when a new one is made
-    - `defer` - does not make new requests at all if there is a pending request
+- `Options` (из [`useAsyncData`](/docs/api/composables/use-async-data)):
+  - `key`: Уникальный ключ для обеспечения правильной дедупликации данных в запросах. Если ключ не указан, он будет сгенерирован автоматически на основе URL и параметров запроса.
+  - `server`: Следует ли получать данные на сервере (по умолчанию `true`).
+  - `lazy`: Разрешать ли async-функцию после загрузки маршрута, чтобы не блокировать навигацию на стороне клиента (по умолчанию `false`).
+  - `immediate`: Если установить значение `false`, то запрос не будет выполняться немедленно. (по умолчанию `true`).
+  - `default`: Фабричная функция для установки значения по умолчанию для `data` перед разрешением async-функции - полезно при использовании опции `lazy: true` или `immediate: false`.
+  - `transform`: Функция, которая может быть использована для изменения результата функции `handler` после разрешения.
+  - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
+  - `pick`: Выбор из результата функции `handler` только указанныx в этом массиве ключей.
+  - `watch`: Следит за массивом реактивных источников и автоматически обновляет данные при их изменении. По умолчанию отслеживаются параметры запроса и URL. Вы можете полностью игнорировать реактивные источники, используя `watch: false`. Вместе с `immediate: false` это позволяет использовать `useFetch` полностью в ручном режиме. (Пример использования `watch` можно посмотреть [здесь](/docs/getting-started/data-fetching#watch)).
+  - `deep`: Возвращает данные в виде глубокого ref-объекта. Для повышения производительности по умолчанию используется значение `false` для возврата данных в виде shallow-ref объекта.
+  - `dedupe`: Позволяет избегать получения одного и того же ключа более одного раза за вызов (по умолчанию `cancel`). Возможные опции:
+    - `cancel` - Отменяет существующие запросы при выполнении нового.
+    - `defer` - не делает новых запросов вообще, если есть ожидающий запрос.
 
 ::note
-If you provide a function or ref as the `url` parameter, or if you provide functions as arguments to the `options` parameter, then the `useFetch` call will not match other `useFetch` calls elsewhere in your codebase, even if the options seem to be identical. If you wish to force a match, you may provide your own key in `options`.
+Если вы предоставите функцию или ref в качестве параметра `url`, или если вы предоставите функции в качестве аргументов параметра `options`, то вызов `useFetch` не будет соответствовать другим вызовам `useFetch` в других местах вашей кодовой базы, даже если опции кажутся идентичными. Если вы хотите, чтобы совпадение было принудительным, вы можете указать свой собственный ключ в `options`.
 ::
 
 ::note
-If you use `useFetch` to call an (external) HTTPS URL with a self-signed certificate in development, you will need to set `NODE_TLS_REJECT_UNAUTHORIZED=0` in your environment.
+Если вы используете `useFetch` для вызова (внешнего) HTTPS URL с самоподписанным сертификатом в разработке, вам нужно будет установить `NODE_TLS_REJECT_UNAUTHORIZED=0` в вашем окружении.
 ::
 
 ::tip{icon="i-simple-icons-youtube" color="gray" to="https://www.youtube.com/watch?v=aQPR0xn-MMk" target="_blank"}
-Learn how to use `transform` and `getCachedData` to avoid superfluous calls to an API and cache data for visitors on the client.
+Узнайте, как использовать `transform` и `getCachedData`, чтобы избежать лишних обращений к API и кэшировать данные для посетителей на стороне клиента.
 ::
 
-## Return Values
+## Возвращаемые значения
 
-- `data`: the result of the asynchronous function that is passed in.
-- `refresh`/`execute`: a function that can be used to refresh the data returned by the `handler` function.
-- `error`: an error object if the data fetching failed.
-- `status`: a string indicating the status of the data request (`"idle"`, `"pending"`, `"success"`, `"error"`).
-- `clear`: a function which will set `data` to `undefined`, set `error` to `null`, set `status` to `'idle'`, and mark any currently pending requests as cancelled.
+- `data`: результат работы переданной асинхронной функции.
+- `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
+- `error`: объект ошибки, если запрос данных не удался.
+- `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
+- `clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `"idle"`, и пометит все текущие запросы как отмененные.
 
-By default, Nuxt waits until a `refresh` is finished before it can be executed again.
+По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
 
 ::note
-If you have not fetched data on the server (for example, with `server: false`), then the data _will not_ be fetched until hydration completes. This means even if you await `useFetch` on client-side, `data` will remain null within `<script setup>`.
+Если вы не получили данные на сервере (например, с помощью `server: false`), то данные _не_ будут получены до завершения гидратации. Это означает, что даже если вы ожидаете `useFetch` на стороне клиента, `data` останется null внутри `<script setup>`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 function useFetch<DataT, ErrorT>(

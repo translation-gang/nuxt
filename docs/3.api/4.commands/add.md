@@ -1,8 +1,8 @@
 ---
 title: "nuxi add"
-description: "Scaffold an entity into your Nuxt application."
+description: "Создание сущности в вашем приложении Nuxt."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/src/commands/add.ts
     size: xs
@@ -12,80 +12,80 @@ links:
 npx nuxi add [--cwd] [--force] <TEMPLATE> <NAME>
 ```
 
-Option        | Default          | Description
--------------------------|-----------------|------------------
-`TEMPLATE` | - | Specify a template of the file to be generated.
-`NAME` | - | Specify a name of the file that will be created.
-`--cwd` | `.` | The directory of the target application.
-`--force` | `false` | Force override file if it already exists.
+Параметр   | По умолчанию | Описание
+-----------|--------------|-------------------------------------------------
+`TEMPLATE` | -            | Укажите шаблон файла, который будет сгенерирован.
+`NAME`     | -            | Укажите имя файла, который будет создан.
+`--cwd`    | `.`          | Директория целевого приложения.
+`--force`  | `false`      | Принудительное переопределение файла, если он уже существует.
 
-**Modifiers:**
+**Модификаторы:**
 
-Some templates support additional modifier flags to add a suffix (like `.client` or `.get`) to their name.
+Некоторые шаблоны поддерживают дополнительные модификаторы флагов для добавления суффикса (например, `.client` или `.get`) к их имени.
 
 ```bash [Terminal]
-# Generates `/plugins/sockets.client.ts`
+# Создает `/plugins/sockets.client.ts`
 npx nuxi add plugin sockets --client
 ```
 
 ## `nuxi add component`
 
-* Modifier flags: `--mode client|server` or `--client` or `--server`
+* Флаги модификаторов: `--mode client|server` или `--client` или `--server`
 
 ```bash [Terminal]
-# Generates `components/TheHeader.vue`
+# Создает `components/TheHeader.vue`
 npx nuxi add component TheHeader
 ```
 
 ## `nuxi add composable`
 
 ```bash [Terminal]
-# Generates `composables/foo.ts`
+# Создает `composables/foo.ts`
 npx nuxi add composable foo
 ```
 
 ## `nuxi add layout`
 
 ```bash [Terminal]
-# Generates `layouts/custom.vue`
+# Создает `layouts/custom.vue`
 npx nuxi add layout custom
 ```
 
 ## `nuxi add plugin`
 
-* Modifier flags: `--mode client|server` or `--client`or `--server`
+* Флаги модификаторов: `--mode client|server` или `--client` или `--server`
 
 ```bash [Terminal]
-# Generates `plugins/analytics.ts`
+# Создает `plugins/analytics.ts`
 npx nuxi add plugin analytics
 ```
 
 ## `nuxi add page`
 
 ```bash [Terminal]
-# Generates `pages/about.vue`
+# Создает `pages/about.vue`
 npx nuxi add page about
 ```
 
 ```bash [Terminal]
-# Generates `pages/category/[id].vue`
+# Создает `pages/category/[id].vue`
 npx nuxi add page "category/[id]"
 ```
 
 ## `nuxi add middleware`
 
-* Modifier flags: `--global`
+* Флаги модификаторов: `--global`
 
 ```bash [Terminal]
-# Generates `middleware/auth.ts`
+# Создает `middleware/auth.ts`
 npx nuxi add middleware auth
 ```
 
 ## `nuxi add api`
 
-* Modifier flags: `--method` (can accept `connect`, `delete`, `get`, `head`, `options`, `patch`, `post`, `put` or `trace`) or alternatively you can directly use `--get`, `--post`, etc.
+* Флаги модификаторов: `--method` (может принять `connect`, `delete`, `get`, `head`, `options`, `patch`, `post`, `put` или `trace`) или, наоборот, вы можете напрямую использовать `--get`, `--post`, и другое.
 
 ```bash [Terminal]
-# Generates `server/api/hello.ts`
+# Создает `server/api/hello.ts`
 npx nuxi add api hello
 ```

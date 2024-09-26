@@ -1,14 +1,14 @@
 ---
 title: 'useAppConfig'
-description: 'Access the reactive app config defined in the project.'
+description: 'Получите доступ к реактивной конфигурации приложения, определенной в проекте.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/config.ts
     size: xs
 ---
 
-## Usage
+## Использование
 
 ```ts
 const appConfig = useAppConfig()

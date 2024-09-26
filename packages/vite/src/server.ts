@@ -5,9 +5,8 @@ import viteJsxPlugin from '@vitejs/plugin-vue-jsx'
 import { logger, resolvePath, tryImportModule } from '@nuxt/kit'
 import { joinURL, withTrailingSlash, withoutLeadingSlash } from 'ufo'
 import type { ViteConfig } from '@nuxt/schema'
-import type { PackageJson } from 'pkg-types'
 import defu from 'defu'
-import type { Nitro } from 'nitropack'
+import type { Nitro } from 'nitro/types'
 import type { ViteBuildContext } from './vite'
 import { createViteLogger } from './utils/logger'
 import { initViteNodeServer } from './vite-node'
@@ -66,7 +65,7 @@ export async function buildServer (ctx: ViteBuildContext) {
     },
     ssr: {
       external: [
-        '#internal/nitro', '#internal/nitro/utils',
+        'nitro/runtime',
       ],
       noExternal: [
         ...transpile({ isServer: true, isDev: ctx.nuxt.options.dev }),
@@ -85,7 +84,7 @@ export async function buildServer (ctx: ViteBuildContext) {
       ssr: true,
       rollupOptions: {
         input: { server: entry },
-        external: ['#internal/nitro', '#internal/nuxt/paths'],
+        external: ['nitro/runtime', '#internal/nuxt/paths', '#internal/nuxt/app-config'],
         output: {
           entryFileNames: '[name].mjs',
           format: 'module',
@@ -113,9 +112,9 @@ export async function buildServer (ctx: ViteBuildContext) {
   } satisfies vite.InlineConfig, ctx.nuxt.options.vite.$server || {}))
 
   if (!ctx.nuxt.options.dev) {
-    const runtimeDependencies = await tryImportModule<PackageJson>('nitropack/package.json', {
+    const { runtimeDependencies = [] } = await tryImportModule<typeof import('nitro/runtime/meta')>('nitro/runtime/meta', {
       paths: ctx.nuxt.options.modulesDir,
-    })?.then(r => r?.dependencies ? Object.keys(r.dependencies) : []).catch(() => []) || []
+    }) || {}
     if (Array.isArray(serverConfig.ssr!.external)) {
       serverConfig.ssr!.external.push(
         // explicit dependencies we use in our ssr renderer - these can be inlined (if necessary) in the nitro build
@@ -180,10 +179,8 @@ export async function buildServer (ctx: ViteBuildContext) {
     return
   }
 
-  // Write dev client manifest
-  await writeManifest(ctx)
-
   if (!ctx.nuxt.options.ssr) {
+    await writeManifest(ctx)
     await onBuild()
     return
   }
@@ -200,10 +197,5 @@ export async function buildServer (ctx: ViteBuildContext) {
   // Initialize plugins
   await viteServer.pluginContainer.buildStart({})
 
-  if (ctx.config.devBundler !== 'legacy') {
-    await initViteNodeServer(ctx)
-  } else {
-    logger.info('Vite server using legacy server bundler...')
-    await import('./dev-bundler').then(r => r.initViteDevBundler(ctx, onBuild))
-  }
+  await initViteNodeServer(ctx)
 }

@@ -1,16 +1,16 @@
 ---
 title: "defineNuxtRouteMiddleware"
-description: "Create named route middleware using defineNuxtRouteMiddleware helper function."
+description: "Создайте middleware маршрута с помощью хелпера defineNuxtRouteMiddleware и присвойте ему имя."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs
 ---
 
-Route middleware are stored in the [`middleware/`](/docs/guide/directory-structure/middleware) of your Nuxt application (unless [set otherwise](/docs/api/nuxt-config#middleware)).
+Маршрутные middleware хранятся в директории [`middleware/`](/docs/guide/directory-structure/middleware) вашего приложения Nuxt (если не [задано иное](/docs/api/nuxt-config#middleware)).
 
-## Type
+## Тип
 
 ```ts
 defineNuxtRouteMiddleware(middleware: RouteMiddleware) => RouteMiddleware
@@ -20,35 +20,35 @@ interface RouteMiddleware {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `middleware`
 
-- **Type**: `RouteMiddleware`
+- **тип**: `RouteMiddleware`
 
-A function that takes two Vue Router's route location objects as parameters: the next route `to` as the first, and the current route `from` as the second.
+Функция, которая принимает два объекта нормализованного расположения маршрута Vue Router в качестве параметров: следующий маршрут `to` в качестве первого и текущий маршрут `from` в качестве второго.
 
-Learn more about available properties of `RouteLocationNormalized` in the **[Vue Router docs](https://router.vuejs.org/api/#RouteLocationNormalized)**.
+Узнайте больше о доступных свойствах `RouteLocationNormalized` в **[документации Vue Router](https://router.vuejs.org/api/#RouteLocationNormalized)**.
 
-## Examples
+## Примеры
 
-### Showing Error Page
+### Показ страницы ошибки
 
-You can use route middleware to throw errors and show helpful error messages:
+Вы можете использовать middleware маршрутов для генерации ошибок и отображения полезных сообщений об ошибках:
 
 ```ts [middleware/error.ts]
 export default defineNuxtRouteMiddleware((to) => {
   if (to.params.id === '1') {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+    throw createError({ statusCode: 404, statusMessage: 'Страница не найдена' })
   }
 })
 ```
 
-The above route middleware will redirect a user to the custom error page defined in the `~/error.vue` file, and expose the error message and code passed from the middleware.
+Этот middleware маршрута перенаправит пользователя на пользовательскую страницу ошибки, определенную в файле `~/error.vue`, и предоставит сообщение об ошибке и код, переданные из middleware.
 
-### Redirection
+### Перенаправление
 
-Use [`useState`](/docs/api/composables/use-state) in combination with `navigateTo` helper function inside the route middleware to redirect users to different routes based on their authentication status:
+Используйте [`useState`](/docs/api/composables/use-state) в сочетании с хелпером `navigateTo` в middleware маршрута для перенаправления пользователей на разные маршруты в зависимости от их статуса авторизации:
 
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -64,4 +64,4 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-Both [navigateTo](/docs/api/utils/navigate-to) and [abortNavigation](/docs/api/utils/abort-navigation) are globally available helper functions that you can use inside `defineNuxtRouteMiddleware`.
+Обе функции [navigateTo](/docs/api/utils/navigate-to) и [abortNavigation](/docs/api/utils/abort-navigation) являются глобально доступными хелперами, которые вы можете использовать внутри `defineNuxtRouteMiddleware`.

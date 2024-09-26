@@ -7,7 +7,7 @@ import {
   renderResourceHeaders,
 } from 'vue-bundle-renderer/runtime'
 import type { Manifest as ClientManifest } from 'vue-bundle-renderer'
-import type { RenderResponse } from 'nitropack'
+import type { RenderResponse } from 'nitro/types'
 import type { Manifest } from 'vite'
 import type { H3Event } from 'h3'
 import { appendResponseHeader, createError, getQuery, getResponseStatus, getResponseStatusText, readBody, writeEarlyHints } from 'h3'
@@ -21,8 +21,7 @@ import type { Head, HeadEntryOptions } from '@unhead/schema'
 import type { Link, Script, Style } from '@unhead/vue'
 import { createServerHead, resolveUnrefHeadInput } from '@unhead/vue'
 
-import { defineRenderHandler, getRouteRules, useRuntimeConfig, useStorage } from '#internal/nitro'
-import { useNitroApp } from '#internal/nitro/app'
+import { defineRenderHandler, getRouteRules, useNitroApp, useRuntimeConfig, useStorage } from 'nitro/runtime'
 
 // @ts-expect-error virtual file
 import unheadPlugins from '#internal/unhead-plugins.mjs'
@@ -386,7 +385,7 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
       link: [
         process.env.NUXT_JSON_PAYLOADS
           ? { rel: 'preload', as: 'fetch', crossorigin: 'anonymous', href: payloadURL }
-          : { rel: 'modulepreload', href: payloadURL },
+          : { rel: 'modulepreload', crossorigin: '', href: payloadURL },
       ],
     }, headEntryOptions)
   }
@@ -407,7 +406,7 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
       // - in dev mode when not rendering an island
       // - in dev mode when rendering an island and the file has scoped styles and is not a page
       if (!import.meta.dev || !isRenderingIsland || (resource.file.includes('scoped') && !resource.file.includes('pages/'))) {
-        link.push({ rel: 'stylesheet', href: renderer.rendererContext.buildAssetsURL(resource.file) })
+        link.push({ rel: 'stylesheet', href: renderer.rendererContext.buildAssetsURL(resource.file), crossorigin: '' })
       }
     }
     if (link.length) {
@@ -459,23 +458,6 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
   // remove certain tags for nuxt islands
   const { headTags, bodyTags, bodyTagsOpen, htmlAttrs, bodyAttrs } = await renderSSRHead(head, renderSSRHeadOptions)
 
-  // Create render context
-  const htmlContext: NuxtRenderHTMLContext = {
-    island: isRenderingIsland,
-    htmlAttrs: htmlAttrs ? [htmlAttrs] : [],
-    head: normalizeChunks([headTags]),
-    bodyAttrs: bodyAttrs ? [bodyAttrs] : [],
-    bodyPrepend: normalizeChunks([bodyTagsOpen, ssrContext.teleports?.body]),
-    body: [
-      componentIslands ? replaceIslandTeleports(ssrContext, _rendered.html) : _rendered.html,
-      APP_TELEPORT_OPEN_TAG + (HAS_APP_TELEPORTS ? joinTags([ssrContext.teleports?.[`#${appTeleportAttrs.id}`]]) : '') + APP_TELEPORT_CLOSE_TAG,
-    ],
-    bodyAppend: [bodyTags],
-  }
-
-  // Allow hooking into the rendered result
-  await nitroApp.hooks.callHook('render:html', htmlContext, { event })
-
   // Response for component islands
   if (isRenderingIsland && islandContext) {
     const islandHead: Head = {}
@@ -496,7 +478,7 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
     const islandResponse: NuxtIslandResponse = {
       id: islandContext.id,
       head: islandHead,
-      html: getServerComponentHTML(htmlContext.body as [string, ...string[]]),
+      html: getServerComponentHTML(_rendered.html),
       components: getClientIslandResponse(ssrContext),
       slots: getSlotIslandResponse(ssrContext),
     }
@@ -518,6 +500,23 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
     }
     return response
   }
+
+  // Create render context
+  const htmlContext: NuxtRenderHTMLContext = {
+    island: isRenderingIsland,
+    htmlAttrs: htmlAttrs ? [htmlAttrs] : [],
+    head: normalizeChunks([headTags]),
+    bodyAttrs: bodyAttrs ? [bodyAttrs] : [],
+    bodyPrepend: normalizeChunks([bodyTagsOpen, ssrContext.teleports?.body]),
+    body: [
+      componentIslands ? replaceIslandTeleports(ssrContext, _rendered.html) : _rendered.html,
+      APP_TELEPORT_OPEN_TAG + (HAS_APP_TELEPORTS ? joinTags([ssrContext.teleports?.[`#${appTeleportAttrs.id}`]]) : '') + APP_TELEPORT_CLOSE_TAG,
+    ],
+    bodyAppend: [bodyTags],
+  }
+
+  // Allow hooking into the rendered result
+  await nitroApp.hooks.callHook('render:html', htmlContext, { event })
 
   // Construct HTML response
   const response = {
@@ -650,9 +649,9 @@ function splitPayload (ssrContext: NuxtSSRContext) {
 /**
  * remove the root node from the html body
  */
-function getServerComponentHTML (body: [string, ...string[]]): string {
-  const match = body[0].match(ROOT_NODE_REGEX)
-  return match?.[1] || body[0]
+function getServerComponentHTML (body: string): string {
+  const match = body.match(ROOT_NODE_REGEX)
+  return match?.[1] || body
 }
 
 const SSR_SLOT_TELEPORT_MARKER = /^uid=([^;]*);slot=(.*)$/

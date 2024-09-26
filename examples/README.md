@@ -1,4 +1,4 @@
-# Nuxt Examples
+# Nuxt Примеры
 
-- 👉 See examples in your browser at https://nuxt.com/docs/examples
-- 👉 View on GitHub at https://github.com/nuxt/examples
+- 👉 Смотрите примеры в браузере на <https://nuxt.com/docs/examples>.
+- 👉 Посмотреть на GitHub: <https://github.com/nuxt/examples>.
