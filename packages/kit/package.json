@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@nuxt/schema": "workspace:*",
-    "c12": "^2.0.0-beta.3",
+    "c12": "^2.0.0",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
     "destr": "^2.0.3",
@@ -44,7 +44,7 @@
     "semver": "^7.6.3",
     "ufo": "^1.5.4",
     "unctx": "^2.3.1",
-    "unimport": "^3.13.0",
+    "unimport": "^3.13.1",
     "untyped": "^1.5.0"
   },
   "devDependencies": {
