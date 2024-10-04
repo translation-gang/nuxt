@@ -1,6 +1,6 @@
 {
   "name": "@nuxt/kit",
-  "version": "3.12.2",
+  "version": "3.13.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nuxt/nuxt.git",
@@ -27,16 +27,16 @@
   },
   "dependencies": {
     "@nuxt/schema": "workspace:*",
-    "c12": "^2.0.0-beta.2",
+    "c12": "^2.0.0",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
     "destr": "^2.0.3",
-    "errx": "^0.1.0",
     "globby": "^14.0.2",
     "hash-sum": "^2.0.0",
     "ignore": "^6.0.2",
-    "jiti": "^2.0.0",
+    "jiti": "^2.1.0",
     "klona": "^2.0.6",
+    "knitwork": "^1.1.0",
     "mlly": "^1.7.1",
     "pathe": "^1.1.2",
     "pkg-types": "^1.2.0",
@@ -44,16 +44,18 @@
     "semver": "^7.6.3",
     "ufo": "^1.5.4",
     "unctx": "^2.3.1",
-    "unimport": "^3.13.0",
+    "unimport": "^3.13.1",
     "untyped": "^1.5.0"
   },
   "devDependencies": {
     "@types/hash-sum": "1.0.2",
+    "@types/lodash-es": "4.17.12",
     "@types/semver": "7.5.8",
-    "nitro": "npm:nitro-nightly@3.0.0-beta-28665895.e727afda",
-    "unbuild": "3.0.0-rc.7",
+    "lodash-es": "4.17.21",
+    "nitropack": "2.9.7",
+    "unbuild": "latest",
     "vite": "5.4.8",
-    "vitest": "2.1.1",
+    "vitest": "2.1.2",
     "webpack": "5.95.0"
   },
   "engines": {
