@@ -1135,9 +1135,6 @@ importers:
       '@vue/devtools-api':
         specifier: latest
         version: 7.4.6
-      postcss:
-        specifier: 8.4.47
-        version: 8.4.47
       ufo:
         specifier: 1.5.4
         version: 1.5.4
@@ -1158,7 +1155,7 @@ importers:
         specifier: latest
         version: 1.4.1
       unplugin-vue-router:
-        specifier: ^0.10.0
+        specifier: ^0.10.7
         version: 0.10.8(rollup@4.24.0)(vue-router@4.4.5(vue@3.5.12(typescript@5.6.3)))(vue@3.5.12(typescript@5.6.3))(webpack-sources@3.2.3)
       vitest:
         specifier: 1.6.0
@@ -8982,7 +8979,7 @@ snapshots:
       dotenv: 16.4.5
       git-url-parse: 15.0.0
       is-docker: 3.0.0
-      jiti: 2.3.3
+      jiti: 1.21.6
       mri: 1.2.0
       nanoid: 5.0.7
       ofetch: 1.4.1
