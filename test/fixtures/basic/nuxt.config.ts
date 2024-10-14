@@ -5,13 +5,14 @@ import { createUnplugin } from 'unplugin'
 import { withoutLeadingSlash } from 'ufo'
 
 // (defined in nuxt/src/core/nitro.ts)
-declare module 'nitro/types' {
+declare module 'nitropack' {
   interface NitroRouteConfig {
     ssr?: boolean
   }
 }
 
 export default defineNuxtConfig({
+  future: { compatibilityVersion: process.env.TEST_V4 === 'true' ? 4 : 3 },
   compatibilityDate: '2024-06-28',
   app: {
     pageTransition: true,
@@ -31,7 +32,8 @@ export default defineNuxtConfig({
       include: ['keepalive-in-config', 'not-keepalive-in-nuxtpage'],
     },
   },
-  builder: process.env.TEST_BUILDER as 'webpack' | 'vite' ?? 'vite',
+  buildDir: process.env.NITRO_BUILD_DIR,
+  builder: process.env.TEST_BUILDER as 'webpack' | 'rspack' | 'vite' ?? 'vite',
   appId: 'nuxt-app-basic',
   build: {
     transpile: [
@@ -62,12 +64,13 @@ export default defineNuxtConfig({
     },
     routeRules: {
       '/route-rules/spa': { ssr: false },
-      '/head-spa': { ssr: false },
+      '/redirect/catchall': { ssr: false },
       '/route-rules/middleware': { appMiddleware: 'route-rules-middleware' },
       '/hydration/spa-redirection/**': { ssr: false },
       '/no-scripts': { experimentalNoScripts: true },
       '/prerender/**': { prerender: true },
     },
+    output: { dir: process.env.NITRO_OUTPUT_DIR },
     prerender: {
       routes: [
         '/random/a',
@@ -75,6 +78,11 @@ export default defineNuxtConfig({
         '/random/c',
         '/prefetch/server-components',
       ],
+    },
+  },
+  postcss: {
+    plugins: {
+      '~/postcss/plugin': {},
     },
   },
   optimization: {
@@ -122,7 +130,7 @@ export default defineNuxtConfig({
           if (id === 'virtual.css') { return 'virtual.css' }
         },
         load (id) {
-          if (id === 'virtual.css') { return ':root { --virtual: red }' }
+          if (id.includes('virtual.css')) { return ':root { --virtual: red }' }
         },
       }))
       addBuildPlugin(plugin)
@@ -242,14 +250,16 @@ export default defineNuxtConfig({
     inlineStyles: id => !!id && !id.includes('assets.vue'),
   },
   experimental: {
-    serverAppConfig: true,
     typedPages: true,
+    polyfillVueUseHead: true,
+    respectNoSSRHeader: true,
     clientFallback: true,
     restoreState: true,
     clientNodeCompat: true,
     componentIslands: {
       selectiveClient: 'deep',
     },
+    treeshakeClientOnly: true,
     asyncContext: process.env.TEST_CONTEXT === 'async',
     appManifest: process.env.TEST_MANIFEST !== 'manifest-off',
     renderJsonPayloads: process.env.TEST_PAYLOAD !== 'js',
