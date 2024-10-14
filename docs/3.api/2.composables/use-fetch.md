@@ -50,8 +50,8 @@ const { data, status, error, refresh } = await useFetch('/api/modules', {
 const { data, status, error, refresh, clear } = await useFetch('/api/auth/login', {
   onRequest({ request, options }) {
     // Устанавливает заголовки запроса
-    options.headers = options.headers || {}
-    options.headers.authorization = '...'
+    // note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
+    options.headers.set('Authorization', '...')
   },
   onRequestError({ request, options, error }) {
     // Обрабатывает ошибки запроса
