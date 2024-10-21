@@ -1,6 +1,6 @@
 ---
 title: "useResponseHeader"
-description: "Use useResponseHeader to set a server response header."
+description: "Используйте useResponseHeader, чтобы установить заголовок ответа сервера."
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -9,20 +9,20 @@ links:
 ---
 
 ::important
-This composable is available in Nuxt v3.14+.
+Этот композабл доступен в Nuxt v3.14+.
 ::
 
-You can use the built-in [`useResponseHeader`](/docs/api/composables/use-response-header) composable to set any server response header within your pages, components, and plugins.
+Вы можете использовать встроенный композабл [`useResponseHeader`](/docs/api/composables/use-response-header) для установки любого заголовка ответа сервера на ваших страницах, в компонентах и плагинах.
 
 ```ts
-// Set the a custom response header
+// Задайте пользовательский заголовок ответа
 const header = useResponseHeader('X-My-Header');
 header.value = 'my-value';
 ```
 
-## Example
+## Пример
 
-We can use `useResponseHeader` to easily set a response header on a per-page basis.
+Мы можем использовать `useResponseHeader`, чтобы легко установить заголовок ответа на основе каждой страницы.
 
 ```vue [pages/test.vue]
 <script setup>
@@ -32,12 +32,12 @@ header.value = 'my-value';
 </script>
 
 <template>
-  <h1>Test page with custom header</h1>
-  <p>The response from the server for this "/test" page will have a custom "X-My-Header" header.</p>
+  <h1>Тестовая страница с пользовательским заголовком</h1>
+  <p>Ответ от сервера для этой "/test" страницы будет содержать пользовательский заголовок "X-My-Header"</p>
 </template>
 ```
 
-We can use `useResponseHeader` for example in Nuxt [middleware](/docs/guide/directory-structure/middleware) to set a response header for all pages.
+Мы можем использовать `useResponseHeader`, например, в Nuxt [middleware](/docs/guide/directory-structure/middleware), чтобы установить заголовок ответа для всех страниц.
 
 ```ts [middleware/my-header-middleware.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
