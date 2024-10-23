@@ -125,6 +125,19 @@ interface NavigateToOptions {
 
 `to` может быть простой строкой или объектом маршрута, на который нужно перенаправить. Если передать `undefined` или `null`, то по умолчанию будет указано `'/'`.
 
+#### Example
+
+```ts
+// Passing the URL directly will redirect to the '/blog' page
+await navigateTo('/blog')
+
+// Using the route object, will redirect to the route with the name 'blog'
+await navigateTo({ name: 'blog' })
+
+// Redirects to the 'product' route while passing a parameter (id = 1) using the route object.
+await navigateTo({ name: 'product', params: { id: 1 } })
+```
+
 ### `options` (опционально)
 
 **Тип**: `NavigateToOptions`

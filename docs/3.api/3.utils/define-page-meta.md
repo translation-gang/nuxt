@@ -30,6 +30,7 @@ interface PageMeta {
   redirect?: RouteRecordRedirectOption
   name?: string
   path?: string
+  props?: RouteRecordRaw['props']
   alias?: string | string[]
   pageTransition?: boolean | TransitionProps
   layoutTransition?: boolean | TransitionProps
@@ -62,6 +63,12 @@ interface PageMeta {
   - **тип**: `string`
 
     Вы можете определить [пользовательское регулярное выражение](#использование-пользовательского-регулярного-выражения), если у вас более сложный шаблон, чем имя файла.
+
+  **`props`**
+  
+  - **Type**: [`RouteRecordRaw['props']`](https://router.vuejs.org/guide/essentials/passing-props)
+
+    Allows accessing the route `params` as props passed to the page component.
 
   **`alias`**
 
