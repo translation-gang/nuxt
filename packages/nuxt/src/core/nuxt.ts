@@ -4,8 +4,7 @@ import { join, normalize, relative, resolve } from 'pathe'
 import { createDebugger, createHooks } from 'hookable'
 import ignore from 'ignore'
 import type { LoadNuxtOptions } from '@nuxt/kit'
-import { addBuildPlugin, addComponent, addPlugin, addPluginTemplate, addRouteMiddleware, addServerPlugin, addVitePlugin, addWebpackPlugin, installModule, loadNuxtConfig, logger, nuxtCtx, resolveAlias, resolveFiles, resolveIgnorePatterns, resolvePath, tryResolveModule, useNitro } from '@nuxt/kit'
-import { resolvePath as _resolvePath } from 'mlly'
+import { addBuildPlugin, addComponent, addPlugin, addRouteMiddleware, addServerPlugin, addVitePlugin, addWebpackPlugin, installModule, loadNuxtConfig, logger, nuxtCtx, resolveAlias, resolveFiles, resolveIgnorePatterns, resolvePath, tryResolveModule, useNitro } from '@nuxt/kit'
 import type { Nuxt, NuxtHooks, NuxtModule, NuxtOptions } from 'nuxt/schema'
 import type { PackageJson } from 'pkg-types'
 import { readPackageJSON } from 'pkg-types'
@@ -71,7 +70,6 @@ const fallbackCompatibilityDate = '2024-04-03' as DateString
 
 const nightlies = {
   'nitropack': 'nitropack-nightly',
-  'nitro': 'nitro-nightly',
   'h3': 'h3-nightly',
   'nuxt': 'nuxt-nightly',
   '@nuxt/schema': '@nuxt/schema-nightly',
@@ -211,6 +209,7 @@ async function initNuxt (nuxt: Nuxt) {
   // Add nuxt types
   nuxt.hook('prepare:types', (opts) => {
     opts.references.push({ types: 'nuxt' })
+    opts.references.push({ path: resolve(nuxt.options.buildDir, 'types/app-defaults.d.ts') })
     opts.references.push({ path: resolve(nuxt.options.buildDir, 'types/plugins.d.ts') })
     // Add vue shim
     if (nuxt.options.typescript.shim) {
@@ -409,11 +408,15 @@ async function initNuxt (nuxt: Nuxt) {
   }
 
   // Add <NuxtWelcome>
-  addComponent({
-    name: 'NuxtWelcome',
-    priority: 10, // built-in that we do not expect the user to override
-    filePath: resolve(nuxt.options.appDir, 'components/welcome'),
-  })
+  // TODO: revert when deep server component config is properly bundle-split: https://github.com/nuxt/nuxt/pull/29956
+  const islandsConfig = nuxt.options.experimental.componentIslands
+  if (nuxt.options.dev || !(typeof islandsConfig === 'object' && islandsConfig.selectiveClient === 'deep')) {
+    addComponent({
+      name: 'NuxtWelcome',
+      priority: 10, // built-in that we do not expect the user to override
+      filePath: resolve(nuxt.options.appDir, 'components/welcome'),
+    })
+  }
 
   addComponent({
     name: 'NuxtLayout',
@@ -615,21 +618,6 @@ async function initNuxt (nuxt: Nuxt) {
     })
   }
 
-  if (nuxt.options.vue.config && Object.values(nuxt.options.vue.config).some(v => v !== null && v !== undefined)) {
-    addPluginTemplate({
-      filename: 'vue-app-config.mjs',
-      getContents: () => `
-import { defineNuxtPlugin } from '#app/nuxt'
-export default defineNuxtPlugin({
-  name: 'nuxt:vue-app-config',
-  enforce: 'pre',
-  setup (nuxtApp) {
-    ${Object.keys(nuxt.options.vue.config!).map(k => `    nuxtApp.vueApp.config[${JSON.stringify(k)}] = ${JSON.stringify(nuxt.options.vue.config![k as 'idPrefix'])}`).join('\n')}
-  }
-})`,
-    })
-  }
-
   nuxt.hooks.hook('builder:watch', (event, relativePath) => {
     const path = resolve(nuxt.options.srcDir, relativePath)
     // Local module patterns
@@ -701,7 +689,7 @@ export async function loadNuxt (opts: LoadNuxtOptions): Promise<Nuxt> {
 
   // Temporary until finding better placement for each
   options.appDir = options.alias['#app'] = resolve(distDir, 'app')
-  options._majorVersion = 4
+  options._majorVersion = 3
 
   // De-duplicate key arrays
   for (const key in options.app.head || {}) {
