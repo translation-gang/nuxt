@@ -1141,9 +1141,6 @@ importers:
       '@vue/devtools-api':
         specifier: latest
         version: 7.6.4
-      postcss:
-        specifier: 8.4.49
-        version: 8.4.49
       ufo:
         specifier: 1.5.4
         version: 1.5.4
@@ -1164,7 +1161,7 @@ importers:
         specifier: latest
         version: 1.4.1
       unplugin-vue-router:
-        specifier: ^0.10.0
+        specifier: ^0.10.7
         version: 0.10.8(rollup@4.27.3)(vue-router@4.4.5(vue@3.5.13(typescript@5.6.3)))(vue@3.5.13(typescript@5.6.3))
       vitest:
         specifier: 1.6.0
