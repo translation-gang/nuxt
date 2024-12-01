@@ -243,6 +243,8 @@ const vueTypesPreset = defineUnimportPreset({
     'Component',
     'ComponentPublicInstance',
     'ComputedRef',
+    'DirectiveBinding',
+    'ExtractDefaultPropTypes',
     'ExtractPropTypes',
     'ExtractPublicPropTypes',
     'InjectionKey',
@@ -251,6 +253,7 @@ const vueTypesPreset = defineUnimportPreset({
     'MaybeRef',
     'MaybeRefOrGetter',
     'VNode',
+    'WritableComputedRef',
   ],
 })
 

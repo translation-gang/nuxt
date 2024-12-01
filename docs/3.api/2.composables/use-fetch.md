@@ -30,7 +30,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
 ::
 
 ::note
-`data`, `status` и `error` - это ref из Vue, и к ним следует обращаться с помощью `.value` при использовании внутри `<script setup>`, а `refresh`/`execute` и `clear` - это обычные функции...
+`data`, `status` и `error` - это ref из Vue, и к ним следует обращаться с помощью `.value` при использовании внутри `<script setup>`, а `refresh`/`execute` и `clear` - это обычные функции.
 ::
 
 Используя свойство `query`, вы можете добавить параметры поиска в запрос. Эта опция расширена из [unjs/ofetch](https://github.com/unjs/ofetch) и использует [unjs/ufo](https://github.com/unjs/ufo) для создания URL. Объекты автоматически превращаются в строку.
