@@ -17,3 +17,4 @@ npx nuxi upgrade [--force|-f]
 Параметр      | По умолчанию | Описание
 --------------|--------------|------------------------------------------------------
 `--force, -f` | `false`      | Удаляет `node_modules` и `.lock-файл` перед обновлением.
+`--channel, -ch` | `"stable"` | Specify a channel to install from ("nightly" or "stable")
