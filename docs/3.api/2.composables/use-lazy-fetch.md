@@ -17,7 +17,7 @@ links:
 ::
 
 ::note
-Awaiting `useLazyFetch` in this mode only ensures the call is initialized. On client-side navigation, data may not be immediately available, and you should make sure to handle the pending state in your app.
+Ожидание `useLazyFetch` в этом режиме только обеспечивает инициализацию вызова. При навигации на клиенте данные могут быть доступны не сразу, и вам следует позаботиться о том, чтобы обработать состояние ожидания в вашем приложении.
 ::
 
 :read-more{to="/docs/api/composables/use-fetch"}
