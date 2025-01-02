@@ -1,13 +1,13 @@
 import { existsSync, statSync, writeFileSync } from 'node:fs'
 import { isAbsolute, join, normalize, relative, resolve } from 'pathe'
-import { addBuildPlugin, addPluginTemplate, addTemplate, addTypeTemplate, addVitePlugin, defineNuxtModule, findPath, logger, resolveAlias, resolvePath, updateTemplates } from '@nuxt/kit'
+import { addBuildPlugin, addPluginTemplate, addTemplate, addTypeTemplate, addVitePlugin, defineNuxtModule, findPath, resolveAlias, resolvePath, updateTemplates } from '@nuxt/kit'
 import type { Component, ComponentsDir, ComponentsOptions } from 'nuxt/schema'
 
 import { distDir } from '../dirs'
+import { logger } from '../utils'
 import { componentNamesTemplate, componentsIslandsTemplate, componentsMetadataTemplate, componentsPluginTemplate, componentsTypeTemplate } from './templates'
 import { scanComponents } from './scan'
 
-import { ClientFallbackAutoIdPlugin } from './plugins/client-fallback-auto-id'
 import { LoaderPlugin } from './plugins/loader'
 import { ComponentsChunkPlugin, IslandsTransformPlugin } from './plugins/islands-transform'
 import { TransformPlugin } from './plugins/transform'
@@ -28,7 +28,7 @@ export type getComponentsT = (mode?: 'client' | 'server' | 'all') => Component[]
 
 export default defineNuxtModule<ComponentsOptions>({
   meta: {
-    name: 'components',
+    name: 'nuxt:components',
     configKey: 'components',
   },
   defaults: {
@@ -218,11 +218,6 @@ export default defineNuxtModule<ComponentsOptions>({
 
     if (nuxt.options.experimental.treeshakeClientOnly) {
       addBuildPlugin(TreeShakeTemplatePlugin({ sourcemap: !!nuxt.options.sourcemap.server, getComponents }), { client: false })
-    }
-
-    if (nuxt.options.experimental.clientFallback) {
-      addBuildPlugin(ClientFallbackAutoIdPlugin({ sourcemap: !!nuxt.options.sourcemap.client, rootDir: nuxt.options.rootDir }), { server: false })
-      addBuildPlugin(ClientFallbackAutoIdPlugin({ sourcemap: !!nuxt.options.sourcemap.server, rootDir: nuxt.options.rootDir }), { client: false })
     }
 
     const sharedLoaderOptions = {

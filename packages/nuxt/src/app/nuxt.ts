@@ -7,9 +7,14 @@ import { getContext } from 'unctx'
 import type { SSRContext, createRenderer } from 'vue-bundle-renderer/runtime'
 import type { EventHandlerRequest, H3Event } from 'h3'
 import type { AppConfig, AppConfigInput, RuntimeConfig } from 'nuxt/schema'
-import type { RenderResponse } from 'nitro/types'
+import type { RenderResponse } from 'nitropack'
 import type { LogObject } from 'consola'
 import type { MergeHead, VueHeadClient } from '@unhead/vue'
+
+import type { NuxtAppLiterals } from 'nuxt/app'
+
+// TODO: temporary module for backwards compatibility
+import type { DefaultAsyncDataErrorValue, DefaultErrorValue } from 'nuxt/app/defaults'
 
 import type { NuxtIslandContext } from '../app/types'
 import type { RouteMiddleware } from '../app/composables/router'
@@ -21,8 +26,6 @@ import type { RouteAnnouncer } from '../app/composables/route-announcer'
 
 // @ts-expect-error virtual file
 import { appId, chunkErrorEvent, multiApp } from '#build/nuxt.config.mjs'
-
-import type { NuxtAppLiterals } from '#app'
 
 function getNuxtAppCtx (id = appId || 'nuxt-app') {
   return getContext<NuxtApp>(id, {
@@ -81,6 +84,8 @@ export interface NuxtSSRContext extends SSRContext {
     get<T = unknown> (key: string): Promise<T> | undefined
     set<T> (key: string, value: Promise<T>): Promise<void>
   }
+  /** @internal */
+  _preloadManifest?: boolean
 }
 
 export interface NuxtPayload {
@@ -91,13 +96,14 @@ export interface NuxtPayload {
   state: Record<string, any>
   once: Set<string>
   config?: Pick<RuntimeConfig, 'public' | 'app'>
-  error?: NuxtError | undefined
-  _errors: Record<string, NuxtError | undefined>
+  error?: NuxtError | DefaultErrorValue
+  _errors: Record<string, NuxtError | DefaultAsyncDataErrorValue>
   [key: string]: unknown
 }
 
 interface _NuxtApp {
   vueApp: App<Element>
+  globalName: string
   versions: Record<string, string>
 
   hooks: Hookable<RuntimeNuxtHooks>
@@ -114,11 +120,6 @@ interface _NuxtApp {
    * The id of the Nuxt application.
    * @internal */
   _id: string
-  /**
-   * The next id that can be used for generating unique ids via `useId`.
-   * @internal
-   */
-  _genId?: number
   /** @internal */
   _scope: EffectScope
   /** @internal */
@@ -130,7 +131,7 @@ interface _NuxtApp {
      * @deprecated This may be removed in a future major version.
      */
     pending: Ref<boolean>
-    error: Ref<Error | undefined>
+    error: Ref<Error | DefaultAsyncDataErrorValue>
     status: Ref<AsyncDataRequestStatus>
     /** @internal */
     _default: () => unknown
@@ -248,6 +249,7 @@ export type ObjectPluginInput<Injections extends Record<string, unknown> = Recor
 export interface CreateOptions {
   vueApp: NuxtApp['vueApp']
   ssrContext?: NuxtApp['ssrContext']
+  globalName?: NuxtApp['globalName']
   /**
    * The id of the Nuxt application, overrides the default id specified in the Nuxt config (default: `nuxt-app`).
    */
@@ -261,6 +263,7 @@ export function createNuxtApp (options: CreateOptions) {
     _id: options.id || appId || 'nuxt-app',
     _scope: effectScope(),
     provide: undefined,
+    globalName: 'nuxt',
     versions: {
       get nuxt () { return __NUXT_VERSION__ },
       get vue () { return nuxtApp.vueApp.version },

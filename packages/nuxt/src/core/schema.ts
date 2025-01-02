@@ -5,7 +5,7 @@ import { resolve } from 'pathe'
 import { watch } from 'chokidar'
 import { defu } from 'defu'
 import { debounce } from 'perfect-debounce'
-import { createResolver, defineNuxtModule, importModule, logger, tryResolveModule } from '@nuxt/kit'
+import { createResolver, defineNuxtModule, importModule, tryResolveModule } from '@nuxt/kit'
 import {
   generateTypes,
   resolveSchema as resolveUntypedSchema,
@@ -13,10 +13,11 @@ import {
 import type { Schema, SchemaDefinition } from 'untyped'
 import untypedPlugin from 'untyped/babel-plugin'
 import { createJiti } from 'jiti'
+import { logger } from '../utils'
 
 export default defineNuxtModule({
   meta: {
-    name: 'nuxt-config-schema',
+    name: 'nuxt:nuxt-config-schema',
   },
   async setup (_, nuxt) {
     const resolver = createResolver(import.meta.url)

@@ -1,11 +1,12 @@
 import type { EventType } from '@parcel/watcher'
 import type { FSWatcher } from 'chokidar'
 import { watch as chokidarWatch } from 'chokidar'
-import { importModule, isIgnored, logger, tryResolveModule, useNuxt } from '@nuxt/kit'
+import { importModule, isIgnored, tryResolveModule, useNuxt } from '@nuxt/kit'
 import { debounce } from 'perfect-debounce'
 import { normalize, relative, resolve } from 'pathe'
 import type { Nuxt, NuxtBuilder } from 'nuxt/schema'
 
+import { logger } from '../utils'
 import { generateApp as _generateApp, createApp } from './app'
 import { checkForExternalConfigurationFiles } from './external-config-files'
 import { cleanupCaches, getVueHash } from './cache'
@@ -106,7 +107,13 @@ function createWatcher () {
     ],
   })
 
-  watcher.on('all', (event, path) => nuxt.callHook('builder:watch', event, normalize(path)))
+  // TODO: consider moving to emit absolute path in 3.8 or 4.0
+  watcher.on('all', (event, path) => {
+    if (event === 'all' || event === 'ready' || event === 'error' || event === 'raw') {
+      return
+    }
+    nuxt.callHook('builder:watch', event, nuxt.options.experimental.relativeWatchPaths ? normalize(relative(nuxt.options.srcDir, path)) : normalize(path))
+  })
   nuxt.hook('close', () => watcher?.close())
 }
 
@@ -134,9 +141,13 @@ function createGranularWatcher () {
     const watchers: Record<string, FSWatcher> = {}
 
     watcher.on('all', (event, path) => {
+      if (event === 'all' || event === 'ready' || event === 'error' || event === 'raw') {
+        return
+      }
       path = normalize(path)
       if (!pending) {
-        nuxt.callHook('builder:watch', event, path)
+        // TODO: consider moving to emit absolute path in 3.8 or 4.0
+        nuxt.callHook('builder:watch', event, nuxt.options.experimental.relativeWatchPaths ? relative(nuxt.options.srcDir, path) : path)
       }
       if (event === 'unlinkDir' && path in watchers) {
         watchers[path]?.close()
@@ -144,8 +155,14 @@ function createGranularWatcher () {
       }
       if (event === 'addDir' && path !== dir && !ignoredDirs.has(path) && !pathsToWatch.includes(path) && !(path in watchers) && !isIgnored(path)) {
         const pathWatcher = watchers[path] = chokidarWatch(path, { ...nuxt.options.watchers.chokidar, ignored: [isIgnored] })
-        pathWatcher.on('all', (event, p) => nuxt.callHook('builder:watch', event, normalize(p)))
-        nuxt.hook('close', () => pathWatcher?.close())
+        // TODO: consider moving to emit absolute path in 3.8 or 4.0
+        pathWatcher.on('all', (event, p) => {
+          if (event === 'all' || event === 'ready' || event === 'error' || event === 'raw') {
+            return
+          }
+          nuxt.callHook('builder:watch', event, nuxt.options.experimental.relativeWatchPaths ? normalize(relative(nuxt.options.srcDir, p)) : normalize(p))
+        })
+        nuxt.hook('close', () => watchers[path]?.close())
       }
     })
     watcher.on('ready', () => {
@@ -178,7 +195,8 @@ async function createParcelWatcher () {
       if (err) { return }
       for (const event of events) {
         if (isIgnored(event.path)) { continue }
-        nuxt.callHook('builder:watch', watchEvents[event.type], normalize(event.path))
+        // TODO: consider moving to emit absolute path in 3.8 or 4.0
+        nuxt.callHook('builder:watch', watchEvents[event.type], nuxt.options.experimental.relativeWatchPaths ? normalize(relative(nuxt.options.srcDir, event.path)) : normalize(event.path))
       }
     }, {
       ignore: [

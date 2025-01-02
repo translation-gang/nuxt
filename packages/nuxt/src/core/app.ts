@@ -1,14 +1,15 @@
 import { promises as fsp, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'pathe'
 import { defu } from 'defu'
-import { findPath, logger, normalizePlugin, normalizeTemplate, resolveAlias, resolveFiles, resolvePath } from '@nuxt/kit'
+import { compileTemplate as _compileTemplate, findPath, normalizePlugin, normalizeTemplate, resolveAlias, resolveFiles, resolvePath, templateUtils } from '@nuxt/kit'
 import type { Nuxt, NuxtApp, NuxtPlugin, NuxtTemplate, ResolvedNuxtTemplate } from 'nuxt/schema'
 
+import type { PluginMeta } from 'nuxt/app'
+
+import { logger } from '../utils'
 import * as defaultTemplates from './templates'
 import { getNameFromPath, hasSuffix, uniqueBy } from './utils'
 import { extractMetadata, orderMap } from './plugins/plugin-metadata'
-
-import type { PluginMeta } from '#app'
 
 export function createApp (nuxt: Nuxt, options: Partial<NuxtApp> = {}): NuxtApp {
   return defu(options, {
@@ -37,7 +38,7 @@ export async function generateApp (nuxt: Nuxt, app: NuxtApp, options: { filter?:
   await nuxt.callHook('app:templates', app)
 
   // Normalize templates
-  app.templates = app.templates.map(tmpl => normalizeTemplate(tmpl))
+  app.templates = app.templates.map(tmpl => normalizeTemplate(tmpl, nuxt.options.buildDir))
 
   // compile plugins first as they are needed within the nuxt.vfs
   // in order to annotate templated plugins
@@ -53,7 +54,9 @@ export async function generateApp (nuxt: Nuxt, app: NuxtApp, options: { filter?:
   }
 
   // Compile templates into vfs
-  const templateContext = { nuxt, app }
+  // TODO: remove utils in v4
+  const templateContext = { utils: templateUtils, nuxt, app }
+  const compileTemplate = nuxt.options.experimental.compileTemplate ? _compileTemplate : futureCompileTemplate
 
   const writes: Array<() => void> = []
   const changedTemplates: Array<ResolvedNuxtTemplate<any>> = []
@@ -111,7 +114,7 @@ export async function generateApp (nuxt: Nuxt, app: NuxtApp, options: { filter?:
 }
 
 /** @internal */
-async function compileTemplate<T> (template: NuxtTemplate<T>, ctx: { nuxt: Nuxt, app: NuxtApp, utils?: unknown }) {
+async function futureCompileTemplate<T> (template: NuxtTemplate<T>, ctx: { nuxt: Nuxt, app: NuxtApp, utils?: unknown }) {
   delete ctx.utils
 
   if (template.src) {

@@ -7,7 +7,7 @@ import {
   renderResourceHeaders,
 } from 'vue-bundle-renderer/runtime'
 import type { Manifest as ClientManifest } from 'vue-bundle-renderer'
-import type { RenderResponse } from 'nitro/types'
+import type { RenderResponse } from 'nitropack'
 import type { Manifest } from 'vite'
 import type { H3Event } from 'h3'
 import { appendResponseHeader, createError, getQuery, getResponseStatus, getResponseStatusText, readBody, writeEarlyHints } from 'h3'
@@ -21,16 +21,18 @@ import type { Head, HeadEntryOptions } from '@unhead/schema'
 import type { Link, Script, Style } from '@unhead/vue'
 import { createServerHead, resolveUnrefHeadInput } from '@unhead/vue'
 
-import { defineRenderHandler, getRouteRules, useNitroApp, useRuntimeConfig, useStorage } from 'nitro/runtime'
+import type { NuxtPayload, NuxtSSRContext } from 'nuxt/app'
+
+import { defineRenderHandler, getRouteRules, useRuntimeConfig, useStorage } from '#internal/nitro'
+import { useNitroApp } from '#internal/nitro/app'
 
 // @ts-expect-error virtual file
 import unheadPlugins from '#internal/unhead-plugins.mjs'
 // @ts-expect-error virtual file
 import { renderSSRHeadOptions } from '#internal/unhead.config.mjs'
 
-import type { NuxtPayload, NuxtSSRContext } from '#app'
 // @ts-expect-error virtual file
-import { appHead, appId, appRootAttrs, appRootTag, appTeleportAttrs, appTeleportTag, componentIslands, multiApp } from '#internal/nuxt.config.mjs'
+import { appHead, appId, appRootAttrs, appRootTag, appSpaLoaderAttrs, appSpaLoaderTag, appTeleportAttrs, appTeleportTag, componentIslands, appManifest as isAppManifestEnabled, multiApp, spaLoadingTemplateOutside } from '#internal/nuxt.config.mjs'
 // @ts-expect-error virtual file
 import { buildAssetsURL, publicAssetsURL } from '#internal/nuxt/paths'
 
@@ -144,7 +146,17 @@ const getSPARenderer = lazyCachedFunction(async () => {
 
   // @ts-expect-error virtual file
   const spaTemplate = await import('#spa-template').then(r => r.template).catch(() => '')
-    .then(r => APP_ROOT_OPEN_TAG + r + APP_ROOT_CLOSE_TAG)
+    .then((r) => {
+      if (spaLoadingTemplateOutside) {
+        const APP_SPA_LOADER_OPEN_TAG = `<${appSpaLoaderTag}${propsToString(appSpaLoaderAttrs)}>`
+        const APP_SPA_LOADER_CLOSE_TAG = `</${appSpaLoaderTag}>`
+        const appTemplate = APP_ROOT_OPEN_TAG + APP_ROOT_CLOSE_TAG
+        const loaderTemplate = r ? APP_SPA_LOADER_OPEN_TAG + r + APP_SPA_LOADER_CLOSE_TAG : ''
+        return appTemplate + loaderTemplate
+      } else {
+        return APP_ROOT_OPEN_TAG + r + APP_ROOT_CLOSE_TAG
+      }
+    })
 
   const options = {
     manifest,
@@ -379,7 +391,7 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
 
   // Setup head
   const { styles, scripts } = getRequestDependencies(ssrContext, renderer.rendererContext)
-  // 1.Extracted payload preloading
+  // 1. Preload payloads and app manifest
   if (_PAYLOAD_EXTRACTION && !NO_SCRIPTS && !isRenderingIsland) {
     head.push({
       link: [
@@ -389,7 +401,13 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
       ],
     }, headEntryOptions)
   }
-
+  if (isAppManifestEnabled && ssrContext._preloadManifest) {
+    head.push({
+      link: [
+        { rel: 'preload', as: 'fetch', fetchpriority: 'low', crossorigin: 'anonymous', href: buildAssetsURL(`builds/meta/${ssrContext.runtimeConfig.app.buildId}.json`) },
+      ],
+    }, { ...headEntryOptions, tagPriority: 'low' })
+  }
   // 2. Styles
   if (inlinedStyles.length) {
     head.push({ style: inlinedStyles })
@@ -458,6 +476,23 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
   // remove certain tags for nuxt islands
   const { headTags, bodyTags, bodyTagsOpen, htmlAttrs, bodyAttrs } = await renderSSRHead(head, renderSSRHeadOptions)
 
+  // Create render context
+  const htmlContext: NuxtRenderHTMLContext = {
+    island: isRenderingIsland,
+    htmlAttrs: htmlAttrs ? [htmlAttrs] : [],
+    head: normalizeChunks([headTags]),
+    bodyAttrs: bodyAttrs ? [bodyAttrs] : [],
+    bodyPrepend: normalizeChunks([bodyTagsOpen, ssrContext.teleports?.body]),
+    body: [
+      componentIslands ? replaceIslandTeleports(ssrContext, _rendered.html) : _rendered.html,
+      APP_TELEPORT_OPEN_TAG + (HAS_APP_TELEPORTS ? joinTags([ssrContext.teleports?.[`#${appTeleportAttrs.id}`]]) : '') + APP_TELEPORT_CLOSE_TAG,
+    ],
+    bodyAppend: [bodyTags],
+  }
+
+  // Allow hooking into the rendered result
+  await nitroApp.hooks.callHook('render:html', htmlContext, { event })
+
   // Response for component islands
   if (isRenderingIsland && islandContext) {
     const islandHead: Head = {}
@@ -478,7 +513,7 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
     const islandResponse: NuxtIslandResponse = {
       id: islandContext.id,
       head: islandHead,
-      html: getServerComponentHTML(_rendered.html),
+      html: getServerComponentHTML(htmlContext.body as [string, ...string[]]),
       components: getClientIslandResponse(ssrContext),
       slots: getSlotIslandResponse(ssrContext),
     }
@@ -500,23 +535,6 @@ export default defineRenderHandler(async (event): Promise<Partial<RenderResponse
     }
     return response
   }
-
-  // Create render context
-  const htmlContext: NuxtRenderHTMLContext = {
-    island: isRenderingIsland,
-    htmlAttrs: htmlAttrs ? [htmlAttrs] : [],
-    head: normalizeChunks([headTags]),
-    bodyAttrs: bodyAttrs ? [bodyAttrs] : [],
-    bodyPrepend: normalizeChunks([bodyTagsOpen, ssrContext.teleports?.body]),
-    body: [
-      componentIslands ? replaceIslandTeleports(ssrContext, _rendered.html) : _rendered.html,
-      APP_TELEPORT_OPEN_TAG + (HAS_APP_TELEPORTS ? joinTags([ssrContext.teleports?.[`#${appTeleportAttrs.id}`]]) : '') + APP_TELEPORT_CLOSE_TAG,
-    ],
-    bodyAppend: [bodyTags],
-  }
-
-  // Allow hooking into the rendered result
-  await nitroApp.hooks.callHook('render:html', htmlContext, { event })
 
   // Construct HTML response
   const response = {
@@ -649,9 +667,9 @@ function splitPayload (ssrContext: NuxtSSRContext) {
 /**
  * remove the root node from the html body
  */
-function getServerComponentHTML (body: string): string {
-  const match = body.match(ROOT_NODE_REGEX)
-  return match?.[1] || body
+function getServerComponentHTML (body: [string, ...string[]]): string {
+  const match = body[0].match(ROOT_NODE_REGEX)
+  return match?.[1] || body[0]
 }
 
 const SSR_SLOT_TELEPORT_MARKER = /^uid=([^;]*);slot=(.*)$/

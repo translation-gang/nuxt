@@ -2,23 +2,44 @@ import { describe, expectTypeOf, it } from 'vitest'
 import type { Ref, SlotsType } from 'vue'
 import type { FetchError } from 'ofetch'
 import type { NavigationFailure, RouteLocationNormalized, RouteLocationRaw, Router, useRouter as vueUseRouter } from 'vue-router'
+import type { H3Event } from 'h3'
+import { getRouteRules as getNitroRouteRules } from 'nitropack/runtime'
+import type { NitroRouteRules } from 'nitropack'
 
 import type { AppConfig, RuntimeValue, UpperSnakeCase } from 'nuxt/schema'
 import { defineNuxtModule } from 'nuxt/kit'
 import { defineNuxtConfig } from 'nuxt/config'
+
+// TODO: temporary module for backwards compatibility
+import type { DefaultAsyncDataErrorValue, DefaultAsyncDataValue } from 'nuxt/app/defaults'
+
 import { callWithNuxt, isVue3 } from '#app'
 import type { NuxtError } from '#app'
 import type { NavigateToOptions } from '#app/composables/router'
 import { NuxtLayout, NuxtLink, NuxtPage, ServerComponent, WithTypes } from '#components'
 import { useRouter } from '#imports'
 
-type DefaultAsyncDataErrorValue = undefined
-type DefaultAsyncDataValue = undefined
-
 interface TestResponse { message: string }
 
 describe('API routes', () => {
   it('generates types for routes', () => {
+    expectTypeOf($fetch('/api/hello')).toEqualTypeOf<Promise<string>>()
+    // registered in extends
+    expectTypeOf($fetch('/api/foo')).toEqualTypeOf<Promise<string>>()
+    // registered in module
+    expectTypeOf($fetch('/auto-registered-module')).toEqualTypeOf<Promise<string>>()
+    expectTypeOf($fetch('/api/hey')).toEqualTypeOf<Promise<{ foo: string, baz: string }>>()
+    expectTypeOf($fetch('/api/hey', { method: 'get' })).toEqualTypeOf<Promise<{ foo: string, baz: string }>>()
+    expectTypeOf($fetch('/api/hey', { method: 'post' })).toEqualTypeOf<Promise<{ method: 'post' }>>()
+    // @ts-expect-error not a valid method
+    expectTypeOf($fetch('/api/hey', { method: 'patch ' })).toEqualTypeOf<Promise<{ foo: string, baz: string }>>()
+    expectTypeOf($fetch('/api/union')).toEqualTypeOf<Promise<{ type: 'a', foo: string } | { type: 'b', baz: string }>>()
+    expectTypeOf($fetch('/api/other')).toEqualTypeOf<Promise<unknown>>()
+    expectTypeOf($fetch<TestResponse>('/test')).toEqualTypeOf<Promise<TestResponse>>()
+  })
+
+  it('works with useRequestFetch', () => {
+    const $fetch = useRequestFetch()
     expectTypeOf($fetch('/api/hello')).toEqualTypeOf<Promise<string>>()
     // registered in extends
     expectTypeOf($fetch('/api/foo')).toEqualTypeOf<Promise<string>>()
@@ -90,6 +111,21 @@ describe('API routes', () => {
 
     expectTypeOf(useLazyFetch('/error').error).toEqualTypeOf<Ref<FetchError | DefaultAsyncDataErrorValue>>()
     expectTypeOf(useLazyFetch<any, string>('/error').error).toEqualTypeOf<Ref<string | DefaultAsyncDataErrorValue>>()
+  })
+})
+
+describe('nitro compatible APIs', () => {
+  it('getRouteRules', async () => {
+    const a = await getRouteRules('/test')
+    const b = await getRouteRules({} as H3Event)
+    const c = getNitroRouteRules({} as H3Event)
+
+    expectTypeOf(b).toEqualTypeOf(c)
+    expectTypeOf(c).toEqualTypeOf<NitroRouteRules>()
+    expectTypeOf(a).toEqualTypeOf<Record<string, any>>()
+  })
+  it('useRuntimeConfig', () => {
+    useRuntimeConfig({} as H3Event)
   })
 })
 
@@ -430,11 +466,6 @@ describe('composables', () => {
 
     expectTypeOf(useFetch('/test', { default: () => ref(500) }).data).toEqualTypeOf<Ref<unknown>>()
     expectTypeOf(useFetch('/test', { default: () => 500 }).data).toEqualTypeOf<Ref<unknown>>()
-  })
-
-  it('prevents passing string to `useId`', () => {
-    // @ts-expect-error providing a key is not allowed
-    useId('test')
   })
 
   it('enforces readonly cookies', () => {

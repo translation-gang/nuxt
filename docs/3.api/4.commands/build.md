@@ -8,19 +8,34 @@ links:
     size: xs
 ---
 
+<!--build-cmd-->
 ```bash [Terminal]
-npx nuxi build [--prerender] [--preset] [--dotenv] [--log-level] [rootDir]
+npx nuxi build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--prerender] [--preset] [--dotenv] [--envName]
 ```
+<!--/build-cmd-->
 
 Команда `build` создает директорию `.output` со всем вашим приложением, сервером и зависимостями, готовыми для продакшена.
 
-Параметр      | По умолчанию | Описание
---------------|--------------|---------------------------------------------------------------------------------------------------------------------
-`rootDir`     | `.`          | Корневая директория приложения для пакетирования.
-`--prerender` | `false`      | Предварительный рендеринг всех маршрутов вашего приложения. (**Примечание:** это экспериментальный флаг. Поведение может быть изменено.)
-`--preset`    | -            | Установить [пресет Nitro](https://nitro.unjs.io/deploy#changing-the-deployment-preset)
-`--dotenv`    | `.`          | Укажите другой файл `.env` для загрузки, **относительно** корневой директории.
-`--log-level` | `info`       | Укажите уровень журналирования во время сборки, допускается `silent` \| `info` \| `verbose`.
+## Arguments
+
+<!--build-args-->
+Argument | Description
+--- | ---
+`ROOTDIR="."` | Specifies the working directory (default: `.`)
+<!--/build-args-->
+
+## Options
+
+<!--build-opts-->
+Option | Default | Description
+--- | --- | ---
+`--cwd=<directory>` |  | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Specify build-time log level
+`--prerender` |  | Build Nuxt and prerender static routes
+`--preset` |  | Nitro server preset
+`--dotenv` |  | Path to `.env` file to load, relative to the root directory
+`--envName` |  | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server)
+<!--/build-opts-->
 
 ::note
 Эта команда устанавливает `process.env.NODE_ENV` в `production`.

@@ -1,5 +1,9 @@
 import { computed, getCurrentInstance, getCurrentScope, onBeforeMount, onScopeDispose, onServerPrefetch, onUnmounted, ref, shallowRef, toRef, unref, watch } from 'vue'
 import type { MultiWatchSources, Ref } from 'vue'
+
+// TODO: temporary module for backwards compatibility
+import type { DedupeOption, DefaultAsyncDataErrorValue, DefaultAsyncDataValue } from 'nuxt/app/defaults'
+
 import type { NuxtApp } from '../nuxt'
 import { useNuxtApp } from '../nuxt'
 import { toArray } from '../utils'
@@ -9,9 +13,6 @@ import { onNuxtReady } from './ready'
 
 // @ts-expect-error virtual file
 import { asyncDataDefaults, resetAsyncDataToUndefined } from '#build/nuxt.config.mjs'
-
-// TODO: temporary module for backwards compatibility
-import type { DedupeOption, DefaultAsyncDataErrorValue, DefaultAsyncDataValue } from '#app/defaults'
 
 export type AsyncDataRequestStatus = 'idle' | 'pending' | 'success' | 'error'
 
@@ -363,6 +364,12 @@ export function useAsyncData<
   if (import.meta.client) {
     // Setup hook callbacks once per instance
     const instance = getCurrentInstance()
+
+    // @ts-expect-error - instance.sp is an internal vue property
+    if (instance && fetchOnServer && options.immediate && !instance.sp) {
+      // @ts-expect-error - internal vue property. This force vue to mark the component as async boundary client-side to avoid useId hydration issue since we treeshake onServerPrefetch
+      instance.sp = []
+    }
     if (import.meta.dev && !nuxtApp.isHydrating && !nuxtApp._processingMiddleware /* internal flag */ && (!instance || instance?.isMounted)) {
       // @ts-expect-error private property
       console.warn(`[nuxt] [${options._functionName || 'useAsyncData'}] Component is already mounted, please use $fetch instead. See https://nuxt.com/docs/getting-started/data-fetching`)

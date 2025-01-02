@@ -38,7 +38,7 @@ useHeadSafe({
 useHeadSafe(input: MaybeComputedRef<HeadSafe>): void
 ```
 
-Белый список безопасных значений:
+Список разрешенных значений:
 
 ```ts
 export default {

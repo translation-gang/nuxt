@@ -8,25 +8,45 @@ links:
     size: xs
 ---
 
+<!--dev-cmd-->
 ```bash [Terminal]
-npx nuxi dev [rootDir] [--dotenv] [--log-level] [--clipboard] [--open, -o] [--no-clear] [--port, -p] [--host, -h] [--https] [--ssl-cert] [--ssl-key] [--tunnel]
+npx nuxi dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dotenv] [--envName] [--no-clear] [--no-fork] [-p, --port] [-h, --host] [--clipboard] [-o, --open] [--https] [--publicURL] [--qr] [--public] [--tunnel] [--sslCert] [--sslKey]
 ```
+<!--/dev-cmd-->
 
 Команда dev запускает сервер разработки с HMR на [http://localhost:3000](https://localhost:3000)
 
-Параметр      | По умолчанию | Описание
---------------|--------------|------------------------------------------------------------------------------------------
-`rootDir`     | `.`          | Корневая директория приложения для запуска.
-`--dotenv`    | `.`          | Укажите другой файл `.env` для загрузки, относительно корневой директории.
-`--open, -o`  | `false`      | Открыть URL-адрес в браузере.
-`--clipboard` | `false`      | Копировать URL-адрес в буфер обмена.
-`--no-clear`  | `false`      | Не очищать консоль после запуска.
-`--port, -p`  | `3000`       | Порт для прослушивания.
-`--host, -h`  | `localhost`  | Имя хоста сервера.
-`--https`     | `false`      | Прослушивание по протоколу `https` с самоподписанным сертификатом по умолчанию.
-`--ssl-cert`  | `null`       | Укажите сертификат для https.
-`--ssl-key`   | `null`       | Укажите ключ для сертификата https.
-`--tunnel`    | `false`      | Туннелирование вашего локального сервера в Интернет с помощью [unjs/untun](https://github.com/unjs/untun)
+## Arguments
+
+<!--dev-args-->
+Argument | Description
+--- | ---
+`ROOTDIR="."` | Specifies the working directory (default: `.`)
+<!--/dev-args-->
+
+## Options
+
+<!--dev-opts-->
+Option | Default | Description
+--- | --- | ---
+`--cwd=<directory>` |  | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Specify build-time log level
+`--dotenv` |  | Path to `.env` file to load, relative to the root directory
+`--envName` |  | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server)
+`--no-clear` |  | Disable clear console on restart
+`--no-fork` |  | Disable forked mode
+`-p, --port` |  | Port to listen on (default: `NUXT_PORT \|\| NITRO_PORT \|\| PORT \|\| nuxtOptions.devServer.port`)
+`-h, --host` |  | Host to listen on (default: `NUXT_HOST \|\| NITRO_HOST \|\| HOST \|\| nuxtOptions._layers?.[0]?.devServer?.host`)
+`--clipboard` | `false` | Copy the URL to the clipboard
+`-o, --open` | `false` | Open the URL in the browser
+`--https` |  | Enable HTTPS
+`--publicURL` |  | Displayed public URL (used for QR code)
+`--qr` |  | Display The QR code of public URL when available
+`--public` |  | Listen to all network interfaces
+`--tunnel` |  | Open a tunnel using https://github.com/unjs/untun
+`--sslCert` |  | (DEPRECATED) Use `--https.cert` instead.
+`--sslKey` |  | (DEPRECATED) Use `--https.key` instead.
+<!--/dev-opts-->
 
 Порт и хост также могут быть установлены с помощью переменных среды `NUXT_PORT`, `PORT`, `NUXT_HOST` или `HOST`.
 
