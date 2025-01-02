@@ -8,16 +8,30 @@ links:
     size: xs
 ---
 
+<!--add-cmd-->
 ```bash [Terminal]
-npx nuxi add [--cwd] [--force] <TEMPLATE> <NAME>
+npx nuxi add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--force]
 ```
+<!--/add-cmd-->
 
-Параметр   | По умолчанию | Описание
------------|--------------|-------------------------------------------------
-`TEMPLATE` | -            | Укажите шаблон файла, который будет сгенерирован.
-`NAME`     | -            | Укажите имя файла, который будет создан.
-`--cwd`    | `.`          | Директория целевого приложения.
-`--force`  | `false`      | Принудительное переопределение файла, если он уже существует.
+### Arguments
+
+<!--add-args-->
+Argument | Description
+--- | ---
+`TEMPLATE` | Specify which template to generate (options: <api\|plugin\|component\|composable\|middleware\|layout\|page>)
+`NAME` | Specify name of the generated file
+<!--/add-args-->
+
+### Options
+
+<!--add-opts-->
+Option | Default | Description
+--- | --- | ---
+`--cwd=<directory>` | `.` | Specify the working directory
+`--logLevel=<silent\|info\|verbose>` |  | Specify build-time log level
+`--force` | `false` | Force override file if it already exists
+<!--/add-opts-->
 
 **Модификаторы:**
 

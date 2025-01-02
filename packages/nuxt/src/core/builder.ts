@@ -1,11 +1,12 @@
 import type { EventType } from '@parcel/watcher'
 import type { FSWatcher } from 'chokidar'
 import { watch as chokidarWatch } from 'chokidar'
-import { importModule, isIgnored, logger, tryResolveModule, useNuxt } from '@nuxt/kit'
+import { importModule, isIgnored, tryResolveModule, useNuxt } from '@nuxt/kit'
 import { debounce } from 'perfect-debounce'
 import { normalize, relative, resolve } from 'pathe'
 import type { Nuxt, NuxtBuilder } from 'nuxt/schema'
 
+import { logger } from '../utils'
 import { generateApp as _generateApp, createApp } from './app'
 import { checkForExternalConfigurationFiles } from './external-config-files'
 import { cleanupCaches, getVueHash } from './cache'
@@ -106,7 +107,12 @@ function createWatcher () {
     ],
   })
 
-  watcher.on('all', (event, path) => nuxt.callHook('builder:watch', event, normalize(path)))
+  watcher.on('all', (event, path) => {
+    if (event === 'all' || event === 'ready' || event === 'error' || event === 'raw') {
+      return
+    }
+    nuxt.callHook('builder:watch', event, normalize(path))
+  })
   nuxt.hook('close', () => watcher?.close())
 }
 
@@ -134,6 +140,9 @@ function createGranularWatcher () {
     const watchers: Record<string, FSWatcher> = {}
 
     watcher.on('all', (event, path) => {
+      if (event === 'all' || event === 'ready' || event === 'error' || event === 'raw') {
+        return
+      }
       path = normalize(path)
       if (!pending) {
         nuxt.callHook('builder:watch', event, path)
@@ -144,7 +153,12 @@ function createGranularWatcher () {
       }
       if (event === 'addDir' && path !== dir && !ignoredDirs.has(path) && !pathsToWatch.includes(path) && !(path in watchers) && !isIgnored(path)) {
         const pathWatcher = watchers[path] = chokidarWatch(path, { ...nuxt.options.watchers.chokidar, ignored: [isIgnored] })
-        pathWatcher.on('all', (event, p) => nuxt.callHook('builder:watch', event, normalize(p)))
+        pathWatcher.on('all', (event, p) => {
+          if (event === 'all' || event === 'ready' || event === 'error' || event === 'raw') {
+            return
+          }
+          nuxt.callHook('builder:watch', event, normalize(p))
+        })
         nuxt.hook('close', () => pathWatcher?.close())
       }
     })

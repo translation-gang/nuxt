@@ -1,6 +1,6 @@
 import { existsSync, readdirSync } from 'node:fs'
 import { mkdir, readFile } from 'node:fs/promises'
-import { addBuildPlugin, addComponent, addPlugin, addTemplate, addTypeTemplate, defineNuxtModule, findPath, logger, resolvePath, updateTemplates, useNitro } from '@nuxt/kit'
+import { addBuildPlugin, addComponent, addPlugin, addTemplate, addTypeTemplate, defineNuxtModule, findPath, resolvePath, updateTemplates, useNitro } from '@nuxt/kit'
 import { dirname, join, relative, resolve } from 'pathe'
 import { genImport, genObjectFromRawEntries, genString } from 'knitwork'
 import { joinURL } from 'ufo'
@@ -14,6 +14,7 @@ import type { NitroRouteConfig } from 'nitro/types'
 import { defu } from 'defu'
 import { distDir } from '../dirs'
 import { resolveTypePath } from '../core/utils/types'
+import { logger } from '../utils'
 import { normalizeRoutes, resolvePagesRoutes, resolveRoutePaths } from './utils'
 import { extractRouteRules, getMappedPages } from './route-rules'
 import { PageMetaPlugin } from './plugins/page-meta'
@@ -42,6 +43,7 @@ export default defineNuxtModule({
       delete tsConfig.compilerOptions.paths['#vue-router/*']
     })
 
+    const builtInRouterOptions = await findPath(resolve(runtimeDir, 'router.options')) || resolve(runtimeDir, 'router.options')
     async function resolveRouterOptions () {
       const context = {
         files: [] as Array<{ path: string, optional?: boolean }>,
@@ -53,7 +55,7 @@ export default defineNuxtModule({
       }
 
       // Add default options at beginning
-      context.files.unshift({ path: await findPath(resolve(runtimeDir, 'router.options')) || resolve(runtimeDir, 'router.options'), optional: true })
+      context.files.unshift({ path: builtInRouterOptions, optional: true })
 
       await nuxt.callHook('pages:routerOptions', context)
       return context.files
@@ -74,7 +76,7 @@ export default defineNuxtModule({
         return true
       }
 
-      const pages = await resolvePagesRoutes()
+      const pages = await resolvePagesRoutes(nuxt)
       if (pages.length) {
         if (nuxt.apps.default) {
           nuxt.apps.default.pages = pages
@@ -92,7 +94,7 @@ export default defineNuxtModule({
     }
 
     nuxt.hook('app:templates', async (app) => {
-      app.pages = await resolvePagesRoutes()
+      app.pages = await resolvePagesRoutes(nuxt)
 
       if (!nuxt.options.ssr && app.pages.some(p => p.mode === 'server')) {
         logger.warn('Using server pages with `ssr: false` is not supported with auto-detected component islands. Set `experimental.componentIslands` to `true`.')
@@ -127,6 +129,16 @@ export default defineNuxtModule({
           'export { useRoute } from \'#app/composables/router\'',
           'export const START_LOCATION = Symbol(\'router:start-location\')',
         ].join('\n'),
+      })
+      // used by `<NuxtLink>`
+      addTemplate({
+        filename: 'router.options.mjs',
+        getContents: () => {
+          return [
+            'export const hashMode = false',
+            'export default {}',
+          ].join('\n')
+        },
       })
       addTypeTemplate({
         filename: 'types/middleware.d.ts',
@@ -167,7 +179,7 @@ export default defineNuxtModule({
         logs: nuxt.options.debug,
         async beforeWriteFiles (rootPage) {
           rootPage.children.forEach(child => child.delete())
-          const pages = nuxt.apps.default?.pages || await resolvePagesRoutes()
+          const pages = nuxt.apps.default?.pages || await resolvePagesRoutes(nuxt)
           if (nuxt.apps.default) {
             nuxt.apps.default.pages = pages
           }
@@ -535,6 +547,7 @@ export default defineNuxtModule({
         return [
           ...routerOptionsFiles.map((file, index) => genImport(file.path, `routerOptions${index}`)),
           `const configRouterOptions = ${configRouterOptions}`,
+          `export const hashMode = ${[...routerOptionsFiles.filter(o => o.path !== builtInRouterOptions).map((_, index) => `routerOptions${index}.hashMode`).reverse(), nuxt.options.router.options.hashMode].join(' ?? ')}`,
           'export default {',
           '...configRouterOptions,',
           ...routerOptionsFiles.map((_, index) => `...routerOptions${index},`),
@@ -632,6 +645,7 @@ if (import.meta.hot) {
 
 export function handleHotUpdate(_router) {
   if (import.meta.hot) {
+    import.meta.hot.data ||= {}
     import.meta.hot.data.router = _router
   }
 }

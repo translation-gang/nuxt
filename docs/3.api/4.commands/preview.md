@@ -8,16 +8,32 @@ links:
     size: xs
 ---
 
+<!--preview-cmd-->
 ```bash [Terminal]
-npx nuxi preview|start [rootDir] [--dotenv]
+npx nuxi preview [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--envName] [--dotenv]
 ```
+<!--/preview-cmd-->
 
 Команда `preview` запускает сервер для предварительного просмотра вашего приложения Nuxt после выполнения команды `build`. Команда `start` является псевдонимом для `preview`. При запуске приложения в продакшен обратитесь к разделу [Развертывание](/docs/getting-started/deployment).
 
+## Arguments
+
+<!--preview-args-->
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Specifies the working directory (default: `.`)
+<!--/preview-args-->
+
+## Options
+
+<!--preview-opts-->
 Параметр   | По умолчанию | Описание
------------|--------------|--------------------------------------------------------------------------
-`rootDir`  | `.`          | Корневая директория приложения для предварительного просмотра.
-`--dotenv` | `.`          | Указывает на другой файл `.env` для загрузки, **относительно** корневой директории.
+--- | --- | ---
+`--cwd=<directory>` |  | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Specify build-time log level
+`--envName` |  | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server)
+`--dotenv` |  | Path to `.env` file to load, relative to the root directory
+<!--/preview-opts-->
 
 Эта команда устанавливает `process.env.NODE_ENV` в `production`. Для переопределения определите `NODE_ENV` в файле `.env` или в качестве аргумента командной строки.
 

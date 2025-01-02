@@ -8,27 +8,37 @@ links:
     size: xs
 ---
 
+<!--init-cmd-->
 ```bash [Terminal]
-npx nuxi init [--verbose|-v] [--template,-t] [dir]
+npx nuxi init [DIR] [--cwd=<directory>] [-t, --template] [-f, --force] [--offline] [--preferOffline] [--no-install] [--gitInit] [--shell] [--packageManager]
 ```
+<!--/init-cmd-->
 
 Команда `init` инициализирует новый проект Nuxt, используя [unjs/giget](https://github.com/unjs/giget).
 
-## Параметры
+## Arguments
 
-Параметр            | По умолчанию | Описание
---------------------|--------------|-----------------------------------------------------------------------------------------------------------------------
-`--cwd`             |              | Текущая рабочая директория
-`--log-level`       |              | Уровень ведения журнала логов
-`--template, -t`    | `v3`         | Указать имя шаблона или git-репозитория для использования в качестве шаблона. Формат `gh:org/name` для использования пользовательского шаблона github.
-`--force, -f`       | `false`      | Принудительное клонирование в любой существующий каталог.
-`--offline`         | `false`      | Принудительный автономный режим (не пытайтесь загрузить шаблон с GitHub и используйте только локальный кэш).
-`--prefer-offline`  | `false`      | Предпочитать автономный режим (сначала попробуйте загрузить шаблоны из локального кэша).
-`--no-install`      | `false`      | Пропустить установку зависимостей.
-`--git-init`        | `false`      | Инициализировать git-репозиторий.
-`--shell`           | `false`      | Запустить оболочку после установки в каталоге проекта (экспериментально).
-`--package-manager` | `npm`        | Выбор менеджера пакетов (npm, pnpm, yarn, bun).
-`--dir`             |              | Директория проекта.
+<!--init-args-->
+Argument | Description
+--- | ---
+`DIR=""` | Project directory
+<!--/init-args-->
+
+## Options
+
+<!--init-opts-->
+Option | Default | Description
+--- | --- | ---
+`--cwd=<directory>` | `.` | Specify the working directory
+`-t, --template` |  | Template name
+`-f, --force` |  | Override existing directory
+`--offline` |  | Force offline mode
+`--preferOffline` |  | Prefer offline mode
+`--no-install` |  | Skip installing dependencies
+`--gitInit` |  | Initialize git repository
+`--shell` |  | Start shell after installation in project directory
+`--packageManager` |  | Package manager choice (npm, pnpm, yarn, bun)
+<!--/init-opts-->
 
 ## Переменные окружения
 
