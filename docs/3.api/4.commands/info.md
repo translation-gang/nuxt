@@ -4,7 +4,7 @@ description: Команда info выводит сведения о текуще
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/info.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/info.ts
     size: xs
 ---
 

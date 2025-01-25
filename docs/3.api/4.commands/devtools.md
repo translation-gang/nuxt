@@ -4,7 +4,7 @@ description: Команда devtools позволяет включить или 
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/devtools.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/devtools.ts
     size: xs
 ---
 

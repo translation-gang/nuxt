@@ -110,6 +110,12 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
   - `default`: Фабричная функция для установки значения по умолчанию для `data` перед разрешением async-функции - полезно при использовании опции `lazy: true` или `immediate: false`.
   - `transform`: Функция, которая может быть использована для изменения результата функции `handler` после разрешения.
   - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
+    ```ts
+    const getDefaultCachedData = (key) => nuxtApp.isHydrating 
+      ? nuxtApp.payload.data[key] 
+      : nuxtApp.static.data[key]
+    ```
+    Which only caches data when `experimental.payloadExtraction` of `nuxt.config` is enabled.
   - `pick`: Выбор из результата функции `handler` только указанныx в этом массиве ключей.
   - `watch`: Следит за массивом реактивных источников и автоматически обновляет данные при их изменении. По умолчанию отслеживаются параметры запроса и URL. Вы можете полностью игнорировать реактивные источники, используя `watch: false`. Вместе с `immediate: false` это позволяет использовать `useFetch` полностью в ручном режиме. (Пример использования `watch` можно посмотреть [здесь](/docs/getting-started/data-fetching#watch)).
   - `deep`: Возвращает данные в виде глубокого ref-объекта. Для повышения производительности по умолчанию используется значение `false` для возврата данных в виде shallow-ref объекта.
@@ -135,6 +141,12 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если запрос данных не удался.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
+  - `idle`: when the request has not started, such as:
+    - when `execute` has not yet been called and `{ immediate: false }` is set
+    - when rendering HTML on the server and `{ server: false }` is set
+  - `pending`: the request is in progress
+  - `success`: the request has completed successfully
+  - `error`: the request has failed
 - `clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `"idle"`, и пометит все текущие запросы как отмененные.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
@@ -147,7 +159,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 
 ```ts [Signature]
 function useFetch<DataT, ErrorT>(
-  url: string | Request | Ref<string | Request> | (() => string) | Request,
+  url: string | Request | Ref<string | Request> | (() => string | Request),
   options?: UseFetchOptions<DataT>
 ): Promise<AsyncData<DataT, ErrorT>>
 

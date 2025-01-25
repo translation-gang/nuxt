@@ -4,7 +4,7 @@ description: Команда prepare создает директорию .nuxt в
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/prepare.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/prepare.ts
     size: xs
 ---
 
