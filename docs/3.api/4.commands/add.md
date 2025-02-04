@@ -107,6 +107,6 @@ npx nuxi add api hello
 ## `nuxi add layer`
 
 ```bash [Terminal]
-# Generates `layers/subscribe/nuxt.config.ts`
+# Создает `layers/subscribe/nuxt.config.ts`
 npx nuxi add layer subscribe
 ```
