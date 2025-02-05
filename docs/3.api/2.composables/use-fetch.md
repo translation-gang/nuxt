@@ -109,7 +109,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
   - `immediate`: Если установить значение `false`, то запрос не будет выполняться немедленно. (по умолчанию `true`).
   - `default`: Фабричная функция для установки значения по умолчанию для `data` перед разрешением async-функции - полезно при использовании опции `lazy: true` или `immediate: false`.
   - `transform`: Функция, которая может быть использована для изменения результата функции `handler` после разрешения.
-  - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
+  - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это:
     ```ts
     const getDefaultCachedData = (key) => nuxtApp.isHydrating 
       ? nuxtApp.payload.data[key] 
