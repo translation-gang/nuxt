@@ -115,7 +115,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
       ? nuxtApp.payload.data[key] 
       : nuxtApp.static.data[key]
     ```
-    Который кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
+    Которая кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
   - `pick`: Выбор из результата функции `handler` только указанныx в этом массиве ключей.
   - `watch`: Следит за массивом реактивных источников и автоматически обновляет данные при их изменении. По умолчанию отслеживаются параметры запроса и URL. Вы можете полностью игнорировать реактивные источники, используя `watch: false`. Вместе с `immediate: false` это позволяет использовать `useFetch` полностью в ручном режиме. (Пример использования `watch` можно посмотреть [здесь](/docs/getting-started/data-fetching#watch)).
   - `deep`: Возвращает данные в виде глубокого ref-объекта. Для повышения производительности по умолчанию используется значение `false` для возврата данных в виде shallow-ref объекта.
