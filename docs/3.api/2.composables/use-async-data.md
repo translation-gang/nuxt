@@ -78,7 +78,7 @@ const { data: posts } = await useAsyncData(
         ? nuxtApp.payload.data[key] 
         : nuxtApp.static.data[key]
       ```
-      Который кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
+      Которая кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
 
     - `pick`: выбрать из результата функции `handler` только указанные ключи в этом массиве
     - `watch`: следить за реактивными источниками для автоматического обновления
