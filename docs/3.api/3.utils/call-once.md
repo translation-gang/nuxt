@@ -25,7 +25,7 @@ links:
 
 ## Использование
 
-The default mode of `callOnce` is to run code only once. For example, if the code runs on the server it won't run again on the client. It also won't run again if you `callOnce` more than once on the client, for example by navigating back to this page.
+Режим по умолчанию для `callOnce` - это выполнение кода только один раз. Например, если код выполняется на сервере, он не будет выполняться снова на клиенте. Он также не будет выполняться снова, если вы вызовете `callOnce` более одного раза на клиенте, например, при переходе обратно на эту страницу.
 
 ```vue [app.vue]
 <script setup lang="ts">
@@ -38,21 +38,21 @@ await callOnce(async () => {
 </script>
 ```
 
-It is also possible to run on every navigation while still avoiding the initial server/client double load. For this, it is possible to use the `navigation` mode:
+Также возможно выполнение при каждой навигации, при этом избегая двойной загрузки на сервере/клиенте. Для этого можно использовать режим `navigation`:
 
 ```vue [app.vue]
 <script setup lang="ts">
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('This will only be logged once and then on every client side navigation')
+  console.log('Это будет выведено один раз, а затем при каждой навигации на клиенте')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 }, { mode: 'navigation' })
 </script>
 ```
 
 ::important
-`navigation` mode is available since [Nuxt v3.15](/blog/v3-15).
+Режим `navigation` доступен с [Nuxt v3.15](/blog/v3-15).
 ::
 
 ::tip{to="/docs/getting-started/state-management#usage-with-pinia"}
@@ -77,17 +77,17 @@ callOnce(fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<vo
 
 type CallOnceOptions = {
   /**
-   * Execution mode for the callOnce function
+   * Режим выполнения для функции callOnce
    * @default 'render'
    */
   mode?: 'navigation' | 'render'
 }
 ```
 
-## Parameters
+## Параметры
 
 - `key`: Уникальный ключ, гарантирующий, что код выполняется один раз. Если вы не предоставите ключ, то будет сгенерирован ключ, уникальный для файла и номера строки экземпляра `callOnce`.
 - `fn`: Функция, которую нужно выполнить один раз. Эта функция также может возвращать `Promise` и значение.
-- `options`: Setup the mode, either to re-execute on navigation (`navigation`) or just once for the lifetime of the app (`render`). Defaults to `render`.
-  - `render`: Executes once during initial render (either SSR or CSR) - Default mode
-  - `navigation`: Executes once during initial render and once per subsequent client-side navigation
+- `options`: Настройка режима, либо для повторного выполнения при навигации (`navigation`), либо только один раз за время жизни приложения (`render`). По умолчанию используется `render`.
+  - `render`: Выполняется один раз во время первоначального рендеринга (SSR или CSR) - режим по умолчанию
+  - `navigation`: Выполняется один раз во время первоначального рендеринга и один раз при каждой последующей навигации на клиенте.

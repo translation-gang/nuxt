@@ -14,19 +14,19 @@ links:
 
 ## Использование
 
-The `useNuxtData` composable is used to access the current cached value of data-fetching composables such as `useAsyncData`, `useLazyAsyncData`, `useFetch`, and `useLazyFetch`. By providing the key used during the data fetch, you can retrieve the cached data and use it as needed.
+Композабл `useNuxtData` используется для доступа к текущему закэшированному значению данных, полученных с помощью композаблов для запросов, таких как `useAsyncData`, `useLazyAsyncData`, `useFetch` и `useLazyFetch`. Указав ключ, который использовался при получении данных, вы можете извлечь закэшированные данные и использовать их по мере необходимости.
 
-This is particularly useful for optimizing performance by reusing already-fetched data or implementing features like Optimistic Updates or cascading data updates.
+Это особенно полезно для оптимизации производительности за счет повторного использования уже полученных данных или реализации таких возможностей, как оптимистичные обновления или каскадные обновления данных.
 
-To use `useNuxtData`, ensure that the data-fetching composable (`useFetch`, `useAsyncData`, etc.) has been called with an explicitly provided key.
+Чтобы использовать `useNuxtData`, убедитесь, что композабл для получения данных (`useFetch`, `useAsyncData` и т.д.) был вызван с явно указанным ключом.
 
-## Params
+## Параметры
 
-- `key`: The unique key that identifies the cached data. This key should match the one used during the original data fetch.
+- `key`: Уникальный ключ, который идентифицирует закэшированные данные. Этот ключ должен совпадать с тем, который использовался при первоначальном получении данных.
 
-## Return Values
+## Возвращаемые значения
 
-- `data`: A reactive reference to the cached data associated with the provided key. If no cached data exists, the value will be `null`. This `Ref` automatically updates if the cached data changes, allowing seamless reactivity in your components.
+- `data`: Реактивная ссылка на закэшированные данные, связанные с указанным ключом. Если закэшированных данных нет, значение будет `null`. Этот `Ref` автоматически обновляется, если закэшированные данные изменяются, что обеспечивает бесшовную реактивность в ваших компонентах.
 
 ## Пример
 
@@ -58,9 +58,9 @@ const { data } = useLazyFetch(`/api/posts/${route.params.id}`, {
 
 ## Оптимистичные обновления
 
-The example below shows how implementing Optimistic Updates can be achieved using useNuxtData.
+Пример ниже демонстрирует, как можно реализовать оптимистичные обновления с использованием useNuxtData.
 
-Optimistic Updates is a technique where the user interface is updated immediately, assuming a server operation will succeed. If the operation eventually fails, the UI is rolled back to its previous state.
+Оптимистичные обновления — это техника, при которой пользовательский интерфейс обновляется сразу же, предполагая, что операция на сервере завершится успешно. Если операция в итоге завершится неудачей, интерфейс возвращается к своему предыдущему состоянию.
 
 ```vue [pages/todos.vue]
 <script setup lang="ts">

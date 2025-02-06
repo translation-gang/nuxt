@@ -109,13 +109,13 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
   - `immediate`: Если установить значение `false`, то запрос не будет выполняться немедленно. (по умолчанию `true`).
   - `default`: Фабричная функция для установки значения по умолчанию для `data` перед разрешением async-функции - полезно при использовании опции `lazy: true` или `immediate: false`.
   - `transform`: Функция, которая может быть использована для изменения результата функции `handler` после разрешения.
-  - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
+  - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это:
     ```ts
     const getDefaultCachedData = (key) => nuxtApp.isHydrating 
       ? nuxtApp.payload.data[key] 
       : nuxtApp.static.data[key]
     ```
-    Which only caches data when `experimental.payloadExtraction` of `nuxt.config` is enabled.
+    Которая кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
   - `pick`: Выбор из результата функции `handler` только указанныx в этом массиве ключей.
   - `watch`: Следит за массивом реактивных источников и автоматически обновляет данные при их изменении. По умолчанию отслеживаются параметры запроса и URL. Вы можете полностью игнорировать реактивные источники, используя `watch: false`. Вместе с `immediate: false` это позволяет использовать `useFetch` полностью в ручном режиме. (Пример использования `watch` можно посмотреть [здесь](/docs/getting-started/data-fetching#watch)).
   - `deep`: Возвращает данные в виде глубокого ref-объекта. Для повышения производительности по умолчанию используется значение `false` для возврата данных в виде shallow-ref объекта.
@@ -141,12 +141,12 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если запрос данных не удался.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
-  - `idle`: when the request has not started, such as:
-    - when `execute` has not yet been called and `{ immediate: false }` is set
-    - when rendering HTML on the server and `{ server: false }` is set
-  - `pending`: the request is in progress
-  - `success`: the request has completed successfully
-  - `error`: the request has failed
+  - `idle`: когда запрос еще не начат, например:
+    - когда `execute` еще не был вызван и установлено `{ immediate: false }`
+    - при рендеринге HTML на сервере и установлено `{ server: false }`
+  - `pending`: запрос выполняется
+  - `success`: запрос успешно завершен
+  - `error`: запрос завершился с ошибкой
 - `clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `"idle"`, и пометит все текущие запросы как отмененные.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.

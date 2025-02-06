@@ -49,7 +49,7 @@ Middleware маршрута может быть либо строкой, либ�
 
 ### Middleware маршрута с именем
 
-Named route middleware is defined by providing a string as the first argument and a function as the second:
+Именованный middleware маршрута определяется путем передачи строки в качестве первого аргумента и функции в качестве второго:
 
 ```ts [plugins/my-plugin.ts]
 export default defineNuxtPlugin(() => {
@@ -59,13 +59,13 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
-When defined in a plugin, it overrides any existing middleware of the same name located in the `middleware/` directory.
+При определении в плагине он переопределяет любой существующий middleware с таким же именем, находящийся в директории `middleware/`.
 
 ### Глобальный Middleware маршрута
 
-Global route middleware can be defined in two ways:
+Глобальный middleware маршрута может быть определен двумя способами:
 
-- Pass a function directly as the first argument without a name. It will automatically be treated as global middleware and applied on every route change.
+- Передача функции напрямую в качестве первого аргумента без имени. Она автоматически будет рассматриваться как глобальный middleware и применяться при каждом изменении маршрута.
 
   ```ts [plugins/my-plugin.ts]
   export default defineNuxtPlugin(() => {

@@ -64,7 +64,7 @@ const { data: posts } = await useAsyncData(
 - `key`: уникальный ключ, который гарантирует, что получение данных может быть правильно дедуплицировано между запросами. Если вы не предоставляете ключ, то ключ, уникальный для имени файла и номера строки экземпляра `useAsyncData`, будет сгенерирован для вас.
 - `handler`: асинхронная функция, которая должна возвращать истинное значение (например, она не должна быть `undefined` или `null`), иначе запрос может быть дублирован на клиенте.
 ::warning
-The `handler` function should be **side-effect free** to ensure predictable behavior during SSR and CSR hydration. If you need to trigger side effects, use the [`callOnce`](/docs/api/utils/call-once) utility to do so.
+Функция `handler` должна быть **свободна от побочных эффектов**, чтобы обеспечить предсказуемое поведение во время SSR и CSR-гидратации. Если вам нужно вызвать побочные эффекты, используйте для этого утилиту [`callOnce`](/docs/api/utils/call-once).
 ::
   - `options`:
     - `server`: параметр, определяющий, следует ли получать данные на сервере (по умолчанию `true`)
@@ -72,13 +72,13 @@ The `handler` function should be **side-effect free** to ensure predictable beha
     - `immediate`: если установить значение `false`, это предотвратит немедленное выполнение запроса. (по умолчанию `true`)
     - `default`: функция-фабрика для установки значения по умолчанию для data перед тем, как асинхронная функция будет разрешена. Это полезно при использовании параметров `lazy: true` или `immediate: false`.
     - `transform`: функция, которая может быть использована для изменения результата функции-обработчика после ее разрешения.
-    - `getCachedData`: функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет вызывать выборку данных. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
+    - `getCachedData`: функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет вызывать выборку данных. По умолчанию это:
       ```ts
       const getDefaultCachedData = (key) => nuxtApp.isHydrating 
         ? nuxtApp.payload.data[key] 
         : nuxtApp.static.data[key]
       ```
-      Which only caches data when `experimental.payloadExtraction` of `nuxt.config` is enabled.
+      Которая кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
 
     - `pick`: выбрать из результата функции `handler` только указанные ключи в этом массиве
     - `watch`: следить за реактивными источниками для автоматического обновления
@@ -105,12 +105,12 @@ The `handler` function should be **side-effect free** to ensure predictable beha
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если получение данных не удалось.
 - `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
-  - `idle`: when the request has not started, such as:
-    - when `execute` has not yet been called and `{ immediate: false }` is set
-    - when rendering HTML on the server and `{ server: false }` is set
-  - `pending`: the request is in progress
-  - `success`: the request has completed successfully
-  - `error`: the request has failed
+  - `idle`: когда запрос еще не начат, например:
+    - когда `execute` еще не был вызван и установлено `{ immediate: false }`
+    - при рендеринге HTML на сервере и установлено `{ server: false }`
+  - `pending`: запрос выполняется
+  - `success`: запрос успешно завершен
+  - `error`: запрос завершился с ошибкой
 - `clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `idle`, и отметит любые текущие ожидающие запросы как отмененные.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
