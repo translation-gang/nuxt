@@ -102,20 +102,26 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 Все параметры запроса могут быть `computed` или `ref`. Они будут отслеживаться, и новые запросы будут автоматически выполняться с новыми значениями, если они будут обновлены.
 ::
 
-- `Options` (из [`useAsyncData`](/docs/api/composables/use-async-data)):
+- `Options` (from [`useAsyncData`](/docs/api/composables/use-async-data)):
   - `key`: Уникальный ключ для обеспечения правильной дедупликации данных в запросах. Если ключ не указан, он будет сгенерирован автоматически на основе URL и параметров запроса.
   - `server`: Следует ли получать данные на сервере (по умолчанию `true`).
   - `lazy`: Разрешать ли async-функцию после загрузки маршрута, чтобы не блокировать навигацию на стороне клиента (по умолчанию `false`).
   - `immediate`: Если установить значение `false`, то запрос не будет выполняться немедленно. (по умолчанию `true`).
   - `default`: Фабричная функция для установки значения по умолчанию для `data` перед разрешением async-функции - полезно при использовании опции `lazy: true` или `immediate: false`.
   - `transform`: Функция, которая может быть использована для изменения результата функции `handler` после разрешения.
-  - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это: `key => nuxt.isHydrating ? nuxt.payload.data[key] : nuxt.static.data[key]`, которая кэширует данные, только если включено `payloadExtraction`.
-  - `pick`: Выбор из результата функции `handler` только указанныx в этом массиве ключей.
-  - `watch`: Следит за массивом реактивных источников и автоматически обновляет данные при их изменении. По умолчанию отслеживаются параметры запроса и URL. Вы можете полностью игнорировать реактивные источники, используя `watch: false`. Вместе с `immediate: false` это позволяет использовать `useFetch` полностью в ручном режиме. (Пример использования `watch` можно посмотреть [здесь](/docs/getting-started/data-fetching#watch)).
-  - `deep`: Возвращает данные в виде глубокого ref-объекта. Для повышения производительности по умолчанию используется значение `false` для возврата данных в виде shallow-ref объекта.
-  - `dedupe`: Позволяет избегать получения одного и того же ключа более одного раза за вызов (по умолчанию `cancel`). Возможные опции:
-    - `cancel` - Отменяет существующие запросы при выполнении нового.
-    - `defer` - не делает новых запросов вообще, если есть ожидающий запрос.
+  - `getCachedData`: Provide a function which returns cached data. A `null` or `undefined` return value will trigger a fetch. By default, this is:
+    ```ts
+    const getDefaultCachedData = (key) => nuxtApp.isHydrating 
+      ? nuxtApp.payload.data[key] 
+      : nuxtApp.static.data[key]
+    ```
+    Which only caches data when `experimental.payloadExtraction` of `nuxt.config` is enabled.
+  - `pick`: only pick specified keys in this array from the `handler` function result
+  - `watch`: watch an array of reactive sources and auto-refresh the fetch result when they change. Fetch options and URL are watched by default. You can completely ignore reactive sources by using `watch: false`. Together with `immediate: false`, this allows for a fully-manual `useFetch`. (You can [see an example here](/docs/getting-started/data-fetching#watch) of using `watch`.)
+  - `deep`: return data in a deep ref object (it is `true` by default). It can be set to `false` to return data in a shallow ref object, which can improve performance if your data does not need to be deeply reactive.
+  - `dedupe`: avoid fetching same key more than once at a time (defaults to `cancel`). Possible options:
+    - `cancel` - cancels existing requests when a new one is made
+    - `defer` - does not make new requests at all if there is a pending request
 
 ::note
 Если вы предоставите функцию или ref в качестве параметра `url`, или если вы предоставите функции в качестве аргументов параметра `options`, то вызов `useFetch` не будет соответствовать другим вызовам `useFetch` в других местах вашей кодовой базы, даже если опции кажутся идентичными. Если вы хотите, чтобы совпадение было принудительным, вы можете указать свой собственный ключ в `options`.
@@ -134,8 +140,14 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 - `data`: результат работы переданной асинхронной функции.
 - `refresh`/`execute`: функция, которая может быть использована для обновления данных, возвращенных функцией `handler`.
 - `error`: объект ошибки, если запрос данных не удался.
-- `status`: строка, указывающая на статус запроса данных (`"idle"`, `"pending"`, `"success"`, `"error"`).
-- `clear`: функция, которая установит `data` в `undefined`, `error` в `null`, `pending` в `false`, `status` в `"idle"`, и пометит все текущие запросы как отмененные.
+- `status`: a string indicating the status of the data request:
+  - `idle`: when the request has not started, such as:
+    - when `execute` has not yet been called and `{ immediate: false }` is set
+    - when rendering HTML on the server and `{ server: false }` is set
+  - `pending`: the request is in progress
+  - `success`: the request has completed successfully
+  - `error`: the request has failed
+- `clear`: a function which will set `data` to `undefined`, set `error` to `null`, set `status` to `'idle'`, and mark any currently pending requests as cancelled.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
 
@@ -147,7 +159,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
 
 ```ts [Signature]
 function useFetch<DataT, ErrorT>(
-  url: string | Request | Ref<string | Request> | (() => string) | Request,
+  url: string | Request | Ref<string | Request> | (() => string | Request),
   options?: UseFetchOptions<DataT>
 ): Promise<AsyncData<DataT, ErrorT>>
 

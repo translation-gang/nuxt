@@ -4,7 +4,7 @@ description: Предварительный рендеринг каждого м
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/generate.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/generate.ts
     size: xs
 ---
 

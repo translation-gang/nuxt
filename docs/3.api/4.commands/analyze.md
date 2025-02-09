@@ -4,7 +4,7 @@ description: "Проанализируйте продакшен бандл ил�
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/analyze.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/analyze.ts
     size: xs
 ---
 

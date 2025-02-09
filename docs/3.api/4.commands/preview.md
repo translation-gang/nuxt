@@ -4,7 +4,7 @@ description: Команда preview запускает сервер для пр�
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/preview.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/preview.ts
     size: xs
 ---
 

@@ -4,7 +4,7 @@ description: Команда upgrade обновляет Nuxt до последн�
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/upgrade.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/upgrade.ts
     size: xs
 ---
 

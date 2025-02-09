@@ -4,7 +4,7 @@ description: 'Удаляет общие сгенерированные файл�
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/nuxt/cli/blob/main/src/commands/cleanup.ts
+    to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/cleanup.ts
     size: xs
 ---
 

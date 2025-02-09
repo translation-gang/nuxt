@@ -4,7 +4,7 @@ description: Рекомендуемый способ предоставлени�
 links:
   - label: Исходники
     icon: i-simple-icons-github
-    to: https://github.com/unjs/unhead/blob/main/packages/unhead/src/composables/useHeadSafe.ts
+    to: https://github.com/unjs/unhead/blob/main/packages/vue/src/composables.ts
     size: xs
 ---
 

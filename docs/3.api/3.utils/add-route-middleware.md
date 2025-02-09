@@ -15,7 +15,12 @@ Middleware маршрутов - это защитники навигации, х
 ## Тип
 
 ```ts
-addRouteMiddleware (name: string | RouteMiddleware, middleware?: RouteMiddleware, options: AddRouteMiddlewareOptions = {})
+function addRouteMiddleware (name: string, middleware: RouteMiddleware, options?: AddRouteMiddlewareOptions): void
+function addRouteMiddleware (middleware: RouteMiddleware): void
+
+interface AddRouteMiddlewareOptions {
+  global?: boolean
+}
 ```
 
 ## Параметры
@@ -42,25 +47,9 @@ Middleware маршрута может быть либо строкой, либ�
 
 ## Примеры
 
-### Анонимные Middleware маршрута
+### Named Route Middleware
 
-Анонимные Middleware маршрута не имеют имени. Они принимают функцию в качестве первого аргумента, что делает второй аргумент middleware ненужным:
-
-```ts [plugins/my-plugin.ts]
-export default defineNuxtPlugin(() => {
-  addRouteMiddleware((to, from) => {
-    if (to.path === '/forbidden') {
-      return false
-    }
-  })
-})
-```
-
-### Middleware маршрута с именем
-
-Middleware маршрута с именем принимает строку в качестве первого аргумента и функцию в качестве второго.
-
-Когда он определен в плагине, он переопределяет любой существующий middleware с тем же именем, расположенный в директории `middleware/`:
+Named route middleware is defined by providing a string as the first argument and a function as the second:
 
 ```ts [plugins/my-plugin.ts]
 export default defineNuxtPlugin(() => {
@@ -70,16 +59,30 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
+When defined in a plugin, it overrides any existing middleware of the same name located in the `middleware/` directory.
+
 ### Глобальный Middleware маршрута
+
+Global route middleware can be defined in two ways:
+
+- Pass a function directly as the first argument without a name. It will automatically be treated as global middleware and applied on every route change.
+
+  ```ts [plugins/my-plugin.ts]
+  export default defineNuxtPlugin(() => {
+    addRouteMiddleware((to, from) => {
+      console.log('anonymous global middleware that runs on every route change')
+    })
+  })
+  ```
 
 Задайте необязательный третий аргумент `{ global: true }`, чтобы указать, является ли middleware маршрута глобальным:
 
-```ts [plugins/my-plugin.ts]
-export default defineNuxtPlugin(() => {
-  addRouteMiddleware('global-middleware', (to, from) => {
-      console.log('Глобальный middleware, который выполняется при каждом изменении маршрута')
-    },
-    { global: true }
-  )
-})
-```
+  ```ts [plugins/my-plugin.ts]
+  export default defineNuxtPlugin(() => {
+    addRouteMiddleware('global-middleware', (to, from) => {
+        console.log('global middleware that runs on every route change')
+      },
+      { global: true }
+    )
+  })
+  ```

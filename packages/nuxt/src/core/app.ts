@@ -59,6 +59,7 @@ export async function generateApp (nuxt: Nuxt, app: NuxtApp, options: { filter?:
   const compileTemplate = nuxt.options.experimental.compileTemplate ? _compileTemplate : futureCompileTemplate
 
   const writes: Array<() => void> = []
+  const dirs = new Set<string>()
   const changedTemplates: Array<ResolvedNuxtTemplate<any>> = []
   const FORWARD_SLASH_RE = /\//g
   async function processTemplate (template: ResolvedNuxtTemplate) {
@@ -89,15 +90,13 @@ export async function generateApp (nuxt: Nuxt, app: NuxtApp, options: { filter?:
     const perf = performance.now() - start
     const setupTime = Math.round((perf * 100)) / 100
 
-    if (nuxt.options.debug || setupTime > 500) {
+    if ((nuxt.options.debug && nuxt.options.debug.templates) || setupTime > 500) {
       logger.info(`Compiled \`${template.filename}\` in ${setupTime}ms`)
     }
 
     if (template.modified && template.write) {
-      writes.push(() => {
-        mkdirSync(dirname(fullPath), { recursive: true })
-        writeFileSync(fullPath, contents, 'utf8')
-      })
+      dirs.add(dirname(fullPath))
+      writes.push(() => writeFileSync(fullPath, contents, 'utf8'))
     }
   }
 
@@ -106,7 +105,12 @@ export async function generateApp (nuxt: Nuxt, app: NuxtApp, options: { filter?:
 
   // Write template files in single synchronous step to avoid (possible) additional
   // runtime overhead of cascading HMRs from vite/webpack
-  for (const write of writes) { write() }
+  for (const dir of dirs) {
+    mkdirSync(dir, { recursive: true })
+  }
+  for (const write of writes) {
+    write()
+  }
 
   if (changedTemplates.length) {
     await nuxt.callHook('app:templatesGenerated', app, changedTemplates, options)
