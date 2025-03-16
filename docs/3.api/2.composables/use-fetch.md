@@ -111,7 +111,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/auth/login'
   - `transform`: Функция, которая может быть использована для изменения результата функции `handler` после разрешения.
   - `getCachedData`: Функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет перевыполнять запрос. По умолчанию это:
     ```ts
-    const getDefaultCachedData = (key) => nuxtApp.isHydrating 
+    const getDefaultCachedData = (key, nuxtApp) => nuxtApp.isHydrating 
       ? nuxtApp.payload.data[key] 
       : nuxtApp.static.data[key]
     ```
@@ -174,7 +174,7 @@ type UseFetchOptions<DataT> = {
   server?: boolean
   lazy?: boolean
   immediate?: boolean
-  getCachedData?: (key: string, nuxtApp: NuxtApp) => DataT
+  getCachedData?: (key: string, nuxtApp: NuxtApp) => DataT | undefined
   deep?: boolean
   dedupe?: 'cancel' | 'defer'
   default?: () => DataT

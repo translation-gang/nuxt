@@ -74,12 +74,11 @@ const { data: posts } = await useAsyncData(
     - `transform`: функция, которая может быть использована для изменения результата функции-обработчика после ее разрешения.
     - `getCachedData`: функция, которая возвращает кэшированные данные. Возвращаемое значение _null_ или _undefined_ будет вызывать выборку данных. По умолчанию это:
       ```ts
-      const getDefaultCachedData = (key) => nuxtApp.isHydrating 
+      const getDefaultCachedData = (key, nuxtApp) => nuxtApp.isHydrating 
         ? nuxtApp.payload.data[key] 
         : nuxtApp.static.data[key]
       ```
       Которая кэширует данные, только если включен `experimental.payloadExtraction` из `nuxt.config`.
-
     - `pick`: выбрать из результата функции `handler` только указанные ключи в этом массиве
     - `watch`: следить за реактивными источниками для автоматического обновления
     - `deep`: возвращать данные в виде глубокого ref-объекта. Можно установить значение `false`, чтобы возвращать данные в виде объекта с неглубокой реактивностью, что может повысить производительность, если ваши данные не нуждаются в этом.
@@ -142,7 +141,7 @@ type AsyncDataOptions<DataT> = {
   transform?: (input: DataT) => DataT | Promise<DataT>
   pick?: string[]
   watch?: WatchSource[]
-  getCachedData?: (key: string, nuxtApp: NuxtApp) => DataT
+  getCachedData?: (key: string, nuxtApp: NuxtApp) => DataT | undefined
 }
 
 type AsyncData<DataT, ErrorT> = {

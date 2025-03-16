@@ -35,7 +35,7 @@ interface MetaObject {
 }
 ```
 
-Более подробную информацию о типах см. в [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/src/schema.ts).
+Более подробную информацию о типах см. в [@unhead/vue](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/schema.ts).
 
 ::note
 Свойства `useHead` могут быть динамическими, принимая свойства `ref`, `computed` и `reactive`. Параметр `meta` может также принимать функцию, возвращающую объект, чтобы сделать весь объект реактивным.

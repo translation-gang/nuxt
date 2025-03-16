@@ -18,6 +18,8 @@ Nuxt использует [ofetch](https://github.com/unjs/ofetch) для пре
 Использование `$fetch` в компонентах без обертывания его с помощью [`useAsyncData`](/docs/api/composables/use-async-data) приводит к тому, что данные извлекаются дважды: сначала на сервере, а затем снова на клиенте во время гидратации, потому что `$fetch` не передает состояние с сервера на клиент. Таким образом, извлечение будет выполнено на обеих сторонах, потому что клиент должен повторно получить данные.
 ::
 
+## Использование
+
 Для предотвращения двойного извлечения данных при получении данных компонента мы рекомендуем использовать [`useFetch`](/docs/api/composables/use-fetch) или [`useAsyncData`](/docs/api/composables/use-async-data) + `$fetch`.
 
 ```vue [app.vue]
@@ -59,3 +61,38 @@ function contactForm() {
 ::note
 Если вы используете `$fetch` для вызова (внешнего) HTTPS URL-адреса с самоподписанным сертификатом в разработке, вам необходимо установить `NODE_TLS_REJECT_UNAUTHORIZED=0` в своей среде.
 ::
+
+### Passing Headers and Cookies
+
+When we call `$fetch` in the browser, user headers like `cookie` will be directly sent to the API.
+
+However, during Server-Side Rendering, due to security risks such as **Server-Side Request Forgery (SSRF)** or **Authentication Misuse**, the `$fetch` wouldn't include the user's browser cookies, nor pass on cookies from the fetch response.
+
+::code-group
+
+```vue [pages/index.vue]
+<script setup lang="ts">
+// This will NOT forward headers or cookies during SSR
+const { data } = await useAsyncData(() => $fetch('/api/cookies'))
+</script>
+```
+
+```ts [server/api/cookies.ts]
+export default defineEventHandler((event) => {
+  const foo = getCookie(event, 'foo')
+  // ... Do something with the cookie
+})
+```
+::
+
+If you need to forward headers and cookies on the server, you must manually pass them:
+
+```vue [pages/index.vue]
+<script setup lang="ts">
+// This will forward the user's headers and cookies to `/api/cookies`
+const requestFetch = useRequestFetch()
+const { data } = await useAsyncData(() => requestFetch('/api/cookies'))
+</script>
+```
+
+However, when calling `useFetch` with a relative URL on the server, Nuxt will use [`useRequestFetch`](/docs/api/composables/use-request-fetch) to proxy headers and cookies (with the exception of headers not meant to be forwarded, like `host`).
