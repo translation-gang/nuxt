@@ -14,8 +14,8 @@ npx nuxi cleanup [ROOTDIR] [--cwd=<directory>]
 ```
 <!--/cleanup-cmd-->
 
-Команда `cleanup` удаляет общие сгенерированные файлы Nuxt и кэши, включая:
-- 
+Команда `cleanup` удаляет общие сгенерированные файлы Nuxt и кэши, включая
+
 - `.nuxt`
 - `.output`
 - `node_modules/.vite`
