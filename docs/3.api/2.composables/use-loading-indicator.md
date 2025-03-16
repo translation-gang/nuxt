@@ -40,7 +40,11 @@ links:
 
 ### `start()`
 
-Установит `isLoading` в `true` и начнет увеличивать значение `progress`.
+Установит `isLoading` в `true` и начнет увеличивать значение `progress`. `start` accepts a `{ force: true }` option to skip the interval and show the loading state immediately.
+
+### `set()`
+
+Set the `progress` value to a specific value. `set` accepts a `{ force: true }` option to skip the interval and show the loading state immediately.
 
 ### `finish()`
 
@@ -60,5 +64,14 @@ links:
     // Вот как рассчитывается прогресс по умолчанию:
     estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50)
   })
+</script>
+```
+
+```vue
+<script setup lang="ts">
+  const { start, set } = useLoadingIndicator()
+  // same as set(0, { force: true })
+  // set the progress to 0, and show loading immediately
+  start({ force: true })
 </script>
 ```

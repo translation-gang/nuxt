@@ -10,8 +10,8 @@ links:
 
 Вы можете использовать `useRequestFetch` для передачи контекста запроса и заголовков при выполнении fetch запросов на стороне сервера.
 
-При выполнении fetch запроса на стороне клиента, браузер автоматически отправляет необходимые заголовки.
-Однако при выполнении запроса во время рендеринга на стороне сервера, поскольку запрос выполняется на сервере, нам нужно пересылать заголовки вручную.
+When making a client-side fetch request, the browser automatically sends the necessary headers.
+However, when making a request during server-side rendering, due to security considerations, we need to forward the headers manually.
 
 ::note
 Заголовки, которые **не предназначены для пересылки**, **не будут включены** в запрос. К таким заголовкам относятся, например:
@@ -26,7 +26,7 @@ links:
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-  // Это перенаправит заголовки пользователя в обработчик события `/api/foo`
+  // Это перенаправит заголовки пользователя в обработчик события `/api/cookies`
   // Результат: { cookies: { foo: 'bar' } }
   const requestFetch = useRequestFetch()
   const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))

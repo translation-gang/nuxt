@@ -1,6 +1,6 @@
-import { defineUntypedSchema } from 'untyped'
+import { defineResolvers } from '../utils/definition'
 
-export default defineUntypedSchema({
+export default defineResolvers({
   /**
    * Configure Nuxt component auto-registration.
    *
@@ -14,10 +14,13 @@ export default defineUntypedSchema({
       if (Array.isArray(val)) {
         return { dirs: val }
       }
-      if (val === undefined || val === true) {
-        return { dirs: [{ path: '~/components/global', global: true }, '~/components'] }
+      if (val === false) {
+        return { dirs: [] }
       }
-      return val
+      return {
+        dirs: [{ path: '~/components/global', global: true }, '~/components'],
+        ...typeof val === 'object' ? val : {},
+      }
     },
   },
 
@@ -51,7 +54,7 @@ export default defineUntypedSchema({
   /**
    * Whether to use the vue-router integration in Nuxt 3. If you do not provide a value it will be
    * enabled if you have a `pages/` directory in your source folder.
-   * @type {boolean}
+   * @type {boolean | { enabled?: boolean, pattern?: string | string[] }}
    */
   pages: undefined,
 

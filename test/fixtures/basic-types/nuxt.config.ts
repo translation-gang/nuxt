@@ -10,7 +10,7 @@ export default defineNuxtConfig({
       addTypeTemplate({
         filename: 'test.d.ts',
         getContents: () => 'declare type Fromage = "cheese"',
-      })
+      }, { nuxt: true, nitro: true })
       function _test () {
         installModule('~/modules/example', {
           typeTest (val) {
@@ -76,7 +76,6 @@ export default defineNuxtConfig({
       testConfig: 123,
     },
   },
-  buildDir: process.env.NITRO_BUILD_DIR,
   builder: process.env.TEST_BUILDER as 'webpack' | 'rspack' | 'vite' ?? 'vite',
   routeRules: {
     '/param': {

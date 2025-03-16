@@ -22,14 +22,6 @@ const granularAppPresets: InlinePreset[] = [
     from: '#app/nuxt',
   },
   {
-    imports: ['requestIdleCallback', 'cancelIdleCallback'],
-    from: '#app/compat/idle-callback',
-  },
-  {
-    imports: ['setInterval'],
-    from: '#app/compat/interval',
-  },
-  {
     imports: ['useAppConfig', 'updateAppConfig'],
     from: '#app/config',
   },
@@ -112,6 +104,10 @@ const granularAppPresets: InlinePreset[] = [
   {
     imports: ['useRuntimeHook'],
     from: '#app/composables/runtime-hook',
+  },
+  {
+    imports: ['useHead', 'useHeadSafe', 'useServerHeadSafe', 'useServerHead', 'useSeoMeta', 'useServerSeoMeta', 'injectHead'],
+    from: '#app/composables/head',
   },
 ]
 
@@ -257,6 +253,17 @@ const vueTypesPreset = defineUnimportPreset({
     'WritableComputedRef',
   ],
 })
+
+export const appCompatPresets: InlinePreset[] = [
+  {
+    imports: ['requestIdleCallback', 'cancelIdleCallback'],
+    from: '#app/compat/idle-callback',
+  },
+  {
+    imports: ['setInterval'],
+    from: '#app/compat/interval',
+  },
+]
 
 export const defaultPresets: InlinePreset[] = [
   ...commonPresets,

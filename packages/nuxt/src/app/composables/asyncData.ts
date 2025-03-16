@@ -4,6 +4,7 @@ import type { MultiWatchSources, Ref } from 'vue'
 // TODO: temporary module for backwards compatibility
 import type { DedupeOption, DefaultAsyncDataErrorValue, DefaultAsyncDataValue } from 'nuxt/app/defaults'
 
+import { captureStackTrace } from 'errx'
 import type { NuxtApp } from '../nuxt'
 import { useNuxtApp } from '../nuxt'
 import { toArray } from '../utils'
@@ -240,14 +241,14 @@ export function useAsyncData<
   const getDefaultCachedData = () => nuxtApp.isHydrating ? nuxtApp.payload.data[key] : nuxtApp.static.data[key]
 
   // Apply defaults
-  options.server = options.server ?? true
-  options.default = options.default ?? (getDefault as () => DefaultT)
-  options.getCachedData = options.getCachedData ?? getDefaultCachedData
+  options.server ??= true
+  options.default ??= getDefault as () => DefaultT
+  options.getCachedData ??= getDefaultCachedData
 
-  options.lazy = options.lazy ?? false
-  options.immediate = options.immediate ?? true
-  options.deep = options.deep ?? asyncDataDefaults.deep
-  options.dedupe = options.dedupe ?? 'cancel'
+  options.lazy ??= false
+  options.immediate ??= true
+  options.deep ??= asyncDataDefaults.deep
+  options.dedupe ??= 'cancel'
 
   if (import.meta.dev && typeof options.dedupe === 'boolean') {
     console.warn('[nuxt] `boolean` values are deprecated for the `dedupe` option of `useAsyncData` and will be removed in the future. Use \'cancel\' or \'defer\' instead.')
@@ -315,8 +316,11 @@ export function useAsyncData<
         }
 
         if (import.meta.dev && import.meta.server && typeof result === 'undefined') {
+          const stack = captureStackTrace()
+          const { source, line, column } = stack[stack.length - 1] ?? {}
+          const explanation = source ? ` (used at ${source.replace(/^file:\/\//, '')}:${line}:${column})` : ''
           // @ts-expect-error private property
-          console.warn(`[nuxt] \`${options._functionName || 'useAsyncData'}\` must return a value (it should not be \`undefined\`) or the request may be duplicated on the client side.`)
+          console.warn(`[nuxt] \`${options._functionName || 'useAsyncData'}${explanation}\` must return a value (it should not be \`undefined\`) or the request may be duplicated on the client side.`)
         }
 
         nuxtApp.payload.data[key] = result

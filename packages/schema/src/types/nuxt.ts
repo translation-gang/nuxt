@@ -43,6 +43,11 @@ export interface NuxtTemplate<Options = TemplateDefaultOptions> {
   getContents?: (data: { nuxt: Nuxt, app: NuxtApp, options: Options }) => string | Promise<string>
   /** Write to filesystem */
   write?: boolean
+  /**
+   * The source path of the template (to try resolving dependencies from).
+   * @internal
+   */
+  _path?: string
 }
 
 export interface NuxtServerTemplate {
@@ -83,6 +88,7 @@ export interface NuxtApp {
 
 export interface Nuxt {
   // Private fields.
+  __name: string
   _version: string
   _ignore?: Ignore
   _dependencies?: Set<string>
@@ -96,6 +102,7 @@ export interface Nuxt {
   hook: Nuxt['hooks']['hook']
   callHook: Nuxt['hooks']['callHook']
   addHooks: Nuxt['hooks']['addHooks']
+  runWithContext: <T extends (...args: any[]) => any>(fn: T) => ReturnType<T>
 
   ready: () => Promise<void>
   close: () => Promise<void>
