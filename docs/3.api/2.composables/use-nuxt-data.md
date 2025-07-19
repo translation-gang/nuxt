@@ -20,6 +20,8 @@ links:
 
 Чтобы использовать `useNuxtData`, убедитесь, что композабл для получения данных (`useFetch`, `useAsyncData` и т.д.) был вызван с явно указанным ключом.
 
+:video-accordion{title="Watch a video from LearnVue about useNuxtData" videoId="e-_u6swXRWk"}
+
 ## Параметры
 
 - `key`: Уникальный ключ, который идентифицирует закэшированные данные. Этот ключ должен совпадать с тем, который использовался при первоначальном получении данных.
@@ -106,5 +108,5 @@ async function addTodo () {
 ## Тип
 
 ```ts
-useNuxtData<DataT = any> (key: string): { data: Ref<DataT | null> }
+useNuxtData<DataT = any> (key: string): { data: Ref<DataT | undefined> }
 ```

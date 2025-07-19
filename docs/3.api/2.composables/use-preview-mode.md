@@ -103,8 +103,8 @@ const { data } = await useFetch('/api/preview', {
 Теперь вы можете сгенерировать свой сайт и обслуживать его:
 
 ```bash [Terminal]
-npx nuxi generate
-npx nuxi preview
+npx nuxt generate
+npx nuxt preview
 ```
 
 Затем вы можете увидеть страницу предварительного просмотра, добавив параметр запроса `preview` в конец страницы, которую вы хотите просмотреть один раз:
@@ -114,5 +114,5 @@ npx nuxi preview
 ```
 
 ::note
-`usePreviewMode` следует тестировать локально с помощью `nuxi generate`, затем `nuxi preview`, а не `nuxi dev`. ([Команда preview](/docs/api/commands/preview) не имеет отношения к режиму предварительного просмотра).
+`usePreviewMode` следует тестировать локально с помощью `nuxt generate`, затем `nuxt preview`, а не `nuxt dev`. ([Команда preview](/docs/api/commands/preview) не имеет отношения к режиму предварительного просмотра).
 ::

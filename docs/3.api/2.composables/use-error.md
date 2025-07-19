@@ -8,25 +8,48 @@ links:
     size: xs
 ---
 
-Композабл возвращает глобальную ошибку Nuxt, которая может быть обработана, и она доступна как для клиента, так и для сервера.
+## Usage
+
+The `useError` composable returns the global Nuxt error that is being handled and is available on both client and server. It provides a reactive, SSR-friendly error state across your app.
 
 ```ts
 const error = useError()
 ```
 
-`useError` устанавливает ошибку в состоянии и создает реактивную, совместимую с SSR глобальную ошибку Nuxt для всех компонентов.
+You can use this composable in your components, pages, or plugins to access or react to the current Nuxt error.
 
-Ошибки Nuxt обладают следующими свойствами:
+## Type
 
 ```ts
-interface {
-  // Код состояния ответа HTTP
+interface NuxtError<DataT = unknown> {
   statusCode: number
-  // Сообщение о статусе ответа HTTP
   statusMessage: string
-  // Сообщение об ошибке
   message: string
+  data?: DataT
+  error?: true
 }
+
+export const useError: () => Ref<NuxtError | undefined>
+```
+
+## Parameters
+
+This composable does not take any parameters.
+
+## Return Values
+
+Returns a `Ref` containing the current Nuxt error (or `undefined` if there is no error). The error object is reactive and will update automatically when the error state changes.
+
+## Example
+
+```ts
+<script setup lang="ts">
+const error = useError()
+
+if (error.value) {
+  console.error('Nuxt error:', error.value)
+}
+</script>
 ```
 
 :read-more{to="/docs/getting-started/error-handling"}

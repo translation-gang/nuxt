@@ -4,6 +4,9 @@ import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
 import noOnlyTests from 'eslint-plugin-no-only-tests'
 import typegen from 'eslint-typegen'
 import perfectionist from 'eslint-plugin-perfectionist'
+import { importX } from 'eslint-plugin-import-x'
+
+import { runtimeDependencies } from './packages/nuxt/src/meta.mjs'
 
 export default createConfigForNuxt({
   features: {
@@ -21,7 +24,7 @@ export default createConfigForNuxt({
         'packages/schema/schema/**',
         'packages/nuxt/src/app/components/welcome.vue',
         'packages/nuxt/src/app/components/error-*.vue',
-        'packages/nuxt/src/core/runtime/nitro/handlers/error-*',
+        'packages/nuxt/src/core/runtime/nitro/templates/error-*',
       ],
     },
     {
@@ -118,11 +121,15 @@ export default createConfigForNuxt({
 
   // Append local rules
   .append(
+    // @ts-expect-error type issues
     {
       files: ['**/*.vue', '**/*.ts', '**/*.mts', '**/*.js', '**/*.cjs', '**/*.mjs'],
       name: 'local/rules',
+      plugins: {
+        'import-x': importX,
+      },
       rules: {
-        'import/no-restricted-paths': [
+        'import-x/no-restricted-paths': [
           'error',
           {
             zones: [
@@ -188,23 +195,7 @@ export default createConfigForNuxt({
                   'vue/server-renderer',
                   'vue',
                   'vue-router',
-                  // other deps
-                  'devalue',
-                  'klona',
-                  // unjs ecosystem
-                  'defu',
-                  'ufo',
-                  'h3',
-                  'destr',
-                  'consola',
-                  'hookable',
-                  'unctx',
-                  'cookie-es',
-                  'perfect-debounce',
-                  'radix3',
-                  'ohash',
-                  'pathe',
-                  'uncrypto',
+                  ...runtimeDependencies,
                   'errx', /* only used in dev */
                   // internal deps
                   'nuxt/app',
@@ -259,6 +250,8 @@ export default createConfigForNuxt({
   )
 
   // Generate type definitions for the eslint config
+  // @ts-expect-error type issues in eslint
   .onResolved((configs) => {
+    // @ts-expect-error type issues in eslint
     return typegen(configs)
   })

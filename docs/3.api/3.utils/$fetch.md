@@ -10,11 +10,11 @@ links:
 
 Nuxt использует [ofetch](https://github.com/unjs/ofetch) для предоставления глобально хелпера `$fetch` для выполнения HTTP-запросов в вашем приложении Vue или маршрутах API.
 
-::tip{icon="i-ph-rocket-launch" color="gray"}
+::tip{icon="i-lucide-rocket"}
 Во время серверного рендеринга вызов `$fetch` для получения данных из ваших внутренних [маршрутов API](/docs/guide/directory-structure/server) будет непосредственно вызывать соответствующую функцию (эмулируя запрос), **экономя дополнительный вызов API**.
 ::
 
-::note{color="blue" icon="i-ph-info"}
+::note{color="blue" icon="i-lucide-info"}
 Использование `$fetch` в компонентах без обертывания его с помощью [`useAsyncData`](/docs/api/composables/use-async-data) приводит к тому, что данные извлекаются дважды: сначала на сервере, а затем снова на клиенте во время гидратации, потому что `$fetch` не передает состояние с сервера на клиент. Таким образом, извлечение будет выполнено на обеих сторонах, потому что клиент должен повторно получить данные.
 ::
 
@@ -41,8 +41,8 @@ const { data } = await useFetch('/api/item')
 
 ```vue [pages/contact.vue]
 <script setup lang="ts">
-function contactForm() {
-  $fetch('/api/contact', {
+async function contactForm() {
+  await $fetch('/api/contact', {
     method: 'POST',
     body: { hello: 'world '}
   })

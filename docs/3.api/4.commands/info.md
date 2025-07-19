@@ -1,5 +1,5 @@
 ---
-title: "nuxi info"
+title: "nuxt info"
 description: Команда info выводит сведения о текущем или указанном проекте Nuxt.
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--info-cmd-->
 ```bash [Terminal]
-npx nuxi info [ROOTDIR] [--cwd=<directory>]
+npx nuxt info [ROOTDIR] [--cwd=<directory>]
 ```
 <!--/info-cmd-->
 

@@ -1,5 +1,5 @@
 ---
-title: "nuxi preview"
+title: "nuxt preview"
 description: Команда preview запускает сервер для предварительного просмотра вашего приложения после выполнения команды build.
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--preview-cmd-->
 ```bash [Terminal]
-npx nuxi preview [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--envName] [--dotenv] [-p, --port]
+npx nuxt preview [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--envName] [--dotenv] [-p, --port]
 ```
 <!--/preview-cmd-->
 
@@ -39,5 +39,5 @@ npx nuxi preview [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>
 Эта команда устанавливает `process.env.NODE_ENV` в `production`. Для переопределения определите `NODE_ENV` в файле `.env` или в качестве аргумента командной строки.
 
 ::note
-Для удобства в режиме предварительного просмотра ваш файл [`.env`](/docs/guide/directory-structure/env) будет загружен в `process.env`. (Однако в продакшене вам придется убедиться, что ваши переменные окружения установлены самостоятельно).
+Для удобства в режиме предварительного просмотра ваш файл [`.env`](/docs/guide/directory-structure/env) будет загружен в `process.env`. (Однако в продакшене вам придется убедиться, что ваши переменные окружения установлены самостоятельно. For example, with Node.js 20+ you could do this by running `node --env-file .env .output/server/index.mjs` to start your server.)
 ::

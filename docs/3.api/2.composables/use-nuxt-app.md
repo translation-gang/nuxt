@@ -95,7 +95,7 @@ await nuxtApp.callHook('my-plugin:init')
 
 Nuxt предоставляет следующие свойства через `ssrContext`:
 - `url` (string) - Текущий url запроса.
-- `event` (request event - [unjs/h3](https://github.com/unjs/h3)) - Доступ к запросу и ответу текущего маршрута.
+- `event` (request event - [h3js/h3](https://github.com/h3js/h3)) - Доступ к запросу и ответу текущего маршрута.
 - `payload` (object) - Объект полезной нагрузки NuxtApp.
 
 ### `payload`
@@ -138,9 +138,7 @@ Nuxt предоставляет следующие свойства через `
 
   Начиная с [Nuxt v3.4](https://nuxt.com/blog/v3-4#payload-enhancements), можно определить свой собственный редьюсер/ревайвер для типов, которые не поддерживаются Nuxt.
 
-  ::tip{icon="i-ph-video" to="https://www.youtube.com/watch?v=8w6ffRBs8a4" target="_blank"}
-  Посмотрите видео от Александра Лихтера о сериализации полезной нагрузки, особенно в отношении классов.
-  ::
+  :video-accordion{title="Watch a video from Alexander Lichter about serializing payloads, especially with regards to classes" videoId="8w6ffRBs8a4"}
 
   В примере ниже мы определяем редьюсер (или сериализатор) и ревайвер (или десериализатор) для класса [Luxon](https://moment.github.io/luxon/#/) DateTime, используя плагин полезной нагрузки.
 
@@ -256,7 +254,7 @@ Nuxt внутренне использует [unjs/unctx](https://github.com/unj
 
 Nuxt-композаблы имеют тот же дизайн, что и Vue Composition API, и поэтому нуждаются в аналогичном решении, чтобы волшебным образом выполнять это преобразование. Посмотрите [unjs/unctx#2](https://github.com/unjs/unctx/issues/2) (предложение), [unjs/unctx#4](https://github.com/unjs/unctx/pull/4) (реализация трансформации) и [nuxt/framework#3884](https://github.com/nuxt/framework/pull/3884) (интеграция в Nuxt).
 
-В настоящее время Vue поддерживает только асинхронное восстановление контекста для `<script setup>` при использовании async/await. В Nuxt 3 была добавлена поддержка преобразования для `defineNuxtPlugin()` и `defineNuxtRouteMiddleware()`, что означает, что при их использовании Nuxt автоматически преобразует их с восстановлением контекста.
+В настоящее время Vue поддерживает только асинхронное восстановление контекста для `<script setup>` при использовании async/await. В Nuxt была добавлена поддержка преобразования для `defineNuxtPlugin()` и `defineNuxtRouteMiddleware()`, что означает, что при их использовании Nuxt автоматически преобразует их с восстановлением контекста.
 
 #### Остающиеся проблемы
 

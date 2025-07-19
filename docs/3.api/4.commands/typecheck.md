@@ -1,5 +1,5 @@
 ---
-title: "nuxi typecheck"
+title: "nuxt typecheck"
 description: Команда typecheck запускает vue-tsc для проверки типов в вашем приложении.
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--typecheck-cmd-->
 ```bash [Terminal]
-npx nuxi typecheck [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>]
+npx nuxt typecheck [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>]
 ```
 <!--/typecheck-cmd-->
 

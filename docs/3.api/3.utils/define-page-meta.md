@@ -18,7 +18,7 @@ definePageMeta({
 </script>
 ```
 
-:read-more{to="/docs/guide/directory-structure/pages/#page-metadata"}
+:read-more{to="/docs/guide/directory-structure/pages#page-metadata"}
 
 ## Тип
 
@@ -136,7 +136,7 @@ interface PageMeta {
 
   - **тип**: `boolean | (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean`
 
-    Укажите Nuxt, следует ли прокрутить страницу вверх перед ее отображением или нет. Если вы хотите переопределить стандартное поведение прокрутки Nuxt, вы можете сделать это в `~/app/router.options.ts` (см. [настраиваемая маршрутизация](/docs/guide/recipes/custom-routing#using-approuteroptions) для получения дополнительной информации).
+    Укажите Nuxt, следует ли прокрутить страницу вверх перед ее отображением или нет. Если вы хотите переопределить стандартное поведение прокрутки Nuxt, вы можете сделать это в `~/router.options.ts` (см. [настраиваемая маршрутизация](/docs/guide/recipes/custom-routing#using-approuteroptions) для получения дополнительной информации).
 
   **`[key: string]`**
 

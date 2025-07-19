@@ -17,7 +17,7 @@ links:
 ## Описание
 
 Композабл, который отслеживает изменения заголовка страницы и соответствующим образом обновляет сообщение объявителя. Используется [`<NuxtRouteAnnouncer>`](/docs/api/components/nuxt-route-announcer) и является управляемым.
-Он подключается к Unhead [`dom:rendered`](https://unhead.unjs.io/docs/guides/hooks), чтобы прочитать заголовок страницы и установить его в качестве сообщения объявителя.
+Он подключается к Unhead [`dom:rendered`](https://unhead.unjs.io/docs/typescript/head/api/hooks/dom-rendered), чтобы прочитать заголовок страницы и установить его в качестве сообщения объявителя.
 
 ## Параметры
 

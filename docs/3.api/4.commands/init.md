@@ -1,5 +1,5 @@
 ---
-title: "nuxi init"
+title: "create nuxt"
 description: Команда init инициализирует новый проект Nuxt.
 links:
   - label: Исходники
@@ -10,11 +10,11 @@ links:
 
 <!--init-cmd-->
 ```bash [Terminal]
-npx nuxi init [DIR] [--cwd=<directory>] [-t, --template] [-f, --force] [--offline] [--preferOffline] [--no-install] [--gitInit] [--shell] [--packageManager]
+npm create nuxt@latest [DIR] [--cwd=<directory>] [-t, --template] [-f, --force] [--offline] [--preferOffline] [--no-install] [--gitInit] [--shell] [--packageManager]
 ```
 <!--/init-cmd-->
 
-Команда `init` инициализирует новый проект Nuxt, используя [unjs/giget](https://github.com/unjs/giget).
+Команда `create-nuxt` инициализирует новый проект Nuxt, используя [unjs/giget](https://github.com/unjs/giget).
 
 ## Arguments
 
@@ -38,6 +38,8 @@ Option | Default | Description
 `--gitInit` |  | Initialize git repository
 `--shell` |  | Start shell after installation in project directory
 `--packageManager` |  | Package manager choice (npm, pnpm, yarn, bun)
+`--modules` |  | Nuxt modules to install (comma separated without spaces)
+`--no-modules` |  | Skip module installation prompt
 <!--/init-opts-->
 
 ## Переменные окружения

@@ -1,5 +1,5 @@
 ---
-title: "nuxi generate"
+title: "nuxt generate"
 description: Предварительный рендеринг каждого маршрута приложения и сохранение результата в обычных HTML-файлах.
 links:
   - label: Исходники
@@ -10,11 +10,11 @@ links:
 
 <!--generate-cmd-->
 ```bash [Terminal]
-npx nuxi generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName]
+npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName]
 ```
 <!--/generate-cmd-->
 
-Команда `generate` предварительно рендерит каждый маршрут вашего приложения и сохраняет результат в обычных HTML-файлах, которые вы можете разместить на любых статических хостинговых сервисах. Команда запускает `nuxi build` с аргументом `prerender` установленным в `true`
+Команда `generate` предварительно рендерит каждый маршрут вашего приложения и сохраняет результат в обычных HTML-файлах, которые вы можете разместить на любых статических хостинговых сервисах. Команда запускает `nuxt build` с аргументом `prerender` установленным в `true`
 
 ## Arguments
 
