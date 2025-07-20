@@ -1,6 +1,8 @@
-import { type MockedFunction, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import type { MockedFunction } from 'vitest'
 import { compileScript, parse } from '@vue/compiler-sfc'
 import { klona } from 'klona'
+import { parse as toAst } from 'acorn'
 
 import { PageMetaPlugin } from '../src/pages/plugins/page-meta'
 import { getRouteMeta, normalizeRoutes } from '../src/pages/utils'
@@ -129,7 +131,7 @@ definePageMeta({ name: 'bar' })
         ],
         "meta": {
           "__nuxt_dynamic_meta_key": Set {
-            "props",
+            "middleware",
             "meta",
           },
         },
@@ -137,6 +139,27 @@ definePageMeta({ name: 'bar' })
         "path": "/some-custom-path",
         "props": {
           "foo": "bar",
+        },
+      }
+    `)
+  })
+
+  it('should not extract non-serialisable meta', () => {
+    const meta = getRouteMeta(`
+    <script setup>
+    definePageMeta({
+      redirect: () => '/',
+    })
+    </script>
+    `, filePath)
+
+    expect(meta).toMatchInlineSnapshot(`
+      {
+        "meta": {
+          "__nuxt_dynamic_meta_key": Set {
+            "redirect",
+            "meta",
+          },
         },
       }
     `)
@@ -168,6 +191,7 @@ definePageMeta({ name: 'bar' })
       {
         "meta": {
           "__nuxt_dynamic_meta_key": Set {
+            "middleware",
             "meta",
           },
         },
@@ -196,6 +220,7 @@ definePageMeta({ name: 'bar' })
       {
         "meta": {
           "__nuxt_dynamic_meta_key": Set {
+            "middleware",
             "meta",
           },
         },
@@ -227,7 +252,7 @@ definePageMeta({ name: 'bar' })
     `)
   })
 
-  it('should extract configured extra meta', () => {
+  it('should extract configured extra meta and add it into the page meta', () => {
     const meta = getRouteMeta(`
     <script setup>
     definePageMeta({
@@ -235,12 +260,37 @@ definePageMeta({ name: 'bar' })
       bar: true,
     })
     </script>
-    `, filePath, ['bar', 'foo'])
+    `, filePath, new Set(['bar', 'foo']))
 
     expect(meta).toMatchInlineSnapshot(`
       {
-        "bar": true,
-        "foo": "bar",
+        "meta": {
+          "bar": true,
+          "foo": "bar",
+        },
+      }
+    `)
+  })
+
+  it('should not set default extraction keys into NuxtPage.meta', () => {
+    const meta = getRouteMeta(`
+    <script setup>
+    definePageMeta({
+      alias: '/alias',
+      bar: true,
+    })
+    </script>
+    `, filePath, new Set(['bar']))
+
+    expect(meta).toMatchInlineSnapshot(`
+      {
+        "alias": "/alias",
+        "meta": {
+          "__nuxt_dynamic_meta_key": Set {
+            "meta",
+          },
+          "bar": true,
+        },
       }
     `)
   })
@@ -326,7 +376,23 @@ describe('normalizeRoutes', () => {
 })
 
 describe('rewrite page meta', () => {
-  const transformPlugin = PageMetaPlugin().raw({}, {} as any) as { transform: (code: string, id: string) => { code: string } | null }
+  const transformPlugin = PageMetaPlugin({ extractedKeys: ['extracted'] }).raw({}, {} as any) as { transform: (code: string, id: string) => { code: string } | null }
+
+  it('should throw when multiple definePageMeta', () => {
+    const sfc = `
+<script setup lang="ts">
+
+ definePageMeta({ name: 'hi' })
+
+ definePageMeta({
+ layout: 'hi'
+})
+
+</script>
+      `
+    const res = compileScript(parse(sfc).descriptor, { id: 'component.vue' })
+    expect(() => transformPlugin.transform(res.content, 'component.vue?macro=true')).toThrowErrorMatchingInlineSnapshot(`[Error: Multiple \`definePageMeta\` calls are not supported. File: component.vue]`)
+  })
 
   it('should extract metadata from vue components', () => {
     const sfc = `
@@ -717,5 +783,54 @@ const hoisted = ref('hoisted')
       }
       export default __nuxt_page_meta"
     `)
+  })
+
+  describe('strip extracted metadata', () => {
+    it.each([
+      {
+        input: `
+<script setup>
+definePageMeta({
+  foo :'foo',
+  extracted: 'value', })
+</script>
+      `,
+      },
+      {
+        input: `
+<script setup>
+definePageMeta({
+  extracted: 'value',foo :'foo'})
+</script>
+      `,
+      },
+      {
+        input: `
+<script setup>
+definePageMeta({
+  extracted: 'value',
+})
+</script>
+      `,
+      },
+      {
+        input: `
+<script setup>
+definePageMeta({
+  extracted: 'value'
+})
+</script>
+      `,
+      },
+    ])(`should strip extracted metadata from the script block`, ({ input }) => {
+      const res = compileScript(parse(input).descriptor, { id: 'component.vue' })
+      const result = transformPlugin.transform(res.content, 'component.vue?macro=true')?.code
+      expect.soft(result).not.contain('extracted')
+      if (input.includes('foo')) {
+        expect.soft(result).contain('foo')
+      }
+      // verify for valid JS
+      expect(() => toAst(result!, { ecmaVersion: 'latest', sourceType: 'module' })).not.toThrow()
+    })
   })
 })

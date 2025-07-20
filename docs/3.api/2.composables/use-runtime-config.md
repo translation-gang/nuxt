@@ -55,7 +55,7 @@ export default defineNuxtConfig({
 Чтобы получить доступ к runtime конфигурации, мы можем использовать композабл `useRuntimeConfig()`:
 
 ```ts [server/api/test.ts]
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
 
   // Доступ к публичным переменным
@@ -82,7 +82,7 @@ export default defineEventHandler((event) => {
 
 Мы можем задать переменные окружения в файле `.env`, чтобы они были доступны во время **разработки** и **сборки/генерации**.
 
-``` [.env]
+```ini [.env]
 NUXT_PUBLIC_API_BASE = "https://api.localhost:5555"
 NUXT_API_SECRET = "123"
 ```

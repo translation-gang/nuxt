@@ -6,22 +6,20 @@ import { join, normalize, relative, resolve } from 'pathe'
 import { createDebugger, createHooks } from 'hookable'
 import ignore from 'ignore'
 import type { LoadNuxtOptions } from '@nuxt/kit'
-import { addBuildPlugin, addComponent, addPlugin, addPluginTemplate, addRouteMiddleware, addServerPlugin, addTypeTemplate, addVitePlugin, addWebpackPlugin, directoryToURL, installModule, loadNuxtConfig, nuxtCtx, resolveAlias, resolveFiles, resolveIgnorePatterns, runWithNuxtContext, useNitro } from '@nuxt/kit'
-import type { Nuxt, NuxtHooks, NuxtModule, NuxtOptions } from 'nuxt/schema'
+import { addBuildPlugin, addComponent, addPlugin, addPluginTemplate, addRouteMiddleware, addServerHandler, addServerPlugin, addServerTemplate, addTypeTemplate, addVitePlugin, addWebpackPlugin, directoryToURL, installModule, loadNuxtConfig, nuxtCtx, resolveAlias, resolveFiles, resolveIgnorePatterns, runWithNuxtContext, useNitro } from '@nuxt/kit'
 import type { PackageJson } from 'pkg-types'
 import { readPackageJSON } from 'pkg-types'
 import { hash } from 'ohash'
 import consola from 'consola'
 import onChange from 'on-change'
-import { colorize } from 'consola/utils'
-import { updateConfig } from 'c12/update'
+import { colors } from 'consola/utils'
 import { formatDate, resolveCompatibilityDatesFromEnv } from 'compatx'
 import type { DateString } from 'compatx'
 import escapeRE from 'escape-string-regexp'
 import { withTrailingSlash, withoutLeadingSlash } from 'ufo'
 import { ImpoundPlugin } from 'impound'
 import defu from 'defu'
-import { gt, satisfies } from 'semver'
+import { coerce, gt, satisfies } from 'semver'
 import { hasTTY, isCI } from 'std-env'
 import { genImport } from 'knitwork'
 import { resolveModulePath } from 'exsolve'
@@ -51,7 +49,7 @@ import { ResolveDeepImportsPlugin } from './plugins/resolve-deep-imports'
 import { ResolveExternalsPlugin } from './plugins/resolved-externals'
 import { PrehydrateTransformPlugin } from './plugins/prehydrate'
 import { VirtualFSPlugin } from './plugins/virtual'
-import { initParser } from './utils/parse'
+import type { Nuxt, NuxtHooks, NuxtModule, NuxtOptions } from 'nuxt/schema'
 
 export function createNuxt (options: NuxtOptions): Nuxt {
   const hooks = createHooks<NuxtHooks>()
@@ -167,67 +165,12 @@ async function initNuxt (nuxt: Nuxt) {
   nuxt.options.compatibilityDate = resolveCompatibilityDatesFromEnv(nuxt.options.compatibilityDate)
 
   if (!nuxt.options.compatibilityDate.default) {
-    const todaysDate = formatDate(new Date())
     nuxt.options.compatibilityDate.default = fallbackCompatibilityDate
 
-    const shouldShowPrompt = nuxt.options.dev && hasTTY && !isCI
-    if (!shouldShowPrompt) {
-      logger.info(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
+    if (nuxt.options.dev && hasTTY && !isCI && !nuxt.options.test && !warnedAboutCompatDate) {
+      warnedAboutCompatDate = true
+      consola.warn(`We recommend adding \`compatibilityDate: '${formatDate('latest')}'\` to your \`nuxt.config\` file.\nUsing \`${fallbackCompatibilityDate}\` as fallback. More info at: ${colors.underline('https://nitro.build/deploy#compatibility-date')}`)
     }
-
-    async function promptAndUpdate () {
-      const result = await consola.prompt(`Do you want to update your ${colorize('cyan', 'nuxt.config')} to set ${colorize('cyan', `compatibilityDate: '${todaysDate}'`)}?`, {
-        type: 'confirm',
-        default: true,
-      })
-      if (result !== true) {
-        logger.info(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
-        return
-      }
-
-      try {
-        const res = await updateConfig({
-          configFile: 'nuxt.config',
-          cwd: nuxt.options.rootDir,
-          async onCreate ({ configFile }) {
-            const shallCreate = await consola.prompt(`Do you want to create ${colorize('cyan', relative(nuxt.options.rootDir, configFile))}?`, {
-              type: 'confirm',
-              default: true,
-            })
-            if (shallCreate !== true) {
-              return false
-            }
-            return _getDefaultNuxtConfig()
-          },
-          onUpdate (config) {
-            config.compatibilityDate = todaysDate
-          },
-        })
-
-        if (res?.configFile) {
-          nuxt.options.compatibilityDate = resolveCompatibilityDatesFromEnv(todaysDate)
-          consola.success(`Compatibility date set to \`${todaysDate}\` in \`${relative(nuxt.options.rootDir, res.configFile)}\``)
-          return
-        }
-      } catch (err) {
-        const message = err instanceof Error ? err.message : err
-
-        consola.error(`Failed to update config: ${message}`)
-      }
-
-      logger.info(`Using \`${fallbackCompatibilityDate}\` as fallback compatibility date.`)
-    }
-
-    nuxt.hooks.hookOnce('nitro:init', (nitro) => {
-      if (warnedAboutCompatDate) { return }
-
-      nitro.hooks.hookOnce('compiled', () => {
-        warnedAboutCompatDate = true
-        // Print warning
-        logger.info(`Nuxt now supports pinning the behavior of provider and deployment presets with a compatibility date. We recommend you specify a \`compatibilityDate\` in your \`nuxt.config\` file, or set an environment variable, such as \`COMPATIBILITY_DATE=${todaysDate}\`.`)
-        if (shouldShowPrompt) { promptAndUpdate() }
-      })
-    })
   }
 
   // Restart Nuxt when layer directories are added or removed
@@ -336,8 +279,6 @@ async function initNuxt (nuxt: Nuxt) {
       await import('../core/features').then(({ installNuxtModule }) => installNuxtModule('@nuxt/scripts'))
     }
   }
-
-  await initParser()
 
   // Support Nuxt VFS
   addBuildPlugin(VirtualFSPlugin(nuxt, { mode: 'server' }), { client: false })
@@ -499,7 +440,7 @@ async function initNuxt (nuxt: Nuxt) {
 
   // Automatically register user modules
   for (const config of nuxt.options._layers.map(layer => layer.config).reverse()) {
-    const modulesDir = (config.rootDir === nuxt.options.rootDir ? nuxt.options : config).dir?.modules || 'modules'
+    const modulesDir = (config.rootDir === nuxt.options.rootDir ? nuxt.options.dir : config.dir)?.modules || 'modules'
     const layerModules = await resolveFiles(config.srcDir, [
       `${modulesDir}/*{${nuxt.options.extensions.join(',')}}`,
       `${modulesDir}/*/index{${nuxt.options.extensions.join(',')}}`,
@@ -585,6 +526,13 @@ async function initNuxt (nuxt: Nuxt) {
     filePath: resolve(nuxt.options.appDir, 'components/nuxt-loading-indicator'),
   })
 
+  // Add <NuxtTime>
+  addComponent({
+    name: 'NuxtTime',
+    priority: 10, // built-in that we do not expect the user to override
+    filePath: resolve(nuxt.options.appDir, 'components/nuxt-time.vue'),
+  })
+
   // Add <NuxtRouteAnnouncer>
   addComponent({
     name: 'NuxtRouteAnnouncer',
@@ -619,7 +567,7 @@ async function initNuxt (nuxt: Nuxt) {
       export: name,
       priority: -1,
       filePath: resolve(nuxt.options.appDir, 'components/nuxt-stubs'),
-      // @ts-expect-error TODO: refactor to nuxi
+      // @ts-expect-error TODO: refactor to @nuxt/cli
       _internal_install: '@nuxt/image',
     })
   }
@@ -660,6 +608,21 @@ async function initNuxt (nuxt: Nuxt) {
       name: 'NuxtIsland',
       priority: 10, // built-in that we do not expect the user to override
       filePath: resolve(nuxt.options.appDir, 'components/nuxt-island'),
+    })
+
+    // sync conditions with /packages/nuxt/src/core/templates.ts#L539
+    addServerTemplate({
+      filename: '#internal/nuxt/island-renderer.mjs',
+      getContents () {
+        if (nuxt.options.dev || nuxt.options.experimental.componentIslands !== 'auto' || nuxt.apps.default?.pages?.some(p => p.mode === 'server') || nuxt.apps.default?.components?.some(c => c.mode === 'server' && !nuxt.apps.default?.components.some(other => other.pascalName === c.pascalName && other.mode === 'client'))) {
+          return `export { default } from '${resolve(distDir, 'core/runtime/nitro/handlers/island')}'`
+        }
+        return `import { defineEventHandler } from 'h3'; export default defineEventHandler(() => {});`
+      },
+    })
+    addServerHandler({
+      route: '/__nuxt_island/**',
+      handler: '#internal/nuxt/island-renderer.mjs',
     })
 
     if (!nuxt.options.ssr && nuxt.options.experimental.componentIslands !== 'auto') {
@@ -745,16 +708,18 @@ export default defineNuxtPlugin({
     }
 
     // User provided patterns
-    const layerRelativePaths = nuxt.options._layers.map(l => relative(l.config.srcDir || l.cwd, path))
+    const layerRelativePaths = new Set(nuxt.options._layers.map(l => relative(l.config.srcDir || l.cwd, path)))
     for (const pattern of nuxt.options.watch) {
       if (typeof pattern === 'string') {
         // Test (normalized) strings against absolute path and relative path to any layer `srcDir`
-        if (pattern === path || layerRelativePaths.includes(pattern)) { return nuxt.callHook('restart') }
+        if (pattern === path || layerRelativePaths.has(pattern)) { return nuxt.callHook('restart') }
         continue
       }
       // Test regular expressions against path to _any_ layer `srcDir`
-      if (layerRelativePaths.some(p => pattern.test(p))) {
-        return nuxt.callHook('restart')
+      for (const p of layerRelativePaths) {
+        if (pattern.test(p)) {
+          return nuxt.callHook('restart')
+        }
       }
     }
 
@@ -796,7 +761,7 @@ export default defineNuxtPlugin({
 
   // Show compatibility version banner when Nuxt is running with a compatibility version
   // that is different from the current major version
-  if (!(satisfies(nuxt._version, nuxt.options.future.compatibilityVersion + '.x'))) {
+  if (!(satisfies(coerce(nuxt._version) ?? nuxt._version, nuxt.options.future.compatibilityVersion + '.x'))) {
     logger.info(`Running with compatibility version \`${nuxt.options.future.compatibilityVersion}\``)
   }
 
@@ -879,6 +844,15 @@ export async function loadNuxt (opts: LoadNuxtOptions): Promise<Nuxt> {
   options.alias['@vue/composition-api'] = resolve(options.appDir, 'compat/capi')
   if (options.telemetry !== false && !process.env.NUXT_TELEMETRY_DISABLED) {
     options._modules.push('@nuxt/telemetry')
+  }
+
+  // warn if user is using reserved namespaces
+  const allowedKeys = new Set(['baseURL', 'buildAssetsDir', 'cdnURL', 'buildId'])
+  for (const key in options.runtimeConfig.app) {
+    if (!allowedKeys.has(key)) {
+      logger.warn(`The \`app\` namespace is reserved for Nuxt and is exposed to the browser. Please move \`runtimeConfig.app.${key}\` to a different namespace.`)
+      delete options.runtimeConfig.app[key]
+    }
   }
 
   // Ensure we share key config between Nuxt and Nitro
@@ -986,10 +960,3 @@ function createPortalProperties (sourceValue: any, options: NuxtOptions, paths: 
     })
   }
 }
-
-const _getDefaultNuxtConfig = () => /* js */
-  `// https://nuxt.com/docs/api/configuration/nuxt-config
-export default defineNuxtConfig({
-  devtools: { enabled: true }
-})
-`

@@ -1,5 +1,5 @@
 ---
-title: "nuxi add"
+title: "nuxt add"
 description: "Создание сущности в вашем приложении Nuxt."
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--add-cmd-->
 ```bash [Terminal]
-npx nuxi add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--force]
+npx nuxt add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--force]
 ```
 <!--/add-cmd-->
 
@@ -39,74 +39,74 @@ Option | Default | Description
 
 ```bash [Terminal]
 # Создает `/plugins/sockets.client.ts`
-npx nuxi add plugin sockets --client
+npx nuxt add plugin sockets --client
 ```
 
-## `nuxi add component`
+## `nuxt add component`
 
 * Флаги модификаторов: `--mode client|server` или `--client` или `--server`
 
 ```bash [Terminal]
 # Создает `components/TheHeader.vue`
-npx nuxi add component TheHeader
+npx nuxt add component TheHeader
 ```
 
-## `nuxi add composable`
+## `nuxt add composable`
 
 ```bash [Terminal]
 # Создает `composables/foo.ts`
-npx nuxi add composable foo
+npx nuxt add composable foo
 ```
 
-## `nuxi add layout`
+## `nuxt add layout`
 
 ```bash [Terminal]
 # Создает `layouts/custom.vue`
-npx nuxi add layout custom
+npx nuxt add layout custom
 ```
 
-## `nuxi add plugin`
+## `nuxt add plugin`
 
 * Флаги модификаторов: `--mode client|server` или `--client` или `--server`
 
 ```bash [Terminal]
 # Создает `plugins/analytics.ts`
-npx nuxi add plugin analytics
+npx nuxt add plugin analytics
 ```
 
-## `nuxi add page`
+## `nuxt add page`
 
 ```bash [Terminal]
 # Создает `pages/about.vue`
-npx nuxi add page about
+npx nuxt add page about
 ```
 
 ```bash [Terminal]
 # Создает `pages/category/[id].vue`
-npx nuxi add page "category/[id]"
+npx nuxt add page "category/[id]"
 ```
 
-## `nuxi add middleware`
+## `nuxt add middleware`
 
 * Флаги модификаторов: `--global`
 
 ```bash [Terminal]
 # Создает `middleware/auth.ts`
-npx nuxi add middleware auth
+npx nuxt add middleware auth
 ```
 
-## `nuxi add api`
+## `nuxt add api`
 
 * Флаги модификаторов: `--method` (может принять `connect`, `delete`, `get`, `head`, `options`, `patch`, `post`, `put` или `trace`) или, наоборот, вы можете напрямую использовать `--get`, `--post`, и другое.
 
 ```bash [Terminal]
 # Создает `server/api/hello.ts`
-npx nuxi add api hello
+npx nuxt add api hello
 ```
 
-## `nuxi add layer`
+## `nuxt add layer`
 
 ```bash [Terminal]
 # Generates `layers/subscribe/nuxt.config.ts`
-npx nuxi add layer subscribe
+npx nuxt add layer subscribe
 ```

@@ -16,15 +16,18 @@ export async function getVueHash (nuxt: Nuxt) {
 
   const { hash } = await getHashes(nuxt, {
     id,
-    cwd: layer => layer.config?.srcDir,
-    patterns: layer => [
-      join(relative(layer.cwd, layer.config.srcDir), '**'),
-      `!${relative(layer.cwd, layer.config.serverDir || join(layer.cwd, 'server'))}/**`,
-      `!${relative(layer.cwd, resolve(layer.config.srcDir || layer.cwd, layer.config.dir?.public || 'public'))}/**`,
-      `!${relative(layer.cwd, resolve(layer.config.srcDir || layer.cwd, layer.config.dir?.static || 'public'))}/**`,
-      '!node_modules/**',
-      '!nuxt.config.*',
-    ],
+    cwd: layer => layer.config.srcDir || layer.cwd,
+    patterns: (layer) => {
+      const srcDir = layer.config.srcDir || layer.cwd
+      return [
+        '**',
+        `!${relative(srcDir, layer.config.serverDir || join(layer.cwd, 'server'))}/**`,
+        `!${relative(srcDir, resolve(layer.cwd, layer.config.dir?.public || 'public'))}/**`,
+        `!${relative(srcDir, resolve(layer.cwd, layer.config.dir?.static || 'public'))}/**`,
+        '!node_modules/**',
+        '!nuxt.config.*',
+      ]
+    },
     configOverrides: {
       buildId: undefined,
       serverDir: undefined,
@@ -38,7 +41,7 @@ export async function getVueHash (nuxt: Nuxt) {
     },
   })
 
-  const cacheFile = join(nuxt.options.workspaceDir, 'node_modules/.cache/nuxt/builds', id, hash + '.tar')
+  const cacheFile = join(getCacheDir(nuxt), id, hash + '.tar')
 
   return {
     hash,
@@ -63,7 +66,7 @@ export async function getVueHash (nuxt: Nuxt) {
 export async function cleanupCaches (nuxt: Nuxt) {
   const start = Date.now()
   const caches = await glob(['*/*.tar'], {
-    cwd: join(nuxt.options.workspaceDir, 'node_modules/.cache/nuxt/builds'),
+    cwd: getCacheDir(nuxt),
     absolute: true,
   })
   if (caches.length >= 10) {
@@ -117,7 +120,7 @@ async function getHashes (nuxt: Nuxt, options: GetHashOptions): Promise<Hashes> 
       name: f.name,
       size: f.attrs?.size,
       data: hash(f.data),
-    }))
+    })).sort((a, b) => a.name.localeCompare(b.name))
 
     const isIgnored = createIsIgnored(nuxt)
     const sourceFiles = await readFilesRecursive(options.cwd(layer), {
@@ -142,6 +145,7 @@ async function getHashes (nuxt: Nuxt, options: GetHashOptions): Promise<Hashes> 
         'yarn.lock',
         'pnpm-lock.yaml',
         'tsconfig.json',
+        'bun.lock',
         'bun.lockb',
       ],
     })
@@ -151,6 +155,8 @@ async function getHashes (nuxt: Nuxt, options: GetHashOptions): Promise<Hashes> 
       data: normalizeFiles(rootFiles),
     })
   }
+
+  hashSources.sort((a, b) => a.name.localeCompare(b.name))
 
   const res = ((nuxt as any)[`_${options.id}BuildHash`] = {
     hash: hash(hashSources),
@@ -273,4 +279,17 @@ async function writeCache (cwd: string, sources: string | string[], cacheFile: s
   const tarData = createTar(fileEntries)
   await mkdir(dirname(cacheFile), { recursive: true })
   await writeFile(cacheFile, tarData)
+}
+
+function getCacheDir (nuxt: Nuxt) {
+  let cacheDir = join(nuxt.options.workspaceDir, 'node_modules')
+  if (!existsSync(cacheDir)) {
+    for (const dir of [...nuxt.options.modulesDir].sort((a, b) => a.length - b.length)) {
+      if (existsSync(dir)) {
+        cacheDir = dir
+        break
+      }
+    }
+  }
+  return join(cacheDir, '.cache/nuxt/builds')
 }

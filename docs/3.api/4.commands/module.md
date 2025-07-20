@@ -1,5 +1,5 @@
 ---
-title: "nuxi module"
+title: "nuxt module"
 description: "Поиск и добавление модулей в приложение Nuxt с помощью командной строки."
 links:
   - label: Исходники
@@ -10,11 +10,11 @@ links:
 
 Nuxi предоставляет несколько утилит для беспрепятственной работы с [модулями Nuxt](/modules).
 
-## nuxi module add
+## nuxt module add
 
 <!--module-add-cmd-->
 ```bash [Terminal]
-npx nuxi module add <MODULENAME> [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--skipInstall] [--skipConfig] [--dev]
+npx nuxt module add <MODULENAME> [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--skipInstall] [--skipConfig] [--dev]
 ```
 <!--/module-add-cmd-->
 
@@ -47,14 +47,14 @@ Option | Default | Description
 Установка модуля [`Pinia`](/modules/pinia).
 
 ```bash [Terminal]
-npx nuxi module add pinia
+npx nuxt module add pinia
 ```
 
-## nuxi module search
+## nuxt module search
 
 <!--module-search-cmd-->
 ```bash [Terminal]
-npx nuxi module search <QUERY> [--cwd=<directory>] [--nuxtVersion=<2|3>]
+npx nuxt module search <QUERY> [--cwd=<directory>] [--nuxtVersion=<2|3>]
 ```
 <!--/module-search-cmd-->
 
@@ -80,5 +80,5 @@ Option | Default | Description
 **Пример:**
 
 ```bash [Terminal]
-npx nuxi module search pinia
+npx nuxt module search pinia
 ```

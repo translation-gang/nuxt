@@ -1,8 +1,9 @@
 import type { FetchError, FetchOptions } from 'ofetch'
 import type { $Fetch, H3Event$Fetch, NitroFetchRequest, TypedInternalResponse, AvailableRouterMethod as _AvailableRouterMethod } from 'nitropack'
-import type { MaybeRef, Ref } from 'vue'
-import { computed, reactive, toValue } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
+import { computed, reactive, toValue, watch } from 'vue'
 import { hash } from 'ohash'
+import { isPlainObject } from '@vue/shared'
 
 // TODO: temporary module for backwards compatibility
 import type { DefaultAsyncDataErrorValue, DefaultAsyncDataValue } from 'nuxt/app/defaults'
@@ -12,7 +13,7 @@ import type { AsyncData, AsyncDataOptions, KeysOf, MultiWatchSources, PickFrom }
 import { useAsyncData } from './asyncData'
 
 // @ts-expect-error virtual file
-import { fetchDefaults } from '#build/nuxt.config.mjs'
+import { alwaysRunFetchOnKeyChange, fetchDefaults } from '#build/nuxt.config.mjs'
 
 // support uppercase methods, detail: https://github.com/nuxt/nuxt/issues/22313
 type AvailableRouterMethod<R extends NitroFetchRequest> = _AvailableRouterMethod<R> | Uppercase<_AvailableRouterMethod<R>>
@@ -38,7 +39,7 @@ export interface UseFetchOptions<
   R extends NitroFetchRequest = string & {},
   M extends AvailableRouterMethod<R> = AvailableRouterMethod<R>,
 > extends Omit<AsyncDataOptions<ResT, DataT, PickKeys, DefaultT>, 'watch'>, ComputedFetchOptions<R, M> {
-  key?: string
+  key?: MaybeRefOrGetter<string>
   $fetch?: typeof globalThis.$fetch
   watch?: MultiWatchSources | false
 }
@@ -63,12 +64,6 @@ export function useFetch<
   request: Ref<ReqT> | ReqT | (() => ReqT),
   opts?: UseFetchOptions<_ResT, DataT, PickKeys, DefaultT, ReqT, Method>
 ): AsyncData<PickFrom<DataT, PickKeys> | DefaultT, ErrorT | DefaultAsyncDataErrorValue>
-/**
- * Fetch data from an API endpoint with an SSR-friendly composable.
- * See {@link https://nuxt.com/docs/api/composables/use-fetch}
- * @param request The URL to fetch
- * @param opts extends $fetch options and useAsyncData options
- */
 export function useFetch<
   ResT = void,
   ErrorT = FetchError,
@@ -100,15 +95,7 @@ export function useFetch<
 
   const _request = computed(() => toValue(request))
 
-  const _key = opts.key || hash([autoKey, typeof _request.value === 'string' ? _request.value : '', ...generateOptionSegments(opts)])
-  if (!_key || typeof _key !== 'string') {
-    throw new TypeError('[nuxt] [useFetch] key must be a string: ' + _key)
-  }
-  if (!request) {
-    throw new Error('[nuxt] [useFetch] request is missing.')
-  }
-
-  const key = _key === autoKey ? '$f' + _key : _key
+  const key = computed(() => toValue(opts.key) || ('$f' + hash([autoKey, typeof _request.value === 'string' ? _request.value : '', ...generateOptionSegments(opts)])))
 
   if (!opts.baseURL && typeof _request.value === 'string' && (_request.value[0] === '/' && _request.value[1] === '/')) {
     throw new Error('[nuxt] [useFetch] the request URL must not start with "//".')
@@ -120,7 +107,7 @@ export function useFetch<
     default: defaultFn,
     transform,
     pick,
-    watch,
+    watch: watchSources,
     immediate,
     getCachedData,
     deep,
@@ -128,7 +115,7 @@ export function useFetch<
     ...fetchOptions
   } = opts
 
-  const _fetchOptions = reactive({
+  const _fetchOptions = reactive<typeof fetchOptions>({
     ...fetchDefaults,
     ...fetchOptions,
     cache: typeof opts.cache === 'boolean' ? undefined : opts.cache,
@@ -144,17 +131,26 @@ export function useFetch<
     getCachedData,
     deep,
     dedupe,
-    watch: watch === false ? [] : [_fetchOptions, _request, ...(watch || [])],
+    watch: watchSources === false ? [] : [...(watchSources || []), _fetchOptions],
   }
 
-  if (import.meta.dev && import.meta.server) {
+  if (import.meta.dev) {
     // @ts-expect-error private property
-    _asyncDataOptions._functionName = opts._functionName || 'useFetch'
+    _asyncDataOptions._functionName ||= 'useFetch'
+  }
+
+  if (alwaysRunFetchOnKeyChange && !immediate) {
+    // ensure that updates to watched sources trigger an update
+    function setImmediate () {
+      _asyncDataOptions.immediate = true
+    }
+    watch(key, setImmediate, { flush: 'sync', once: true })
+    watch([...watchSources || [], _fetchOptions], setImmediate, { flush: 'sync', once: true })
   }
 
   let controller: AbortController
 
-  const asyncData = useAsyncData<_ResT, ErrorT, DataT, PickKeys, DefaultT>(key, () => {
+  const asyncData = useAsyncData<_ResT, ErrorT, DataT, PickKeys, DefaultT>(watchSources === false ? key.value : key, () => {
     controller?.abort?.(new DOMException('Request aborted as another request to the same endpoint was initiated.', 'AbortError'))
     controller = typeof AbortController !== 'undefined' ? new AbortController() : {} as AbortController
 
@@ -187,7 +183,13 @@ export function useFetch<
   return asyncData
 }
 
-/** @since 3.0.0 */
+/**
+ * Fetch data from an API endpoint with an SSR-friendly composable.
+ * See {@link https://nuxt.com/docs/api/composables/use-lazy-fetch}
+ * @since 3.0.0
+ * @param request The URL to fetch
+ * @param opts extends $fetch options and useAsyncData options
+ */
 export function useLazyFetch<
   ResT = void,
   ErrorT = FetchError,
@@ -230,7 +232,7 @@ export function useLazyFetch<
 ) {
   const [opts = {}, autoKey] = typeof arg1 === 'string' ? [{}, arg1] : [arg1, arg2]
 
-  if (import.meta.dev && import.meta.server) {
+  if (import.meta.dev) {
     // @ts-expect-error private property
     opts._functionName ||= 'useLazyFetch'
   }
@@ -257,6 +259,29 @@ function generateOptionSegments<_ResT, DataT, DefaultT> (opts: UseFetchOptions<_
       unwrapped[toValue(key)] = toValue(value)
     }
     segments.push(unwrapped)
+  }
+  if (opts.body) {
+    const value = toValue(opts.body)
+    if (!value) {
+      segments.push(hash(value))
+    } else if (value instanceof ArrayBuffer) {
+      segments.push(hash(Object.fromEntries([...new Uint8Array(value).entries()].map(([k, v]) => [k, v.toString()]))))
+    } else if (value instanceof FormData) {
+      const obj: Record<string, string> = {}
+      for (const entry of value.entries()) {
+        const [key, val] = entry
+        obj[key] = val instanceof File ? val.name : val
+      }
+      segments.push(hash(obj))
+    } else if (isPlainObject(value)) {
+      segments.push(hash(reactive(value)))
+    } else {
+      try {
+        segments.push(hash(value))
+      } catch {
+        console.warn('[useFetch] Failed to hash body', value)
+      }
+    }
   }
   return segments
 }

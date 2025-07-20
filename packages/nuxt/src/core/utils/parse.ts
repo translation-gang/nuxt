@@ -1,8 +1,10 @@
 import { walk as _walk } from 'estree-walker'
 import type { Node, SyncHandler } from 'estree-walker'
 import type { ArrowFunctionExpression, CatchClause, FunctionDeclaration, FunctionExpression, Identifier, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, Program, VariableDeclaration } from 'estree'
-import { type SameShape, type TransformOptions, type TransformResult, transform as esbuildTransform } from 'esbuild'
+import { transform as esbuildTransform } from 'esbuild'
+import type { SameShape, TransformOptions, TransformResult } from 'esbuild'
 import { tryUseNuxt } from '@nuxt/kit'
+import { parseSync } from 'oxc-parser'
 
 export type { Node }
 
@@ -10,7 +12,7 @@ export async function transform<T extends TransformOptions> (input: string | Uin
   return await esbuildTransform(input, { ...tryUseNuxt()?.options.esbuild.options, ...options })
 }
 
-type WithLocations<T> = T & { start: number, end: number }
+export type WithLocations<T> = T & { start: number, end: number }
 type WalkerCallback = (this: ThisParameterType<SyncHandler>, node: WithLocations<Node>, parent: WithLocations<Node> | null, ctx: { key: string | number | symbol | null | undefined, index: number | null | undefined, ast: Program | Node }) => void
 
 interface WalkOptions {
@@ -32,21 +34,6 @@ export function walk (ast: Program | Node, callback: Partial<WalkOptions>) {
       callback.leave?.call(this, node as WithLocations<Node>, parent as WithLocations<Node> | null, { key, index, ast })
     },
   })
-}
-
-let parseSync: typeof import('oxc-parser').parseSync
-
-export async function initParser () {
-  try {
-    parseSync = await import('oxc-parser').then(r => r.parseSync)
-  } catch {
-    // this can fail on stackblitz so we fall back to wasm build
-    const { parseSync: wasmParse } = await import('@oxc-parser/wasm')
-    parseSync = (sourceFilename, code, options) => wasmParse(code, {
-      sourceFilename: sourceFilename.replace(/\?.*$/, '') + `.${options?.lang || 'ts'}`,
-      sourceType: 'module',
-    }) as any
-  }
 }
 
 export function parseAndWalk (code: string, sourceFilename: string, callback: WalkerCallback): Program

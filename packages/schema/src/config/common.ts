@@ -72,9 +72,9 @@ export default defineResolvers({
       return val && typeof val === 'string'
         ? resolve(rootDir, val)
         : await findWorkspaceDir(rootDir, {
-          gitConfig: 'closest',
-          try: true,
-        }).catch(() => rootDir)
+            gitConfig: 'closest',
+            try: true,
+          }).catch(() => rootDir)
     },
   },
 
@@ -561,7 +561,7 @@ export default defineResolvers({
         ignore.add(`**/${ignorePrefix}*.*`)
       }
       if (Array.isArray(val)) {
-        for (const pattern in val) {
+        for (const pattern of val) {
           if (pattern) {
             ignore.add(pattern)
           }

@@ -6,7 +6,6 @@ import { createHooks } from 'hookable'
 import { getContext } from 'unctx'
 import type { SSRContext, createRenderer } from 'vue-bundle-renderer/runtime'
 import type { EventHandlerRequest, H3Event } from 'h3'
-import type { AppConfig, AppConfigInput, RuntimeConfig } from 'nuxt/schema'
 import type { RenderResponse } from 'nitropack'
 import type { LogObject } from 'consola'
 import type { VueHeadClient } from '@unhead/vue/types'
@@ -19,10 +18,11 @@ import type { DefaultAsyncDataErrorValue, DefaultErrorValue } from 'nuxt/app/def
 import type { NuxtIslandContext } from '../app/types'
 import type { RouteMiddleware } from '../app/composables/router'
 import type { NuxtError } from '../app/composables/error'
-import type { AsyncDataRequestStatus } from '../app/composables/asyncData'
+import type { AsyncDataExecuteOptions, AsyncDataRequestStatus } from '../app/composables/asyncData'
 import type { NuxtAppManifestMeta } from '../app/composables/manifest'
 import type { LoadingIndicator } from '../app/composables/loading-indicator'
 import type { RouteAnnouncer } from '../app/composables/route-announcer'
+import type { AppConfig, AppConfigInput, RuntimeConfig } from 'nuxt/schema'
 
 // @ts-expect-error virtual file
 import { appId, chunkErrorEvent, multiApp } from '#build/nuxt.config.mjs'
@@ -126,14 +126,22 @@ interface _NuxtApp {
   /** @internal */
   _asyncData: Record<string, {
     data: Ref<unknown>
-    /**
-     * @deprecated This may be removed in a future major version.
-     */
     pending: Ref<boolean>
     error: Ref<Error | DefaultAsyncDataErrorValue>
     status: Ref<AsyncDataRequestStatus>
+    execute: (opts?: AsyncDataExecuteOptions) => Promise<void>
     /** @internal */
     _default: () => unknown
+    /** @internal */
+    _deps: number
+    /** @internal */
+    _off: () => void
+    /** @internal */
+    _init: boolean
+    /** @internal */
+    _execute: (opts?: AsyncDataExecuteOptions) => Promise<void>
+    /** @internal */
+    _hash?: Record<string, string | undefined>
   } | undefined>
 
   /** @internal */
@@ -154,8 +162,6 @@ interface _NuxtApp {
 
   /** @internal */
   _observer?: { observe: (element: Element, callback: () => void) => () => void }
-  /** @internal */
-  _payloadCache?: Record<string, Promise<Record<string, any>> | Record<string, any> | null>
 
   /** @internal */
   _appConfig: AppConfig
@@ -377,7 +383,7 @@ export function createNuxtApp (options: CreateOptions) {
     if (chunkErrorEvent) {
       window.addEventListener(chunkErrorEvent, (event) => {
         nuxtApp.callHook('app:chunkError', { error: (event as Event & { payload: Error }).payload })
-        if (nuxtApp.isHydrating || event.payload.message.includes('Unable to preload CSS')) {
+        if (event.payload.message.includes('Unable to preload CSS')) {
           event.preventDefault()
         }
       })
@@ -418,20 +424,20 @@ export async function applyPlugin (nuxtApp: NuxtApp, plugin: Plugin & ObjectPlug
 
 /** @since 3.0.0 */
 export async function applyPlugins (nuxtApp: NuxtApp, plugins: Array<Plugin & ObjectPlugin<any>>) {
-  const resolvedPlugins: string[] = []
+  const resolvedPlugins: Set<string> = new Set()
   const unresolvedPlugins: [Set<string>, Plugin & ObjectPlugin<any>][] = []
   const parallels: Promise<any>[] = []
   const errors: Error[] = []
   let promiseDepth = 0
 
   async function executePlugin (plugin: Plugin & ObjectPlugin<any>) {
-    const unresolvedPluginsForThisPlugin = plugin.dependsOn?.filter(name => plugins.some(p => p._name === name) && !resolvedPlugins.includes(name)) ?? []
+    const unresolvedPluginsForThisPlugin = plugin.dependsOn?.filter(name => plugins.some(p => p._name === name) && !resolvedPlugins.has(name)) ?? []
     if (unresolvedPluginsForThisPlugin.length > 0) {
       unresolvedPlugins.push([new Set(unresolvedPluginsForThisPlugin), plugin])
     } else {
       const promise = applyPlugin(nuxtApp, plugin).then(async () => {
         if (plugin._name) {
-          resolvedPlugins.push(plugin._name)
+          resolvedPlugins.add(plugin._name)
           await Promise.all(unresolvedPlugins.map(async ([dependsOn, unexecutedPlugin]) => {
             if (dependsOn.has(plugin._name!)) {
               dependsOn.delete(plugin._name!)

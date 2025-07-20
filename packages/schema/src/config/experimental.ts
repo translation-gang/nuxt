@@ -125,13 +125,21 @@ export default defineResolvers({
     /**
      * Turn off rendering of Nuxt scripts and JS resource hints.
      * You can also disable scripts more granularly within `routeRules`.
+     *
+     * If set to 'production' or `true`, JS will be disabled in production mode only.
+     * @type {'production' | 'all' | boolean}
      */
     noScripts: {
       async $resolve (val, get) {
-        return typeof val === 'boolean'
-          ? val
-          // @ts-expect-error TODO: legacy property - remove in v3.10
-          : (await (get('experimental')).then(e => e?.noScripts as boolean | undefined) ?? false)
+        const isValidLiteral = (val: unknown): val is 'production' | 'all' => {
+          return typeof val === 'string' && ['production', 'all'].includes(val)
+        }
+        return val === true
+          ? 'production'
+          : val === false || isValidLiteral(val)
+            ? val
+            // @ts-expect-error TODO: legacy property - remove in v3.10
+            : (await (get('experimental')).then(e => e?.noScripts as boolean | undefined && 'production') ?? false)
       },
     },
   },
@@ -200,9 +208,9 @@ export default defineResolvers({
           return false
         }
 
-        const validOptions = ['manual', 'automatic', 'automatic-immediate'] as const
-        type EmitRouteChunkError = typeof validOptions[number]
-        if (typeof val === 'string' && validOptions.includes(val as EmitRouteChunkError)) {
+        const validOptions = new Set(['manual', 'automatic', 'automatic-immediate'] as const)
+        type EmitRouteChunkError = typeof validOptions extends Set<infer Option> ? Option : never
+        if (typeof val === 'string' && validOptions.has(val as EmitRouteChunkError)) {
           return val as EmitRouteChunkError
         }
 
@@ -375,9 +383,9 @@ export default defineResolvers({
      */
     watcher: {
       $resolve: async (val, get) => {
-        const validOptions = ['chokidar', 'parcel', 'chokidar-granular'] as const
-        type WatcherOption = typeof validOptions[number]
-        if (typeof val === 'string' && validOptions.includes(val as WatcherOption)) {
+        const validOptions = new Set(['chokidar', 'parcel', 'chokidar-granular'] as const)
+        type WatcherOption = typeof validOptions extends Set<infer Option> ? Option : never
+        if (typeof val === 'string' && validOptions.has(val as WatcherOption)) {
           return val as WatcherOption
         }
         const [srcDir, rootDir] = await Promise.all([get('srcDir'), get('rootDir')])
@@ -417,7 +425,7 @@ export default defineResolvers({
     inlineRouteRules: false,
 
     /**
-     * Allow exposing some route metadata defined in `definePageMeta` at build-time to modules (alias, name, path, redirect).
+     * Allow exposing some route metadata defined in `definePageMeta` at build-time to modules (alias, name, path, redirect, props, middleware).
      *
      * This only works with static or strings/arrays rather than variables or conditional assignment.
      *
@@ -614,23 +622,55 @@ export default defineResolvers({
      */
     spaLoadingTemplateLocation: {
       $resolve: async (val, get) => {
-        const validOptions = ['body', 'within'] as const
-        type SpaLoadingTemplateLocation = typeof validOptions[number]
-        return typeof val === 'string' && validOptions.includes(val as SpaLoadingTemplateLocation) ? val as SpaLoadingTemplateLocation : ((await get('future')).compatibilityVersion === 4 ? 'body' : 'within')
+        const validOptions = new Set(['body', 'within'] as const)
+        type SpaLoadingTemplateLocation = typeof validOptions extends Set<infer Option> ? Option : never
+        return typeof val === 'string' && validOptions.has(val as SpaLoadingTemplateLocation) ? val as SpaLoadingTemplateLocation : (((await get('future')).compatibilityVersion === 4) ? 'body' : 'within')
       },
     },
 
     /**
      * Enable timings for Nuxt application hooks in the performance panel of Chromium-based browsers.
      *
-     * @see [the Chrome DevTools extensibility API](https://developer.chrome.com/docs/devtools/performance/extension#tracks)
+     * This feature adds performance markers for Nuxt hooks, allowing you to track their execution time
+     * in the browser's Performance tab. This is particularly useful for debugging performance issues.
+     *
+     * @example
+     * ```ts
+     * // nuxt.config.ts
+     * export default defineNuxtConfig({
+     *   experimental: {
+     *     // Enable performance markers for Nuxt hooks in browser devtools
+     *     browserDevtoolsTiming: true
+     *   }
+     * })
+     * ```
+     *
+     * @see [PR #29922](https://github.com/nuxt/nuxt/pull/29922)
+     * @see [Chrome DevTools Performance API](https://developer.chrome.com/docs/devtools/performance/extension#tracks)
      */
     browserDevtoolsTiming: {
       $resolve: async (val, get) => typeof val === 'boolean' ? val : await get('dev'),
     },
 
     /**
-     * Record mutations to `nuxt.options` in module context
+     * Record mutations to `nuxt.options` in module context, helping to debug configuration changes
+     * made by modules during the Nuxt initialization phase.
+     *
+     * When enabled, Nuxt will track which modules modify configuration options, making it
+     * easier to trace unexpected configuration changes.
+     *
+     * @example
+     * ```ts
+     * // nuxt.config.ts
+     * export default defineNuxtConfig({
+     *   experimental: {
+     *     // Enable tracking of config mutations by modules
+     *     debugModuleMutation: true
+     *   }
+     * })
+     * ```
+     *
+     * @see [PR #30555](https://github.com/nuxt/nuxt/pull/30555)
      */
     debugModuleMutation: {
       $resolve: async (val, get) => {
@@ -640,6 +680,29 @@ export default defineResolvers({
 
     /**
      * Enable automatic configuration of hydration strategies for `<Lazy>` components.
+     *
+     * This feature intelligently determines when to hydrate lazy components based on
+     * visibility, idle time, or other triggers, improving performance by deferring
+     * hydration of components until they're needed.
+     *
+     * @example
+     * ```ts
+     * // nuxt.config.ts
+     * export default defineNuxtConfig({
+     *   experimental: {
+     *     lazyHydration: true // Enable smart hydration strategies for Lazy components
+     *   }
+     * })
+     *
+     * // In your Vue components
+     * <template>
+     *   <Lazy>
+     *     <ExpensiveComponent />
+     *   </Lazy>
+     * </template>
+     * ```
+     *
+     * @see [PR #26468](https://github.com/nuxt/nuxt/pull/26468)
      */
     lazyHydration: {
       $resolve: (val) => {
@@ -649,7 +712,92 @@ export default defineResolvers({
 
     /**
      * Disable resolving imports into Nuxt templates from the path of the module that added the template.
+     *
+     * By default, Nuxt attempts to resolve imports in templates relative to the module that added them.
+     * Setting this to `false` disables this behavior, which may be useful if you're experiencing
+     * resolution conflicts in certain environments.
+     *
+     * @example
+     * ```ts
+     * // nuxt.config.ts
+     * export default defineNuxtConfig({
+     *   experimental: {
+     *     // Disable template import resolution from module path
+     *     templateImportResolution: false
+     *   }
+     * })
+     * ```
+     *
+     * @see [PR #31175](https://github.com/nuxt/nuxt/pull/31175)
      */
     templateImportResolution: true,
+
+    /**
+     * Whether to clean up Nuxt static and asyncData caches on route navigation.
+     *
+     * Nuxt will automatically purge cached data from `useAsyncData` and `nuxtApp.static.data`. This helps prevent memory leaks
+     * and ensures fresh data is loaded when needed, but it is possible to disable it.
+     *
+     * @example
+     * ```ts
+     * // nuxt.config.ts
+     * export default defineNuxtConfig({
+     *   experimental: {
+     *     // Disable automatic cache cleanup (default is true)
+     *     purgeCachedData: false
+     *   }
+     * })
+     * ```
+     *
+     * @see [PR #31379](https://github.com/nuxt/nuxt/pull/31379)
+     */
+    purgeCachedData: {
+      $resolve: (val) => {
+        return typeof val === 'boolean' ? val : true
+      },
+    },
+
+    /**
+     * Whether to call and use the result from `getCachedData` on manual refresh for `useAsyncData` and `useFetch`.
+     */
+    granularCachedData: {
+      $resolve: async (val, get) => {
+        return typeof val === 'boolean' ? val : ((await get('future')).compatibilityVersion === 4)
+      },
+    },
+
+    /**
+     * Whether to run `useFetch` when the key changes, even if it is set to `immediate: false` and it has not been triggered yet.
+     *
+     * `useFetch` and `useAsyncData` will always run when the key changes if `immediate: true` or if it has been already triggered.
+     */
+    alwaysRunFetchOnKeyChange: {
+      $resolve: async (val, get) => {
+        return typeof val === 'boolean' ? val : ((await get('future')).compatibilityVersion !== 4)
+      },
+    },
+
+    /**
+     * Whether to parse `error.data` when rendering a server error page.
+     */
+    parseErrorData: {
+      $resolve: async (val, get) => {
+        return typeof val === 'boolean' ? val : (await get('future')).compatibilityVersion === 4
+      },
+    },
+
+    /**
+     * Whether Nuxt should stop if a Nuxt module is incompatible.
+     */
+    enforceModuleCompatibility: false,
+
+    /**
+     * For `useAsyncData` and `useFetch`, whether `pending` should be `true` when data has not yet started to be fetched.
+     */
+    pendingWhenIdle: {
+      $resolve: async (val, get) => {
+        return typeof val === 'boolean' ? val : (await get('future')).compatibilityVersion !== 4
+      },
+    },
   },
 })

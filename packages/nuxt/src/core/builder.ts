@@ -3,13 +3,13 @@ import type { FSWatcher } from 'chokidar'
 import { watch as chokidarWatch } from 'chokidar'
 import { createIsIgnored, directoryToURL, importModule, isIgnored, useNuxt } from '@nuxt/kit'
 import { debounce } from 'perfect-debounce'
-import { normalize, relative, resolve } from 'pathe'
-import type { Nuxt, NuxtBuilder } from 'nuxt/schema'
+import { dirname, join, normalize, relative, resolve } from 'pathe'
 
-import { logger } from '../utils'
+import { isDirectory, logger } from '../utils'
 import { generateApp as _generateApp, createApp } from './app'
 import { checkForExternalConfigurationFiles } from './external-config-files'
 import { cleanupCaches, getVueHash } from './cache'
+import type { Nuxt, NuxtBuilder } from 'nuxt/schema'
 
 export async function build (nuxt: Nuxt) {
   const app = createApp(nuxt)
@@ -142,13 +142,7 @@ function createGranularWatcher () {
   let pending = 0
 
   const ignoredDirs = new Set([...nuxt.options.modulesDir, nuxt.options.buildDir])
-  const pathsToWatch = nuxt.options._layers.map(layer => layer.config.srcDir || layer.cwd).filter(d => d && !isIgnored(d))
-  for (const pattern of nuxt.options.watch) {
-    if (typeof pattern !== 'string') { continue }
-    const path = resolve(nuxt.options.srcDir, pattern)
-    if (pathsToWatch.some(w => path.startsWith(w.replace(/[^/]$/, '$&/')))) { continue }
-    pathsToWatch.push(path)
-  }
+  const pathsToWatch = resolvePathsToWatch(nuxt)
   for (const dir of pathsToWatch) {
     pending++
     const watcher = chokidarWatch(dir, { ...nuxt.options.watchers.chokidar, ignoreInitial: false, depth: 0, ignored: [isIgnored, /[\\/]node_modules[\\/]/] })
@@ -167,7 +161,7 @@ function createGranularWatcher () {
         watchers[path]?.close()
         delete watchers[path]
       }
-      if (event === 'addDir' && path !== dir && !ignoredDirs.has(path) && !pathsToWatch.includes(path) && !(path in watchers) && !isIgnored(path)) {
+      if (event === 'addDir' && path !== dir && !ignoredDirs.has(path) && !pathsToWatch.has(path) && !(path in watchers) && !isIgnored(path)) {
         const pathWatcher = watchers[path] = chokidarWatch(path, { ...nuxt.options.watchers.chokidar, ignored: [isIgnored] })
         // TODO: consider moving to emit absolute path in 3.8 or 4.0
         pathWatcher.on('all', (event, p) => {
@@ -198,9 +192,10 @@ async function createParcelWatcher () {
   }
   try {
     const { subscribe } = await importModule<typeof import('@parcel/watcher')>('@parcel/watcher', { url: [nuxt.options.rootDir, ...nuxt.options.modulesDir].map(d => directoryToURL(d)) })
-    for (const layer of nuxt.options._layers) {
-      if (!layer.config.srcDir) { continue }
-      const watcher = subscribe(layer.config.srcDir, (err, events) => {
+    const pathsToWatch = resolvePathsToWatch(nuxt, { parentDirectories: true })
+    for (const dir of pathsToWatch) {
+      if (!await isDirectory(dir)) { continue }
+      const watcher = subscribe(dir, (err, events) => {
         if (err) { return }
         for (const event of events) {
           if (isIgnored(event.path)) { continue }
@@ -249,7 +244,36 @@ async function bundle (nuxt: Nuxt) {
 async function loadBuilder (nuxt: Nuxt, builder: string): Promise<NuxtBuilder> {
   try {
     return await importModule(builder, { url: [directoryToURL(nuxt.options.rootDir), new URL(import.meta.url)] })
-  } catch {
-    throw new Error(`Loading \`${builder}\` builder failed. You can read more about the nuxt \`builder\` option at: \`https://nuxt.com/docs/api/nuxt-config#builder\``)
+  } catch (err) {
+    throw new Error(`Loading \`${builder}\` builder failed. You can read more about the nuxt \`builder\` option at: \`https://nuxt.com/docs/api/nuxt-config#builder\``, { cause: err })
   }
+}
+
+function resolvePathsToWatch (nuxt: Nuxt, opts: { parentDirectories?: boolean } = {}): Set<string> {
+  const pathsToWatch = new Set<string>()
+  for (const layer of nuxt.options._layers) {
+    const dir = layer.config.srcDir || layer.cwd
+    if (!dir || isIgnored(dir)) { continue }
+
+    pathsToWatch.add(dir.replace(/[^/]$/, '$&/'))
+  }
+  for (const pattern of nuxt.options.watch) {
+    if (typeof pattern !== 'string') { continue }
+    const path = opts?.parentDirectories
+      ? join(dirname(resolve(nuxt.options.srcDir, pattern)), '')
+      : resolve(nuxt.options.srcDir, pattern)
+    let shouldAdd = true
+    for (const w of [...pathsToWatch]) {
+      if (w.startsWith(path)) {
+        pathsToWatch.delete(w)
+      }
+      if (path.startsWith(w)) {
+        shouldAdd = false
+      }
+    }
+    if (shouldAdd) {
+      pathsToWatch.add(path)
+    }
+  }
+  return pathsToWatch
 }

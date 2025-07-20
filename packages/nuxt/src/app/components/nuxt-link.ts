@@ -10,13 +10,14 @@ import type {
   VNode,
   VNodeProps,
 } from 'vue'
-import { computed, defineComponent, h, inject, onBeforeUnmount, onMounted, provide, ref, resolveComponent } from 'vue'
+import { computed, defineComponent, h, inject, onBeforeUnmount, onMounted, provide, ref, resolveComponent, shallowRef } from 'vue'
 import type { RouteLocation, RouteLocationRaw, Router, RouterLink, RouterLinkProps, UseLinkReturn, useLink } from 'vue-router'
 import { hasProtocol, joinURL, parseQuery, withTrailingSlash, withoutTrailingSlash } from 'ufo'
 import { preloadRouteComponents } from '../composables/preload'
 import { onNuxtReady } from '../composables/ready'
 import { navigateTo, resolveRouteObject, useRouter } from '../composables/router'
-import { type NuxtApp, useNuxtApp, useRuntimeConfig } from '../nuxt'
+import { useNuxtApp, useRuntimeConfig } from '../nuxt'
+import type { NuxtApp } from '../nuxt'
 import { cancelIdleCallback, requestIdleCallback } from '../compat/idle-callback'
 
 // @ts-expect-error virtual file
@@ -77,6 +78,11 @@ export interface NuxtLinkProps<CustomProp extends boolean = false> extends Omit<
    * Escape hatch to disable `prefetch` attribute.
    */
   noPrefetch?: boolean
+  /**
+   * An option to either add or remove trailing slashes in the `href` for this specific link.
+   * Overrides the global `trailingSlash` option if provided.
+   */
+  trailingSlash?: 'append' | 'remove'
 }
 
 /**
@@ -139,15 +145,16 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
     return !hashMode && typeof link === 'string' && link.startsWith('#')
   }
 
-  function resolveTrailingSlashBehavior (to: string, resolve: Router['resolve']): string
-  function resolveTrailingSlashBehavior (to: RouteLocationRaw, resolve: Router['resolve']): Exclude<RouteLocationRaw, string>
-  function resolveTrailingSlashBehavior (to: RouteLocationRaw | undefined, resolve: Router['resolve']): RouteLocationRaw | RouteLocation | undefined {
-    if (!to || (options.trailingSlash !== 'append' && options.trailingSlash !== 'remove')) {
+  function resolveTrailingSlashBehavior (to: string, resolve: Router['resolve'], trailingSlash?: NuxtLinkOptions['trailingSlash']): string
+  function resolveTrailingSlashBehavior (to: RouteLocationRaw, resolve: Router['resolve'], trailingSlash?: NuxtLinkOptions['trailingSlash']): Exclude<RouteLocationRaw, string>
+  function resolveTrailingSlashBehavior (to: RouteLocationRaw | undefined, resolve: Router['resolve'], trailingSlash?: NuxtLinkOptions['trailingSlash']): RouteLocationRaw | RouteLocation | undefined {
+    const effectiveTrailingSlash = trailingSlash ?? options.trailingSlash
+    if (!to || (effectiveTrailingSlash !== 'append' && effectiveTrailingSlash !== 'remove')) {
       return to
     }
 
     if (typeof to === 'string') {
-      return applyTrailingSlashBehavior(to, options.trailingSlash)
+      return applyTrailingSlashBehavior(to, effectiveTrailingSlash)
     }
 
     const path = 'path' in to && to.path !== undefined ? to.path : resolve(to).path
@@ -155,7 +162,7 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
     const resolvedPath = {
       ...to,
       name: undefined, // named routes would otherwise always override trailing slash behavior
-      path: applyTrailingSlashBehavior(path, options.trailingSlash),
+      path: applyTrailingSlashBehavior(path, effectiveTrailingSlash),
     }
 
     return resolvedPath
@@ -198,13 +205,14 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
       checkPropConflicts(props, 'to', 'href')
       const path = props.to || props.href || '' // Defaults to empty string (won't render any `href` attribute)
       if (isExternal.value) { return path }
-      return resolveTrailingSlashBehavior(path, router.resolve)
+      return resolveTrailingSlashBehavior(path, router.resolve, props.trailingSlash)
     })
 
     const link = isExternal.value ? undefined : useBuiltinLink?.({ ...props, to })
 
     // Resolves `to` value if it's a route location object
     const href = computed(() => {
+      const effectiveTrailingSlash = props.trailingSlash ?? options.trailingSlash
       if (!to.value || isAbsoluteUrl.value || isHashLinkWithoutHashMode(to.value)) {
         return to.value as string
       }
@@ -213,14 +221,14 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
         const path = typeof to.value === 'object' && 'path' in to.value ? resolveRouteObject(to.value) : to.value
         // separately resolve route objects with a 'name' property and without 'path'
         const href = typeof path === 'object' ? router.resolve(path).href : path
-        return resolveTrailingSlashBehavior(href, router.resolve /* will not be called */) as string
+        return applyTrailingSlashBehavior(href, effectiveTrailingSlash)
       }
 
       if (typeof to.value === 'object') {
         return router.resolve(to.value)?.href ?? null
       }
 
-      return resolveTrailingSlashBehavior(joinURL(config.app.baseURL, to.value), router.resolve /* will not be called */)
+      return applyTrailingSlashBehavior(joinURL(config.app.baseURL, to.value), effectiveTrailingSlash)
     })
 
     return {
@@ -335,6 +343,12 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
         default: undefined,
         required: false,
       },
+      // Behavior
+      trailingSlash: {
+        type: String as PropType<NuxtLinkProps['trailingSlash']>,
+        default: undefined,
+        required: false,
+      },
     },
     useLink: useNuxtLink,
     setup (props, { slots }) {
@@ -343,7 +357,7 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
       const { to, href, navigate, isExternal, hasTarget, isAbsoluteUrl } = useNuxtLink(props)
 
       // Prefetching
-      const prefetched = ref(false)
+      const prefetched = shallowRef(false)
       const el = import.meta.server ? undefined : ref<HTMLElement | null>(null)
       const elRef = import.meta.server ? undefined : (ref: any) => { el!.value = props.custom ? ref?.$el?.nextElementSibling : ref?.$el }
 
@@ -492,8 +506,23 @@ export function defineNuxtLink (options: NuxtLinkOptions) {
           } satisfies NuxtLinkDefaultSlotProps<true>)
         }
 
-        // converts `""` to `null` to prevent the attribute from being added as empty (`href=""`)
-        return h('a', { ref: el, href: href.value || null, rel, target }, slots.default?.())
+        return h('a', {
+          ref: el,
+          href: href.value || null, // converts `""` to `null` to prevent the attribute from being added as empty (`href=""`)
+          rel,
+          target,
+          onClick: (event) => {
+            if (isExternal.value || hasTarget.value) {
+              return
+            }
+
+            event.preventDefault()
+
+            return props.replace
+              ? router.replace(href.value)
+              : router.push(href.value)
+          },
+        }, slots.default?.())
       }
     },
     // }) as unknown as DefineComponent<NuxtLinkProps, object, object, ComputedOptions, MethodOptions, object, object, EmitsOptions, string, object, NuxtLinkProps, object, SlotsType<NuxtLinkSlots>>

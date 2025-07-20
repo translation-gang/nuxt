@@ -1,5 +1,5 @@
 ---
-title: 'nuxi build-module'
+title: 'nuxt build-module'
 description: 'Команда Nuxt для сборки вашего модуля Nuxt перед публикацией.'
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--build-module-cmd-->
 ```bash [Terminal]
-npx nuxi build-module [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--build] [--stub] [--sourcemap] [--prepare]
+npx nuxt build-module [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--build] [--stub] [--sourcemap] [--prepare]
 ```
 <!--/build-module-cmd-->
 
@@ -37,6 +37,6 @@ Option | Default | Description
 `--prepare` | `false` | Prepare module for local development
 <!--/build-module-opts-->
 
-::read-more{to="https://github.com/nuxt/module-builder" icon="i-simple-icons-github" color="gray" target="\_blank"}
+::read-more{to="https://github.com/nuxt/module-builder" icon="i-simple-icons-github" target="\_blank"}
 Подробнее об `@nuxt/module-builder`.
 ::

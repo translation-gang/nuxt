@@ -1,5 +1,5 @@
 ---
-title: 'nuxi cleanup'
+title: 'nuxt cleanup'
 description: 'Удаляет общие сгенерированные файлы Nuxt и кэши.'
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--cleanup-cmd-->
 ```bash [Terminal]
-npx nuxi cleanup [ROOTDIR] [--cwd=<directory>]
+npx nuxt cleanup [ROOTDIR] [--cwd=<directory>]
 ```
 <!--/cleanup-cmd-->
 

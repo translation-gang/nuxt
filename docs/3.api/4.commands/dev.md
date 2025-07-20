@@ -1,5 +1,5 @@
 ---
-title: 'nuxi dev'
+title: 'nuxt dev'
 description: Команда dev запускает сервер разработки с HMR по адресу http://localhost:3000
 links:
   - label: Исходники
@@ -10,7 +10,7 @@ links:
 
 <!--dev-cmd-->
 ```bash [Terminal]
-npx nuxi dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dotenv] [--envName] [--no-clear] [--no-fork] [-p, --port] [-h, --host] [--clipboard] [-o, --open] [--https] [--publicURL] [--qr] [--public] [--tunnel] [--sslCert] [--sslKey]
+npx nuxt dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dotenv] [--envName] [--no-clear] [--no-fork] [-p, --port] [-h, --host] [--clipboard] [-o, --open] [--https] [--publicURL] [--qr] [--public] [--tunnel] [--sslCert] [--sslKey]
 ```
 <!--/dev-cmd-->
 
@@ -50,7 +50,7 @@ Option | Default | Description
 
 Порт и хост также могут быть установлены с помощью переменных среды `NUXT_PORT`, `PORT`, `NUXT_HOST` или `HOST`.
 
-Дополнительно к вышеуказанным опциям, `nuxi` может передавать опции в `listhen`, например `--no-qr`, чтобы отключить QR-код сервера разработки. Вы можете найти список опций `listhen` в документации
+Дополнительно к вышеуказанным опциям, `@nuxt/cli` может передавать опции в `listhen`, например `--no-qr`, чтобы отключить QR-код сервера разработки. Вы можете найти список опций `listhen` в документации
 
 Эта команда устанавливает `process.env.NODE_ENV` в `development`.
 

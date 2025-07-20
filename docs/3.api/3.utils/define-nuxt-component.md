@@ -13,7 +13,7 @@ links:
 ::
 
 ::note
-Использование `<script setup lang="ts">` является рекомендуемым способом объявления компонентов Vue в Nuxt 3.
+Использование `<script setup lang="ts">` является рекомендуемым способом объявления компонентов Vue в Nuxt.
 ::
 
 :read-more{to=/docs/getting-started/data-fetching}

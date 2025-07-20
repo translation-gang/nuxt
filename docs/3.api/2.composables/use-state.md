@@ -25,9 +25,7 @@ const count = useState('counter', () => Math.round(Math.random() * 100))
 `useState` это зарезервированное имя функции, преобразуемое компилятором, поэтому вы не должны называть свою собственную функцию `useState`.
 ::
 
-::tip{icon="i-ph-video" to="https://www.youtube.com/watch?v=mv0WcBABcIk" target="_blank"}
-Посмотрите видео Александра Лихтера о том, почему и когда следует использовать  `useState()`.
-::
+:video-accordion{title="Посмотрите видео Александра Лихтера о том, почему и когда следует использовать useState" videoId="mv0WcBABcIk"}
 
 ## Использование `shallowRef`
 

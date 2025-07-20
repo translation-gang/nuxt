@@ -7,11 +7,11 @@ import escapeRE from 'escape-string-regexp'
 import { hash } from 'ohash'
 import { camelCase } from 'scule'
 import { filename } from 'pathe/utils'
-import type { NuxtOptions, NuxtTemplate, NuxtTypeTemplate, TSReference } from 'nuxt/schema'
 import type { Nitro } from 'nitropack'
 
 import { annotatePlugins, checkForCircularDependencies } from './app'
 import { EXTENSION_RE } from './utils'
+import type { NuxtOptions, NuxtTemplate, NuxtTypeTemplate, TSReference } from 'nuxt/schema'
 
 export const vueShim: NuxtTemplate = {
   filename: 'types/vue-shim.d.ts',
@@ -105,8 +105,8 @@ export const appDefaults: NuxtTypeTemplate = {
     const isV4 = ctx.nuxt.options.future.compatibilityVersion === 4
     return `
 declare module 'nuxt/app/defaults' {
-  type DefaultAsyncDataErrorValue = ${isV4 ? 'undefined' : 'null'}
-  type DefaultAsyncDataValue = ${isV4 ? 'undefined' : 'null'}
+  type DefaultAsyncDataErrorValue = ${ctx.nuxt.options.experimental.defaults.useAsyncData.errorValue}
+  type DefaultAsyncDataValue = ${ctx.nuxt.options.experimental.defaults.useAsyncData.value}
   type DefaultErrorValue = ${isV4 ? 'undefined' : 'null'}
   type DedupeOption = ${isV4 ? '\'cancel\' | \'defer\'' : 'boolean | \'cancel\' | \'defer\''}
 }`
@@ -484,15 +484,16 @@ export const publicPathTemplate: NuxtTemplate = {
       !nuxt.options.dev && 'import { useRuntimeConfig } from \'#internal/nitro\'',
 
       nuxt.options.dev
-        ? `const appConfig = ${JSON.stringify(nuxt.options.app)}`
-        : 'const appConfig = useRuntimeConfig().app',
+        ? `const getAppConfig = () => (${JSON.stringify(nuxt.options.app)})`
+        : 'const getAppConfig = () => useRuntimeConfig().app',
 
-      'export const baseURL = () => appConfig.baseURL',
-      'export const buildAssetsDir = () => appConfig.buildAssetsDir',
+      'export const baseURL = () => getAppConfig().baseURL',
+      'export const buildAssetsDir = () => getAppConfig().buildAssetsDir',
 
       'export const buildAssetsURL = (...path) => joinRelativeURL(publicAssetsURL(), buildAssetsDir(), ...path)',
 
       'export const publicAssetsURL = (...path) => {',
+      '  const appConfig = getAppConfig()',
       '  const publicBase = appConfig.cdnURL || appConfig.baseURL',
       '  return path.length ? joinRelativeURL(publicBase, ...path) : publicBase',
       '}',
@@ -503,6 +504,17 @@ export const publicPathTemplate: NuxtTemplate = {
       '  globalThis.__publicAssetsURL = publicAssetsURL',
       '}',
     ].filter(Boolean).join('\n')
+  },
+}
+
+export const globalPolyfillsTemplate: NuxtTemplate = {
+  filename: 'global-polyfills.mjs',
+  getContents () {
+    // Node.js compatibility
+    return `
+if (!("global" in globalThis)) {
+  globalThis.global = globalThis;
+}`
   },
 }
 
@@ -562,6 +574,10 @@ export const nuxtConfigTemplate: NuxtTemplate = {
       `export const chunkErrorEvent = ${ctx.nuxt.options.experimental.emitRouteChunkError ? ctx.nuxt.options.builder === '@nuxt/vite-builder' ? '"vite:preloadError"' : '"nuxt:preloadError"' : 'false'}`,
       `export const crawlLinks = ${!!((ctx.nuxt as any)._nitro as Nitro).options.prerender.crawlLinks}`,
       `export const spaLoadingTemplateOutside = ${ctx.nuxt.options.experimental.spaLoadingTemplateLocation === 'body'}`,
+      `export const purgeCachedData = ${!!ctx.nuxt.options.experimental.purgeCachedData}`,
+      `export const granularCachedData = ${!!ctx.nuxt.options.experimental.granularCachedData}`,
+      `export const pendingWhenIdle = ${!!ctx.nuxt.options.experimental.pendingWhenIdle}`,
+      `export const alwaysRunFetchOnKeyChange = ${!!ctx.nuxt.options.experimental.alwaysRunFetchOnKeyChange}`,
     ].join('\n\n')
   },
 }

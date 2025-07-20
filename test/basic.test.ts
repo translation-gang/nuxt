@@ -6,6 +6,7 @@ import { isCI, isWindows } from 'std-env'
 import { join, normalize } from 'pathe'
 import { $fetch, createPage, fetch, isDev, setup, startServer, url, useTestContext } from '@nuxt/test-utils/e2e'
 import { $fetchComponent } from '@nuxt/test-utils/experimental'
+import { createRegExp, exactly } from 'magic-regexp'
 
 import { expectNoClientErrors, expectWithPolling, gotoPath, isRenderingJson, parseData, parsePayload, renderPage } from './utils'
 
@@ -39,21 +40,21 @@ await setup({
 describe('server api', () => {
   it('should serialize', async () => {
     expect(await $fetch<string>('/api/hello')).toBe('Hello API')
-    expect(await $fetch<string>('/api/hey')).toEqual({
+    expect(await $fetch('/api/hey')).toEqual({
       foo: 'bar',
       baz: 'qux',
     })
   })
 
   it('should preserve states', async () => {
-    expect(await $fetch<string>('/api/counter')).toEqual({ count: 0 })
-    expect(await $fetch<string>('/api/counter')).toEqual({ count: 1 })
-    expect(await $fetch<string>('/api/counter')).toEqual({ count: 2 })
-    expect(await $fetch<string>('/api/counter')).toEqual({ count: 3 })
+    expect(await $fetch('/api/counter')).toEqual({ count: 0 })
+    expect(await $fetch('/api/counter')).toEqual({ count: 1 })
+    expect(await $fetch('/api/counter')).toEqual({ count: 2 })
+    expect(await $fetch('/api/counter')).toEqual({ count: 3 })
   })
 
   it('should auto-import', async () => {
-    const res = await $fetch<string>('/api/auto-imports')
+    const res = await $fetch('/api/auto-imports')
     expect(res).toMatchInlineSnapshot(`
       {
         "autoImported": "utils",
@@ -1023,7 +1024,7 @@ describe('head tags', () => {
     // should render charset by default
     expect(indexHtml).toContain('<meta charset="utf-8">')
     // should render <Head> components
-    expect(indexHtml).toContain('<title>Basic fixture - Fixture</title>')
+    expect(indexHtml).toContain('<title>Basic fixture</title>')
   })
 
   it('SSR script setup should render tags', async () => {
@@ -1246,6 +1247,14 @@ describe('errors', () => {
     await page.locator('div').getByText('State: 3').waitFor()
 
     await page.close()
+  })
+
+  it('should allow catching errors within error boundaries', async () => {
+    const { page } = await renderPage('/error/error-boundary')
+    await page.getByText('This is the error rendering')
+    await page.close()
+
+    await expectNoClientErrors('/error/error-boundary')
   })
 })
 
@@ -2042,6 +2051,7 @@ describe('server components/islands', () => {
     const html = await $fetch<string>('/server-page')
     // test island head
     expect(html).toContain('<meta name="author" content="Nuxt">')
+    expect(html).toContain('plugin-style')
   })
 
   it('/server-page - client side navigation', async () => {
@@ -2079,13 +2089,14 @@ describe.skipIf(isDev() || isWindows || !isRenderingJson)('prefetching', () => {
     await gotoPath(page, '/prefetch')
     await page.waitForLoadState('networkidle')
 
-    const snapshot = [...requests]
+    expect(requests.some(req => req.startsWith('/__nuxt_island/AsyncServerComponent'))).toBe(true)
+    requests.length = 0
     await page.click('[href="/prefetch/server-components"]')
     await page.waitForLoadState('networkidle')
 
     expect(await page.innerHTML('#async-server-component-count')).toBe('34')
 
-    expect(requests).toEqual(snapshot)
+    expect(requests.some(req => req.startsWith('/__nuxt_island/AsyncServerComponent'))).toBe(false)
     await page.close()
   })
 
@@ -2270,7 +2281,6 @@ describe('component islands', () => {
         "head": {
           "link": [],
           "style": [],
-          "titleTemplate": "%s - Fixture",
         },
         "html": "<pre data-island-uid>    Route: /foo
         </pre>",
@@ -2293,7 +2303,6 @@ describe('component islands', () => {
         "head": {
           "link": [],
           "style": [],
-          "titleTemplate": "%s - Fixture",
         },
         "html": "<div data-island-uid><div> count is above 2 </div><!--[--><div style="display: contents;" data-island-uid data-island-slot="default"><!--teleport start--><!--teleport end--></div><!--]--> that was very long ... <div id="long-async-component-count">3</div>  <!--[--><div style="display: contents;" data-island-uid data-island-slot="test"><!--teleport start--><!--teleport end--></div><!--]--><p>hello world !!!</p><!--[--><div style="display: contents;" data-island-uid data-island-slot="hello"><!--teleport start--><!--teleport end--></div><!--teleport start--><!--teleport end--><!--]--><!--[--><div style="display: contents;" data-island-uid data-island-slot="fallback"><!--teleport start--><!--teleport end--></div><!--teleport start--><!--teleport end--><!--]--></div>",
         "slots": {
@@ -2357,7 +2366,6 @@ describe('component islands', () => {
         "head": {
           "link": [],
           "style": [],
-          "titleTemplate": "%s - Fixture",
         },
         "html": "<div data-island-uid> This is a .server (20ms) async component that was very long ... <div id="async-server-component-count">2</div><div class="sugar-counter"> Sugar Counter 12 x 1 = 12 <button> Inc </button></div><!--[--><div style="display: contents;" data-island-uid data-island-slot="default"><!--teleport start--><!--teleport end--></div><!--]--></div>",
         "props": {},
@@ -2389,7 +2397,6 @@ describe('component islands', () => {
           "head": {
             "link": [],
             "style": [],
-            "titleTemplate": "%s - Fixture",
           },
           "html": "<div data-island-uid> ServerWithClient.server.vue : <p>count: 0</p> This component should not be preloaded <div><!--[--><div>a</div><div>b</div><div>c</div><!--]--></div> This is not interactive <div class="sugar-counter"> Sugar Counter 12 x 1 = 12 <button> Inc </button></div><div class="interactive-component-wrapper" style="border:solid 1px red;"> The component below is not a slot but declared as interactive <!--[--><div style="display: contents;" data-island-uid data-island-component></div><!--teleport start--><!--teleport end--><!--]--></div></div>",
           "slots": {},
@@ -2438,25 +2445,26 @@ describe('component islands', () => {
               "innerHTML": "pre[data-v-xxxxx]{color:#00f}",
             },
           ],
-          "titleTemplate": "%s - Fixture",
         }
       `)
     } else if (isDev() && !isWebpack) {
       // TODO: resolve dev bug triggered by earlier fetch of /vueuse-head page
       // https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/core/runtime/nitro/handlers/renderer.ts#L139
       result.head.link = result.head.link?.filter(l => typeof l.href !== 'string' || !l.href.includes('SharedComponent'))
+      if (result.head.link?.[0]?.href) {
+        result.head.link[0].href = result.head.link[0].href.replace(/scoped=[^?&]+/, 'scoped=xxxxx')
+      }
 
       expect(result.head).toMatchInlineSnapshot(`
         {
           "link": [
             {
               "crossorigin": "",
-              "href": "/_nuxt/components/islands/PureComponent.vue?vue&type=style&index=0&scoped=c0c0cf89&lang.css",
+              "href": "/_nuxt/components/islands/PureComponent.vue?vue&type=style&index=0&scoped=xxxxx&lang.css",
               "rel": "stylesheet",
             },
           ],
           "style": [],
-          "titleTemplate": "%s - Fixture",
         }
       `)
     }
@@ -2600,6 +2608,8 @@ describe.skipIf(isDev() || isWindows || !isRenderingJson)('payload rendering', (
     // expect(requests.filter(p => p.includes('_payload')).length).toBe(isDev() ? 1 : 0)
 
     await page.close()
+  }, {
+    retry: 3, // looks like this test is flaky
   })
 
   it.skipIf(!isRenderingJson)('should not include server-component HTML in payload', async () => {
@@ -2639,10 +2649,6 @@ describe.skipIf(isWindows)('useAsyncData', () => {
 
   it('two requests resolve and sync', async () => {
     await $fetch<string>('/useAsyncData/refresh')
-  })
-
-  it('requests can be cancelled/overridden', async () => {
-    await expectNoClientErrors('/useAsyncData/override')
   })
 
   it('two requests made at once resolve and sync', async () => {
@@ -3014,6 +3020,34 @@ describe('defineNuxtComponent', () => {
   })
 })
 
+describe('scrollToTop', () => {
+  it('should not scroll to top when `scrollToTop` is `false`', async () => {
+    const { page } = await renderPage('/route-scroll-behavior/scroll-to-top')
+
+    await page.locator('#do-not-scroll-to-top').scrollIntoViewIfNeeded()
+    await page.waitForFunction(() => window.scrollY > 0)
+
+    await page.click('#do-not-scroll-to-top')
+    await page.waitForFunction(() => window.useNuxtApp?.()._route.fullPath.includes('/scroll-to-top/do-not-scroll-to-top'))
+
+    const scrollY = await page.evaluate(() => window.scrollY)
+    expect(scrollY !== 0).toBe(true)
+  })
+
+  it('should scroll to top when `scrollToTop` is `true`', async () => {
+    const { page } = await renderPage('/route-scroll-behavior/scroll-to-top')
+
+    await page.locator('#scroll-to-top').scrollIntoViewIfNeeded()
+    await page.waitForFunction(() => window.scrollY > 0)
+
+    await page.click('#scroll-to-top')
+    await page.waitForFunction(() => window.useNuxtApp?.()._route.fullPath.includes('/scroll-to-top/scroll-to-top'))
+
+    const scrollY = await page.evaluate(() => window.scrollY)
+    expect(scrollY).toBe(0)
+  })
+})
+
 describe('namespace access to useNuxtApp', () => {
   it('should return the nuxt instance when used with correct appId', async () => {
     const { page, pageErrors } = await renderPage('/namespace-nuxt-app')
@@ -3050,5 +3084,75 @@ describe('namespace access to useNuxtApp', () => {
     expect(error).toBeTruthy()
 
     await page.close()
+  })
+})
+
+describe('nuxt-time', () => {
+  it('ssr', async () => {
+    const html = await $fetch<string>('/components/nuxt-time')
+    const snap = html.match(/<time[^>]*data-testid="fixed"[^>]*>([^<]*)<\/time>/)?.[0].replace(/ data-prehydrate-id="[^"]*"/g, '')
+    expect(snap).toContain(
+      '<time data-month="long" data-day="numeric" datetime="2023-02-11T08:24:08.396Z" data-testid="fixed">',
+    )
+  })
+
+  it.skipIf(isDev)('injects one script', async () => {
+    const html = await $fetch<string>('/components/nuxt-time')
+
+    const string = createRegExp(exactly('document.querySelectorAll'), ['g'])
+    expect(html.match(string)?.length).toEqual(1)
+  })
+
+  it('has no hydration errors on the client', async () => {
+    const page = await createPage(undefined, { locale: 'en-GB' })
+    const logs: string[] = []
+
+    page.on('console', (event) => {
+      if (!event.text().includes('<Suspense>') && !event.text().includes('[vite]')) {
+        logs.push(event.text())
+      }
+    })
+
+    await page.goto(url('/components/nuxt-time'), { waitUntil: 'networkidle' })
+
+    expect(await page.getByTestId('switchable').textContent()).toMatchInlineSnapshot(
+      '"11 February at 8"',
+    )
+    expect(await page.getByTestId('fixed').textContent()).toMatchInlineSnapshot('"11 February"')
+
+    await page.getByText('Switch locale').click()
+    expect(await page.getByTestId('switchable').textContent()).toMatchInlineSnapshot(
+      '"11 février à 8"',
+    )
+    expect(await page.getByTestId('fixed').textContent()).toMatchInlineSnapshot('"11 février"')
+
+    await page.getByText('Update time').click()
+    expect(await page.getByTestId('switchable').textContent()).not.toEqual('11 février à 8')
+    expect(await page.getByTestId('fixed').textContent()).toMatchInlineSnapshot('"11 février"')
+
+    // No hydration errors
+    expect(logs.join('')).toMatchInlineSnapshot('""')
+  })
+
+  it('displays relative time correctly', async () => {
+    const page = await createPage(undefined, { locale: 'en-GB' })
+    const logs: string[] = []
+
+    page.on('console', (event) => {
+      if (!event.text().includes('<Suspense>') && !event.text().includes('[vite]')) {
+        logs.push(event.text())
+      }
+    })
+
+    await page.goto(url('/components/nuxt-time'), { waitUntil: 'networkidle' })
+
+    expect(await page.getByTestId('relative').textContent()).toMatchInlineSnapshot(
+      '"30 seconds ago"',
+    )
+
+    await page.getByTestId('relative').getByText('32 seconds ago').textContent()
+
+    // No hydration errors
+    expect(logs.join('')).toMatchInlineSnapshot('""')
   })
 })

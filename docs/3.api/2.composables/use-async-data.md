@@ -53,6 +53,23 @@ const { data: posts } = await useAsyncData(
 </script>
 ```
 
+### Reactive Keys
+
+You can use a computed ref, plain ref or a getter function as the key, allowing for dynamic data fetching that automatically updates when the key changes:
+
+```vue [pages/[id\\].vue]
+<script setup lang="ts">
+const route = useRoute()
+const userId = computed(() => `user-${route.params.id}`)
+
+// When the route changes and userId updates, the data will be automatically refetched
+const { data: user } = useAsyncData(
+  userId,
+  () => fetchUserById(route.params.id)
+)
+</script>
+```
+
 ::warning
 [`useAsyncData`](/docs/api/composables/use-async-data) - это зарезервированное имя функции, преобразованное компилятором, поэтому вам не следует называть свою собственную функцию [`useAsyncData`](/docs/api/composables/use-async-data).
 ::
@@ -74,7 +91,7 @@ The `handler` function should be **side-effect free** to ensure predictable beha
   - `transform`: функция, которая может быть использована для изменения результата функции-обработчика после ее разрешения.
   - `getCachedData`: Provide a function which returns cached data. A `null` or `undefined` return value will trigger a fetch. By default, this is:
     ```ts
-    const getDefaultCachedData = (key, nuxtApp) => nuxtApp.isHydrating 
+    const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating 
       ? nuxtApp.payload.data[key] 
       : nuxtApp.static.data[key]
     ```
@@ -94,9 +111,36 @@ The `handler` function should be **side-effect free** to ensure predictable beha
 Вы можете использовать `useLazyAsyncData`, чтобы получить то же поведение, что и `lazy: true` с `useAsyncData`.
 ::
 
-::tip{icon="i-simple-icons-youtube" color="gray" to="https://www.youtube.com/watch?v=aQPR0xn-MMk" target="_blank"}
-Узнайте, как использовать `transform` и `getCachedData`, чтобы избежать лишних обращений к API и кэшировать данные для посетителей на клиенте.
-::
+:video-accordion{title="Watch a video from Alexander Lichter about client-side caching with getCachedData" videoId="aQPR0xn-MMk"}
+
+### Shared State and Option Consistency
+
+When using the same key for multiple `useAsyncData` calls, they will share the same `data`, `error` and `status` refs. This ensures consistency across components but requires option consistency.
+
+The following options **must be consistent** across all calls with the same key:
+- `handler` function
+- `deep` option
+- `transform` function
+- `pick` array
+- `getCachedData` function
+- `default` value
+
+The following options **can differ** without triggering warnings:
+- `server`
+- `lazy`
+- `immediate`
+- `dedupe`
+- `watch`
+
+```ts
+// ❌ This will trigger a development warning
+const { data: users1 } = useAsyncData('users', () => $fetch('/api/users'), { deep: false })
+const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { deep: true })
+
+// ✅ This is allowed
+const { data: users1 } = useAsyncData('users', () => $fetch('/api/users'), { immediate: true })
+const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { immediate: false })
+```
 
 ## Возвращаемые значения
 
@@ -110,12 +154,12 @@ The `handler` function should be **side-effect free** to ensure predictable beha
   - `pending`: the request is in progress
   - `success`: the request has completed successfully
   - `error`: the request has failed
-- `clear`: a function which will set `data` to `undefined`, set `error` to `null`, set `status` to `'idle'`, and mark any currently pending requests as cancelled.
+- `clear`: a function that can be used to set `data` to `undefined` (or the value of `options.default()` if provided), set `error` to `null`, set `status` to `idle`, and mark any currently pending requests as cancelled.
 
 По умолчанию Nuxt ждет, пока `refresh` не будет завершен, прежде чем его можно будет выполнить снова.
 
 ::note
-Если вы не извлекали данные на сервере (например, с `server: false`), то данные _не_ будут извлечены до завершения гидратации. Это означает, что даже если вы ожидаете [`useAsyncData`](/docs/api/composables/use-async-data) на стороне клиента, `data` останется `null` внутри `<script setup>`.
+Если вы не извлекали данные на сервере (например, с `server: false`), то данные _не_ будут извлечены до завершения гидратации. Это означает, что даже если вы ожидаете [`useAsyncData`](/docs/api/composables/use-async-data) на стороне клиента, `data` останется `undefined` внутри `<script setup>`.
 ::
 
 ## Тип
@@ -126,7 +170,7 @@ function useAsyncData<DataT, DataE>(
   options?: AsyncDataOptions<DataT>
 ): AsyncData<DataT, DataE>
 function useAsyncData<DataT, DataE>(
-  key: string,
+  key: MaybeRefOrGetter<string>,
   handler: (nuxtApp?: NuxtApp) => Promise<DataT>,
   options?: AsyncDataOptions<DataT>
 ): Promise<AsyncData<DataT, DataE>>
@@ -140,8 +184,13 @@ type AsyncDataOptions<DataT> = {
   default?: () => DataT | Ref<DataT> | null
   transform?: (input: DataT) => DataT | Promise<DataT>
   pick?: string[]
-  watch?: WatchSource[]
-  getCachedData?: (key: string, nuxtApp: NuxtApp) => DataT | undefined
+  watch?: MultiWatchSources | false
+  getCachedData?: (key: string, nuxtApp: NuxtApp, ctx: AsyncDataRequestContext) => DataT | undefined
+}
+
+type AsyncDataRequestContext = {
+  /** The reason for this data request */
+  cause: 'initial' | 'refresh:manual' | 'refresh:hook' | 'watch'
 }
 
 type AsyncData<DataT, ErrorT> = {

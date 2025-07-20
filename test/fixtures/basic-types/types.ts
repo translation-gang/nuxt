@@ -78,8 +78,8 @@ describe('API routes', () => {
     expectTypeOf(useLazyAsyncData('lazy-api-other', () => $fetch('/api/other')).data).toEqualTypeOf<Ref<unknown>>()
     expectTypeOf(useLazyAsyncData<TestResponse>('lazy-api-generics', () => $fetch('/test')).data).toEqualTypeOf<Ref<TestResponse | DefaultAsyncDataValue>>()
 
-    expectTypeOf(useLazyAsyncData('lazy-error-generics', () => $fetch('/error')).error).toEqualTypeOf<Ref<Error | DefaultAsyncDataErrorValue>>()
-    expectTypeOf(useLazyAsyncData<any, string>('lazy-error-generics', () => $fetch('/error')).error).toEqualTypeOf<Ref<string | DefaultAsyncDataErrorValue>>()
+    expectTypeOf(useLazyAsyncData('lazy-error-generics', () => $fetch('/error')).error).toEqualTypeOf<Ref<NuxtError<unknown> | DefaultAsyncDataErrorValue>>()
+    expectTypeOf(useLazyAsyncData<any, string>('lazy-error-generics', () => $fetch('/error')).error).toEqualTypeOf<Ref<NuxtError<string> | DefaultAsyncDataErrorValue>>()
   })
 
   it('works with useFetch', () => {
@@ -175,7 +175,7 @@ describe('middleware', () => {
     definePageMeta({
       validate: async () => {
         await new Promise(resolve => setTimeout(resolve, 1000))
-        // eslint-disable-next-line
+        // eslint-disable-next-line no-constant-condition
         if (0) {
           return createError({
             statusCode: 404,
@@ -207,6 +207,7 @@ describe('typed router integration', () => {
   it('correctly reads custom names typed in `definePageMeta`', () => {
     const router = useRouter()
     router.push({ name: 'some-custom-name' })
+    router.push({ name: 'param-id-view-custom', params: { id: 4 } })
   })
 
   it('allows typing useRoute', () => {
@@ -225,6 +226,9 @@ describe('typed router integration', () => {
     // @ts-expect-error this is an invalid param
     navigateTo({ name: 'param-id', params: { bob: 23 } })
     navigateTo({ name: 'param-id', params: { id: 4 } })
+    // @ts-expect-error this is an invalid param
+    navigateTo({ name: 'param-id-view-custom', params: { bob: 23 } })
+    navigateTo({ name: 'param-id-view-custom', params: { id: 4 } })
   })
 
   it('allows typing middleware', () => {
@@ -349,14 +353,14 @@ describe('runtimeConfig', () => {
     expectTypeOf(runtimeConfig.public.testConfig).toEqualTypeOf<number>()
     expectTypeOf(runtimeConfig.public.needsFallback).toEqualTypeOf<string>()
     expectTypeOf(runtimeConfig.privateConfig).toEqualTypeOf<string>()
-    expectTypeOf(runtimeConfig.public.ids).toEqualTypeOf<number[]>()
+    expectTypeOf(runtimeConfig.public.ids).toEqualTypeOf<(1 | 2 | 3)[]>()
     expectTypeOf(runtimeConfig.unknown).toEqualTypeOf<unknown>()
 
     const injectedConfig = useNuxtApp().$config
     expectTypeOf(injectedConfig.public.testConfig).toEqualTypeOf<number>()
     expectTypeOf(injectedConfig.public.needsFallback).toEqualTypeOf<string>()
     expectTypeOf(injectedConfig.privateConfig).toEqualTypeOf<string>()
-    expectTypeOf(injectedConfig.public.ids).toEqualTypeOf<number[]>()
+    expectTypeOf(injectedConfig.public.ids).toEqualTypeOf<(1 | 2 | 3)[]>()
     expectTypeOf(injectedConfig.unknown).toEqualTypeOf<unknown>()
   })
   it('provides hints on overriding these values', () => {
@@ -373,7 +377,7 @@ describe('runtimeConfig', () => {
     expectTypeOf(val.runtimeConfig!.privateConfig).toEqualTypeOf<undefined | RuntimeValue<string, 'You can override this value at runtime with NUXT_PRIVATE_CONFIG'>>()
     expectTypeOf(val.runtimeConfig!.baseURL).toEqualTypeOf<undefined | RuntimeValue<string, 'You can override this value at runtime with NUXT_BASE_URL'>>()
     expectTypeOf(val.runtimeConfig!.baseAPIToken).toEqualTypeOf<undefined | RuntimeValue<string, 'You can override this value at runtime with NUXT_BASE_API_TOKEN'>>()
-    expectTypeOf(val.runtimeConfig!.public!.ids).toEqualTypeOf<undefined | RuntimeValue<Array<number>, 'You can override this value at runtime with NUXT_PUBLIC_IDS'>>()
+    expectTypeOf(val.runtimeConfig!.public!.ids).toEqualTypeOf<undefined | RuntimeValue<(1 | 2 | 3)[], 'You can override this value at runtime with NUXT_PUBLIC_IDS'>>()
     expectTypeOf(val.runtimeConfig!.unknown).toEqualTypeOf<unknown>()
   })
 
@@ -541,6 +545,16 @@ describe('composables', () => {
   it('provides proper type support when using overloads', () => {
     expectTypeOf(useState('test')).toEqualTypeOf(useState())
     expectTypeOf(useState('test', () => ({ foo: Math.random() }))).toEqualTypeOf(useState(() => ({ foo: Math.random() })))
+
+    expectTypeOf(useAsyncData(computed(() => 'test'), () => Promise.resolve({ foo: Math.random() })))
+      .toEqualTypeOf(useAsyncData(() => Promise.resolve({ foo: Math.random() })))
+    expectTypeOf(useAsyncData(computed(() => 'test'), () => Promise.resolve({ foo: Math.random() }), { transform: data => data.foo }))
+      .toEqualTypeOf(useAsyncData(() => Promise.resolve({ foo: Math.random() }), { transform: data => data.foo }))
+
+    expectTypeOf(useLazyAsyncData(computed(() => 'test'), () => Promise.resolve({ foo: Math.random() })))
+      .toEqualTypeOf(useLazyAsyncData(() => Promise.resolve({ foo: Math.random() })))
+    expectTypeOf(useLazyAsyncData(computed(() => 'test'), () => Promise.resolve({ foo: Math.random() }), { transform: data => data.foo }))
+      .toEqualTypeOf(useLazyAsyncData(() => Promise.resolve({ foo: Math.random() }), { transform: data => data.foo }))
 
     expectTypeOf(useAsyncData('test', () => Promise.resolve({ foo: Math.random() })))
       .toEqualTypeOf(useAsyncData(() => Promise.resolve({ foo: Math.random() })))
