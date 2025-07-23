@@ -27,6 +27,8 @@ import type { ProcessOptions } from 'postcss'
 import type { Options as Options3 } from 'webpack-dev-middleware'
 import type { ClientOptions, MiddlewareOptions } from 'webpack-hot-middleware'
 import type { AppConfig as VueAppConfig } from 'vue'
+import type { TransformOptions as OxcTransformOptions } from 'oxc-transform'
+import type { TransformOptions as EsbuildTransformOptions } from 'esbuild'
 
 import type { RouterConfigSerializable } from './router'
 import type { NuxtHooks } from './hooks'
@@ -1590,6 +1592,15 @@ export interface ConfigSchema {
     browserDevtoolsTiming: boolean
 
     /**
+     * Enable integration with Chrome DevTools Workspaces
+     * for Nuxt projects.
+     *
+     * @default true
+     * @see [Chrome DevTools Project Settings](https://docs.google.com/document/d/1rfKPnxsNuXhnF7AiQZhu9kIwdiMS5hnAI05HBwFuBSM)
+     */
+    chromeDevtoolsProjectSettings: boolean
+
+    /**
      * Record mutations to `nuxt.options` in module context, helping to debug configuration changes made by modules during the Nuxt initialization phase.
      *
      * When enabled, Nuxt will track which modules modify configuration options, making it easier to trace unexpected configuration changes.
@@ -1838,7 +1849,7 @@ export interface ConfigSchema {
   /**
    * Configuration for Nitro.
    *
-   * @see [Nitro configuration docs](https://nitro.build/config/)
+   * @see [Nitro configuration docs](https://nitro.build/config)
    */
   nitro: NitroConfig
 
@@ -1847,7 +1858,7 @@ export interface ConfigSchema {
    *
    * @experimental This is an experimental feature and API may change in the future.
    *
-   * @see [Nitro route rules documentation](https://nitro.build/config/#routerules)
+   * @see [Nitro route rules documentation](https://nitro.build/config#routerules)
    */
   routeRules: NitroConfig['routeRules']
 
@@ -1969,7 +1980,13 @@ export interface ConfigSchema {
   /**
    * Configure shared esbuild options used within Nuxt and passed to other builders, such as Vite or Webpack.
    */
-    options: import('esbuild').TransformOptions
+    options: EsbuildTransformOptions
+  }
+
+  oxc: {
+    transform: {
+      options: OxcTransformOptions
+    }
   }
 
   /**

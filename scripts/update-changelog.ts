@@ -3,19 +3,15 @@ import { $fetch } from 'ofetch'
 import { inc } from 'semver'
 import { generateMarkDown, getCurrentGitBranch, loadChangelogConfig } from 'changelogen'
 import { consola } from 'consola'
-import { determineBumpType, getContributors, getLatestCommits, getLatestReleasedTag, getLatestTag, getPreviousReleasedCommits, loadWorkspace } from './_utils'
-
-const handleSeparateBranch = true
+import { determineBumpType, getContributors, getLatestCommits, loadWorkspace } from './_utils.ts'
 
 async function main () {
-  const releaseBranch = await getCurrentGitBranch()
+  const releaseBranch = getCurrentGitBranch()
   const workspace = await loadWorkspace(process.cwd())
   const config = await loadChangelogConfig(process.cwd(), {})
 
-  const prevMessages = new Set(handleSeparateBranch ? await getPreviousReleasedCommits().then(r => r.map(c => c.message)) : [])
-
   const commits = await getLatestCommits().then(commits => commits.filter(
-    c => config.types[c.type] && !(c.type === 'chore' && c.scope === 'deps') && !prevMessages.has(c.message),
+    c => config.types[c.type] && !(c.type === 'chore' && c.scope === 'deps'),
   ))
   const bumpType = await determineBumpType() || 'patch'
 
@@ -42,9 +38,6 @@ async function main () {
   const [currentPR] = await $fetch(`https://api.github.com/repos/nuxt/nuxt/pulls?head=nuxt:v${newVersion}`)
   const contributors = await getContributors()
 
-  const latestTag = await getLatestTag()
-  const previousReleasedTag = handleSeparateBranch ? await getLatestReleasedTag() : latestTag
-
   const releaseNotes = [
     currentPR?.body.replace(/## 👉 Changelog[\s\S]*$/, '') || `> ${newVersion} is the next ${bumpType} release.\n>\n> **Timetable**: to be announced.`,
     '## 👉 Changelog',
@@ -52,8 +45,7 @@ async function main () {
       .replace(/^## v.*\n/, '')
       .replace(`...${releaseBranch}`, `...v${newVersion}`)
       .replace(/### ❤️ Contributors[\s\S]*$/, '')
-      .replace(/[\n\r]+/g, '\n')
-      .replace(latestTag, previousReleasedTag),
+      .replace(/[\n\r]+/g, '\n'),
     '### ❤️ Contributors',
     contributors.map(c => `- ${c.name} (@${c.username})`).join('\n'),
   ].join('\n')

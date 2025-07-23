@@ -82,6 +82,10 @@ const { data: post } = await useFetch(() => `/api/posts/${id.value}`)
 
 When using `useFetch` with the same URL and options in multiple components, they will share the same `data`, `error` and `status` refs. This ensures consistency across components.
 
+::tip
+Keyed state created using `useFetch` can be retrieved across your Nuxt application using [`useNuxtData`](/docs/api/composables/use-nuxt-data).
+::
+
 ::warning
 `useFetch` - это зарезервированное имя функции, преобразованное компилятором, поэтому вы не должны называть свою функцию `useFetch`.
 ::
@@ -169,7 +173,7 @@ type AsyncDataRequestStatus = 'idle' | 'pending' | 'success' | 'error'
 | `getCachedData`| `(key, nuxtApp, ctx) => DataT \| undefined` | - | Function to return cached data. See below for default. |
 | `pick` | `string[]` | - | Only pick specified keys from the result. |
 | `watch` | `MultiWatchSources \| false` | - | Array of reactive sources to watch and auto-refresh. `false` disables watching. |
-| `deep` | `boolean` | `false` | Return data in a deep ref object. |
+| `deep` | `boolean` | `true` | Return data in a deep ref object. Set to `false` to return data in a shallow ref object, which can improve performance if your data does not need to be deeply reactive. |
 | `dedupe` | `'cancel' \| 'defer'` | `'cancel'` | Avoid fetching same key more than once at a time. |
 | `$fetch` | `typeof globalThis.$fetch` | - | Custom $fetch implementation. |
 
