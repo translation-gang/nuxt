@@ -46,11 +46,15 @@ export async function initNitro (nuxt: Nuxt & { _nitro?: Nitro }) {
 
   const rootDirWithSlash = withTrailingSlash(nuxt.options.rootDir)
 
-  const modules = await resolveNuxtModule(rootDirWithSlash,
-    nuxt.options._installedModules
-      .filter(m => m.entryPath)
-      .map(m => m.entryPath!),
-  )
+  const moduleEntryPaths: string[] = []
+  for (const m of nuxt.options._installedModules) {
+    const path = m.meta?.rawPath || m.entryPath
+    if (path) {
+      moduleEntryPaths.push(path)
+    }
+  }
+
+  const modules = await resolveNuxtModule(rootDirWithSlash, moduleEntryPaths)
 
   const sharedDirs = new Set<string>()
   const isNuxtV4 = nuxt.options.future?.compatibilityVersion === 4
@@ -145,7 +149,13 @@ export async function initNitro (nuxt: Nuxt & { _nitro?: Nitro }) {
         },
         include: [
           join(nuxt.options.buildDir, 'types/nitro-nuxt.d.ts'),
-          ...modules.map(m => join(relativeWithDot(nuxt.options.buildDir, m), 'runtime/server')),
+          ...modules.flatMap((m) => {
+            const moduleDir = relativeWithDot(nuxt.options.buildDir, m)
+            return [
+              join(moduleDir, 'runtime/server'),
+              join(moduleDir, 'dist/runtime/server'),
+            ]
+          }),
         ],
         exclude: [
           ...nuxt.options.modulesDir.map(m => relativeWithDot(nuxt.options.buildDir, m)),
@@ -480,10 +490,10 @@ export async function initNitro (nuxt: Nuxt & { _nitro?: Nitro }) {
     }
 
     const absolutePath = resolve(basePath, aliases[alias]!)
-    const stats = await fsp.stat(absolutePath).catch(() => null /* file does not exist */)
+    const isDirectory = aliases[alias]!.endsWith('/') || await fsp.stat(absolutePath).then(r => r.isDirectory()).catch(() => null /* file does not exist */)
     // note - nitro will check + remove the file extension as required
     tsConfig.compilerOptions.paths[alias] = [absolutePath]
-    if (stats?.isDirectory()) {
+    if (isDirectory) {
       tsConfig.compilerOptions.paths[`${alias}/*`] = [`${absolutePath}/*`]
     }
   }
