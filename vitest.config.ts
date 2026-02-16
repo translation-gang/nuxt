@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { resolve } from 'pathe'
 import { defineVitestProject } from '@nuxt/test-utils/config'
 import { configDefaults, coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
@@ -33,16 +34,18 @@ const projects: Record<string, NuxtConfig> = {
 
 export default defineConfig({
   test: {
+    onConsoleLog (log) {
+      if (log.includes('<Suspense> is an experimental feature')) { return false }
+    },
     coverage: {
       exclude: [...coverageConfigDefaults.exclude, 'playground', '**/test/', 'scripts'],
     },
-    poolOptions: isCI ? { forks: { execArgv: getV8Flags() } } : undefined,
+    execArgv: isCI ? getV8Flags() : undefined,
     projects: [
       {
         plugins: isCI ? [codspeedPlugin()] : [],
         test: {
           name: 'benchmark',
-          pool: isCI ? 'forks' : undefined,
           include: [],
           benchmark: {
             include: ['**/*.bench.ts'],
@@ -50,21 +53,28 @@ export default defineConfig({
         },
       },
       {
+        define: {
+          'import.meta.dev': 'globalThis.__TEST_DEV__',
+        },
         test: {
           name: 'fixtures',
           include: ['test/*.test.ts'],
           setupFiles: ['./test/setup-env.ts'],
           testTimeout: isWindows ? 60000 : 10000,
+          retry: isCI ? 2 : 0,
           // Excluded plugin because it should throw an error when accidentally loaded via Nuxt
           exclude: [...configDefaults.exclude, 'test/e2e/**', 'e2e/**', 'nuxt/**', '**/test.ts', '**/this-should-not-load.spec.js'],
           benchmark: { include: [] },
         },
       },
       {
+        define: {
+          'import.meta.dev': 'globalThis.__TEST_DEV__',
+        },
         resolve: {
           alias: {
             '#build/nuxt.config.mjs': resolve('./test/mocks/nuxt-config'),
-            '#build/router.options': resolve('./test/mocks/router-options'),
+            '#build/router.options.mjs': resolve('./test/mocks/router-options'),
             '#internal/nuxt/paths': resolve('./test/mocks/paths'),
             '#build/app.config.mjs': resolve('./test/mocks/app-config'),
             '#app': resolve('./packages/nuxt/dist/app'),
@@ -93,6 +103,9 @@ export default defineConfig({
         },
       }),
       ...await Promise.all(Object.entries(projects).map(([project, config]) => defineVitestProject({
+        define: {
+          'import.meta.dev': 'globalThis.__TEST_DEV__',
+        },
         test: {
           name: project,
           dir: './test/nuxt',

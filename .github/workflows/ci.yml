@@ -3,29 +3,23 @@ name: ci
 on:
   merge_group:
   push:
-    paths-ignore:
-      - "docs/**"
-      - "*.md"
     branches:
       - main
       - 3.x
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "*.md"
     branches:
       - main
       - 3.x
-      - "!v[0-9]*"
+      - '!v[0-9]*'
 
 # https://github.com/vitejs/vite/blob/main/.github/workflows/ci.yml
 env:
   # 7 GiB by default on GitHub, setting to 6 GiB
-  # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+  # https://docs.github.com/en/actions/concepts/runners/github-hosted-runners
   NODE_OPTIONS: --max-old-space-size=6144
 
 # Remove default permissions of GITHUB_TOKEN for security
-# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+# https://docs.github.com/en/actions/tutorials/authenticate-with-github_token
 permissions: {}
 
 concurrency:
@@ -33,17 +27,48 @@ concurrency:
   cancel-in-progress: ${{ github.event_name != 'push' }}
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        id: filter
+        with:
+          base: ${{ github.event.merge_group.base_sha || github.event.pull_request.base.sha || github.event.before }}
+          ref: ${{ github.event.merge_group.head_sha || github.sha }}
+          filters: |
+            src:
+              - 'packages/**'
+              - 'test/**'
+              - 'scripts/**'
+              - 'patches/**'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'package.json'
+              - 'tsconfig.json'
+              - 'vitest.config.ts'
+              - 'playwright.config.ts'
+              - 'eslint.config.mjs'
+              - '.github/workflows/ci.yml'
+
   build:
-    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.src == 'true'
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -58,7 +83,7 @@ jobs:
         run: pnpm build
 
       - name: Cache dist
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           retention-days: 3
           name: dist
@@ -77,10 +102,10 @@ jobs:
       security-events: write
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.4
+        uses: github/codeql-action/init@45cbd0c69e560cd9e7cd7f8c32362050c9b7ded2 # v4.32.2
         with:
           config: |
             paths:
@@ -97,11 +122,13 @@ jobs:
           languages: ${{ matrix.language }}
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.4
+        uses: github/codeql-action/analyze@45cbd0c69e560cd9e7cd7f8c32362050c9b7ded2 # v4.32.2
         with:
-          category: "/language:${{ matrix.language }}"
+          category: '/language:${{ matrix.language }}'
 
   typecheck:
+    # already tested in merge queue
+    if: github.event_name != 'push'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     needs:
@@ -109,23 +136,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        module: ["bundler"]
+        os: [ubuntu-24.04-arm, windows-latest]
+        module: ['bundler']
         # module: ["bundler", "node"]
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Restore dist cache
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: dist
           path: packages
@@ -140,17 +167,18 @@ jobs:
 
   lint:
     # autofix workflow will be triggered instead for PRs
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    needs: changes
+    if: github.event_name == 'merge_group' && needs.changes.outputs.src == 'true'
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -166,18 +194,18 @@ jobs:
 
   test-unit:
     # autofix workflow will be triggered instead for PRs
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    needs: changes
+    if: github.event_name == 'merge_group' && needs.changes.outputs.src == 'true'
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
-    needs:
-      - build
+
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -192,23 +220,25 @@ jobs:
         run: pnpm test:unit
 
   test-size:
-    runs-on: ubuntu-latest
+    # already tested in merge queue
+    if: github.event_name != 'push'
+    runs-on: ubuntu-24.04-arm
     needs:
       - build
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Restore dist cache
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: dist
           path: packages
@@ -218,22 +248,23 @@ jobs:
 
   test-benchmark:
     runs-on: ubuntu-latest
+    if: github.event_name != 'merge_group'
     needs:
       - build
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Restore dist cache
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: dist
           path: packages
@@ -242,12 +273,15 @@ jobs:
         run: pnpm test:prepare
 
       - name: Run benchmarks
-        uses: CodSpeedHQ/action@0b6e7a3d96c9d2a6057e7bcea6b45aaf2f7ce60b # v3.8.0
+        uses: CodSpeedHQ/action@9a74b6ba663684052277e8f342b5eb99c7442a03 # v4.10.5
         with:
           run: pnpm vitest bench
           token: ${{ secrets.CODSPEED_TOKEN }}
+          mode: simulation
 
   test-fixtures:
+    # already tested in merge queue
+    if: github.event_name != 'push'
     runs-on: ${{ matrix.os }}
     needs:
       - build
@@ -255,42 +289,46 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        env: ["dev", "built"]
-        builder: ["vite", "rspack", "webpack"]
-        context: ["async", "default"]
-        manifest: ["manifest-on", "manifest-off"]
-        payload: ["json", "js"]
-        node: [20]
+        os: [ubuntu-24.04-arm, windows-latest]
+        env: ['dev', 'built']
+        builder: ['vite-env-api', 'vite', 'rspack', 'webpack']
+        context: ['async', 'default']
+        manifest: ['manifest-on', 'manifest-off']
+        payload: ['json', 'js']
+        node: ['lts/-1']
         exclude:
-          - builder: "webpack"
-            payload: "js"
-          - builder: "rspack"
-            payload: "js"
-          - manifest: "manifest-off"
-            payload: "js"
-          - context: "default"
-            payload: "js"
+          - builder: 'webpack'
+            payload: 'js'
+          - builder: 'rspack'
+            payload: 'js'
+          - manifest: 'manifest-off'
+            payload: 'js'
+          - context: 'default'
+            payload: 'js'
           - os: windows-latest
-            payload: "js"
-          - env: "dev"
-            builder: "rspack"
-          - manifest: "manifest-off"
-            builder: "rspack"
-          - env: "dev"
-            builder: "webpack"
-          - manifest: "manifest-off"
-            builder: "webpack"
+            payload: 'js'
+          - env: 'dev'
+            builder: 'rspack'
+          - manifest: 'manifest-off'
+            builder: 'rspack'
+          - env: 'dev'
+            builder: 'webpack'
+          - manifest: 'manifest-off'
+            builder: 'webpack'
+          - manifest: 'manifest-off'
+            builder: 'vite-env-api'
+          - payload: 'js'
+            builder: 'vite-env-api'
 
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: ${{ matrix.node }}
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -299,7 +337,7 @@ jobs:
         run: pnpm playwright-core install chromium
 
       - name: Restore dist cache
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: dist
           path: packages
@@ -315,10 +353,46 @@ jobs:
           SKIP_BUNDLE_SIZE: true
           NITRO_NO_UNIX_SOCKET: ${{ matrix.env == 'dev' && '1' || '' }}
 
-      - uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5.4.3
-        if: github.event_name != 'push' && matrix.env == 'built' && matrix.builder == 'vite' && matrix.context == 'default' && matrix.os == 'ubuntu-latest' && matrix.manifest == 'manifest-on'
+      - uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        if: github.event_name != 'push' && matrix.env == 'built' && matrix.builder == 'vite' && matrix.context == 'default' && matrix.os == 'ubuntu-24.04-arm' && matrix.manifest == 'manifest-on'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  ci-ok:
+    # This job is the single required check for merge queues and branch protection.
+    # All other jobs feed into this one. Skipped jobs are treated as successful.
+    if: always()
+    runs-on: ubuntu-24.04-arm
+    needs:
+      - changes
+      - build
+      - codeql
+      - typecheck
+      - lint
+      - test-unit
+      - test-size
+      - test-fixtures
+    steps:
+      - name: Check required jobs
+        run: |
+          # Fail if any needed job was not successful (skipped counts as success)
+          results=( \
+            "${{ needs.changes.result }}" \
+            "${{ needs.build.result }}" \
+            "${{ needs.codeql.result }}" \
+            "${{ needs.typecheck.result }}" \
+            "${{ needs.lint.result }}" \
+            "${{ needs.test-unit.result }}" \
+            "${{ needs.test-size.result }}" \
+            "${{ needs.test-fixtures.result }}" \
+          )
+          for result in "${results[@]}"; do
+            if [[ "$result" == "failure" || "$result" == "cancelled" ]]; then
+              echo "One or more required jobs failed or were cancelled: $result"
+              exit 1
+            fi
+          done
+          echo "All required jobs passed or were skipped."
 
   release-nightly:
     concurrency:
@@ -332,58 +406,57 @@ jobs:
       !startsWith(github.event.head_commit.message, 'docs')
     needs:
       - build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
-          node-version: lts/*
-          cache: "pnpm"
+          node-version: current
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Restore dist cache
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: dist
           path: packages
 
-      - name: Release Edge
-        run: ./scripts/release-edge.sh ${{ github.ref == 'refs/heads/main' && 'latest' || '3x' }}
+      - name: Release nightly
+        run: node scripts/release.ts --nightly
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+          TAG: ${{ github.ref == 'refs/heads/main' && 'latest' || '3x' }}
 
   release-pkg-pr-new:
     if: github.repository_owner == 'nuxt'
     needs:
       - build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Restore dist cache
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: dist
           path: packages
 
-      - run: pnpm pkg-pr-new publish --compact './packages/kit' './packages/nuxt' './packages/rspack' './packages/schema' './packages/vite' './packages/webpack'
+      - run: pnpm pkg-pr-new publish --compact --pnpm './packages/kit' './packages/nitro-server' './packages/nuxt' './packages/rspack' './packages/schema' './packages/vite' './packages/webpack'

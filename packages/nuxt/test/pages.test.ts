@@ -1,9 +1,9 @@
 import type { TestAPI } from 'vitest'
 import { describe, expect, it, vi } from 'vitest'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import { augmentPages, generateRoutesFromFiles, normalizeRoutes, pathToNitroGlob } from '../src/pages/utils'
-import type { RouterViewSlotProps } from '../src/pages/runtime/utils'
-import { generateRouteKey } from '../src/pages/runtime/utils'
+import { augmentPages, generateRoutesFromFiles, normalizeRoutes, pathToNitroGlob } from '../src/pages/utils.ts'
+import type { RouterViewSlotProps } from '../src/pages/runtime/utils.ts'
+import { generateRouteKey } from '../src/pages/runtime/utils.ts'
 import type { NuxtPage } from 'nuxt/schema'
 
 describe('pages:generateRoutesFromFiles', () => {
@@ -28,6 +28,28 @@ describe('pages:generateRoutesFromFiles', () => {
     return [...routes].sort((a, b) => enUSComparator.compare(b.path, a.path))
   }
 
+  // Sort normalized route arrays by their serialized path for order-independent snapshots
+  function sortNormalizedArray (arr: any[]): any[] {
+    return [...arr].map((item: any) => {
+      if (item && typeof item === 'object' && item.children) {
+        return { ...item, children: sortNormalizedArray(item.children) }
+      }
+      return item
+    }).sort((a: any, b: any) => {
+      const aPath = typeof a === 'string' ? a : JSON.stringify(a)
+      const bPath = typeof b === 'string' ? b : JSON.stringify(b)
+      return enUSComparator.compare(bPath, aPath)
+    })
+  }
+
+  function sortNormalizedResults (results: Record<string, any>) {
+    const sorted: Record<string, any> = {}
+    for (const [key, value] of Object.entries(results)) {
+      sorted[key] = Array.isArray(value) ? sortNormalizedArray(value) : value
+    }
+    return sorted
+  }
+
   for (const test of pageTests) {
     const _it = test.it || it
     _it(test.description, async () => {
@@ -41,17 +63,17 @@ describe('pages:generateRoutesFromFiles', () => {
           const files = test.files.map(file => ({
             shouldUseServerComponents: true,
             absolutePath: file.path,
-            relativePath: file.path.replace(/^(pages|layer\/pages)\//, ''),
+            relativePath: file.path.replace(/^(?:pages|layer\/pages)\//, ''),
           })).sort((a, b) => enUSComparator.compare(a.relativePath, b.relativePath))
 
           result = generateRoutesFromFiles(files).map((route, index) => {
             return {
               ...route,
-              meta: test.files![index]!.meta,
+              meta: test.files![index]!.meta ?? route.meta,
             }
           })
 
-          await augmentPages(result, vfs)
+          await augmentPages(result, vfs, { extraExtractionKeys: new Set(['extracted']) })
         } catch (error: any) {
           expect(error.message).toEqual(test.error)
         }
@@ -78,11 +100,14 @@ describe('pages:generateRoutesFromFiles', () => {
   }
 
   it('should consistently normalize routes', async () => {
-    await expect(normalizedResults).toMatchFileSnapshot('./__snapshots__/pages-override-meta-disabled.test.ts.snap')
+    // Sort each test case's routes array for order-independent comparison
+    const sorted = sortNormalizedResults(normalizedResults)
+    await expect(sorted).toMatchFileSnapshot('./__snapshots__/pages-override-meta-disabled.test.ts.snap')
   })
 
   it('should consistently normalize routes when overriding meta', async () => {
-    await expect(normalizedOverrideMetaResults).toMatchFileSnapshot('./__snapshots__/pages-override-meta-enabled.test.ts.snap')
+    const sorted = sortNormalizedResults(normalizedOverrideMetaResults)
+    await expect(sorted).toMatchFileSnapshot('./__snapshots__/pages-override-meta-enabled.test.ts.snap')
   })
 })
 
@@ -616,6 +641,33 @@ export const pageTests: Array<{
     ],
   },
   {
+    description: 'should handle unicode and special characters in page paths',
+    files: [
+      { path: `${pagesDir}/测试.vue` },
+      { path: `${pagesDir}/文档.vue` },
+      { path: `${pagesDir}/文档/介绍.vue` },
+      { path: `${pagesDir}/خاص:جديد.vue` },
+    ],
+    output: [
+      { name: '测试', path: `/${encodeURIComponent('测试')}`, file: `${pagesDir}/测试.vue`, children: [] },
+      { name: '文档', path: `/${encodeURIComponent('文档')}`, file: `${pagesDir}/文档.vue`, children: [
+        { name: '文档-介绍', path: encodeURIComponent('介绍'), file: `${pagesDir}/文档/介绍.vue`, children: [] },
+      ] },
+      { name: 'خاص:جديد', path: `/${encodeURIComponent('خاص')}\\:${encodeURIComponent('جديد')}`, file: `${pagesDir}/خاص:جديد.vue`, children: [] },
+    ],
+  },
+  {
+    description: 'should escape special chars in static paths',
+    files: [
+      { path: `${pagesDir}/a&b.vue` },
+      { path: `${pagesDir}/a\\b.vue` },
+    ],
+    output: [
+      { name: 'a&b', path: `/a${encodeURIComponent('&')}b`, file: `${pagesDir}/a&b.vue`, children: [] },
+      { name: 'a\\b', path: `/a${encodeURIComponent('\\')}b`, file: `${pagesDir}/a\\b.vue`, children: [] },
+    ],
+  },
+  {
     description: 'should not merge required param as a child of optional param',
     files: [
       { path: `${pagesDir}/[[foo]].vue` },
@@ -809,6 +861,30 @@ export const pageTests: Array<{
     ],
   },
   {
+    description: 'should handle unicode characters in alias paths',
+    files: [
+      {
+        path: `${pagesDir}/products.vue`,
+        template: `
+            <script setup lang="ts">
+            definePageMeta({
+              alias: ['/товары', '/produits', '/製品']
+            })
+            </script>
+          `,
+      },
+    ],
+    output: [
+      {
+        name: 'products',
+        path: '/products',
+        file: `${pagesDir}/products.vue`,
+        alias: ['/товары', '/produits', '/製品'],
+        children: [],
+      },
+    ],
+  },
+  {
     description: 'route without file',
     output: [
       {
@@ -885,11 +961,13 @@ export const pageTests: Array<{
         path: `${pagesDir}/page-with-meta.vue`,
         meta: {
           test: 1,
+          extracted: { foo: 'foo' },
         },
         template: `
             <script setup lang="ts">
             definePageMeta({
-              hello: 'world'
+              hello: 'world',
+              extracted: { bar: 'bar' },
             })
             </script>
           `,
@@ -901,7 +979,7 @@ export const pageTests: Array<{
         path: '/page-with-meta',
         file: `${pagesDir}/page-with-meta.vue`,
         children: [],
-        meta: { [DYNAMIC_META_KEY]: new Set(['meta']), test: 1 },
+        meta: { [DYNAMIC_META_KEY]: new Set(['meta']), test: 1, extracted: { foo: 'foo', bar: 'bar' } },
       },
     ],
   },
@@ -935,26 +1013,34 @@ export const pageTests: Array<{
       { path: `${pagesDir}/(foo)/index.vue` },
       { path: `${pagesDir}/(foo)/about.vue` },
       { path: `${pagesDir}/(bar)/about/index.vue` },
+      { path: `${pagesDir}/(bar)/about/(foo)/index.vue` },
     ],
     output: [
       {
         name: 'index',
         path: '/',
         file: `${pagesDir}/(foo)/index.vue`,
-        meta: undefined,
+        meta: { groups: ['foo'] },
         children: [],
       },
       {
         path: '/about',
         file: `${pagesDir}/(foo)/about.vue`,
-        meta: undefined,
+        meta: { groups: ['foo'] },
         children: [
-
           {
-            name: 'about',
             path: '',
             file: `${pagesDir}/(bar)/about/index.vue`,
-            children: [],
+            meta: { groups: ['bar'] },
+            children: [
+              {
+                name: 'about',
+                path: '',
+                file: `${pagesDir}/(bar)/about/(foo)/index.vue`,
+                meta: { groups: ['bar', 'foo'] },
+                children: [],
+              },
+            ],
           },
         ],
       },
