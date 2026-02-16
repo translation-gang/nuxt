@@ -1,0 +1,45 @@
+name: Check upstream docs changes
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/nuxt/nuxt.git || true
+          git fetch upstream main
+
+      - name: List changed docs
+        id: changed
+        run: |
+          echo "## Изменённые файлы docs" >> $GITHUB_STEP_SUMMARY
+          CHANGED=$(git diff HEAD..upstream/main --name-only -- docs/ || true)
+          if [ -n "$CHANGED" ]; then
+            echo "$CHANGED" >> $GITHUB_STEP_SUMMARY
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "## Файлы docs, изменённые в upstream" > issue-body.md
+            echo "" >> issue-body.md
+            echo '```' >> issue-body.md
+            echo "$CHANGED" >> issue-body.md
+            echo '```' >> issue-body.md
+          else
+            echo "Изменений нет" >> $GITHUB_STEP_SUMMARY
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create issue if changed
+        if: steps.changed.outputs.changed == 'true'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "[sync] Обновления docs в upstream"
+          labels: translation,sync
+          content-filepath: issue-body.md
