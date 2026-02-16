@@ -1,5 +1,5 @@
 title: app
-titleTemplate: '%s · Nuxt Directory Structure'
+titleTemplate: '%s · Структура директорий Nuxt'
 head.title: "app/"
 defaultOpen: true
 icon: i-vscode-icons-folder-type-app
