@@ -16,21 +16,21 @@ npx nuxt devtools <COMMAND> [ROOTDIR] [--cwd=<directory>]
 
 Запуск `nuxt devtools enable` установит Nuxt DevTools глобально и также включит его в конкретном проекте, который вы используете. Он сохраняется как параметр в вашем файле `.nuxtrc` на уровне пользователя. Если вы хотите удалить поддержку devtools для конкретного проекта, вы можете запустить `nuxt devtools disable`.
 
-## Arguments
+## Аргументы
 
 <!--devtools-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `COMMAND`     | Command to run (options: <enable\|disable>)    |
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент     | Описание                                  |
+|--------------|--------------------------------------------|
+| `COMMAND`    | Команда: `enable` или `disable`            |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)   |
 <!--/devtools-args-->
 
-## Options
+## Опции
 
 <!--devtools-opts-->
-| Option              | Default | Description                                                                      |
-|---------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>` |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
+| Опция               | По умолчанию | Описание                                                |
+|---------------------|--------------|---------------------------------------------------------|
+| `--cwd=<directory>` |              | Рабочая директория (приоритет над ROOTDIR)              |
 <!--/devtools-opts-->
 
 ::read-more{icon="i-simple-icons-nuxtdotjs" to="https://devtools.nuxt.com" target="\_blank"}

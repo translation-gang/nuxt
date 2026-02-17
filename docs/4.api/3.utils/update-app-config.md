@@ -12,7 +12,7 @@ links:
 Updates the [`app.config`](/docs/4.x/directory-structure/app/app-config) using deep assignment. Existing (nested) properties will be preserved.
 ::
 
-## Usage
+## Использование
 
 ```js
 import { updateAppConfig, useAppConfig } from '#imports'

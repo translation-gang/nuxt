@@ -14,29 +14,29 @@ npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose
 ```
 <!--/generate-cmd-->
 
-The `generate` command pre-renders every route of your application and stores the result in plain HTML files that you can deploy on any static hosting services. The command triggers the `nuxt build` command with the `prerender` argument set to `true`
+Команда `generate` пререндерит все маршруты приложения и сохранит результат в виде HTML-файлов для развёртывания на статическом хостинге. По сути запускает `nuxt build` с аргументом `prerender: true`.
 
-## Arguments
+## Аргументы
 
 <!--generate-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент    | Описание                                        |
+|-------------|-------------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)         |
 <!--/generate-args-->
 
-## Options
+## Опции
 
 <!--generate-opts-->
-| Option                               | Default | Description                                                                                                                                          |
-|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--preset`                           |         | Nitro server preset                                                                                                                                  |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
+| Опция                                | По умолчанию | Описание                                                                                    |
+|--------------------------------------|--------------|---------------------------------------------------------------------------------------------|
+| `--cwd=<directory>`                  |              | Рабочая директория (приоритет над ROOTDIR)                                                 |
+| `--logLevel=<silent\|info\|verbose>` |              | Уровень логирования при сборке                                                             |
+| `--preset`                           |              | Пресет сервера Nitro                                                                        |
+| `--dotenv`                           |              | Путь к `.env` относительно корня                                                            |
+| `--envName`                          |              | Окружение для конфигурации                                                                  |
+| `-e, --extends=<layer-name>`         |              | Подключить слой Nuxt                                                                        |
 <!--/generate-opts-->
 
 ::read-more{to="/docs/4.x/getting-started/deployment#static-hosting"}
-Read more about pre-rendering and static hosting.
+Подробнее о пререндеринге и статическом хостинге.
 ::

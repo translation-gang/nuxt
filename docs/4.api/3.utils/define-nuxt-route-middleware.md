@@ -10,7 +10,7 @@ links:
 
 Route middleware are stored in the [`app/middleware/`](/docs/4.x/directory-structure/app/middleware) of your Nuxt application (unless [set otherwise](/docs/4.x/api/nuxt-config#middleware)).
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function defineNuxtRouteMiddleware (middleware: RouteMiddleware): RouteMiddleware
@@ -20,7 +20,7 @@ interface RouteMiddleware {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `middleware`
 
@@ -30,7 +30,7 @@ A function that takes two Vue Router's route location objects as parameters: the
 
 Learn more about available properties of `RouteLocationNormalized` in the **[Vue Router docs](https://router.vuejs.org/api/type-aliases/routelocationnormalized)**.
 
-## Examples
+## Примеры
 
 ### Showing Error Page
 

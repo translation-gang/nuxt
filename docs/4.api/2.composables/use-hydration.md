@@ -18,7 +18,7 @@ This is an advanced composable, primarily designed for use within plugins, mostl
 `useHydration` is designed to **ensure state synchronization and restoration during SSR**. If you need to create a globally reactive state that is SSR-friendly in Nuxt, [`useState`](/docs/4.x/api/composables/use-state) is the recommended choice.
 ::
 
-## Usage
+## Использование
 
 The data returned from the `get` function on the server is stored in `nuxtApp.payload` under the unique key provided as the first parameter to `useHydration`. During hydration, this data is then retrieved on the client, preventing redundant computations or API calls.
 
@@ -55,20 +55,20 @@ export default defineNuxtPlugin((nuxtApp) => {
 ```
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useHydration<T> (key: string, get: () => T, set: (value: T) => void): void
 ```
 
-## Parameters
+## Параметры
 
-| Parameter | Type | Description |
+| Parameter | Тип | Описание |
 | --- | --- | --- |
 | `key` | `string` | A unique key that identifies the data in your Nuxt application. |
 | `get` | `() => T` | A function executed **only on the server** (called when SSR rendering is done) to set the initial value. |
 | `set` | `(value: T) => void` | A function executed **only on the client** (called when initial Vue instance is created) to receive the data. |
 
-## Return Values
+## Возвращаемые значения
 
 This composable does not return any value.

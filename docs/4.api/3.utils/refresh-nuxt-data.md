@@ -14,21 +14,21 @@ links:
 If your component is cached by `<KeepAlive>` and enters a deactivated state, the `asyncData` inside the component will still be refetched until the component is unmounted.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function refreshNuxtData (keys?: string | string[])
 ```
 
-## Parameters
+## Параметры
 
 * `keys`: A single string or an array of strings as `keys` that are used to fetch the data. This parameter is **optional**. All [`useAsyncData`](/docs/4.x/api/composables/use-async-data) and [`useFetch`](/docs/4.x/api/composables/use-fetch) keys are re-fetched when no `keys` are explicitly specified.
 
-## Return Values
+## Возвращаемые значения
 
 `refreshNuxtData` returns a promise, resolving when all or specific `asyncData` instances have been refreshed.
 
-## Examples
+## Примеры
 
 ### Refresh All Data
 

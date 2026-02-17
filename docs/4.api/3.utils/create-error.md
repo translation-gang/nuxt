@@ -10,7 +10,7 @@ links:
 
 You can use this function to create an error object with additional metadata. It is usable in both the Vue and Nitro portions of your app, and is meant to be thrown.
 
-## Parameters
+## Параметры
 
 - `err`: `string | { cause, data, message, name, stack, status, statusText, fatal }`
 

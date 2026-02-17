@@ -10,7 +10,7 @@ links:
 
 `useLazyFetch` provides a wrapper around [`useFetch`](/docs/4.x/api/composables/use-fetch) that triggers navigation before the handler is resolved by setting the `lazy` option to `true`.
 
-## Usage
+## Использование
 
 By default, [`useFetch`](/docs/4.x/api/composables/use-fetch) blocks navigation until its async handler is resolved. `useLazyFetch` allows navigation to proceed immediately, with data being fetched in the background.
 
@@ -43,7 +43,7 @@ Awaiting `useLazyFetch` only ensures the call is initialized. On client-side nav
 `useLazyFetch` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyFetch`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useLazyFetch<DataT, ErrorT> (
@@ -56,7 +56,7 @@ export function useLazyFetch<DataT, ErrorT> (
 `useLazyFetch` is equivalent to `useFetch` with `lazy: true` option set. See [`useFetch`](/docs/4.x/api/composables/use-fetch) for full type definitions.
 ::
 
-## Parameters
+## Параметры
 
 `useLazyFetch` accepts the same parameters as [`useFetch`](/docs/4.x/api/composables/use-fetch):
 
@@ -65,7 +65,7 @@ export function useLazyFetch<DataT, ErrorT> (
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#parameters"}
 
-## Return Values
+## Возвращаемые значения
 
 Returns the same `AsyncData` object as [`useFetch`](/docs/4.x/api/composables/use-fetch):
 
@@ -80,7 +80,7 @@ Returns the same `AsyncData` object as [`useFetch`](/docs/4.x/api/composables/us
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#return-values"}
 
-## Examples
+## Примеры
 
 ### Handling Pending State
 

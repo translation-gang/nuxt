@@ -14,28 +14,28 @@ npx nuxt prepare [ROOTDIR] [--dotenv] [--cwd=<directory>] [--logLevel=<silent|in
 ```
 <!--/prepare-cmd-->
 
-The `prepare` command creates a [`.nuxt`](/docs/4.x/directory-structure/nuxt) directory in your application and generates types. This can be useful in a CI environment or as a `postinstall` command in your [`package.json`](/docs/4.x/directory-structure/package).
+Команда `prepare` создаёт директорию [`.nuxt`](/docs/4.x/directory-structure/nuxt) и генерирует типы. Полезна в CI или как скрипт `postinstall` в [`package.json`](/docs/4.x/directory-structure/package).
 
-## Arguments
+## Аргументы
 
 <!--prepare-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент     | Описание                                  |
+|--------------|--------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)    |
 <!--/prepare-args-->
 
-## Options
+## Опции
 
 <!--prepare-opts-->
-| Option                               | Default | Description                                                                                                                                          |
-|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
+| Опция                                  | По умолчанию | Описание                                                                                  |
+|----------------------------------------|--------------|-------------------------------------------------------------------------------------------|
+| `--dotenv`                              |              | Путь к файлу `.env` относительно корня                                                    |
+| `--cwd=<directory>`                    |              | Рабочая директория (приоритет над ROOTDIR)                                                |
+| `--logLevel=<silent\|info\|verbose>`    |              | Уровень логирования при сборке                                                            |
+| `--envName`                             |              | Окружение для переопределения конфига (`production` при сборке, `development` при dev)   |
+| `-e, --extends=<layer-name>`            |              | Расширить слой Nuxt                                                                       |
 <!--/prepare-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Команда устанавливает `process.env.NODE_ENV` в `production`.
 ::

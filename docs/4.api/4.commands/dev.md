@@ -14,47 +14,47 @@ npx nuxt dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [-
 ```
 <!--/dev-cmd-->
 
-The `dev` command starts a development server with hot module replacement at [http://localhost:3000](https://localhost:3000)
+Команда `dev` запускает сервер разработки с hot module replacement по адресу [http://localhost:3000](https://localhost:3000)
 
-## Arguments
+## Аргументы
 
 <!--dev-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент      | Описание                                        |
+|---------------|-------------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)         |
 <!--/dev-args-->
 
-## Options
+## Опции
 
 <!--dev-opts-->
-| Option                               | Default | Description                                                                                                                                          |
-|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
-| `--clear`                            | `false` | Clear console on restart                                                                                                                             |
-| `--no-f, --no-fork`                  |         | Disable forked mode                                                                                                                                  |
-| `-p, --port`                         |         | Port to listen on (default: `NUXT_PORT \|\| NITRO_PORT \|\| PORT \|\| nuxtOptions.devServer.port`)                                                   |
-| `-h, --host`                         |         | Host to listen on (default: `NUXT_HOST \|\| NITRO_HOST \|\| HOST \|\| nuxtOptions.devServer?.host`)                                                  |
-| `--clipboard`                        | `false` | Copy the URL to the clipboard                                                                                                                        |
-| `-o, --open`                         | `false` | Open the URL in the browser                                                                                                                          |
-| `--https`                            |         | Enable HTTPS                                                                                                                                         |
-| `--publicURL`                        |         | Displayed public URL (used for QR code)                                                                                                              |
-| `--qr`                               |         | Display The QR code of public URL when available                                                                                                     |
-| `--public`                           |         | Listen to all network interfaces                                                                                                                     |
-| `--tunnel`                           |         | Open a tunnel using https://github.com/unjs/untun                                                                                                    |
-| `--sslCert`                          |         | (DEPRECATED) Use `--https.cert` instead.                                                                                                             |
-| `--sslKey`                           |         | (DEPRECATED) Use `--https.key` instead.                                                                                                              |
+| Опция                                | По умолчанию | Описание                                                                                    |
+|--------------------------------------|--------------|---------------------------------------------------------------------------------------------|
+| `--cwd=<directory>`                  |              | Рабочая директория (приоритет над ROOTDIR)                                                 |
+| `--logLevel=<silent\|info\|verbose>` |              | Уровень логирования при сборке                                                             |
+| `--dotenv`                           |              | Путь к `.env` относительно корня                                                           |
+| `--envName`                          |              | Окружение (production при сборке, development при dev)                                     |
+| `-e, --extends=<layer-name>`         |              | Подключить слой Nuxt                                                                        |
+| `--clear`                            | `false`      | Очищать консоль при перезапуске                                                            |
+| `--no-f, --no-fork`                  |              | Отключить режим fork                                                                        |
+| `-p, --port`                         |              | Порт для прослушивания                                                                      |
+| `-h, --host`                         |              | Хост для прослушивания                                                                      |
+| `--clipboard`                        | `false`      | Копировать URL в буфер обмена                                                              |
+| `-o, --open`                         | `false`      | Открыть URL в браузере                                                                      |
+| `--https`                            |              | Включить HTTPS                                                                              |
+| `--publicURL`                        |              | Публичный URL (для QR-кода)                                                                 |
+| `--qr`                               |              | Показывать QR-код публичного URL                                                            |
+| `--public`                           |              | Слушать все сетевые интерфейсы                                                             |
+| `--tunnel`                           |              | Туннель через unjs/untun                                                                    |
+| `--sslCert`                          |              | (УСТАРЕЛО) Используйте `--https.cert`                                                      |
+| `--sslKey`                           |              | (УСТАРЕЛО) Используйте `--https.key`                                                        |
 <!--/dev-opts-->
 
-The port and host can also be set via NUXT_PORT, PORT, NUXT_HOST or HOST environment variables.
+Порт и хост можно задать переменными NUXT_PORT, PORT, NUXT_HOST или HOST.
 
-Additionally to the above options, `@nuxt/cli` can pass options through to `listhen`, e.g. `--no-qr` to turn off the dev server QR code. You can find the list of `listhen` options in the [unjs/listhen](https://github.com/unjs/listhen) docs.
+Опции можно передавать в `listhen`, например `--no-qr` для отключения QR-кода. Список опций — в [unjs/listhen](https://github.com/unjs/listhen).
 
-This command sets `process.env.NODE_ENV` to `development`.
+Команда устанавливает `process.env.NODE_ENV` в `development`.
 
 ::note
-If you are using a self-signed certificate in development, you will need to set `NODE_TLS_REJECT_UNAUTHORIZED=0` in your environment.
+При самоподписанном сертификате в разработке задайте `NODE_TLS_REJECT_UNAUTHORIZED=0` в окружении.
 ::

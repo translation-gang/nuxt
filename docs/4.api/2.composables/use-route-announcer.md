@@ -17,7 +17,7 @@ This composable is available in Nuxt v3.12+.
 A composable which observes the page title changes and updates the announcer message accordingly. Used by [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer) and controllable.
 It hooks into Unhead's `dom:rendered` hook to read the page's title and set it as the announcer message.
 
-## Parameters
+## Параметры
 
 - `politeness`: Sets the urgency for screen reader announcements: `off` (disable the announcement), `polite` (waits for silence), or `assertive` (interrupts immediately).  (default `polite`).
 
@@ -47,7 +47,7 @@ Sets the message with `politeness = "polite"`
 
 Sets the message with `politeness = "assertive"`
 
-## Example
+## Пример
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">

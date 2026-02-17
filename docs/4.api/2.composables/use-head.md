@@ -8,9 +8,9 @@ links:
     size: xs
 ---
 
-## Usage
+## Использование
 
-The `useHead` composable allows you to manage your head tags in a programmatic and reactive way, powered by [Unhead](https://unhead.unjs.io). It lets you customize the meta tags, links, scripts, and other elements in the `<head>` section of your HTML document.
+Композабл `useHead` позволяет управлять тегами в `<head>` программно и реактивно с помощью [Unhead](https://unhead.unjs.io). С его помощью можно настраивать мета-теги, ссылки, скрипты и другие элементы в секции `<head>` HTML-документа.
 
 ```vue [app/app.vue]
 <script setup lang="ts">
@@ -28,14 +28,14 @@ useHead({
 ```
 
 ::warning
-If the data comes from a user or other untrusted source, we recommend you check out [`useHeadSafe`](/docs/4.x/api/composables/use-head-safe).
+Если данные приходят от пользователя или другого ненадёжного источника, рекомендуем использовать [`useHeadSafe`](/docs/4.x/api/composables/use-head-safe).
 ::
 
 ::note
-The properties of `useHead` can be dynamic, accepting `ref`, `computed` and `reactive` properties. The `meta` parameter can also accept a function returning an object to make the entire object reactive.
+Свойства `useHead` могут быть динамическими: поддерживаются `ref`, `computed` и `reactive`. Параметр `meta` также может принимать функцию, возвращающую объект, чтобы сделать весь объект реактивным.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useHead (meta: MaybeComputedRef<MetaObject>): ActiveHeadEntry<UseHeadInput>
@@ -69,32 +69,32 @@ interface ActiveHeadEntry<Input> {
 }
 ```
 
-See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/schema.ts) for more detailed types.
+Подробные типы см. в [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/schema.ts).
 
-## Parameters
+## Параметры
 
-`meta`: An object accepting head metadata properties to customize the page's `<head>` section. All properties support reactive values (`ref`, `computed`, `reactive`) or can be a function returning the metadata object.
+`meta`: объект со свойствами метаданных для настройки `<head>` страницы. Все свойства поддерживают реактивные значения (`ref`, `computed`, `reactive`) или могут быть функцией, возвращающей объект метаданных.
 
-| Property | Type | Description |
+| Свойство | Тип | Описание |
 | --- | --- | --- |
-| `title` | `string` | Sets the page title. |
-| `titleTemplate` | `string \| ((title?: string) => string)` | Configures a dynamic template to customize the page title. Can be a string with `%s` placeholder or a function. |
-| `base` | `Base` | Sets the `<base>` tag for the document. |
-| `link` | `Link[]` | Array of link objects. Each element is mapped to a `<link>` tag, where object properties correspond to HTML attributes. |
-| `meta` | `Meta[]` | Array of meta objects. Each element is mapped to a `<meta>` tag, where object properties correspond to HTML attributes. |
-| `style` | `Style[]` | Array of style objects. Each element is mapped to a `<style>` tag, where object properties correspond to HTML attributes. |
-| `script` | `Script[]` | Array of script objects. Each element is mapped to a `<script>` tag, where object properties correspond to HTML attributes. |
-| `noscript` | `Noscript[]` | Array of noscript objects. Each element is mapped to a `<noscript>` tag, where object properties correspond to HTML attributes. |
-| `htmlAttrs` | `HtmlAttributes` | Sets attributes of the `<html>` tag. Each object property is mapped to the corresponding attribute. |
-| `bodyAttrs` | `BodyAttributes` | Sets attributes of the `<body>` tag. Each object property is mapped to the corresponding attribute. |
+| `title` | `string` | Заголовок страницы. |
+| `titleTemplate` | `string \| ((title?: string) => string)` | Шаблон для заголовка. Строка с плейсхолдером `%s` или функция. |
+| `base` | `Base` | Тег `<base>` документа. |
+| `link` | `Link[]` | Массив ссылок. Каждый элемент превращается в тег `<link>`. |
+| `meta` | `Meta[]` | Массив мета-объектов. Каждый элемент — тег `<meta>`. |
+| `style` | `Style[]` | Массив объектов стилей. Каждый элемент — тег `<style>`. |
+| `script` | `Script[]` | Массив скриптов. Каждый элемент — тег `<script>`. |
+| `noscript` | `Noscript[]` | Массив объектов для тегов `<noscript>`. |
+| `htmlAttrs` | `HtmlAttributes` | Атрибуты тега `<html>`. |
+| `bodyAttrs` | `BodyAttributes` | Атрибуты тега `<body>`. |
 
-## Return Values
+## Возвращаемые значения
 
-This composable does not return any value. It registers the head metadata with Unhead, which manages the actual DOM updates.
+Композабл ничего не возвращает. Он регистрирует метаданные в Unhead, который выполняет обновления DOM.
 
-## Examples
+## Примеры
 
-### Basic Meta Tags
+### Базовые мета-теги
 
 ```vue [app/pages/about.vue]
 <script setup lang="ts">
@@ -109,7 +109,7 @@ useHead({
 </script>
 ```
 
-### Reactive Meta Tags
+### Реактивные мета-теги
 
 ```vue [app/pages/profile.vue]
 <script setup lang="ts">
@@ -127,7 +127,7 @@ useHead({
 </script>
 ```
 
-### Using a Function for Full Reactivity
+### Функция для полной реактивности
 
 ```vue [app/pages/dynamic.vue]
 <script setup lang="ts">
@@ -142,7 +142,7 @@ useHead(() => ({
 </script>
 ```
 
-### Adding External Scripts and Styles
+### Подключение внешних скриптов и стилей
 
 ```vue [app/pages/external.vue]
 <script setup lang="ts">
@@ -163,7 +163,7 @@ useHead({
 </script>
 ```
 
-### Body and HTML Attributes
+### Атрибуты body и html
 
 ```vue [app/pages/themed.vue]
 <script setup lang="ts">

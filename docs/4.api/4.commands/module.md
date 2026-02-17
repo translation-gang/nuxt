@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-Nuxt provides a few utilities to work with [Nuxt modules](/modules) seamlessly.
+Nuxt предоставляет утилиты для работы с [модулями Nuxt](/modules).
 
 ## nuxt module add
 
@@ -19,32 +19,32 @@ npx nuxt module add <MODULENAME> [--cwd=<directory>] [--logLevel=<silent|info|ve
 <!--/module-add-cmd-->
 
 <!--module-add-args-->
-| Argument     | Description                                                         |
-|--------------|---------------------------------------------------------------------|
-| `MODULENAME` | Specify one or more modules to install by name, separated by spaces |
+| Аргумент    | Описание                                                    |
+|-------------|-------------------------------------------------------------|
+| `MODULENAME` | Один или несколько модулей для установки (через пробел)     |
 <!--/module-add-args-->
 
 <!--module-add-opts-->
-| Option                               | Default | Description                         |
-|--------------------------------------|---------|-------------------------------------|
-| `--cwd=<directory>`                  | `.`     | Specify the working directory       |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level        |
-| `--skipInstall`                      |         | Skip npm install                    |
-| `--skipConfig`                       |         | Skip nuxt.config.ts update          |
-| `--dev`                              |         | Install modules as dev dependencies |
+| Опция                                  | По умолчанию | Описание                          |
+|----------------------------------------|--------------|-----------------------------------|
+| `--cwd=<directory>`                    | `.`          | Рабочая директория                |
+| `--logLevel=<silent\|info\|verbose>`   |              | Уровень логирования при сборке   |
+| `--skipInstall`                        |              | Не запускать npm install         |
+| `--skipConfig`                         |              | Не обновлять nuxt.config.ts      |
+| `--dev`                                |              | Установить как dev-зависимости   |
 <!--/module-add-opts-->
 
-The command lets you install [Nuxt modules](/modules) in your application with no manual work.
+Команда устанавливает [модули Nuxt](/modules) в приложение без ручных правок.
 
-When running the command, it will:
+При запуске команда:
 
-- install the module as a dependency using your package manager
-- add it to your [package.json](/docs/4.x/directory-structure/package) file
-- update your [`nuxt.config`](/docs/4.x/directory-structure/nuxt-config) file
+- устанавливает модуль через ваш менеджер пакетов
+- добавляет его в [package.json](/docs/4.x/directory-structure/package)
+- обновляет [`nuxt.config`](/docs/4.x/directory-structure/nuxt-config)
 
-**Example:**
+**Пример:**
 
-Installing the [`Pinia`](/modules/pinia) module
+Установка модуля [`Pinia`](/modules/pinia)
 
 ```bash [Terminal]
 npx nuxt module add pinia
@@ -58,26 +58,26 @@ npx nuxt module search <QUERY> [--cwd=<directory>] [--nuxtVersion=<2|3>]
 ```
 <!--/module-search-cmd-->
 
-### Arguments
+### Аргументы
 
 <!--module-search-args-->
-| Argument | Description            |
+| Аргумент | Описание              |
 |----------|------------------------|
-| `QUERY`  | keywords to search for |
+| `QUERY`  | Ключевые слова поиска |
 <!--/module-search-args-->
 
-### Options
+### Опции
 
 <!--module-search-opts-->
-| Option                 | Default | Description                                                                        |
-|------------------------|---------|------------------------------------------------------------------------------------|
-| `--cwd=<directory>`    | `.`     | Specify the working directory                                                      |
-| `--nuxtVersion=<2\|3>` |         | Filter by Nuxt version and list compatible modules only (auto detected by default) |
+| Опция                  | По умолчанию | Описание                                                                 |
+|------------------------|--------------|--------------------------------------------------------------------------|
+| `--cwd=<directory>`    | `.`          | Рабочая директория                                                       |
+| `--nuxtVersion=<2\|3>`  |              | Фильтр по версии Nuxt (по умолчанию определяется автоматически)        |
 <!--/module-search-opts-->
 
-The command searches for Nuxt modules matching your query that are compatible with your Nuxt version.
+Команда ищет модули Nuxt по запросу, совместимые с вашей версией Nuxt.
 
-**Example:**
+**Пример:**
 
 ```bash [Terminal]
 npx nuxt module search pinia

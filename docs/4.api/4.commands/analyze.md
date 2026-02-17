@@ -14,29 +14,29 @@ npx nuxt analyze [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>
 ```
 <!--/analyze-cmd-->
 
-The `analyze` command builds Nuxt and analyzes the production bundle (experimental).
+Команда `analyze` собирает Nuxt и анализирует production-бандл (экспериментально).
 
-## Arguments
+## Аргументы
 
 <!--analyze-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент     | Описание                         |
+|--------------|----------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/analyze-args-->
 
-## Options
+## Опции
 
 <!--analyze-opts-->
-| Option                               | Default   | Description                                                                      |
-|--------------------------------------|-----------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |           | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>` |           | Specify build-time log level                                                     |
-| `--dotenv`                           |           | Path to `.env` file to load, relative to the root directory                      |
-| `-e, --extends=<layer-name>`         |           | Extend from a Nuxt layer                                                         |
-| `--name=<name>`                      | `default` | Name of the analysis                                                             |
-| `--no-serve`                         |           | Skip serving the analysis results                                                |
+| Опция                                  | По умолчанию | Описание                                                                 |
+|----------------------------------------|--------------|---------------------------------------------------------------------------|
+| `--cwd=<directory>`                     |              | Рабочая директория (имеет приоритет над ROOTDIR)                          |
+| `--logLevel=<silent\|info\|verbose>`    |              | Уровень логирования при сборке                                            |
+| `--dotenv`                              |              | Путь к файлу `.env` относительно корня                                    |
+| `-e, --extends=<layer-name>`           |              | Расширить слой Nuxt                                                        |
+| `--name=<name>`                         | `default`    | Имя анализа                                                               |
+| `--no-serve`                            |              | Не запускать сервер с результатами анализа                                 |
 <!--/analyze-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Команда устанавливает `process.env.NODE_ENV` в `production`.
 ::

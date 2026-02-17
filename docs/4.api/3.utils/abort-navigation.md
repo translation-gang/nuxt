@@ -12,13 +12,13 @@ links:
 `abortNavigation` is only usable inside a [route middleware handler](/docs/4.x/directory-structure/app/middleware).
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function abortNavigation (err?: Error | string): false
 ```
 
-## Parameters
+## Параметры
 
 ### `err`
 
@@ -26,7 +26,7 @@ export function abortNavigation (err?: Error | string): false
 
   Optional error to be thrown by `abortNavigation`.
 
-## Examples
+## Примеры
 
 The example below shows how you can use `abortNavigation` in a route middleware to prevent unauthorized route access:
 

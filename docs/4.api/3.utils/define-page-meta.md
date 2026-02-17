@@ -20,7 +20,7 @@ definePageMeta({
 
 :read-more{to="/docs/4.x/directory-structure/app/pages#page-metadata"}
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function definePageMeta (meta: PageMeta): void
@@ -45,7 +45,7 @@ interface PageMeta {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `meta`
 
@@ -151,7 +151,7 @@ interface PageMeta {
 
     Apart from the above properties, you can also set **custom** metadata. You may wish to do so in a type-safe way by [augmenting the type of the `meta` object](/docs/4.x/directory-structure/app/pages/#typing-custom-metadata).
 
-## Examples
+## Примеры
 
 ### Basic Usage
 

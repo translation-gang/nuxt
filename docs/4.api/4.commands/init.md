@@ -14,37 +14,37 @@ npm create nuxt@latest [DIR] [--cwd=<directory>] [--logLevel=<silent|info|verbos
 ```
 <!--/init-cmd-->
 
-The `create-nuxt` command initializes a fresh Nuxt project using [unjs/giget](https://github.com/unjs/giget).
+Команда `create-nuxt` создаёт новый проект Nuxt с помощью [unjs/giget](https://github.com/unjs/giget).
 
-## Arguments
+## Аргументы
 
 <!--init-args-->
-| Argument | Description       |
-|----------|-------------------|
-| `DIR=""` | Project directory |
+| Аргумент | Описание        |
+|----------|-----------------|
+| `DIR=""` | Директория проекта |
 <!--/init-args-->
 
-## Options
+## Опции
 
 <!--init-opts-->
-| Option                               | Default | Description                                              |
-|--------------------------------------|---------|----------------------------------------------------------|
-| `--cwd=<directory>`                  | `.`     | Specify the working directory                            |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                             |
-| `-t, --template`                     |         | Template name                                            |
-| `-f, --force`                        |         | Override existing directory                              |
-| `--offline`                          |         | Force offline mode                                       |
-| `--preferOffline`                    |         | Prefer offline mode                                      |
-| `--no-install`                       |         | Skip installing dependencies                             |
-| `--gitInit`                          |         | Initialize git repository                                |
-| `--shell`                            |         | Start shell after installation in project directory      |
-| `--packageManager`                   |         | Package manager choice (npm, pnpm, yarn, bun)            |
-| `-M, --modules`                      |         | Nuxt modules to install (comma separated without spaces) |
-| `--no-modules`                       |         | Skip module installation prompt                          |
-| `--nightly`                          |         | Use Nuxt nightly release channel (3x or latest)          |
+| Опция                                  | По умолчанию | Описание                                                    |
+|----------------------------------------|--------------|-------------------------------------------------------------|
+| `--cwd=<directory>`                    | `.`          | Рабочая директория                                          |
+| `--logLevel=<silent\|info\|verbose>`   |              | Уровень логирования при сборке                              |
+| `-t, --template`                       |              | Имя шаблона                                                 |
+| `-f, --force`                          |              | Перезаписать существующую директорию                        |
+| `--offline`                             |              | Режим офлайн                                                |
+| `--preferOffline`                      |              | Предпочитать офлайн-режим                                   |
+| `--no-install`                         |              | Не устанавливать зависимости                                |
+| `--gitInit`                            |              | Инициализировать git-репозиторий                            |
+| `--shell`                              |              | Запустить shell в директории проекта после установки        |
+| `--packageManager`                     |              | Менеджер пакетов (npm, pnpm, yarn, bun)                     |
+| `-M, --modules`                        |              | Модули Nuxt для установки (через запятую, без пробелов)    |
+| `--no-modules`                         |              | Пропустить запрос установки модулей                         |
+| `--nightly`                            |              | Использовать ночную версию Nuxt (3x или latest)             |
 <!--/init-opts-->
 
-## Environment variables
+## Переменные окружения
 
-- `NUXI_INIT_REGISTRY`: Set to a custom template registry. ([learn more](https://github.com/unjs/giget#custom-registry)).
-  - Default registry is loaded from [nuxt/starter/templates](https://github.com/nuxt/starter/tree/templates/templates)
+- `NUXI_INIT_REGISTRY`: адрес своего реестра шаблонов ([подробнее](https://github.com/unjs/giget#custom-registry)).
+  - По умолчанию используется [nuxt/starter/templates](https://github.com/nuxt/starter/tree/templates/templates)

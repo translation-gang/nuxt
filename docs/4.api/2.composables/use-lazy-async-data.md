@@ -14,7 +14,7 @@ links:
 By default, [`useAsyncData`](/docs/4.x/api/composables/use-async-data) blocks navigation until its async handler is resolved. `useLazyAsyncData` allows navigation to occur immediately while data fetching continues in the background.
 ::
 
-## Usage
+## Использование
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -42,7 +42,7 @@ When using `useLazyAsyncData`, navigation will occur before fetching is complete
 `useLazyAsyncData` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyAsyncData`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useLazyAsyncData<DataT, ErrorT> (
@@ -59,19 +59,19 @@ export function useLazyAsyncData<DataT, ErrorT> (
 
 `useLazyAsyncData` has the same signature as [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
 
-## Parameters
+## Параметры
 
 `useLazyAsyncData` accepts the same parameters as [`useAsyncData`](/docs/4.x/api/composables/use-async-data), with the `lazy` option automatically set to `true`.
 
 :read-more{to="/docs/4.x/api/composables/use-async-data#parameters"}
 
-## Return Values
+## Возвращаемые значения
 
 `useLazyAsyncData` returns the same values as [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
 
 :read-more{to="/docs/4.x/api/composables/use-async-data#return-values"}
 
-## Example
+## Пример
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">

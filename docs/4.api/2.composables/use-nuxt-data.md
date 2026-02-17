@@ -12,7 +12,7 @@ links:
 `useNuxtData` gives you access to the current cached value of [`useAsyncData`](/docs/4.x/api/composables/use-async-data) , [`useLazyAsyncData`](/docs/4.x/api/composables/use-lazy-async-data), [`useFetch`](/docs/4.x/api/composables/use-fetch) and [`useLazyFetch`](/docs/4.x/api/composables/use-lazy-fetch) with explicitly provided key.
 ::
 
-## Usage
+## Использование
 
 The `useNuxtData` composable is used to access the current cached value of data-fetching composables such as `useAsyncData`, `useLazyAsyncData`, `useFetch`, and `useLazyFetch`. By providing the key used during the data fetch, you can retrieve the cached data and use it as needed.
 
@@ -26,11 +26,11 @@ To use `useNuxtData`, ensure that the data-fetching composable (`useFetch`, `use
 
 - `key`: The unique key that identifies the cached data. This key should match the one used during the original data fetch.
 
-## Return Values
+## Возвращаемые значения
 
 - `data`: A reactive reference to the cached data associated with the provided key. If no cached data exists, the value will be `null`. This `Ref` automatically updates if the cached data changes, allowing seamless reactivity in your components.
 
-## Example
+## Пример
 
 The example below shows how you can use cached data as a placeholder while the most recent data is being fetched from the server.
 
@@ -105,7 +105,7 @@ async function addTodo () {
 </script>
 ```
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useNuxtData<DataT = any> (key: string): { data: Ref<DataT | undefined> }

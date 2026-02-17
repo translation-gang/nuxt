@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-## Usage
+## Использование
 
 The `useError` composable returns the global Nuxt error that is being handled and is available on both client and server. It provides a reactive, SSR-friendly error state across your app.
 
@@ -18,7 +18,7 @@ const error = useError()
 
 You can use this composable in your components, pages, or plugins to access or react to the current Nuxt error.
 
-## Type
+## Тип
 
 ```ts
 interface NuxtError<DataT = unknown> {
@@ -32,15 +32,15 @@ interface NuxtError<DataT = unknown> {
 export const useError: () => Ref<NuxtError | undefined>
 ```
 
-## Parameters
+## Параметры
 
 This composable does not take any parameters.
 
-## Return Values
+## Возвращаемые значения
 
 Returns a `Ref` containing the current Nuxt error (or `undefined` if there is no error). The error object is reactive and will update automatically when the error state changes.
 
-## Example
+## Пример
 
 ```vue
 <script setup lang="ts">

@@ -18,7 +18,7 @@ During server-side rendering, calling `$fetch` to fetch your internal [API route
 Using `$fetch` in components without wrapping it with [`useAsyncData`](/docs/4.x/api/composables/use-async-data) causes fetching the data twice: initially on the server, then again on the client-side during hydration, because `$fetch` does not transfer state from the server to the client. Thus, the fetch will be executed on both sides because the client has to get the data again.
 ::
 
-## Usage
+## Использование
 
 We recommend using [`useFetch`](/docs/4.x/api/composables/use-fetch) or [`useAsyncData`](/docs/4.x/api/composables/use-async-data) + `$fetch` to prevent double data fetching when fetching the component data.
 

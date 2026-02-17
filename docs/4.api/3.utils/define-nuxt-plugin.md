@@ -18,7 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 :read-more{to="/docs/4.x/directory-structure/app/plugins#creating-plugins"}
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function defineNuxtPlugin<T extends Record<string, unknown>> (plugin: Plugin<T> | ObjectPlugin<T>): Plugin<T> & ObjectPlugin<T>
@@ -39,7 +39,7 @@ interface ObjectPlugin<T> {
 }
 ```
 
-## Parameters
+## Параметры
 
 **plugin**: A plugin can be defined in two ways:
 1. **Function Plugin**: A function that receives the [`NuxtApp`](/docs/4.x/guide/going-further/internals#the-nuxtapp-interface) instance and can return a promise with a potential object with a [`provide`](/docs/4.x/directory-structure/app/plugins#providing-helpers) property if you want to provide a helper on [`NuxtApp`](/docs/4.x/guide/going-further/internals#the-nuxtapp-interface) instance.
@@ -58,7 +58,7 @@ interface ObjectPlugin<T> {
 
 :video-accordion{title="Watch a video from Alexander Lichter about the Object Syntax for Nuxt plugins" videoId="2aXZyXB1QGQ"}
 
-## Examples
+## Примеры
 
 ### Basic Usage
 

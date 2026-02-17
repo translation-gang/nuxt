@@ -12,7 +12,7 @@ links:
 Route middleware are navigation guards stored in the [`app/middleware/`](/docs/4.x/directory-structure/app/middleware) directory of your Nuxt application (unless [set otherwise](/docs/4.x/api/nuxt-config#middleware)).
 ::
 
-## Type
+## Тип
 
 ```ts
 function addRouteMiddleware (name: string, middleware: RouteMiddleware, options?: AddRouteMiddlewareOptions): void
@@ -23,7 +23,7 @@ interface AddRouteMiddlewareOptions {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `name`
 
@@ -45,7 +45,7 @@ The second argument is a function of type `RouteMiddleware`. Same as above, it p
 
 An optional `options` argument lets you set the value of `global` to `true` to indicate whether the router middleware is global or not (set to `false` by default).
 
-## Examples
+## Примеры
 
 ### Named Route Middleware
 

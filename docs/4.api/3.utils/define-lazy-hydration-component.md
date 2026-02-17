@@ -10,7 +10,7 @@ links:
 
 `defineLazyHydrationComponent` is a compiler macro that helps you create a component with a specific lazy hydration strategy. Lazy hydration defers hydration until components become visible or until the browser has completed more critical tasks. This can significantly reduce the initial performance cost, especially for non-essential components.
 
-## Usage
+## Использование
 
 ### Visibility Strategy
 
@@ -226,7 +226,7 @@ function onHydrate () {
 </template>
 ```
 
-## Parameters
+## Параметры
 
 ::warning
 To ensure that the compiler correctly recognizes this macro, avoid using external variables. The following approach will prevent the macro from being properly recognized:

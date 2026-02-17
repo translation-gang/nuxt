@@ -19,7 +19,7 @@ function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks> (
 ): void
 ```
 
-## Usage
+## Использование
 
 ### Parameters
 
@@ -30,7 +30,7 @@ function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks> (
 
 The composable doesn't return a value, but it automatically unregisters the hook when the component's scope is destroyed.
 
-## Example
+## Пример
 
 ```vue twoslash [pages/index.vue]
 <script setup lang="ts">

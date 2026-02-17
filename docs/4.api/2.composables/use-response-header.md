@@ -20,7 +20,7 @@ const header = useResponseHeader('X-My-Header')
 header.value = 'my-value'
 ```
 
-## Example
+## Пример
 
 We can use `useResponseHeader` to easily set a response header on a per-page basis.
 

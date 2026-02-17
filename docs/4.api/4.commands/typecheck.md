@@ -14,31 +14,31 @@ npx nuxt typecheck [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbos
 ```
 <!--/typecheck-cmd-->
 
-The `typecheck` command runs [`vue-tsc`](https://github.com/vuejs/language-tools/tree/master/packages/tsc) to check types throughout your app.
+Команда `typecheck` запускает [`vue-tsc`](https://github.com/vuejs/language-tools/tree/master/packages/tsc) для проверки типов в приложении.
 
-## Arguments
+## Аргументы
 
 <!--typecheck-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент     | Описание                                  |
+|--------------|--------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)   |
 <!--/typecheck-args-->
 
-## Options
+## Опции
 
 <!--typecheck-opts-->
-| Option                               | Default | Description                                                                      |
+| Option                               | По умолчанию | Description                                                                      |
 |--------------------------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                     |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                      |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                         |
+| `--cwd=<directory>`                  |         | Рабочая директория, имеет приоритет над ROOTDIR (по умолчанию: `.`) |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке                                                     |
+| `--dotenv`                           |         | Путь к файлу `.env` относительно корня    |
+| `-e, --extends=<layer-name>`        |         | Расширить слой Nuxt                        |
 <!--/typecheck-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`. To override, define `NODE_ENV` in a [`.env`](/docs/4.x/directory-structure/env) file or as a command-line argument.
+Команда устанавливает `process.env.NODE_ENV` в `production`. Чтобы переопределить, задайте `NODE_ENV` в [`.env`](/docs/4.x/directory-structure/env) или аргументом командной строки.
 ::
 
 ::read-more{to="/docs/4.x/guide/concepts/typescript#type-checking"}
-Read more on how to enable type-checking at build or development time.
+Подробнее о включении проверки типов при сборке или в режиме разработки.
 ::

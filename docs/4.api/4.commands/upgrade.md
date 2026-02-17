@@ -14,24 +14,24 @@ npx nuxt upgrade [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>
 ```
 <!--/upgrade-cmd-->
 
-The `upgrade` command upgrades Nuxt to the latest version.
+Команда `upgrade` обновляет Nuxt до последней версии.
 
-## Arguments
+## Аргументы
 
 <!--upgrade-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент     | Описание                                  |
+|--------------|--------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)   |
 <!--/upgrade-args-->
 
-## Options
+## Опции
 
 <!--upgrade-opts-->
-| Option                                                             | Default  | Description                                                                      |
-|--------------------------------------------------------------------|----------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                                                |          | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>`                               |          | Specify build-time log level                                                     |
-| `--dedupe`                                                         |          | Dedupe dependencies after upgrading                                              |
-| `-f, --force`                                                      |          | Force upgrade to recreate lockfile and node_modules                              |
-| `-ch, --channel=<stable\|nightly\|v3\|v4\|v4-nightly\|v3-nightly>` | `stable` | Specify a channel to install from (default: stable)                              |
+| Опция                                                                 | По умолчанию | Описание                                                    |
+|-----------------------------------------------------------------------|--------------|-------------------------------------------------------------|
+| `--cwd=<directory>`                                                  |              | Рабочая директория (приоритет над ROOTDIR)                 |
+| `--logLevel=<silent\|info\|verbose>`                                  |              | Уровень логирования при сборке                              |
+| `--dedupe`                                                            |              | Дедупликация зависимостей после обновления                 |
+| `-f, --force`                                                         |              | Принудительное обновление с пересозданием lockfile и node_modules |
+| `-ch, --channel=<stable\|nightly\|v3\|v4\|v4-nightly\|v3-nightly>`     | `stable`     | Канал установки (по умолчанию: stable)                      |
 <!--/upgrade-opts-->

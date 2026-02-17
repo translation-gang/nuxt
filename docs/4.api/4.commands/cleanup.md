@@ -21,18 +21,18 @@ npx nuxt cleanup [ROOTDIR] [--cwd=<directory>]
 - `node_modules/.vite`
 - `node_modules/.cache`
 
-## Arguments
+## Аргументы
 
 <!--cleanup-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент      | Описание                                  |
+|---------------|--------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)    |
 <!--/cleanup-args-->
 
-## Options
+## Опции
 
 <!--cleanup-opts-->
-| Option              | Default | Description                                                                      |
-|---------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>` |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
+| Опция               | По умолчанию | Описание                                                |
+|---------------------|--------------|---------------------------------------------------------|
+| `--cwd=<directory>` |              | Рабочая директория (имеет приоритет над ROOTDIR)       |
 <!--/cleanup-opts-->

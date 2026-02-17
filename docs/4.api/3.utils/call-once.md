@@ -20,7 +20,7 @@ The `callOnce` function is designed to execute a given function or block of code
 
 This is useful for code that should be executed only once, such as logging an event or setting up a global state.
 
-## Usage
+## Использование
 
 The default mode of `callOnce` is to run code only once. For example, if the code runs on the server it won't run again on the client. It also won't run again if you `callOnce` more than once on the client, for example by navigating back to this page.
 
@@ -66,7 +66,7 @@ Note that `callOnce` doesn't return anything. You should use [`useAsyncData`](/d
 `callOnce` is a composable meant to be called directly in a setup function, plugin, or route middleware, because it needs to add data to the Nuxt payload to avoid re-calling the function on the client when the page hydrates.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function callOnce (key?: string, fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
@@ -81,7 +81,7 @@ type CallOnceOptions = {
 }
 ```
 
-## Parameters
+## Параметры
 
 - `key`: A unique key ensuring that the code is run once. If you do not provide a key, then a key that is unique to the file and line number of the instance of `callOnce` will be generated for you.
 - `fn`: The function to run once. It can be asynchronous.

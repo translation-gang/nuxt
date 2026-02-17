@@ -18,7 +18,7 @@ You can use the built-in `usePreviewMode` composable to access and control previ
 const { enabled, state } = usePreviewMode()
 ```
 
-## Options
+## Опции
 
 ### Custom `enable` check
 
@@ -72,7 +72,7 @@ const { enabled, state } = usePreviewMode({
 })
 ```
 
-## Example
+## Пример
 
 The example below creates a page where part of a content is rendered only in preview mode.
 

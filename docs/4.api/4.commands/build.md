@@ -14,34 +14,34 @@ npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] 
 ```
 <!--/build-cmd-->
 
-The `build` command creates a `.output` directory with all your application, server and dependencies ready for production.
+Команда `build` создаёт директорию `.output` с приложением, сервером и зависимостями для production.
 
-## Arguments
+## Аргументы
 
 <!--build-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| Аргумент    | Описание                                        |
+|-------------|-------------------------------------------------|
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)         |
 <!--/build-args-->
 
-## Options
+## Опции
 
 <!--build-opts-->
-| Option                               | Default | Description                                                                                                                                          |
-|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--prerender`                        |         | Build Nuxt and prerender static routes                                                                                                               |
-| `--preset`                           |         | Nitro server preset                                                                                                                                  |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
+| Опция                                | По умолчанию | Описание                                                                                    |
+|--------------------------------------|--------------|---------------------------------------------------------------------------------------------|
+| `--cwd=<directory>`                  |              | Рабочая директория (приоритет над ROOTDIR)                                                 |
+| `--logLevel=<silent\|info\|verbose>` |              | Уровень логирования при сборке                                                             |
+| `--prerender`                        |              | Собрать Nuxt и пререндерить статические маршруты                                            |
+| `--preset`                           |              | Пресет сервера Nitro                                                                        |
+| `--dotenv`                           |              | Путь к `.env` относительно корня                                                            |
+| `--envName`                          |              | Окружение для конфигурации                                                                  |
+| `-e, --extends=<layer-name>`         |              | Подключить слой Nuxt                                                                        |
 <!--/build-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Команда устанавливает `process.env.NODE_ENV` в `production`.
 ::
 
 ::note
-`--prerender` will always set the `preset` to `static`
+При `--prerender` пресет всегда устанавливается в `static`.
 ::
