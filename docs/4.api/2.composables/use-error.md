@@ -47,7 +47,7 @@ export const useError: () => Ref<NuxtError | undefined>
 const error = useError()
 
 if (error.value) {
-  console.error('Nuxt error:', error.value)
+  console.error('Ошибка Nuxt:', error.value)
 }
 </script>
 ```

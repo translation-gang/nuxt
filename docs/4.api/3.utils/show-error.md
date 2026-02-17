@@ -18,7 +18,7 @@ links:
 showError('😱 Произошла ошибка.')
 showError({
   status: 404,
-  statusText: 'Page Not Found',
+  statusText: 'Страница не найдена',
 })
 ```
 

@@ -34,7 +34,7 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 
 Проп `hydrateOnVisible` необязателен; объект настраивает поведение IntersectionObserver.
 
-::read-more{to="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver" title="IntersectionObserver options"}
+::read-more{to="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver" title="Опции IntersectionObserver"}
 Опции для `hydrate-on-visible`.
 ::
 

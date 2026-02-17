@@ -28,7 +28,7 @@ links:
 const route = useRoute()
 const { data } = await useFetch(`/api/movies/${route.params.slug}`)
 if (!data.value) {
-  throw createError({ status: 404, statusText: 'Page Not Found' })
+  throw createError({ status: 404, statusText: 'Страница не найдена' })
 }
 </script>
 ```
@@ -43,7 +43,7 @@ if (!data.value) {
 export default eventHandler(() => {
   throw createError({
     status: 404,
-    statusText: 'Page Not Found',
+    statusText: 'Страница не найдена',
   })
 })
 ```

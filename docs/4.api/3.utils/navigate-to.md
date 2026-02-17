@@ -24,13 +24,13 @@ links:
 
 ```vue
 <script setup lang="ts">
-// passing 'to' as a string
+// строка URL
 await navigateTo('/search')
 
-// ... or as a route object
+// или объект маршрута
 await navigateTo({ path: '/search' })
 
-// ... or as a route object with query parameters
+// или объект с query-параметрами
 await navigateTo({
   path: '/search',
   query: {
@@ -46,7 +46,7 @@ await navigateTo({
 ```ts
 export default defineNuxtRouteMiddleware((to, from) => {
   if (to.path !== '/search') {
-    // setting the redirect code to '301 Moved Permanently'
+    // код редиректа 301 Moved Permanently
     return navigateTo('/search', { redirectCode: 301 })
   }
 })
@@ -59,7 +59,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 ```ts
 export default defineNuxtRouteMiddleware((to, from) => {
   if (to.path !== '/search') {
-    // ❌ This will not work as expected
+    // ❌ Так не сработает
     navigateTo('/search', { redirectCode: 301 })
     return
   }
@@ -86,11 +86,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 ```vue
 <script setup lang="ts">
-// will throw an error;
-// navigating to an external URL is not allowed by default
+// вызовет ошибку: внешние URL по умолчанию запрещены
 await navigateTo('https://nuxt.com')
 
-// will redirect successfully with the 'external' parameter set to 'true'
+// редирект с параметром external: true
 await navigateTo('https://nuxt.com', {
   external: true,
 })
@@ -101,7 +100,7 @@ await navigateTo('https://nuxt.com', {
 
 ```vue
 <script setup lang="ts">
-// will open 'https://nuxt.com' in a new tab
+// откроет https://nuxt.com в новой вкладке
 await navigateTo('https://nuxt.com', {
   open: {
     target: '_blank',

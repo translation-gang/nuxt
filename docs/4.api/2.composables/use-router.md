@@ -38,7 +38,7 @@ const router = useRouter()
 - [`hasRoute()`](https://router.vuejs.org/api/interfaces/router#hasRoute-): проверить наличие маршрута по имени.
 - [`resolve()`](https://router.vuejs.org/api/interfaces/router#resolve-): нормализованная версия локации маршрута, включая свойство `href` с учётом base.
 
-```ts [Example]
+```ts [Пример]
 const router = useRouter()
 
 router.addRoute({ name: 'home', path: '/home', component: Home })
@@ -60,7 +60,7 @@ router.resolve({ name: 'home' })
 - [`push()`](https://router.vuejs.org/api/interfaces/router#push-): программная навигация с добавлением записи в историю. **Рекомендуется использовать [`navigateTo`](/docs/4.x/api/utils/navigate-to).**
 - [`replace()`](https://router.vuejs.org/api/interfaces/router#replace-): программная навигация с заменой текущей записи в истории. **Рекомендуется использовать [`navigateTo`](/docs/4.x/api/utils/navigate-to).**
 
-```ts [Example]
+```ts [Пример]
 const router = useRouter()
 
 router.back()

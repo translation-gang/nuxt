@@ -91,7 +91,7 @@ counter.value ||= Math.round(Math.random() * 1000)
   <div>
     <h1>Counter: {{ counter || '-' }}</h1>
     <button @click="counter = null">
-      reset
+      сброс
     </button>
     <button @click="counter--">
       -
@@ -122,7 +122,7 @@ if (user.value) {
 </script>
 
 <template>
-  <div>User score: {{ user?.score }}</div>
+  <div>Очки пользователя: {{ user?.score }}</div>
 </template>
 ```
 
@@ -151,13 +151,13 @@ function save () {
 
 <template>
   <div>
-    <h1>List</h1>
+    <h1>Список</h1>
     <pre>{{ list }}</pre>
     <button @click="add">
-      Add
+      Добавить
     </button>
     <button @click="save">
-      Save
+      Сохранить
     </button>
   </div>
 </template>

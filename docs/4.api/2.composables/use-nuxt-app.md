@@ -30,7 +30,7 @@ const nuxtApp = useNuxtApp()
 const nuxtApp = useNuxtApp()
 nuxtApp.provide('hello', name => `Hello ${name}!`)
 
-// Prints "Hello name!"
+// Выведет "Hello name!"
 console.log(nuxtApp.$hello('name'))
 ```
 
@@ -47,7 +47,7 @@ console.log(nuxtApp.$hello('name'))
 ```ts [app/plugins/test.ts]
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('page:start', () => {
-    /* your code goes here */
+    /* ваш код */
   })
   nuxtApp.hook('vue:error', (..._args) => {
     console.log('vue:error')
@@ -126,7 +126,7 @@ await nuxtApp.callHook('my-plugin:init')
   })
   ```
 
-  It is also possible to use more advanced types, such as `ref`, `reactive`, `shallowRef`, `shallowReactive` and `NuxtError`.
+  Также поддерживаются расширенные типы: `ref`, `reactive`, `shallowRef`, `shallowReactive` и `NuxtError`.
 
 #### Собственный reducer/reviver
 
@@ -206,7 +206,7 @@ const result = nuxtApp.runWithContext(() => functionWithContext())
 
 #### Подробнее о контексте
 
-Composition API Vue (и композаблы Nuxt) опираются на неявный контекст. Vue сохраняет текущий экземпляр компонента (а Nuxt — nuxtApp) в глобальную переменную и сбрасывает её в том же тике. На сервере обрабатываются запросы разных пользователей в одном глобальном контексте, поэтому Nuxt и Vue сбрасывают экземпляр сразу после использования, чтобы не утекала общая ссылка.
+Composition API Vue и композаблы Nuxt опираются на неявный контекст. Vue сохраняет текущий экземпляр компонента (а Nuxt — nuxtApp) в глобальную переменную и сбрасывает её в том же тике. На сервере обрабатываются запросы разных пользователей в одном глобальном контексте, поэтому Nuxt и Vue сбрасывают экземпляр сразу после использования, чтобы не утекала общая ссылка.
 
 Итог: Composition API и композаблы Nuxt доступны только в рамках жизненного цикла и до первого await:
 

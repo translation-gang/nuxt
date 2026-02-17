@@ -82,7 +82,7 @@ const { data } = await useAsyncData(() => $fetch('/api/cookies'))
 ```ts [server/api/cookies.ts]
 export default defineEventHandler((event) => {
   const foo = getCookie(event, 'foo')
-  // ... Do something with the cookie
+  // ... работа с cookie
 })
 ```
 ::

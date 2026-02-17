@@ -35,11 +35,11 @@ useSeoMeta({
 
 ```vue [app/app.vue]
 <script setup lang="ts">
-const title = ref('My title')
+const title = ref('Мой заголовок')
 
 useSeoMeta({
   title,
-  description: () => `This is a description for the ${title.value} page`,
+  description: () => `Описание страницы: ${title.value}`,
 })
 </script>
 ```
@@ -62,13 +62,13 @@ if (import.meta.server) {
   // эти метатеги добавляются только при SSR
   useSeoMeta({
     robots: 'index, follow',
-    description: 'Static description that does not need reactivity',
+    description: 'Статическое описание без реактивности',
     ogImage: 'https://example.com/image.png',
     // другие статичные метатеги...
   })
 }
 
-const dynamicTitle = ref('My title')
+const dynamicTitle = ref('Мой заголовок')
 // реактивные метатеги — только когда нужны
 useSeoMeta({
   title: () => dynamicTitle.value,

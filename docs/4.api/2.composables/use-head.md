@@ -15,14 +15,14 @@ links:
 ```vue [app/app.vue]
 <script setup lang="ts">
 useHead({
-  title: 'My App',
+  title: 'Моё приложение',
   meta: [
-    { name: 'description', content: 'My amazing site.' },
+    { name: 'description', content: 'Мой замечательный сайт.' },
   ],
   bodyAttrs: {
     class: 'test',
   },
-  script: [{ innerHTML: 'console.log(\'Hello world\')' }],
+  script: [{ innerHTML: 'console.log(\'Привет, мир\')' }],
 })
 </script>
 ```
@@ -91,11 +91,11 @@ interface ActiveHeadEntry<Input> {
 ```vue [app/pages/about.vue]
 <script setup lang="ts">
 useHead({
-  title: 'About Us',
+  title: 'О нас',
   meta: [
-    { name: 'description', content: 'Learn more about our company' },
-    { property: 'og:title', content: 'About Us' },
-    { property: 'og:description', content: 'Learn more about our company' },
+    { name: 'description', content: 'Подробнее о нашей компании' },
+    { property: 'og:title', content: 'О нас' },
+    { property: 'og:description', content: 'Подробнее о нашей компании' },
   ],
 })
 </script>
@@ -105,14 +105,14 @@ useHead({
 
 ```vue [app/pages/profile.vue]
 <script setup lang="ts">
-const profile = ref({ name: 'John Doe' })
+const profile = ref({ name: 'Иван Иванов' })
 
 useHead({
   title: computed(() => profile.value.name),
   meta: [
     {
       name: 'description',
-      content: computed(() => `Profile page for ${profile.value.name}`),
+      content: computed(() => `Страница профиля: ${profile.value.name}`),
     },
   ],
 })
@@ -128,7 +128,7 @@ const count = ref(0)
 useHead(() => ({
   title: `Count: ${count.value}`,
   meta: [
-    { name: 'description', content: `Current count is ${count.value}` },
+    { name: 'description', content: `Текущее значение: ${count.value}` },
   ],
 }))
 </script>

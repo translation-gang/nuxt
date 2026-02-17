@@ -45,7 +45,7 @@ export default defineNuxtComponent({
 export default defineNuxtComponent({
   head (nuxtApp) {
     return {
-      title: 'My site',
+      title: 'Мой сайт',
     }
   },
 })
