@@ -1,6 +1,6 @@
 ---
 title: 'prefetchComponents'
-description: Nuxt provides utilities to give you control over prefetching components.
+description: "Утилиты для управления предзагрузкой компонентов."
 links:
   - label: Source
     icon: i-simple-icons-github

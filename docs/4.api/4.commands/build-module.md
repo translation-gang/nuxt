@@ -1,6 +1,6 @@
 ---
 title: 'nuxt build-module'
-description: 'Nuxt command to build your Nuxt module before publishing.'
+description: "Сборка модуля Nuxt перед публикацией."
 links:
   - label: Source
     icon: i-simple-icons-github

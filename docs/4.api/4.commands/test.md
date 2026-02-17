@@ -1,6 +1,6 @@
 ---
 title: "nuxt test"
-description: The test command runs tests using @nuxt/test-utils.
+description: "Запуск тестов через @nuxt/test-utils."
 links:
   - label: Source
     icon: i-simple-icons-github

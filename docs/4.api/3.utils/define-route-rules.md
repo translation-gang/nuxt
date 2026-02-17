@@ -1,6 +1,6 @@
 ---
 title: 'defineRouteRules'
-description: 'Define route rules for hybrid rendering at the page level.'
+description: "Правила маршрутов для гибридного рендеринга на уровне страницы."
 links:
   - label: Source
     icon: i-simple-icons-github

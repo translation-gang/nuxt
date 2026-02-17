@@ -1,6 +1,6 @@
 ---
 title: 'useRequestFetch'
-description: 'Forward the request context and headers for server-side fetch requests with the useRequestFetch composable.'
+description: 'Проброс контекста запроса и заголовков для серверных fetch-запросов.'
 links:
   - label: Source
     icon: i-simple-icons-github

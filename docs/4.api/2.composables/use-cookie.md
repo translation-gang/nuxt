@@ -1,6 +1,6 @@
 ---
 title: 'useCookie'
-description: useCookie is an SSR-friendly composable to read and write cookies.
+description: 'SSR-совместимый компосабл для чтения и записи cookies.'
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -8,23 +8,23 @@ links:
     size: xs
 ---
 
-## Usage
+## Использование
 
-Within your pages, components, and plugins, you can use `useCookie` to read and write cookies in an SSR-friendly way.
+В страницах, компонентах и плагинах можно использовать `useCookie` для чтения и записи cookies с учётом SSR.
 
 ```ts
 const cookie = useCookie(name, options)
 ```
 
 ::note
-`useCookie` only works in the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
+`useCookie` работает только в [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ::tip
-The returned ref will automatically serialize and deserialize cookie values to JSON.
+Возвращаемый ref автоматически сериализует и десериализует значения cookie в JSON.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 import type { Ref } from 'vue'
@@ -46,13 +46,13 @@ export function useCookie<T = string | null | undefined> (
 ): CookieRef<T>
 ```
 
-## Parameters
+## Параметры
 
-`name`: The name of the cookie.
+`name`: Имя cookie.
 
-`options`: Options to control cookie behavior. The object can have the following properties:
+`options`: Настройки поведения cookie. Объект может содержать следующие свойства:
 
-Most of the options will be directly passed to the [cookie](https://github.com/jshttp/cookie) package.
+Большинство опций передаётся в пакет [cookie](https://github.com/jshttp/cookie).
 
 | Property      | Type                   | Default                                                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |---------------|------------------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -70,15 +70,15 @@ Most of the options will be directly passed to the [cookie](https://github.com/j
 | `path`        | `string`               | `'/'`                                                          | Sets the [`Path` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.4). By default, the path is considered the ["default path"](https://datatracker.ietf.org/doc/html/rfc6265#section-5.1.4).                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `sameSite`    | `boolean \| string`    | `undefined`                                                    | Sets the [`SameSite` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.2.7). <br/>- `true` will set the `SameSite` attribute to `Strict` for strict same-site enforcement.<br/>- `false` will not set the `SameSite` attribute.<br/>- `'lax'` will set the `SameSite` attribute to `Lax` for lax same-site enforcement.<br/>- `'none'` will set the `SameSite` attribute to `None` for an explicit cross-site cookie.<br/>- `'strict'` will set the `SameSite` attribute to `Strict` for strict same-site enforcement.                                                                    |
 
-## Return Values
+## Возвращаемое значение
 
-Returns a Vue `Ref<T>` representing the cookie value. Updating the ref will update the cookie (unless `readonly` is set). The ref is SSR-friendly and will work on both client and server.
+Vue `Ref<T>` со значением cookie. Изменение ref обновляет cookie (если не задано `readonly`). Ref совместим с SSR и работает на клиенте и сервере.
 
-## Examples
+## Примеры
 
-### Basic Usage
+### Базовое использование
 
-The example below creates a cookie called `counter`. If the cookie doesn't exist, it is initially set to a random value. Whenever we update the `counter` variable, the cookie will be updated accordingly.
+В примере создаётся cookie `counter`. Если его нет, задаётся случайное значение. При обновлении переменной `counter` обновляется и cookie.
 
 ```vue [app/app.vue]
 <script setup lang="ts">
@@ -103,7 +103,7 @@ counter.value ||= Math.round(Math.random() * 1000)
 </template>
 ```
 
-### Readonly Cookies
+### Только чтение
 
 ```vue
 <script setup lang="ts">
@@ -116,7 +116,7 @@ const user = useCookie(
 )
 
 if (user.value) {
-  // the actual `userInfo` cookie will not be updated
+  // фактический cookie `userInfo` не обновится
   user.value.score++
 }
 </script>
@@ -126,7 +126,7 @@ if (user.value) {
 </template>
 ```
 
-### Writable Cookies
+### Записываемые cookies
 
 ```vue
 <script setup lang="ts">
@@ -140,11 +140,11 @@ const list = useCookie(
 
 function add () {
   list.value?.push(Math.round(Math.random() * 1000))
-  // list cookie won't be updated with this change
+  // cookie list от этого не обновится
 }
 
 function save () {
-  // the actual `list` cookie will be updated
+  // cookie list обновится
   list.value &&= [...list.value]
 }
 </script>
@@ -163,19 +163,19 @@ function save () {
 </template>
 ```
 
-### Cookies in API Routes
+### Cookies в API-маршрутах
 
-You can use `getCookie` and `setCookie` from [`h3`](https://github.com/h3js/h3) package to set cookies in server API routes.
+В серверных API-маршрутах для работы с cookies используйте `getCookie` и `setCookie` из пакета [`h3`](https://github.com/h3js/h3).
 
 ```ts [server/api/counter.ts]
 export default defineEventHandler((event) => {
-  // Read counter cookie
+  // Чтение cookie counter
   let counter = getCookie(event, 'counter') || 0
 
-  // Increase counter cookie by 1
+  // Увеличение counter на 1
   setCookie(event, 'counter', ++counter)
 
-  // Send JSON response
+  // JSON-ответ
   return { counter }
 })
 ```

@@ -1,6 +1,6 @@
 ---
 title: 'setResponseStatus'
-description: setResponseStatus sets the status (and optionally the statusText) of the response.
+description: "Установка кода (и при необходимости statusText) ответа сервера."
 links:
   - label: Source
     icon: i-simple-icons-github

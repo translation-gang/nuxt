@@ -1,6 +1,6 @@
 ---
 title: "clearError"
-description: "The clearError composable clears all handled errors."
+description: "Очистка всех обработанных ошибок."
 links:
   - label: Source
     icon: i-simple-icons-github

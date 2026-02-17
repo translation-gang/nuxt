@@ -1,6 +1,6 @@
 ---
 title: "nuxt generate"
-description: Pre-renders every route of the application and stores the result in plain HTML files.
+description: "Предварительный рендер всех маршрутов в статические HTML-файлы."
 links:
   - label: Source
     icon: i-simple-icons-github

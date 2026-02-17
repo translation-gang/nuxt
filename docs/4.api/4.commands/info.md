@@ -1,6 +1,6 @@
 ---
 title: "nuxt info"
-description: The info command logs information about the current or specified Nuxt project.
+description: "Вывод информации о текущем или указанном проекте Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github

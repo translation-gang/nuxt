@@ -1,6 +1,6 @@
 ---
 title: useLazyAsyncData
-description: This wrapper around useAsyncData triggers navigation immediately.
+description: 'Обёртка над useAsyncData: навигация выполняется сразу, без ожидания данных.'
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: 'abortNavigation'
-description: 'abortNavigation is a helper function that prevents navigation from taking place and throws an error if one is set as a parameter.'
+description: "Отмена навигации с возможностью выброса ошибки."
 links:
   - label: Source
     icon: i-simple-icons-github

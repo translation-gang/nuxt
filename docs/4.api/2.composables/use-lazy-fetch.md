@@ -1,6 +1,6 @@
 ---
 title: 'useLazyFetch'
-description: This wrapper around useFetch triggers navigation immediately.
+description: 'Обёртка над useFetch: навигация выполняется сразу, без ожидания загрузки.'
 links:
   - label: Source
     icon: i-simple-icons-github

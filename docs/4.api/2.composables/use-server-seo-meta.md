@@ -1,6 +1,6 @@
 ---
 title: 'useServerSeoMeta'
-description: The useServerSeoMeta composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+description: 'Определение SEO meta-тегов сайта в виде плоского объекта с поддержкой TypeScript (только сервер).'
 links:
   - label: Source
     icon: i-simple-icons-github

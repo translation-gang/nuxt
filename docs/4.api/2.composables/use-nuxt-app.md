@@ -1,6 +1,6 @@
 ---
 title: 'useNuxtApp'
-description: 'Access the shared runtime context of the Nuxt Application.'
+description: 'Доступ к общему runtime-контексту приложения Nuxt.'
 links:
   - label: Source
     icon: i-simple-icons-github

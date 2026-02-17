@@ -1,6 +1,6 @@
 ---
 title: "refreshCookie"
-description: "Refresh useCookie values manually when a cookie has changed"
+description: "Ручное обновление значений useCookie при изменении cookie."
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: "nuxt module"
-description: "Search and add modules to your Nuxt application with the command line."
+description: "Поиск и добавление модулей в приложение Nuxt из командной строки."
 links:
   - label: Source
     icon: i-simple-icons-github

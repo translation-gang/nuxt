@@ -1,6 +1,6 @@
 ---
 title: useRuntimeHook
-description: Registers a runtime hook in a Nuxt application and ensures it is properly disposed of when the scope is destroyed.
+description: 'Регистрирует runtime-хук в приложении Nuxt и гарантирует его очистку при уничтожении области видимости.'
 links:
   - label: Source
     icon: i-simple-icons-github

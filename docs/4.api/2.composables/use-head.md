@@ -1,6 +1,6 @@
 ---
 title: useHead
-description: useHead customizes the head properties of individual pages of your Nuxt app.
+description: 'Настройка свойств head для отдельных страниц приложения Nuxt.'
 links:
   - label: Source
     icon: i-simple-icons-github

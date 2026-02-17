@@ -1,6 +1,6 @@
 ---
 title: 'setPageLayout'
-description: setPageLayout allows you to dynamically change the layout of a page.
+description: "Динамическая смена макета страницы."
 links:
   - label: Source
     icon: i-simple-icons-github

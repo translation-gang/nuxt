@@ -1,6 +1,6 @@
 ---
 title: 'useNuxtData'
-description: 'Access the current cached value of data fetching composables.'
+description: 'Доступ к текущему закэшированному значению компосаблов загрузки данных.'
 links:
   - label: Source
     icon: i-simple-icons-github

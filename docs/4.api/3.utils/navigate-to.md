@@ -1,6 +1,6 @@
 ---
 title: "navigateTo"
-description: navigateTo is a helper function that programmatically navigates users.
+description: "Программная навигация пользователя."
 links:
   - label: Source
     icon: i-simple-icons-github

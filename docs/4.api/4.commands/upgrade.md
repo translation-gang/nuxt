@@ -1,6 +1,6 @@
 ---
 title: "nuxt upgrade"
-description: The upgrade command upgrades Nuxt to the latest version.
+description: "Обновление Nuxt до последней версии."
 links:
   - label: Source
     icon: i-simple-icons-github

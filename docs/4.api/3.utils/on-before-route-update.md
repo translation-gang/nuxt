@@ -1,6 +1,6 @@
 ---
 title: "onBeforeRouteUpdate"
-description: The onBeforeRouteUpdate composable allows registering a route guard within a component.
+description: "Регистрация гарда при обновлении маршрута в компоненте."
 links:
   - label: Source
     icon: i-simple-icons-github

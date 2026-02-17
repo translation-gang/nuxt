@@ -1,6 +1,6 @@
 ---
 title: 'reloadNuxtApp'
-description: reloadNuxtApp will perform a hard reload of the page.
+description: "Полная перезагрузка страницы."
 links:
   - label: Source
     icon: i-simple-icons-github

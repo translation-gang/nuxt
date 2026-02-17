@@ -1,6 +1,6 @@
 ---
 title: 'prerenderRoutes'
-description: prerenderRoutes hints to Nitro to prerender an additional route.
+description: "Указание Nitro предварительно отрендерить дополнительный маршрут."
 links:
   - label: Source
     icon: i-simple-icons-github

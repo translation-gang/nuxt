@@ -1,6 +1,6 @@
 ---
 title: 'defineLazyHydrationComponent'
-description: 'Define a lazy hydration component with a specific strategy.'
+description: "Определение компонента с отложенной гидратацией и выбранной стратегией."
 links:
   - label: Source
     icon: i-simple-icons-github

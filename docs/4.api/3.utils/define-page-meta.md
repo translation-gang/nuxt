@@ -1,6 +1,6 @@
 ---
 title: 'definePageMeta'
-description: 'Define metadata for your page components.'
+description: "Метаданные страничных компонентов."
 links:
   - label: Source
     icon: i-simple-icons-github

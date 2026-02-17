@@ -1,6 +1,6 @@
 ---
 title: 'clearNuxtState'
-description: Delete the cached state of useState.
+description: "Очистка закэшированного состояния useState."
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: "defineNuxtRouteMiddleware"
-description: "Create named route middleware using defineNuxtRouteMiddleware helper function."
+description: "Создание именованного route middleware."
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: "useRequestHeader"
-description: "Use useRequestHeader to access a certain incoming request header."
+description: "Доступ к указанному заголовку входящего запроса."
 links:
   - label: Source
     icon: i-simple-icons-github

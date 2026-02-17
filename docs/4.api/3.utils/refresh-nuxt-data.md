@@ -1,6 +1,6 @@
 ---
 title: 'refreshNuxtData'
-description: Refresh all or specific asyncData instances in Nuxt
+description: "Обновление всех или выбранных экземпляров asyncData в Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github

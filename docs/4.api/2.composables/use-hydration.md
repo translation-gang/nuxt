@@ -1,6 +1,6 @@
 ---
 title: 'useHydration'
-description: 'Allows full control of the hydration cycle to set and receive data from the server.'
+description: 'Полный контроль над циклом гидратации для передачи и получения данных с сервера.'
 links:
   - label: Source
     icon: i-simple-icons-github

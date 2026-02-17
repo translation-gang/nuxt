@@ -1,6 +1,6 @@
 ---
 title: 'clearNuxtData'
-description: Delete cached data, error status and pending promises of useAsyncData and useFetch.
+description: "Очистка кэша, статуса ошибки и ожидающих промисов useAsyncData и useFetch."
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: "nuxt preview"
-description: The preview command starts a server to preview your application after the build command.
+description: "Сервер для предпросмотра приложения после сборки."
 links:
   - label: Source
     icon: i-simple-icons-github

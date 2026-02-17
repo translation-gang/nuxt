@@ -1,6 +1,6 @@
 ---
 title: "nuxt build"
-description: "Build your Nuxt application."
+description: "Сборка приложения Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github

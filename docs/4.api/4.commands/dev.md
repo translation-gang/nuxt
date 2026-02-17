@@ -1,6 +1,6 @@
 ---
 title: 'nuxt dev'
-description: The dev command starts a development server with hot module replacement at http://localhost:3000
+description: "Запуск dev-сервера с HMR на http://localhost:3000."
 links:
   - label: Source
     icon: i-simple-icons-github

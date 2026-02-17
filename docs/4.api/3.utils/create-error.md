@@ -1,6 +1,6 @@
 ---
 title: 'createError'
-description: Create an error object with additional metadata.
+description: "Создание объекта ошибки с дополнительными метаданными."
 links:
   - label: Source
     icon: i-simple-icons-github

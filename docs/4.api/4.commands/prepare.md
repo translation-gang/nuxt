@@ -1,6 +1,6 @@
 ---
 title: 'nuxt prepare'
-description: The prepare command creates a .nuxt directory in your application and generates types.
+description: "Создание директории .nuxt и генерация типов."
 links:
   - label: Source
     icon: i-simple-icons-github

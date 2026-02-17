@@ -1,6 +1,6 @@
 ---
 title: "defineNuxtPlugin"
-description: defineNuxtPlugin() is a helper function for creating Nuxt plugins.
+description: "Хелпер для создания Nuxt-плагинов."
 links:
   - label: Source
     icon: i-simple-icons-github

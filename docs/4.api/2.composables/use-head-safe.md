@@ -1,6 +1,6 @@
 ---
 title: useHeadSafe
-description: The recommended way to provide head data with user input.
+description: 'Рекомендуемый способ задавать данные head при наличии пользовательского ввода.'
 links:
   - label: Source
     icon: i-simple-icons-github

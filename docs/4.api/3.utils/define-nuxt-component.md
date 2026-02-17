@@ -1,6 +1,6 @@
 ---
 title: "defineNuxtComponent"
-description: defineNuxtComponent() is a helper function for defining type safe components with Options API.
+description: "Хелпер для определения типобезопасных компонентов в Options API."
 links:
   - label: Source
     icon: i-simple-icons-github

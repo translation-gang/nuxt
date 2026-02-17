@@ -1,6 +1,6 @@
 ---
 title: "nuxt typecheck"
-description: The typecheck command runs vue-tsc to check types throughout your app.
+description: "Проверка типов в приложении через vue-tsc."
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: 'useRequestEvent'
-description: 'Access the incoming request event with the useRequestEvent composable.'
+description: 'Доступ к объекту входящего запроса (event).'
 links:
   - label: Source
     icon: i-simple-icons-github

@@ -1,6 +1,6 @@
 ---
 title: "nuxt analyze"
-description: "Analyze the production bundle or your Nuxt application."
+description: "Анализ production-бандла приложения Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github

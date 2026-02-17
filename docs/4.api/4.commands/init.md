@@ -1,6 +1,6 @@
 ---
 title: "create nuxt"
-description: The init command initializes a fresh Nuxt project.
+description: "Создание нового проекта Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github

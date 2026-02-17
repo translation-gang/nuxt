@@ -1,6 +1,6 @@
 ---
 title: "nuxt add"
-description: "Scaffold an entity into your Nuxt application."
+description: "Добавление сущности (модуля и т.п.) в приложение Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github

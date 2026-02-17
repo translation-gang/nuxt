@@ -1,6 +1,6 @@
 ---
 title: "useResponseHeader"
-description: "Use useResponseHeader to set a server response header."
+description: "Установка заголовка ответа сервера."
 links:
   - label: Source
     icon: i-simple-icons-github

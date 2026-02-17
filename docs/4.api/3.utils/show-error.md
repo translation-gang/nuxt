@@ -1,6 +1,6 @@
 ---
 title: 'showError'
-description: Nuxt provides a quick and simple way to show a full screen error page if needed.
+description: "Показ полноэкранной страницы ошибки."
 links:
   - label: Source
     icon: i-simple-icons-github
