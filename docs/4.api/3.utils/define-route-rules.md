@@ -9,7 +9,7 @@ links:
 ---
 
 ::read-more{to="/docs/4.x/guide/going-further/experimental-features#inlinerouterules" icon="i-lucide-star"}
-This feature is experimental and in order to use it you must enable the `experimental.inlineRouteRules` option in your `nuxt.config`.
+Функция экспериментальная; для использования включите опцию `experimental.inlineRouteRules` в `nuxt.config`.
 ::
 
 ## Использование

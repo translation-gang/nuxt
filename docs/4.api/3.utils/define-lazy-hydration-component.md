@@ -152,7 +152,7 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 const isReady = ref(false)
 
 function myFunction () {
-  // Trigger custom hydration strategy...
+  // Запуск своей стратегии гидрации...
   isReady.value = true
 }
 </script>
