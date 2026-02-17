@@ -1,20 +1,19 @@
 ---
-navigation.title: 'Nuxt Plugins'
-title: Nuxt Plugins
-description: Best practices when using Nuxt plugins.
+navigation.title: 'Плагины Nuxt'
+title: Плагины Nuxt
+description: Рекомендации по использованию плагинов Nuxt.
 ---
 
-Plugins in Nuxt allow you to extend your application with additional functionality. However, improper use can lead to performance bottlenecks. This guide outlines best practices to optimize your Nuxt plugins.
+Плагины в Nuxt позволяют расширять приложение дополнительной логикой. Неудачное использование может привести к проблемам с производительностью. В этом разделе — рекомендации по оптимизации плагинов.
 
-## Avoid costly plugin setup
+## Избегайте тяжёлой инициализации плагинов
 
-A large number of plugins can cause performance issues, especially if they require expensive computations or take too long to initialize. Since plugins run during the hydration phase, inefficient setups can block rendering and degrade the user experience.
+Большое число плагинов или плагины с дорогими вычислениями и долгой инициализацией могут ухудшать производительность. Плагины выполняются во время гидрации, поэтому тяжёлая настройка может блокировать отрисовку и ухудшать опыт пользователя.
 
-## Use Composition whenever possible
+## Предпочитайте композицию плагинам
 
-Whenever possible, favor composition over plugins. Just like in Vue, many utilities and composables can be used directly without the need for a plugin. This keeps your project lightweight and improves maintainability.
+По возможности используйте композицию вместо плагинов. Как и во Vue, многие утилиты и композаблы можно вызывать напрямую без плагина. Это уменьшает вес проекта и упрощает поддержку.
 
-## If `async`, enable `parallel`
+## Для асинхронных плагинов включайте `parallel`
 
-By default, all plugins loads synchronously.
-When defining asynchronous plugins, setting `parallel: true` allows multiple plugins to load concurrently, improving performance by preventing blocking operations.
+По умолчанию все плагины загружаются синхронно. Для асинхронных плагинов опция `parallel: true` позволяет загружать несколько плагинов одновременно и уменьшает блокировки.

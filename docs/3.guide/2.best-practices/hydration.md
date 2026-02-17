@@ -1,68 +1,68 @@
 ---
-navigation.title: 'Nuxt and hydration'
-title: Nuxt and hydration
-description: Why fixing hydration issues is important
+navigation.title: 'Nuxt и гидрация'
+title: Nuxt и гидрация
+description: Почему важно исправлять проблемы гидрации
 ---
 
-When developing, you may face hydration issues. Don't ignore those warnings.
+При разработке могут появляться предупреждения о гидрации. Не игнорируйте их.
 
-# Why is it important to fix them?
+# Почему их важно исправлять?
 
-Hydration mismatches are not just warnings - they are indicators of serious problems that can break your application:
+Рассинхрон при гидрации — не просто предупреждение, а признак серьёзных проблем, которые могут сломать приложение:
 
-## Performance Impact
+## Влияние на производительность
 
-- **Increased time to interactive**: Hydration errors force Vue to re-render the entire component tree, which will increase the time for your Nuxt app to become interactive
-- **Poor user experience**: Users may see content flashing or unexpected layout shifts
+- **Увеличение времени до интерактивности**: ошибки гидрации заставляют Vue перерисовывать всё дерево компонентов, из‑за чего приложение дольше становится интерактивным
+- **Плохой UX**: пользователь может видеть мигание контента или неожиданные сдвиги верстки
 
-## Functionality Issues
+## Проблемы с работой приложения
 
-- **Broken interactivity**: Event listeners may not attach properly, leaving buttons and forms non-functional
-- **State inconsistencies**: Application state can become out of sync between what the user sees and what the application thinks is rendered
-- **SEO problems**: Search engines may index different content than what users actually see
+- **Сломанная интерактивность**: обработчики событий могут не подключаться, кнопки и формы перестают работать
+- **Несогласованное состояние**: то, что видит пользователь, может не совпадать с состоянием приложения
+- **Проблемы с SEO**: поисковики могут проиндексировать другой контент, чем видят пользователи
 
-# How to detect them
+# Как их обнаружить
 
-## Development Console Warnings
+## Предупреждения в консоли разработки
 
-Vue will log hydration mismatch warnings in the browser console during development:
+Vue выводит предупреждения о рассинхроне гидрации в консоль браузера в режиме разработки:
 
-![Screenshot of Vue hydration mismatch warning in the browser console](/assets/docs/best-practices/vue-console-hydration.png)
+![Скриншот предупреждения Vue о рассинхроне гидрации в консоли](/assets/docs/best-practices/vue-console-hydration.png)
 
-# Common reasons
+# Типичные причины
 
-## Browser-only APIs in Server Context
+## API только для браузера в серверном контексте
 
-**Problem**: Using browser-specific APIs during server-side rendering.
+**Проблема**: использование API браузера при серверном рендеринге.
 
 ```html
 <template>
-  <div>User preference: {{ userTheme }}</div>
+  <div>Тема: {{ userTheme }}</div>
 </template>
 
 <script setup>
-// This will cause hydration mismatch!
-// localStorage doesn't exist on the server!
+// Вызовет рассинхрон гидрации!
+// localStorage нет на сервере!
 const userTheme = localStorage.getItem('theme') || 'light'
 </script>
 ```
 
-**Solution**: You can use [`useCookie`](/docs/4.x/api/composables/use-cookie):
+**Решение**: используйте [`useCookie`](/docs/4.x/api/composables/use-cookie):
 
 ```html
 <template>
-  <div>User preference: {{ userTheme }}</div>
+  <div>Тема: {{ userTheme }}</div>
 </template>
 
 <script setup>
-// This works on both server and client
+// Работает и на сервере, и на клиенте
 const userTheme = useCookie('theme', { default: () => 'light' })
 </script>
 ```
 
-## Inconsistent Data
+## Разные данные на сервере и клиенте
 
-**Problem**: Different data between server and client.
+**Проблема**: данные отличаются на сервере и клиенте.
 
 ```html
 <template>
@@ -70,7 +70,7 @@ const userTheme = useCookie('theme', { default: () => 'light' })
 </template>
 ```
 
-**Solution**: Use SSR-friendly state:
+**Решение**: используйте состояние, совместимое с SSR:
 
 ```html
 <template>
@@ -82,32 +82,32 @@ const state = useState('random', () => Math.random())
 </script>
 ```
 
-## Conditional Rendering Based on Client State
+## Условный рендеринг по состоянию клиента
 
-**Problem**: Using client-only conditions during SSR.
+**Проблема**: условия, зависящие только от клиента, при SSR.
 
 ```html
 <template>
   <div v-if="window?.innerWidth > 768">
-    Desktop content
+    Контент для десктопа
   </div>
 </template>
 ```
 
-**Solution**: Use media queries or handle it client-side:
+**Решение**: медиа-запросы или обработка на клиенте:
 
 ```html
 <template>
   <div class="responsive-content">
-    <div class="hidden md:block">Desktop content</div>
-    <div class="md:hidden">Mobile content</div>
+    <div class="hidden md:block">Контент для десктопа</div>
+    <div class="md:hidden">Контент для мобильных</div>
   </div>
 </template>
 ```
 
-## Third-party Libraries with Side Effects
+## Сторонние библиотеки с побочными эффектами
 
-**Problem**: Libraries that modify the DOM or have browser dependencies (this happens a LOT with tag managers).
+**Проблема**: библиотеки, меняющие DOM или зависящие от браузера (часто бывает с тег-менеджерами).
 
 ```html
 <script setup>
@@ -118,7 +118,7 @@ if (import.meta.client) {
 </script>
 ```
 
-**Solution**: Initialise libraries after hydration has completed:
+**Решение**: инициализируйте библиотеки после завершения гидрации:
 
 ```html
 <script setup>
@@ -129,9 +129,9 @@ onMounted(async () => {
 </script>
 ```
 
-## Dynamic Content Based on Time
+## Динамический контент по времени
 
-**Problem**: Content that changes based on current time.
+**Проблема**: контент зависит от текущего времени.
 
 ```html
 <template>
@@ -140,11 +140,11 @@ onMounted(async () => {
 
 <script setup>
 const hour = new Date().getHours()
-const greeting = hour < 12 ? 'Good morning' : 'Good afternoon'
+const greeting = hour < 12 ? 'Доброе утро' : 'Добрый день'
 </script>
 ```
 
-**Solution**: Use [`NuxtTime`](/docs/4.x/api/components/nuxt-time) component or handle it client-side:
+**Решение**: компонент [`NuxtTime`](/docs/4.x/api/components/nuxt-time) или обработка на клиенте:
 
 ```html
 <template>
@@ -160,29 +160,29 @@ const greeting = hour < 12 ? 'Good morning' : 'Good afternoon'
     <ClientOnly>
       {{ greeting }}
       <template #fallback>
-        Hello!
+        Привет!
       </template>
     </ClientOnly>
   </div>
 </template>
 
 <script setup>
-const greeting = ref('Hello!')
+const greeting = ref('Привет!')
 
 onMounted(() => {
   const hour = new Date().getHours()
-  greeting.value = hour < 12 ? 'Good morning' : 'Good afternoon'
+  greeting.value = hour < 12 ? 'Доброе утро' : 'Добрый день'
 })
 </script>
 ```
 
-## In summary
+## Кратко
 
-1. **Use SSR-friendly composables**: [`useFetch`](/docs/4.x/api/composables/use-fetch), [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useState`](/docs/4.x/api/composables/use-state)
-2. **Wrap client-only code**: Use [`ClientOnly`](/docs/4.x/api/components/client-only) component for browser-specific content
-3. **Consistent data sources**: Ensure server and client uses the same data
-4. **Avoid side effects in setup**: Move browser-dependent code to `onMounted`
+1. **Используйте композаблы, совместимые с SSR**: [`useFetch`](/docs/4.x/api/composables/use-fetch), [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useState`](/docs/4.x/api/composables/use-state)
+2. **Оборачивайте код только для клиента**: компонент [`ClientOnly`](/docs/4.x/api/components/client-only) для контента, зависящего от браузера
+3. **Одинаковые источники данных**: данные на сервере и клиенте должны совпадать
+4. **Без побочных эффектов в setup**: переносите код, зависящий от браузера, в `onMounted`
 
 ::tip
-You can read the [Vue documentation on SSR hydration mismatch](https://vuejs.org/guide/scaling-up/ssr#hydration-mismatch) for a better understanding of hydration.
+Подробнее о рассинхроне гидрации — в [документации Vue по SSR](https://vuejs.org/guide/scaling-up/ssr#hydration-mismatch).
 ::

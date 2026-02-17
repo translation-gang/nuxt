@@ -1,31 +1,31 @@
 ---
-navigation.title: 'Nuxt Performance'
-title: Nuxt performance
-description: Best practices for improving performance of Nuxt apps.
+navigation.title: 'Производительность Nuxt'
+title: Производительность Nuxt
+description: Рекомендации по повышению производительности приложений Nuxt.
 ---
 
-Nuxt comes with built-in features designed to improve your application's performance and contribute to better [Core Web Vitals](https://web.dev/articles/vitals). There are also multiple Nuxt core modules that assist in improving performance in specific areas. This guide outlines best practices to optimize performance of your Nuxt application.
+В Nuxt есть встроенные возможности для повышения производительности и улучшения [Core Web Vitals](https://web.dev/articles/vitals). Есть и модули ядра Nuxt для точечной оптимизации. В этом разделе — рекомендации по производительности.
 
-## Built-in Features
+## Встроенные возможности
 
-Nuxt offers several built-in features that help you optimize performance of your website. Understanding how these features work is crucial for achieving blazingly-fast performance.
+Nuxt предоставляет несколько встроенных возможностей для оптимизации. Понимание их работы важно для достижения высокой скорости.
 
-### Links
+### Ссылки
 
-[`<NuxtLink>`](/docs/4.x/api/components/nuxt-link) is a drop-in replacement for both Vue Router's `<RouterLink>` component and HTML's `<a>` tag. It intelligently determines whether the link is internal or external and renders it accordingly with available optimizations (prefetching, default attributes, etc.)
+[`<NuxtLink>`](/docs/4.x/api/components/nuxt-link) заменяет и `<RouterLink>` Vue Router, и обычный `<a>`. Компонент определяет внутренняя ссылка или внешняя и рендерит её с учётом оптимизаций (префетч, атрибуты по умолчанию и т.д.)
 
 ```html
 <template>
-  <NuxtLink to="/about">About page</NuxtLink>
+  <NuxtLink to="/about">О странице</NuxtLink>
 </template>
 
-<!-- Which will render to with Vue Router & Smart Prefetching -->
-<a href="/about">About page</a>
+<!-- Рендерится в ссылку с Vue Router и умным префетчем -->
+<a href="/about">О странице</a>
 ```
 
-Nuxt automatically includes smart prefetching. That means it detects when a link is visible (by default), either in the viewport or when scrolling and prefetches the JavaScript for those pages so that they are ready when the user clicks the link.
+В Nuxt по умолчанию включён умный префетч: когда ссылка попадает в зону видимости (по умолчанию — вьюпорт или при скролле), подгружается JavaScript целевой страницы, чтобы при клике она открывалась быстрее.
 
-You can also opt for prefetching on interaction instead:
+Можно включить префетч по взаимодействию:
 
 ```ts
 export default defineNuxtConfig({
@@ -41,11 +41,11 @@ export default defineNuxtConfig({
 
 :read-more{title="NuxtLink" to="/docs/4.x/api/components/nuxt-link"}
 
-### Hybrid Rendering
+### Гибридный рендеринг
 
-In more complex applications, we may need a full control over how our application is rendered to support cases where some pages could be generated at build time, while others should be client-side rendered
+В сложных приложениях может понадобиться гибко управлять тем, как рендерится приложение: часть страниц — при сборке, часть — на клиенте.
 
-Hybrid rendering allows different caching rules per route using Route Rules and decides how the server should respond to a new request on a given URL:
+Гибридный рендеринг задаёт разные правила кэширования по маршрутам через Route Rules:
 
 ```ts
 export default defineNuxtConfig({
@@ -66,13 +66,13 @@ export default defineNuxtConfig({
 })
 ```
 
-Nuxt server will automatically register corresponding middleware and wrap routes with cache handlers using Nitro caching layer.
+Nuxt автоматически регистрирует соответствующие middleware и оборачивает маршруты обработчиками кэша Nitro.
 
-:read-more{title="Hybrid rendering" to="/docs/4.x/guide/concepts/rendering#hybrid-rendering"}
+:read-more{title="Гибридный рендеринг" to="/docs/4.x/guide/concepts/rendering#hybrid-rendering"}
 
-### Lazy Loading Components
+### Ленивая загрузка компонентов
 
-To dynamically import a component (also known as lazy-loading a component) all you need to do is add the Lazy prefix to the component's name. This is useful if the component is not always needed.
+Чтобы подгружать компонент динамически (lazy-loading), добавьте префикс `Lazy` к имени компонента. Это полезно, когда компонент нужен не всегда.
 
 ```html
 <script setup lang="ts">
@@ -81,20 +81,20 @@ const show = ref(false)
 
 <template>
   <div>
-    <h1>Mountains</h1>
+    <h1>Горы</h1>
     <LazyMountainsList v-if="show" />
-    <button v-if="!show" @click="show = true">Show List</button>
+    <button v-if="!show" @click="show = true">Показать список</button>
   </div>
 </template>
 ```
 
-By using the Lazy prefix you can delay loading the component code until the right moment, which can be helpful for optimizing your JavaScript bundle size.
+Префикс `Lazy` откладывает загрузку кода компонента до нужного момента и помогает уменьшить размер JavaScript-бандла.
 
-:read-more{title="Lazy loading components" to="/docs/4.x/directory-structure/app/components#dynamic-imports"}
+:read-more{title="Ленивая загрузка компонентов" to="/docs/4.x/directory-structure/app/components#dynamic-imports"}
 
-### Lazy Hydration
+### Ленивая гидрация
 
-It is not always necessary to hydrate (or make interactive) all the components of your site on the initial load. Using lazy hydration, you can control when components can have their code loaded, which can improve the time-to-interactive metric for your app. Nuxt allows you to control when components become interactive with lazy hydration (added in Nuxt v3.16).
+Не всегда нужно гидратировать все компоненты при первой загрузке. Ленивая гидрация позволяет контролировать, когда компонент станет интерактивным, и улучшить время до интерактивности. В Nuxt (с v3.16) можно задать момент гидрации.
 
 ```html
 <template>
@@ -104,41 +104,41 @@ It is not always necessary to hydrate (or make interactive) all the components o
 </template>
 ```
 
-To optimize your app, you may want to delay the hydration of some components until they're visible, or until the browser is done with more important tasks.
+Так можно отложить гидрацию части компонентов до появления в зоне видимости или до завершения более важных задач в браузере.
 
-:read-more{title="Lazy hydration" to="/docs/4.x/directory-structure/app/components#delayed-or-lazy-hydration"}
+:read-more{title="Ленивая гидрация" to="/docs/4.x/directory-structure/app/components#delayed-or-lazy-hydration"}
 
-### Fetching data
+### Получение данных
 
-To avoid fetching same data twice (once on the server and once on client) Nuxt provides [`useFetch`](/docs/4.x/api/composables/use-fetch) and [`useAsyncData`](/docs/4.x/api/composables/use-async-data). They ensure that if an API call is made on the server, the data is forwarded to the client in the payload instead of being fetched again.
+Чтобы не запрашивать одни и те же данные дважды (на сервере и на клиенте), в Nuxt есть [`useFetch`](/docs/4.x/api/composables/use-fetch) и [`useAsyncData`](/docs/4.x/api/composables/use-async-data). Они передают данные с сервера клиенту в payload вместо повторного запроса.
 
-:read-more{title="Data fetching" to="/docs/4.x/getting-started/data-fetching"}
+:read-more{title="Получение данных" to="/docs/4.x/getting-started/data-fetching"}
 
-## Core Nuxt Modules
+## Модули ядра Nuxt
 
-Apart from Nuxt's built-in features, there are also core modules maintained by the Nuxt team which help improve performance even further. These modules help handle assets such as images, custom fonts, or third party scripts.
+Помимо встроенных возможностей, команда Nuxt поддерживает модули для дополнительной оптимизации: изображения, шрифты, сторонние скрипты.
 
-### Images
+### Изображения
 
-Unoptimized images can have a significant negative impact on your website performance, specifically the [Largest Contentful Paint (LCP)](https://web.dev/articles/lcp) score.
+Неоптимизированные изображения сильно влияют на производительность и метрику [Largest Contentful Paint (LCP)](https://web.dev/articles/lcp).
 
-In Nuxt we can use [Nuxt Image](https://image.nuxt.com/) module that is a plug-and-play image optimization for Nuxt apps. It allows resizing and transforming your images using built-in optimizer or your favorite images CDN.
+В Nuxt можно использовать модуль [Nuxt Image](https://image.nuxt.com/) — оптимизация изображений из коробки: изменение размера и преобразования через встроенный оптимизатор или ваш CDN.
 
-:video-accordion{title="Watch the video by LearnVue about Nuxt Image" videoId="_UBff2eqGY0"}
+:video-accordion{title="Видео от LearnVue про Nuxt Image" videoId="_UBff2eqGY0"}
 
-[`<NuxtImg>`](/docs/4.x/api/components/nuxt-img) is a drop-in replacement for the native `<img>` tag that comes with following enhancements:
+[`<NuxtImg>`](/docs/4.x/api/components/nuxt-img) заменяет тег `<img>` и добавляет:
 
-* Uses built-in provider to optimize local and remote images
-* Converts `src` to provider optimized URLs with modern formats such as WebP or Avif
-* Automatically resizes images based on `width` and `height`
-* Generates responsive `sizes` when providing sizes option
-* Supports native `lazy loading` as well as other `<img>` attributes
+* Оптимизацию локальных и удалённых изображений через встроенный провайдер
+* Преобразование `src` в оптимизированные URL (WebP, Avif и др.)
+* Автоматическое изменение размера по `width` и `height`
+* Генерацию адаптивных `sizes` при указании опции sizes
+* Нативный `lazy loading` и остальные атрибуты `<img>`
 
-Images in your website can usually be separated by importance; the ones that are needed to be delivered first at initial load (i.e. `Largest Contentful Paint`), and the ones that can be loaded later or when specifically needed. For that, we could use the following optimizations:
+Изображения можно разделить по важности: те, что нужны сразу (LCP), и те, что можно подгрузить позже:
 
 ```html
 <template>
-  <!-- 🚨 Needs to be loaded ASAP -->
+  <!-- 🚨 Нужно загрузить как можно раньше -->
   <NuxtImg
     src="/hero-banner.jpg"
     format="webp"
@@ -149,7 +149,7 @@ Images in your website can usually be separated by importance; the ones that are
     height="100"
   />
 
-  <!-- 🐌 Can be loaded later -->
+  <!-- 🐌 Можно загрузить позже -->
   <NuxtImg
     src="/facebook-logo.jpg"
     format="webp"
@@ -163,33 +163,33 @@ Images in your website can usually be separated by importance; the ones that are
 
 :read-more{title="Nuxt Image" to="https://image.nuxt.com/usage/nuxt-img"}
 
-### Fonts
+### Шрифты
 
-[Nuxt Fonts](https://fonts.nuxt.com/) will automatically optimize your fonts (including custom fonts) and remove external network requests for improved privacy and performance.
+[Nuxt Fonts](https://fonts.nuxt.com/) оптимизирует шрифты (включая кастомные) и убирает лишние сетевые запросы для лучшей производительности и приватности.
 
-It includes built-in automatic self-hosting for any font file which means you can optimally load web fonts with reduced layout shift, thanks to the underlying package [fontaine](https://github.com/unjs/fontaine).
+Модуль автоматически хостит шрифты (через [fontaine](https://github.com/unjs/fontaine)), что уменьшает сдвиги верстки при загрузке веб-шрифтов.
 
-:video-accordion{title="Watch the talk by Daniel Roe about the idea behind Nuxt Fonts" videoId="D3F683UViBY"}
+:video-accordion{title="Доклад Daniel Roe о Nuxt Fonts" videoId="D3F683UViBY"}
 
-Nuxt Fonts processes all your CSS and does the following things automatically when it encounters a font-family declaration.
+Nuxt Fonts обрабатывает CSS и при объявлении `font-family` автоматически:
 
-1. **Resolves fonts** – Looks for font files in public/, then checks web providers like Google, Bunny, and Fontshare.
-2. **Generates @font-face rules** – Injects CSS rules to load fonts from the correct sources.
-3. **Proxies & caches fonts** – Rewrites URLs to `/_fonts`, downloads and caches fonts locally.
-4. **Creates fallback metrics** – Adjusts local system fonts to match web fonts, reducing layout shift ([CLS](https://web.dev/articles/cls)).
-5. **Includes fonts in build** – Bundles fonts with your project, hashing file names and setting long-lived cache headers.
+1. **Находит шрифты** — ищет файлы в public/, затем провайдеры (Google, Bunny, Fontshare).
+2. **Генерирует @font-face** — подставляет правила загрузки из нужных источников.
+3. **Проксирует и кэширует** — перенаправляет URL на `/_fonts`, скачивает и кэширует локально.
+4. **Создаёт метрики fallback** — подстраивает системные шрифты под веб-шрифты, снижая [CLS](https://web.dev/articles/cls).
+5. **Включает шрифты в сборку** — добавляет в проект с хешированием имён и длинным кэшем.
 
-It supports multiple providers that are designed to be pluggable and extensible, so no matter your setup you should be able to use an existing provider or write your own.
+Поддерживаются несколько провайдеров, их можно расширять и заменять.
 
-### Scripts
+### Скрипты
 
-Third-party resources like analytics tools, video embeds, maps, and social media integrations enhance website functionality but can significantly degrade user experience and negatively impact [Interaction to Next Paint (INP)](https://web.dev/articles/inp) and Largest Contentful Paint (LCP) scores.
+Сторонние ресурсы (аналитика, виджеты, карты, соцсети) улучшают функциональность, но могут сильно ухудшать [Interaction to Next Paint (INP)](https://web.dev/articles/inp) и LCP.
 
-[Nuxt Scripts](https://scripts.nuxt.com/) lets you load third-party scripts with better performance, privacy, security and DX.
+[Nuxt Scripts](https://scripts.nuxt.com/) загружает сторонние скрипты с лучшей производительностью, приватностью и безопасностью.
 
-:video-accordion{title="Watch the video by Alex Lichter about Nuxt Scripts" videoId="sjMqUUvH9AE"}
+:video-accordion{title="Видео Alex Lichter про Nuxt Scripts" videoId="sjMqUUvH9AE"}
 
-Nuxt Scripts provides an abstraction layer on top of third-party scripts, providing SSR support and type-safety and while still giving you full low-level control over how a script is loaded.
+Nuxt Scripts даёт слой поверх сторонних скриптов с поддержкой SSR и типизацией, сохраняя контроль над способом загрузки.
 
 ```ts
 const { onLoaded, proxy } = useScriptGoogleAnalytics(
@@ -200,105 +200,95 @@ const { onLoaded, proxy } = useScriptGoogleAnalytics(
     },
   },
 )
-// queue events to be sent when ga loads
+// ставить события в очередь до загрузки ga
 proxy.gtag('config', 'UA-123456789-1')
-// or wait until ga is loaded
+// или дождаться загрузки ga
 onLoaded((gtag) => {
-  // script loaded
+  // скрипт загружен
 })
 ```
 
 :read-more{title="Nuxt Scripts" to="https://scripts.nuxt.com/scripts"}
 
-## Profiling Tools
+## Инструменты профилирования
 
-To improve performance, we need to first know how to measure it, starting with measuring performance during development - on local environment, and then moving to auditing application that are deployed on production.
+Чтобы улучшать производительность, её нужно измерять: сначала в разработке, затем на продакшене.
 
 ### Nuxi Analyze
 
-[This](/docs/4.x/api/commands/analyze) command of `nuxi` allows to analyze the production bundle or your Nuxt application. It leverages `vite-bundle-visualizer` (similar to `webpack-bundle-analyzer`) to generate a visual representation of your application's bundle, making it easier to identify which components take up the most space.
+[Команда](/docs/4.x/api/commands/analyze) `nuxi` позволяет анализировать продакшен-бандл приложения Nuxt. Используется `vite-bundle-visualizer` (аналог `webpack-bundle-analyzer`) для визуализации бандла и поиска самых тяжёлых частей.
 
-When you see a large block in the visualization, it often signals an opportunity for optimization—whether by splitting it into smaller parts, implementing lazy loading, or replacing it with a more efficient alternative, especially for third-party libraries.
-
-Large blocks containing multiple elements can often be reduced by importing only the necessary components rather than entire modules while large standalone blocks may be better suited for lazy loading rather than being included in the main bundle.
+Крупные блоки на диаграмме часто указывают на возможность оптимизации: разбиение, ленивая загрузка или замена библиотеки. Большие блоки из многих элементов можно уменьшить, импортируя только нужные части; отдельные крупные блоки — вынести в lazy loading.
 
 ### Nuxt DevTools
 
-The [Nuxt DevTools](https://devtools.nuxt.com/) gives you insights and transparency about your Nuxt App to identify performance gaps and seamlessly manage your app configurations.
+[Nuxt DevTools](https://devtools.nuxt.com/) даёт представление о приложении Nuxt, помогает находить узкие места и управлять конфигурацией.
 
-![Nuxt DevTools example](https://user-images.githubusercontent.com/11247099/217670806-fb39aeff-3881-44e5-b9c8-6c757f5925fc.png)
+![Пример Nuxt DevTools](https://user-images.githubusercontent.com/11247099/217670806-fb39aeff-3881-44e5-b9c8-6c757f5925fc.png)
 
-It comes with several features we can use to measure performance of Nuxt apps:
-1. **Timeline** – Tracks time spent on rendering, updating, and initializing components to identify performance bottlenecks.  
-2. **Assets** – Displays file sizes (e.g., images) without transformations.  
-3. **Render Tree** – Shows connections between Vue components, scripts, and styles to optimize dynamic loading.  
-4. **Inspect** – Lists all files used in the Vue app with their size and evaluation time.
+Возможности для оценки производительности:
+1. **Timeline** — время на рендеринг, обновление и инициализацию компонентов.
+2. **Assets** — размеры файлов (например, изображений) без преобразований.
+3. **Render Tree** — связи между компонентами Vue, скриптами и стилями для оптимизации загрузки.
+4. **Inspect** — список файлов приложения с размерами и временем выполнения.
 
 ### Chrome DevTools
 
-Chrome DevTools come with two useful tabs for measuring performance; `Performance` and `Lighthouse`.
+В Chrome DevTools полезны вкладки **Performance** и **Lighthouse**.
 
-When you open the [Performance](https://developer.chrome.com/docs/devtools/performance/overview) panel, it instantly shows your local **Largest Contentful Paint (LCP)** and **Cumulative Layout Shift (CLS)** scores (good, needs improvement, or bad).  
+В [Performance](https://developer.chrome.com/docs/devtools/performance/overview) сразу видны **LCP** и **CLS** для текущей страницы (хорошо / нужно улучшить / плохо). При взаимодействии с страницей фиксируется **INP** — картина Core Web Vitals с учётом устройства и сети.
 
-If you interact with the page, it also captures **Interaction to Next Paint (INP)**, giving you a full view of your Core Web Vitals based on your device and network.
+[Lighthouse](https://developer.chrome.com/docs/devtools/lighthouse) проверяет производительность, доступность, SEO, PWA и лучшие практики и формирует отчёт. Неуспешные проверки подсказывают, что улучшить.
 
-![Chrome DevTools Performance Panel](https://developer.chrome.com/static/docs/devtools/performance/image/cpu-throttling_856.png)
-
-[Lighthouse](https://developer.chrome.com/docs/devtools/lighthouse) audits performance, accessibility, SEO, progressive web apps, and best practices. It runs tests on your page and generates a report. Use failing audits as a guide to improve your site.
-
-![Lighthouse](https://developer.chrome.com/static/docs/lighthouse/images/lighthouse-overview_720.png)
-
-Each audit has a reference document explaining why the audit is important, as well as how to fix it.
+У каждой проверки есть документация: зачем она нужна и как исправить проблемы.
 
 ### PageSpeed Insights
 
-[PageSpeed Insights (PSI)](https://developers.google.com/speed/docs/insights/v5/about) reports on the user experience of a page on both mobile and desktop devices, and provides suggestions on how that page may be improved.
+[PageSpeed Insights (PSI)](https://developers.google.com/speed/docs/insights/v5/about) оценивает опыт пользователя на мобильных и десктопах и даёт рекомендации по улучшению.
 
-It provides both lab and field data about a page. Lab data is useful for debugging issues, as it is collected in a controlled environment while field data is useful for capturing true, real-world user experience.
+Есть лабораторные и полевые данные: лабораторные помогают отлаживать в контролируемых условиях, полевые отражают реальный опыт пользователей.
 
 ### Web Page Test
 
-[WebPageTest](https://www.webpagetest.org/) is a web performance tool providing deep diagnostic information about how a page performs under a variety of conditions.
+[WebPageTest](https://www.webpagetest.org/) — инструмент для детальной диагностики производительности страницы в разных условиях.
 
-Each test can be run from different locations around the world, on real browsers, over any number of customizable network conditions.
+Тесты можно запускать из разных регионов, в реальных браузерах и при настраиваемых условиях сети.
 
-## Common problems
+## Типичные проблемы
 
-When building more complex Nuxt applications, you will probably encounter some of the problems listed below. Understanding these problems and fixing them will help you improve performance of your website.
+В более сложных приложениях Nuxt часто встречаются перечисленные ниже проблемы. Их понимание и исправление улучшает производительность.
 
-### Overusing plugins
+### Перебор с плагинами
 
-**Problem**: A large number of plugins can cause performance issues, especially if they require expensive computations or take too long to initialize. Since plugins run during the hydration phase, inefficient setups can block rendering and degrade the user experience.
+**Проблема**: много плагинов или плагины с тяжёлой инициализацией замедляют гидрацию и ухудшают UX.
 
-**Solution**: Inspect your plugins and see if some of them could be implemented rather as a composable or utility function instead.
+**Решение**: проверьте, можно ли часть логики перенести в композабл или утилиту.
 
-### Unused code / dependencies
+### Неиспользуемый код и зависимости
 
-**Problem**: With the development of the project, there can be a case where there will be some unused code or a dependency. This additional functionality may not be used or needed while it will be increase the bundle size of our project.
+**Проблема**: со временем в проекте накапливаются неиспользуемые зависимости и код, увеличивая размер бандла.
 
-**Solution**: Inspect your `package.json` for unused dependencies and analyze your code for unused utils/composables/functions.
+**Решение**: проверьте `package.json` на лишние зависимости и код на неиспользуемые утилиты, композаблы и функции.
 
-### Not using Vue Performance tips
+### Игнорирование рекомендаций Vue по производительности
 
-**Problem**: [Vue documentation](https://vuejs.org/guide/best-practices/performance) lists several Performance improvements we can use in our Nuxt projects as well but as they are part of Vue documentation, developers tend to forget about it and focus on Nuxt specific improvements only - while Nuxt application is still a Vue project.
+**Проблема**: в [документации Vue](https://vuejs.org/guide/best-practices/performance) описаны приёмы оптимизации, применимые и в Nuxt, но разработчики часто фокусируются только на Nuxt и забывают про Vue.
 
-**Solution**: Use concepts such as `shallowRef`, `v-memo`, `v-once`, etc to improve performance.
+**Решение**: используйте `shallowRef`, `v-memo`, `v-once` и другие приёмы из документации Vue.
 
-### Not following patterns
+### Отход от принятых паттернов
 
-**Problem**: The more people are currently working on the project, the more difficult it will be to maintain the stable codebase. Developers have a tendency to introduce new concepts they've seen in another project which can cause conflicts and problems with performance.
+**Проблема**: в больших командах каждый может тянуть свои подходы из других проектов, что ведёт к конфликтам и проблемам с производительностью.
 
-**Solution**: Establish rules and patterns in the project such as [Good practices and Design Patterns for Vue Composables](https://dev.to/jacobandrewsky/good-practices-and-design-patterns-for-vue-composables-24lk)
+**Решение**: зафиксируйте правила и паттерны, например [Good practices and Design Patterns for Vue Composables](https://dev.to/jacobandrewsky/good-practices-and-design-patterns-for-vue-composables-24lk).
 
-### Trying to load everything at the same time
+### Загрузка всего сразу
 
-**Problem**: When a page is loaded and it is not correctly instructed about the order of loading elements it will result in fetching everything at the same time - which can be slow and result in bad User Experience.
+**Проблема**: без явного порядка загрузки всё запрашивается одновременно, что замедляет страницу и ухудшает UX.
 
-**Solution**: Use concepts such as Progressive Enhancement where core webpage content is set first, then more nuanced and technically rigorous layers of presentation and features are added on top as the browser/internet connection allow.
+**Решение**: используйте прогрессивное улучшение: сначала основной контент, затем дополнительные слои по мере возможностей браузера и сети.
 
-## Useful Resources
-
-To learn more about various techniques for improving performance, take a look at the following resources:
+## Полезные материалы
 
 1. [Apply instant loading with the PRPL pattern](https://web.dev/articles/apply-instant-loading-with-prpl)
 2. [Perceived performance](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Performance/Perceived_performance)
