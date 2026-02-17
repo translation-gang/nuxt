@@ -9,43 +9,43 @@ links:
 ---
 
 ::important
-This composable is available in Nuxt v3.12+.
+Композабл доступен в Nuxt v3.12+.
 ::
 
-## Description
+## Описание
 
-A composable which observes the page title changes and updates the announcer message accordingly. Used by [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer) and controllable.
-It hooks into Unhead's `dom:rendered` hook to read the page's title and set it as the announcer message.
+Композабл следит за изменением заголовка страницы и обновляет сообщение для скринридеров. Используется в [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer), поведение настраивается.
+Подключается к хуку Unhead `dom:rendered`, читает заголовок страницы и задаёт его как сообщение для озвучивания.
 
 ## Параметры
 
-- `politeness`: Sets the urgency for screen reader announcements: `off` (disable the announcement), `polite` (waits for silence), or `assertive` (interrupts immediately).  (default `polite`).
+- `politeness`: срочность объявления для скринридера: `off` (выключить), `polite` (дождаться паузы), `assertive` (озвучить сразу). По умолчанию `polite`.
 
-## Properties
+## Свойства
 
 ### `message`
 
 - **type**: `Ref<string>`
-- **description**: The message to announce
+- **description**: сообщение для озвучивания
 
 ### `politeness`
 
 - **type**: `Ref<string>`
-- **description**: Screen reader announcement urgency level `off`, `polite`, or `assertive`
+- **description**: уровень срочности: `off`, `polite` или `assertive`
 
-## Methods
+## Методы
 
 ### `set(message, politeness = "polite")`
 
-Sets the message to announce with its urgency level.
+Задаёт сообщение и уровень срочности.
 
 ### `polite(message)`
 
-Sets the message with `politeness = "polite"`
+Задаёт сообщение с `politeness = "polite"`.
 
 ### `assertive(message)`
 
-Sets the message with `politeness = "assertive"`
+Задаёт сообщение с `politeness = "assertive"`.
 
 ## Пример
 

@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-Route middleware are stored in the [`app/middleware/`](/docs/4.x/directory-structure/app/middleware) of your Nuxt application (unless [set otherwise](/docs/4.x/api/nuxt-config#middleware)).
+Маршрутные middleware хранятся в [`app/middleware/`](/docs/4.x/directory-structure/app/middleware) (если путь не [переопределён](/docs/4.x/api/nuxt-config#middleware)).
 
 ## Тип
 
@@ -24,17 +24,17 @@ interface RouteMiddleware {
 
 ### `middleware`
 
-- **Type**: `RouteMiddleware`
+- **Тип**: `RouteMiddleware`
 
-A function that takes two Vue Router's route location objects as parameters: the next route `to` as the first, and the current route `from` as the second.
+Функция с двумя аргументами — объектами локации Vue Router: целевой маршрут `to` и текущий `from`.
 
-Learn more about available properties of `RouteLocationNormalized` in the **[Vue Router docs](https://router.vuejs.org/api/type-aliases/routelocationnormalized)**.
+Свойства `RouteLocationNormalized`: [документация Vue Router](https://router.vuejs.org/api/type-aliases/routelocationnormalized).
 
 ## Примеры
 
-### Showing Error Page
+### Показ страницы ошибки
 
-You can use route middleware to throw errors and show helpful error messages:
+В middleware можно выбрасывать ошибку и показывать страницу ошибки:
 
 ```ts [app/middleware/error.ts]
 export default defineNuxtRouteMiddleware((to) => {
@@ -44,11 +44,11 @@ export default defineNuxtRouteMiddleware((to) => {
 })
 ```
 
-The above route middleware will redirect a user to the custom error page defined in the `~/error.vue` file, and expose the error message and code passed from the middleware.
+Пользователь будет перенаправлен на кастомную страницу ошибки из `~/error.vue` с сообщением и кодом из middleware.
 
-### Redirection
+### Редирект
 
-Use [`useState`](/docs/4.x/api/composables/use-state) in combination with `navigateTo` helper function inside the route middleware to redirect users to different routes based on their authentication status:
+В middleware можно использовать [`useState`](/docs/4.x/api/composables/use-state) и хелпер `navigateTo` для редиректа в зависимости от авторизации:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -64,4 +64,4 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-Both [navigateTo](/docs/4.x/api/utils/navigate-to) and [abortNavigation](/docs/4.x/api/utils/abort-navigation) are globally available helper functions that you can use inside `defineNuxtRouteMiddleware`.
+[navigateTo](/docs/4.x/api/utils/navigate-to) и [abortNavigation](/docs/4.x/api/utils/abort-navigation) доступны глобально внутри `defineNuxtRouteMiddleware`.

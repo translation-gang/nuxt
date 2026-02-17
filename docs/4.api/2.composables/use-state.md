@@ -11,7 +11,7 @@ links:
 ## Использование
 
 ```ts
-// Create a reactive state and set default value
+// Создание реактивного состояния с начальным значением
 const count = useState('counter', () => Math.round(Math.random() * 100))
 ```
 
@@ -25,7 +25,7 @@ const count = useState('counter', () => Math.round(Math.random() * 100))
 `useState` — зарезервированное имя, обрабатываемое компилятором; не называйте так свои функции.
 ::
 
-:video-accordion{title="Watch a video from Alexander Lichter about why and when to use useState" videoId="mv0WcBABcIk"}
+:video-accordion{title="Видео Alexander Lichter: зачем и когда использовать useState" videoId="mv0WcBABcIk"}
 
 ## Использование `shallowRef`
 

@@ -10,10 +10,10 @@ links:
 
 ## Использование
 
-The `useHeadSafe` composable is a wrapper around the [`useHead`](/docs/4.x/api/composables/use-head) composable that restricts the input to only allow safe values. This is the recommended way to manage head data when working with user input, as it prevents XSS attacks by sanitizing potentially dangerous attributes.
+`useHeadSafe` — обёртка над [`useHead`](/docs/4.x/api/composables/use-head), которая допускает только безопасные значения. Рекомендуется для управления head при работе с пользовательским вводом: опасные атрибуты отфильтровываются и снижается риск XSS.
 
 ::warning
-When using `useHeadSafe`, potentially dangerous attributes like `innerHTML` in scripts or `http-equiv` in meta tags are automatically stripped out to prevent XSS attacks. Use this composable whenever you're working with user-generated content.
+При использовании `useHeadSafe` опасные атрибуты (например `innerHTML` в скриптах, `http-equiv` в meta) удаляются. Используйте этот композабл при выводе пользовательского контента в head.
 ::
 
 ## Тип
@@ -22,9 +22,9 @@ When using `useHeadSafe`, potentially dangerous attributes like `innerHTML` in s
 export function useHeadSafe (input: MaybeComputedRef<HeadSafe>): void
 ```
 
-### Allowed Attributes
+### Разрешённые атрибуты
 
-The following attributes are whitelisted for each head element type:
+Для каждого типа элемента head разрешены следующие атрибуты:
 
 ```ts
 const WhitelistAttributes = {
@@ -38,21 +38,21 @@ const WhitelistAttributes = {
 }
 ```
 
-See [@unhead/vue](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/safeSchema.ts) for more detailed types.
+Подробные типы: [@unhead/vue](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/safeSchema.ts).
 
 ## Параметры
 
-`input`: A `MaybeComputedRef<HeadSafe>` object containing head data. You can pass all the same values as [`useHead`](/docs/4.x/api/composables/use-head), but only safe attributes will be rendered.
+`input`: объект `MaybeComputedRef<HeadSafe>` с данными для head. Можно передавать те же значения, что в [`useHead`](/docs/4.x/api/composables/use-head); отрендерятся только безопасные атрибуты.
 
 ## Возвращаемые значения
 
-This composable does not return any value.
+Композабл ничего не возвращает.
 
 ## Пример
 
 ```vue [app/pages/user-profile.vue]
 <script setup lang="ts">
-// User-generated content that might contain malicious code
+// пользовательский контент, который может содержать вредоносный код
 const userBio = ref('<script>alert("xss")<' + '/script>')
 
 useHeadSafe({
@@ -60,7 +60,7 @@ useHeadSafe({
   meta: [
     {
       name: 'description',
-      content: userBio.value, // Safely sanitized
+      content: userBio.value, // безопасно санитизируется
     },
   ],
 })
@@ -68,5 +68,5 @@ useHeadSafe({
 ```
 
 ::read-more{to="https://unhead.unjs.io/docs/typescript/head/api/composables/use-head-safe" target="_blank"}
-Read more on the `Unhead` documentation.
+Подробнее в документации Unhead.
 ::

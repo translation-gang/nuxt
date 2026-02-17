@@ -26,7 +26,7 @@ defineRouteRules({
 </template>
 ```
 
-Will be translated to:
+Эквивалентно конфигу:
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
@@ -37,16 +37,16 @@ export default defineNuxtConfig({
 ```
 
 ::note
-When running [`nuxt build`](/docs/4.x/api/commands/build), the home page will be pre-rendered in `.output/public/index.html` and statically served.
+При [`nuxt build`](/docs/4.x/api/commands/build) главная страница пререндерится в `.output/public/index.html` и отдаётся статически.
 ::
 
-## Notes
+## Примечания
 
-- A rule defined in `~/pages/foo/bar.vue` will be applied to `/foo/bar` requests.
-- A rule in `~/pages/foo/[id].vue` will be applied to `/foo/**` requests.
+- Правило в `~/pages/foo/bar.vue` применяется к запросам `/foo/bar`.
+- Правило в `~/pages/foo/[id].vue` — к запросам `/foo/**`.
 
-For more control, such as if you are using a custom `path` or `alias` set in the page's [`definePageMeta`](/docs/4.x/api/utils/define-page-meta), you should set `routeRules` directly within your `nuxt.config`.
+При кастомном `path` или `alias` в [`definePageMeta`](/docs/4.x/api/utils/define-page-meta) задавайте `routeRules` напрямую в `nuxt.config`.
 
 ::read-more{to="/docs/4.x/guide/concepts/rendering#hybrid-rendering" icon="i-lucide-medal"}
-Read more about the `routeRules`.
+Подробнее о `routeRules`.
 ::

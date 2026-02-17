@@ -8,51 +8,51 @@ links:
     size: xs
 ---
 
-## Description
+## Описание
 
-A composable which returns the loading state of the page. Used by [`<NuxtLoadingIndicator>`](/docs/4.x/api/components/nuxt-loading-indicator) and controllable.
-It hooks into [`page:loading:start`](/docs/4.x/api/advanced/hooks#app-hooks-runtime) and [`page:loading:end`](/docs/4.x/api/advanced/hooks#app-hooks-runtime) to change its state.
+Композабл возвращает состояние загрузки страницы. Используется в [`<NuxtLoadingIndicator>`](/docs/4.x/api/components/nuxt-loading-indicator), поведение настраивается.
+Подписывается на [`page:loading:start`](/docs/4.x/api/advanced/hooks#app-hooks-runtime) и [`page:loading:end`](/docs/4.x/api/advanced/hooks#app-hooks-runtime) и обновляет состояние.
 
 ## Параметры
 
-- `duration`: Duration of the loading bar, in milliseconds (default `2000`).
-- `throttle`: Throttle the appearing and hiding, in milliseconds (default `200`).
-- `estimatedProgress`: By default Nuxt will back off as it approaches 100%. You can provide a custom function to customize the progress estimation, which is a function that receives the duration of the loading bar (above) and the elapsed time. It should return a value between 0 and 100.
+- `duration`: длительность полосы загрузки в миллисекундах (по умолчанию `2000`).
+- `throttle`: задержка появления и скрытия в миллисекундах (по умолчанию `200`).
+- `estimatedProgress`: по умолчанию Nuxt замедляет рост при приближении к 100%. Можно передать свою функцию `(duration, elapsed) => 0..100` для расчёта прогресса.
 
-## Properties
+## Свойства
 
 ### `isLoading`
 
 - **type**: `Ref<boolean>`
-- **description**: The loading state
+- **description**: идёт ли загрузка
 
 ### `error`
 
 - **type**: `Ref<boolean>`
-- **description**: The error state
+- **description**: произошла ли ошибка
 
 ### `progress`
 
 - **type**: `Ref<number>`
-- **description**: The progress state. From `0` to `100`.
+- **description**: прогресс от `0` до `100`
 
-## Methods
+## Методы
 
 ### `start()`
 
-Set `isLoading` to true and start to increase the `progress` value. `start` accepts a `{ force: true }` option to skip the interval and show the loading state immediately.
+Устанавливает `isLoading` в `true` и начинает увеличивать `progress`. Опция `{ force: true }` — показать индикатор сразу, без задержки.
 
 ### `set()`
 
-Set the `progress` value to a specific value. `set` accepts a `{ force: true }` option to skip the interval and show the loading state immediately.
+Задаёт `progress` конкретным значением. Опция `{ force: true }` — показать состояние сразу.
 
 ### `finish()`
 
-Set the `progress` value to `100`, stop all timers and intervals then reset the loading state `500` ms later. `finish` accepts a `{ force: true }` option to skip the interval before the state is reset, and `{ error: true }` to change the loading bar color and set the error property to true.
+Ставит `progress` в `100`, останавливает таймеры и через 500 ms сбрасывает состояние. Опции: `{ force: true }` — сбросить без задержки; `{ error: true }` — подсветить полосу как ошибку и установить `error` в `true`.
 
 ### `clear()`
 
-Used by `finish()`. Clear all timers and intervals used by the composable.
+Вызывается из `finish()`. Очищает все таймеры и интервалы композабла.
 
 ## Пример
 
@@ -61,7 +61,7 @@ Used by `finish()`. Clear all timers and intervals used by the composable.
 const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
   duration: 2000,
   throttle: 200,
-  // This is how progress is calculated by default
+  // расчёт прогресса по умолчанию
   estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50),
 })
 </script>
@@ -70,8 +70,7 @@ const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
 ```vue
 <script setup lang="ts">
 const { start, set } = useLoadingIndicator()
-// same as set(0, { force: true })
-// set the progress to 0, and show loading immediately
+// то же, что set(0, { force: true }) — прогресс 0 и показ индикатора сразу
 start({ force: true })
 </script>
 ```

@@ -81,11 +81,9 @@ const { data, error } = await useAsyncData(
   (_nuxtApp, { signal }) => $fetch('/api/users', { signal }),
 )
 
-refresh() // will actually cancel the $fetch request (if dedupe: cancel)
-refresh() // will actually cancel the $fetch request (if dedupe: cancel)
+refresh() // отменяет текущий $fetch (при dedupe: cancel)
 refresh()
-
-clear() // will cancel the latest pending handler
+clear() // отменяет последний ожидающий обработчик
 ```
 
 В `refresh`/`execute` можно передать `AbortSignal`, чтобы вручную отменять отдельные запросы.

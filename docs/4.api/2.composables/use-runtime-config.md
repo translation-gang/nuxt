@@ -33,10 +33,10 @@ export default defineEventHandler((event) => {
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   runtimeConfig: {
-    // Private keys are only available on the server
+    // Секретные ключи доступны только на сервере
     apiSecret: '123',
 
-    // Public keys that are exposed to the client
+    // Публичные ключи доступны на клиенте
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
     },
@@ -58,11 +58,11 @@ export default defineNuxtConfig({
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
 
-  // Access public variables
+  // Доступ к публичным переменным
   const result = await $fetch(`/test`, {
     baseURL: config.public.apiBase,
     headers: {
-      // Access a private variable (only available on the server)
+      // Секретная переменная (только на сервере)
       Authorization: `Bearer ${config.apiSecret}`,
     },
   })
@@ -115,7 +115,7 @@ NUXT_API_SECRET = "123"
 export default defineNuxtPlugin((NuxtApp) => {
   const config = useRuntimeConfig()
 
-  // Access baseURL universally
+  // baseURL доступен везде
   const baseURL = config.app.baseURL
 })
 ```
@@ -130,7 +130,7 @@ export default defineNuxtPlugin((NuxtApp) => {
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig(event)
 
-  // Access cdnURL universally
+  // cdnURL доступен везде
   const cdnURL = config.app.cdnURL
 })
 ```

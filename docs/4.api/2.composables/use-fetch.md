@@ -155,7 +155,7 @@ type UseFetchOptions<DataT> = {
 }
 
 type AsyncDataRequestContext = {
-  /** The reason for this data request */
+  /** Причина запроса данных */
   cause: 'initial' | 'refresh:manual' | 'refresh:hook' | 'watch'
 }
 

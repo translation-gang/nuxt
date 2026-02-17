@@ -54,17 +54,9 @@ interface MetaObject {
 }
 
 interface ActiveHeadEntry<Input> {
-  /**
-   * Updates the entry with new input.
-   *
-   * Will first clear any side effects for previous input.
-   */
+  /** Обновляет запись; сначала сбрасывает побочные эффекты предыдущего input. */
   patch: (input: Input) => void
-  /**
-   * Dispose the entry, removing it from the active head.
-   *
-   * Will queue side effects for removal.
-   */
+  /** Удаляет запись из активного head; ставит побочные эффекты в очередь на удаление. */
   dispose: () => void
 }
 ```

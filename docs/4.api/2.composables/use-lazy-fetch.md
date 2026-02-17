@@ -8,11 +8,11 @@ links:
     size: xs
 ---
 
-`useLazyFetch` provides a wrapper around [`useFetch`](/docs/4.x/api/composables/use-fetch) that triggers navigation before the handler is resolved by setting the `lazy` option to `true`.
+`useLazyFetch` — обёртка над [`useFetch`](/docs/4.x/api/composables/use-fetch) с опцией `lazy: true`: навигация выполняется до завершения загрузки.
 
 ## Использование
 
-By default, [`useFetch`](/docs/4.x/api/composables/use-fetch) blocks navigation until its async handler is resolved. `useLazyFetch` allows navigation to proceed immediately, with data being fetched in the background.
+По умолчанию [`useFetch`](/docs/4.x/api/composables/use-fetch) блокирует переход до завершения загрузки. `useLazyFetch` не блокирует: переход происходит сразу, данные подгружаются в фоне.
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -21,26 +21,26 @@ const { status, data: posts } = await useLazyFetch('/api/posts')
 
 <template>
   <div v-if="status === 'pending'">
-    Loading ...
+    Загрузка ...
   </div>
   <div v-else>
     <div v-for="post in posts">
-      <!-- do something -->
+      <!-- ... -->
     </div>
   </div>
 </template>
 ```
 
 ::note
-`useLazyFetch` has the same signature as [`useFetch`](/docs/4.x/api/composables/use-fetch).
+Сигнатура `useLazyFetch` совпадает с [`useFetch`](/docs/4.x/api/composables/use-fetch).
 ::
 
 ::warning
-Awaiting `useLazyFetch` only ensures the call is initialized. On client-side navigation, data may not be immediately available, and you must handle the `pending` state in your component's template.
+await `useLazyFetch` только инициирует запрос. При клиентской навигации данные могут быть ещё не готовы — обрабатывайте состояние `pending` в шаблоне.
 ::
 
 ::warning
-`useLazyFetch` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyFetch`.
+`useLazyFetch` — зарезервированное имя, обрабатываемое компилятором; не называйте так свои функции.
 ::
 
 ## Тип
@@ -53,56 +53,55 @@ export function useLazyFetch<DataT, ErrorT> (
 ```
 
 ::note
-`useLazyFetch` is equivalent to `useFetch` with `lazy: true` option set. See [`useFetch`](/docs/4.x/api/composables/use-fetch) for full type definitions.
+`useLazyFetch` эквивалентен `useFetch` с опцией `lazy: true`. Полные типы — в [`useFetch`](/docs/4.x/api/composables/use-fetch).
 ::
 
 ## Параметры
 
-`useLazyFetch` accepts the same parameters as [`useFetch`](/docs/4.x/api/composables/use-fetch):
+Те же, что у [`useFetch`](/docs/4.x/api/composables/use-fetch):
 
-- `URL` (`string | Request | Ref<string | Request> | () => string | Request`): The URL or request to fetch.
-- `options` (object): Same as [`useFetch` options](/docs/4.x/api/composables/use-fetch#parameters), with `lazy` automatically set to `true`.
+- `URL`: URL или объект запроса.
+- `options`: опции как у [`useFetch`](/docs/4.x/api/composables/use-fetch#parameters), при этом `lazy` автоматически `true`.
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#parameters"}
 
 ## Возвращаемые значения
 
-Returns the same `AsyncData` object as [`useFetch`](/docs/4.x/api/composables/use-fetch):
+Тот же объект `AsyncData`, что и у [`useFetch`](/docs/4.x/api/composables/use-fetch):
 
-| Name      | Type                                                | Description                                                                                                      |
-|-----------|-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| `data`    | `Ref<DataT \| undefined>`                           | The result of the asynchronous fetch.                                                                            |
-| `refresh` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Function to manually refresh the data.                                                                           |
-| `execute` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Alias for `refresh`.                                                                                             |
-| `error`   | `Ref<ErrorT \| undefined>`                          | Error object if the data fetching failed.                                                                        |
-| `status`  | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>`  | Status of the data request.                                                                                      |
-| `clear`   | `() => void`                                        | Resets `data` to `undefined`, `error` to `undefined`, sets `status` to `idle`, and cancels any pending requests. |
+| Имя      | Тип                                                | Описание |
+|----------|----------------------------------------------------|----------|
+| `data`   | `Ref<DataT \| undefined>`                          | Результат запроса. |
+| `refresh`| `(opts?: AsyncDataExecuteOptions) => Promise<void>`| Ручное обновление данных. |
+| `execute`| то же                                              | Алиас для `refresh`. |
+| `error`  | `Ref<ErrorT \| undefined>`                          | Ошибка при сбое загрузки. |
+| `status` | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>` | Статус запроса. |
+| `clear`  | `() => void`                                       | Сброс данных, ошибки, статуса и отмена запросов. |
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#return-values"}
 
 ## Примеры
 
-### Handling Pending State
+### Обработка состояния загрузки
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
-/* Navigation will occur before fetching is complete.
- * Handle 'pending' and 'error' states directly within your component's template
+/* Навигация произойдёт до завершения загрузки.
+ * Обрабатывайте состояния 'pending' и 'error' в шаблоне.
  */
 const { status, data: posts } = await useLazyFetch('/api/posts')
 watch(posts, (newPosts) => {
-  // Because posts might start out null, you won't have access
-  // to its contents immediately, but you can watch it.
+  // posts изначально может быть null — можно следить через watch
 })
 </script>
 
 <template>
   <div v-if="status === 'pending'">
-    Loading ...
+    Загрузка ...
   </div>
   <div v-else>
     <div v-for="post in posts">
-      <!-- do something -->
+      <!-- ... -->
     </div>
   </div>
 </template>

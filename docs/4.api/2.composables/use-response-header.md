@@ -9,35 +9,34 @@ links:
 ---
 
 ::important
-This composable is available in Nuxt v3.14+.
+Композабл доступен в Nuxt v3.14+.
 ::
 
-You can use the built-in [`useResponseHeader`](/docs/4.x/api/composables/use-response-header) composable to set any server response header within your pages, components, and plugins.
+Встроенный [`useResponseHeader`](/docs/4.x/api/composables/use-response-header) задаёт любой заголовок ответа сервера в страницах, компонентах и плагинах.
 
 ```ts
-// Set a custom response header
+// задать свой заголовок ответа
 const header = useResponseHeader('X-My-Header')
 header.value = 'my-value'
 ```
 
 ## Пример
 
-We can use `useResponseHeader` to easily set a response header on a per-page basis.
+Заголовок ответа для конкретной страницы:
 
 ```vue [app/pages/test.vue]
 <script setup>
-// pages/test.vue
 const header = useResponseHeader('X-My-Header')
 header.value = 'my-value'
 </script>
 
 <template>
-  <h1>Test page with custom header</h1>
-  <p>The response from the server for this "/test" page will have a custom "X-My-Header" header.</p>
+  <h1>Тестовая страница с кастомным заголовком</h1>
+  <p>Ответ сервера для страницы "/test" будет содержать заголовок "X-My-Header".</p>
 </template>
 ```
 
-We can use `useResponseHeader` for example in Nuxt [middleware](/docs/4.x/directory-structure/app/middleware) to set a response header for all pages.
+Заголовок для всех страниц через [middleware](/docs/4.x/directory-structure/app/middleware):
 
 ```ts [app/middleware/my-header-middleware.ts]
 export default defineNuxtRouteMiddleware((to, from) => {

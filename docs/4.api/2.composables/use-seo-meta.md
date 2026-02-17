@@ -50,26 +50,26 @@ useSeoMeta({
 
 :read-more{to="/docs/4.x/getting-started/seo-meta"}
 
-## Performance
+## Производительность
 
-In most instances, SEO meta tags don't need to be reactive as search engine robots primarily scan the initial page load.
+Чаще всего SEO-метатеги не обязаны быть реактивными: роботы поисковиков в основном смотрят первоначальную загрузку страницы.
 
-For better performance, you can wrap your `useSeoMeta` calls in a server-only condition when the meta tags don't need to be reactive:
+Чтобы не тратить ресурсы на реактивность, можно вызывать `useSeoMeta` только на сервере, когда метатеги статичны:
 
 ```vue [app/app.vue]
 <script setup lang="ts">
 if (import.meta.server) {
-  // These meta tags will only be added during server-side rendering
+  // эти метатеги добавляются только при SSR
   useSeoMeta({
     robots: 'index, follow',
     description: 'Static description that does not need reactivity',
     ogImage: 'https://example.com/image.png',
-    // other static meta tags...
+    // другие статичные метатеги...
   })
 }
 
 const dynamicTitle = ref('My title')
-// Only use reactive meta tags outside the condition when necessary
+// реактивные метатеги — только когда нужны
 useSeoMeta({
   title: () => dynamicTitle.value,
   ogTitle: () => dynamicTitle.value,
@@ -77,4 +77,4 @@ useSeoMeta({
 </script>
 ```
 
-This previously used the [`useServerSeoMeta`](/docs/4.x/api/composables/use-server-seo-meta) composable, but it has been deprecated in favor of this approach.
+Раньше для этого использовался композабл [`useServerSeoMeta`](/docs/4.x/api/composables/use-server-seo-meta); он устарел в пользу такого подхода.

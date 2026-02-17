@@ -9,7 +9,7 @@ links:
 ---
 
 ::important
-This composable is available in Nuxt v3.14+.
+Композабл доступен в Nuxt v3.14+.
 ::
 
 ```ts [signature]
@@ -21,21 +21,20 @@ function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks> (
 
 ## Использование
 
-### Parameters
+### Параметры
 
-- `name`: The name of the runtime hook to register. You can see the full list of [runtime Nuxt hooks here](/docs/4.x/api/advanced/hooks#app-hooks-runtime).
-- `fn`: The callback function to execute when the hook is triggered. The function signature varies based on the hook name.
+- `name`: имя runtime-хука для регистрации. Полный список — [runtime-хуки Nuxt](/docs/4.x/api/advanced/hooks#app-hooks-runtime).
+- `fn`: колбэк при срабатывании хука. Сигнатура зависит от имени хука.
 
-### Returns
+### Возвращаемое значение
 
-The composable doesn't return a value, but it automatically unregisters the hook when the component's scope is destroyed.
+Композабл ничего не возвращает; хук автоматически снимается при уничтожении области видимости компонента.
 
 ## Пример
 
 ```vue twoslash [pages/index.vue]
 <script setup lang="ts">
-// Register a hook that runs every time a link is prefetched, but which will be
-// automatically cleaned up (and not called again) when the component is unmounted
+// хук при каждом prefetch ссылки; при размонтировании компонента автоматически снимается
 useRuntimeHook('link:prefetch', (link) => {
   console.log('Prefetching', link)
 })

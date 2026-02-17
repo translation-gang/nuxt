@@ -8,31 +8,29 @@ links:
     size: xs
 ---
 
-You can use `useRequestFetch` to forward the request context and headers when making server-side fetch requests.
+`useRequestFetch` передаёт контекст запроса и заголовки при выполнении fetch на сервере.
 
-When making a client-side fetch request, the browser automatically sends the necessary headers.
-However, when making a request during server-side rendering, due to security considerations, we need to forward the headers manually.
+На клиенте браузер сам отправляет нужные заголовки. При SSR из соображений безопасности заголовки нужно пробрасывать вручную.
 
 ::note
-Headers that are **not meant to be forwarded** will **not be included** in the request. These headers include, for example:
-`transfer-encoding`, `connection`, `keep-alive`, `upgrade`, `expect`, `host`, `accept`
+Заголовки, **не предназначенные для проброса**, в запрос **не попадут**. В их числе, например: `transfer-encoding`, `connection`, `keep-alive`, `upgrade`, `expect`, `host`, `accept`.
 ::
 
 ::tip
-The [`useFetch`](/docs/4.x/api/composables/use-fetch) composable uses `useRequestFetch` under the hood to automatically forward the request context and headers.
+Композабл [`useFetch`](/docs/4.x/api/composables/use-fetch) внутри использует `useRequestFetch` для автоматической передачи контекста и заголовков.
 ::
 
 ::code-group
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
-// This will forward the user's headers to the `/api/cookies` event handler
-// Result: { cookies: { foo: 'bar' } }
+// заголовки пользователя передаются в обработчик `/api/cookies`
+// результат: { cookies: { foo: 'bar' } }
 const requestFetch = useRequestFetch()
 const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))
 
-// This will NOT forward anything
-// Result: { cookies: {} }
+// здесь заголовки не передаются
+// результат: { cookies: {} }
 const { data: notForwarded } = await useAsyncData((_nuxtApp, { signal }) => $fetch('/api/cookies', { signal }))
 </script>
 ```
@@ -48,5 +46,5 @@ export default defineEventHandler((event) => {
 ::
 
 ::tip
-In the browser during client-side navigation, `useRequestFetch` will behave just like regular [`$fetch`](/docs/4.x/api/utils/dollarfetch).
+В браузере при клиентской навигации `useRequestFetch` ведёт себя как обычный [`$fetch`](/docs/4.x/api/utils/dollarfetch).
 ::

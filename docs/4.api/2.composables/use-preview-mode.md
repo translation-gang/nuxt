@@ -10,9 +10,9 @@ links:
 
 # `usePreviewMode`
 
-Preview mode allows you to see how your changes would be displayed on a live site without revealing them to users.
+Режим предпросмотра позволяет видеть, как изменения будут выглядеть на «боевом» сайте, не показывая их пользователям.
 
-You can use the built-in `usePreviewMode` composable to access and control preview state in Nuxt. If the composable detects preview mode it will automatically force any updates necessary for [`useAsyncData`](/docs/4.x/api/composables/use-async-data) and [`useFetch`](/docs/4.x/api/composables/use-fetch) to rerender preview content.
+Встроенный композабл `usePreviewMode` даёт доступ к состоянию предпросмотра и управление им. При включённом режиме он принудительно обновляет данные [`useAsyncData`](/docs/4.x/api/composables/use-async-data) и [`useFetch`](/docs/4.x/api/composables/use-fetch) для перерисовки контента предпросмотра.
 
 ```ts
 const { enabled, state } = usePreviewMode()
@@ -20,9 +20,9 @@ const { enabled, state } = usePreviewMode()
 
 ## Опции
 
-### Custom `enable` check
+### Своя проверка включения (`enable`)
 
-You can specify a custom way to enable preview mode. By default the `usePreviewMode` composable will enable preview mode if there is a `preview` param in url that is equal to `true` (for example, `http://localhost:3000?preview=true`). You can wrap the `usePreviewMode` into custom composable, to keep options consistent across usages and prevent any errors.
+Можно задать собственное условие включения режима. По умолчанию режим включается при наличии в URL параметра `preview=true` (например, `http://localhost:3000?preview=true`). Можно обернуть `usePreviewMode` в свой композабл для единообразия и избежания ошибок.
 
 ```ts
 export function useMyPreviewMode () {
@@ -35,9 +35,9 @@ export function useMyPreviewMode () {
 }
 ```
 
-### Modify default state
+### Изменение состояния по умолчанию
 
-`usePreviewMode` will try to store the value of a `token` param from url in state. You can modify this state and it will be available for all [`usePreviewMode`](/docs/4.x/api/composables/use-preview-mode) calls.
+`usePreviewMode` сохраняет в state значение параметра `token` из URL. Состояние можно расширить через `getState`; оно будет доступно во всех вызовах [`usePreviewMode`](/docs/4.x/api/composables/use-preview-mode).
 
 ```ts
 const data1 = ref('data1')
@@ -50,31 +50,29 @@ const { enabled, state } = usePreviewMode({
 ```
 
 ::note
-The `getState` function will append returned values to current state, so be careful not to accidentally overwrite important state.
+Функция `getState` дополняет текущее состояние возвращёнными значениями — не перезаписывайте важные поля по ошибке.
 ::
 
-### Customize the `onEnable` and `onDisable` callbacks
+### Колбэки `onEnable` и `onDisable`
 
-By default, when `usePreviewMode` is enabled, it will call `refreshNuxtData()` to re-fetch all data from the server.
+По умолчанию при включении режима вызывается `refreshNuxtData()` для повторной загрузки данных с сервера. При выключении композабл подписывается на следующую навигацию и затем вызывает `refreshNuxtData()`.
 
-When preview mode is disabled, the composable will attach a callback to call `refreshNuxtData()` to run after a subsequent router navigation.
-
-You can specify custom callbacks to be triggered by providing your own functions for the `onEnable` and `onDisable` options.
+Собственные колбэки задаются опциями `onEnable` и `onDisable`.
 
 ```ts
 const { enabled, state } = usePreviewMode({
   onEnable: () => {
-    console.log('preview mode has been enabled')
+    console.log('режим предпросмотра включён')
   },
   onDisable: () => {
-    console.log('preview mode has been disabled')
+    console.log('режим предпросмотра выключен')
   },
 })
 ```
 
 ## Пример
 
-The example below creates a page where part of a content is rendered only in preview mode.
+Страница, часть контента которой показывается только в режиме предпросмотра:
 
 ```vue [app/pages/some-page.vue]
 <script setup>
@@ -89,27 +87,27 @@ const { data } = await useFetch('/api/preview', {
 
 <template>
   <div>
-    Some base content
+    Базовый контент
     <p v-if="enabled">
-      Only preview content: {{ state.token }}
+      Только для предпросмотра: {{ state.token }}
       <br>
       <button @click="enabled = false">
-        disable preview mode
+        выключить режим предпросмотра
       </button>
     </p>
   </div>
 </template>
 ```
 
-Now you can generate your site and serve it:
+Сборка и запуск предпросмотра:
 
 ```bash [Terminal]
 npx nuxt generate
 npx nuxt preview
 ```
 
-Then you can see your preview page by adding the query param `preview` to the end of the page you want to see once, for example `http://localhost:3000/?preview=true`.
+Страницу предпросмотра можно открыть, добавив к URL параметр `preview`, например `http://localhost:3000/?preview=true`.
 
 ::note
-`usePreviewMode` should be tested locally with `nuxt generate` and then `nuxt preview` rather than `nuxt dev`. (The [preview command](/docs/4.x/api/commands/preview) is not related to preview mode.)
+`usePreviewMode` проверяйте локально через `nuxt generate` и затем `nuxt preview`, а не через `nuxt dev`. (Команда [preview](/docs/4.x/api/commands/preview) не связана с режимом предпросмотра.)
 ::

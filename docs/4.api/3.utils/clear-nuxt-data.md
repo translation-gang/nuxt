@@ -9,7 +9,7 @@ links:
 ---
 
 ::note
-This method is useful if you want to invalidate the data fetching for another page.
+Удобно, когда нужно инвалидировать данные загрузки для другой страницы.
 ::
 
 ## Тип
@@ -20,4 +20,4 @@ export function clearNuxtData (keys?: string | string[] | ((key: string) => bool
 
 ## Параметры
 
-* `keys`: One or an array of keys that are used in [`useAsyncData`](/docs/4.x/api/composables/use-async-data) to delete their cached data. If no keys are provided, **all data** will be invalidated.
+* `keys`: один ключ, массив ключей или функция `(key: string) => boolean` — ключи из [`useAsyncData`](/docs/4.x/api/composables/use-async-data) / useFetch, кэш которых нужно удалить. Если не передать — инвалидируются **все** данные.

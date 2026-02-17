@@ -9,18 +9,18 @@ links:
 ---
 
 ::note
-`defineNuxtComponent()` is a helper function for defining type safe Vue components using options API similar to [`defineComponent()`](https://vuejs.org/api/general#definecomponent). `defineNuxtComponent()` wrapper also adds support for `asyncData` and `head` component options.
+`defineNuxtComponent()` — хелпер для объявления типобезопасных компонентов в формате Options API (аналог [`defineComponent()`](https://vuejs.org/api/general#definecomponent)) с поддержкой опций `asyncData` и `head`.
 ::
 
 ::note
-Using `<script setup lang="ts">` is the recommended way of declaring Vue components in Nuxt.
+В Nuxt рекомендуется объявлять компоненты через `<script setup lang="ts">`.
 ::
 
 :read-more{to=/docs/getting-started/data-fetching}
 
 ## `asyncData()`
 
-If you choose not to use `setup()` in your app, you can use the `asyncData()` method within your component definition:
+Если не используете `setup()`, можно задать данные через метод `asyncData()` в опциях компонента:
 
 ```vue [app/pages/index.vue]
 <script lang="ts">
@@ -38,7 +38,7 @@ export default defineNuxtComponent({
 
 ## `head()`
 
-If you choose not to use `setup()` in your app, you can use the `head()` method within your component definition:
+Если не используете `setup()`, метаданные для head можно задать методом `head()` в опциях компонента:
 
 ```vue [app/pages/index.vue]
 <script lang="ts">

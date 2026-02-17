@@ -9,14 +9,14 @@ links:
 ---
 
 ::important
-This utility is available since [Nuxt v3.10](/blog/v3-10).
+Утилита доступна с [Nuxt v3.10](/blog/v3-10).
 ::
 
-## Purpose
+## Назначение
 
-The `refreshCookie` function is designed to refresh cookie value returned by `useCookie`.
+`refreshCookie` обновляет значение cookie, возвращаемое `useCookie`.
 
-This is useful for updating the `useCookie` ref when we know the new cookie value has been set in the browser.
+Используйте, когда в браузере уже установлено новое значение cookie и нужно синхронизировать с ним ref из `useCookie`.
 
 ## Использование
 
@@ -34,7 +34,7 @@ const loggedIn = computed(() => !!tokenCookie.value)
 ```
 
 ::note{to="/docs/4.x/guide/going-further/experimental-features#cookiestore"}
-Since [Nuxt v3.12.0](https://github.com/nuxt/nuxt/releases/tag/v3.12.0), the experimental `cookieStore` option is enabled by default. It automatically refreshes the `useCookie` value when cookies change in the browser.
+С [Nuxt v3.12.0](https://github.com/nuxt/nuxt/releases/tag/v3.12.0) экспериментальная опция `cookieStore` включена по умолчанию: значение `useCookie` обновляется при изменении cookie в браузере.
 ::
 
 ## Тип

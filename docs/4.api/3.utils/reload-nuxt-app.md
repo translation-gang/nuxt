@@ -9,13 +9,13 @@ links:
 ---
 
 ::note
-`reloadNuxtApp` will perform a hard reload of your app, re-requesting a page and its dependencies from the server.
+`reloadNuxtApp` выполняет полную перезагрузку приложения: страница и зависимости запрашиваются с сервера заново.
 ::
 
-By default, it will also save the current `state` of your app (that is, any state you could access with `useState`).
+По умолчанию сохраняется текущий `state` приложения (доступный через `useState`).
 
 ::read-more{to="/docs/4.x/guide/going-further/experimental-features#restorestate" icon="i-lucide-star"}
-You can enable experimental restoration of this state by enabling the `experimental.restoreState` option in your `nuxt.config` file.
+Восстановление этого state при перезагрузке включается опцией `experimental.restoreState` в `nuxt.config`.
 ::
 
 ## Тип
@@ -31,44 +31,23 @@ interface ReloadNuxtAppOptions {
 }
 ```
 
-### `options` (optional)
+### `options` (необязательно)
 
 **Тип**: `ReloadNuxtAppOptions`
 
-An object accepting the following properties:
+- `path` (необязательно): путь для перезагрузки (по умолчанию текущий). Если отличается от текущего — выполняется навигация и добавляется запись в историю.
+  **Тип**: `string`,
+    **по умолчанию**: `window.location.pathname`.
 
-- `path` (optional)
+- `ttl` (необязательно): интервал в миллисекундах, в течение которого повторные вызовы перезагрузки игнорируются (защита от цикла перезагрузок).
+  **Тип**: `number`,
+  **по умолчанию**: `10000`.
 
-  **Type**: `string`
+- `force` (необязательно): при `true` перезагрузка выполняется даже внутри TTL.
+  **Тип**: `boolean`,
+  **по умолчанию**: `false`.
 
-  **Default**: `window.location.pathname`
+- `persistState` (необязательно): сохранять ли текущий state Nuxt в sessionStorage (ключ `nuxt:reload:state`). Без `experimental.restoreState` или своей логики восстановления эффекта не даёт.
 
-  The path to reload (defaulting to the current path). If this is different from the current window location it
-  will trigger a navigation and add an entry in the browser history.
-
-- `ttl` (optional)
-
-  **Type**: `number`
-
-  **Default**: `10000`
-
-  The number of milliseconds in which to ignore future reload requests. If called again within this time period,
-  `reloadNuxtApp` will not reload your app to avoid reload loops.
-
-- `force` (optional)
-
-  **Type**: `boolean`
-
-  **Default**: `false`
-
-  This option allows bypassing reload loop protection entirely, forcing a reload even if one has occurred within
-  the previously specified TTL.
-
-- `persistState` (optional)
-
-  **Type**: `boolean`
-
-  **Default**: `false`
-
-  Whether to dump the current Nuxt state to sessionStorage (as `nuxt:reload:state`). By default this will have no
-  effect on reload unless `experimental.restoreState` is also set, or unless you handle restoring the state yourself.
+  **Тип**: `boolean`,
+  **по умолчанию**: `false`.

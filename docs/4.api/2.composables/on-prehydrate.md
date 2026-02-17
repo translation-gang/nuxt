@@ -19,7 +19,7 @@ links:
 
 ## Использование
 
-Call `onPrehydrate` in the setup function of a Vue component (e.g., in `<script setup>`) or in a plugin. It only has an effect when called on the server and will not be included in your client build.
+Вызывайте `onPrehydrate` в setup-функции компонента (например в `<script setup>`) или в плагине. Эффект только при вызове на сервере; в клиентскую сборку не попадает.
 
 ## Тип
 
@@ -30,17 +30,15 @@ export function onPrehydrate (callback: string | ((el: HTMLElement) => void), ke
 
 Она будет иметь эффект только при вызове на сервере, и не будет включена в сборку клиента.
 
-| Parameter | Тип | Required | Описание |
-| ---- | --- | --- | --- |
-| `callback` | `((el: HTMLElement) => void) \| string` | Yes | A function (or stringified function) to run before Nuxt hydrates. It will be stringified and inlined in the HTML. Should not have external dependencies or reference variables outside the callback. Runs before Nuxt runtime initializes, so it should not rely on Nuxt or Vue context. |
-| `key` | `string` | No | (Advanced) A unique key to identify the prehydrate script, useful for advanced scenarios like multiple root nodes. |
+| Параметр  | Тип                               | Обязательный | Описание |
+| --------- | --------------------------------- | ------------ | -------- |
+| `callback` | `((el: HTMLElement) => void) \| string` | Да | Функция (или её строковое представление), выполняемая до гидрации Nuxt. Сериализуется и вставляется в HTML. Не должна иметь внешних зависимостей и ссылок на переменные вне коллбэка. Выполняется до инициализации runtime Nuxt — не опирайтесь на контекст Nuxt или Vue. |
+| `key`     | `string`                          | Нет          | (Продвинуто) Уникальный ключ скрипта prehydrate, полезен при нескольких корневых узлах. |
 
 ## Возвращаемые значения
 
-- Returns `undefined` when called with only a callback function.
-- Returns a string (the prehydrate id) when called with a callback and a key, which can be used to set or access the `data-prehydrate-id` attribute for advanced use cases.
-
-- `callback`: Функция, которая будет превращена в строку и вставлена в HTML. Она не должна иметь никаких внешних зависимостей (например, автоимпортов) или ссылаться на переменные, определенные вне коллбэка. Коллбэк будет выполняться до инициализации runtime Nuxt, поэтому он не должен зависеть от контекста Nuxt или Vue.
+- При вызове только с коллбэком — `undefined`.
+- При вызове с коллбэком и `key` — строка (id prehydrate) для атрибута `data-prehydrate-id` в продвинутых сценариях.
 
 ## Пример
 
@@ -48,18 +46,18 @@ export function onPrehydrate (callback: string | ((el: HTMLElement) => void), ke
 <script setup lang="ts">
 declare const window: Window
 // ---cut---
-// Run code before Nuxt hydrates
+// код до гидрации Nuxt
 onPrehydrate(() => {
   console.log(window)
 })
 
-// Access the root element
+// доступ к корневому элементу
 onPrehydrate((el) => {
   console.log(el.outerHTML)
   // <div data-v-inspector="app.vue:15:3" data-prehydrate-id=":b3qlvSiBeH:"> Hi there </div>
 })
 
-// Advanced: access/set `data-prehydrate-id` yourself
+// продвинуто: задать/получить data-prehydrate-id
 const prehydrateId = onPrehydrate((el) => {})
 </script>
 

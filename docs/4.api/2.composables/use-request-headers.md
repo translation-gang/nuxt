@@ -8,25 +8,25 @@ links:
     size: xs
 ---
 
-You can use built-in [`useRequestHeaders`](/docs/4.x/api/composables/use-request-headers) composable to access the incoming request headers within your pages, components, and plugins.
+Встроенный композабл [`useRequestHeaders`](/docs/4.x/api/composables/use-request-headers) даёт доступ к заголовкам входящего запроса в страницах, компонентах и плагинах.
 
 ```ts
-// Get all request headers
+// все заголовки запроса
 const headers = useRequestHeaders()
 
-// Get only cookie request header
+// только заголовок cookie
 const { cookie } = useRequestHeaders(['cookie'])
 ```
 
 ::tip
-In the browser, `useRequestHeaders` will return an empty object.
+В браузере `useRequestHeaders` возвращает пустой объект.
 ::
 
 ## Пример
 
-We can use `useRequestHeaders` to access and proxy the initial request's `authorization` header to any future internal requests during SSR.
+С помощью `useRequestHeaders` можно взять заголовок `authorization` из исходного запроса и передать его во внутренние запросы при SSR.
 
-The example below adds the `authorization` request header to an isomorphic `$fetch` call.
+В примере заголовок `authorization` добавляется к изоморфному вызову `$fetch`:
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">

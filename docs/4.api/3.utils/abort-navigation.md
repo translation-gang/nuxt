@@ -9,7 +9,7 @@ links:
 ---
 
 ::warning
-`abortNavigation` is only usable inside a [route middleware handler](/docs/4.x/directory-structure/app/middleware).
+`abortNavigation` можно вызывать только внутри [маршрутного middleware](/docs/4.x/directory-structure/app/middleware).
 ::
 
 ## Тип
@@ -22,13 +22,13 @@ export function abortNavigation (err?: Error | string): false
 
 ### `err`
 
-- **Type**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | `string`
+- **Тип**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | `string`
 
-  Optional error to be thrown by `abortNavigation`.
+  Необязательная ошибка, которую выбросит `abortNavigation`.
 
 ## Примеры
 
-The example below shows how you can use `abortNavigation` in a route middleware to prevent unauthorized route access:
+В примере ниже `abortNavigation` в маршрутном middleware запрещает доступ неавторизованным пользователям:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -44,9 +44,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-### `err` as a String
+### Ошибка строкой
 
-You can pass the error as a string:
+Можно передать строку:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -58,14 +58,14 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-### `err` as an Error Object
+### Ошибка объектом Error
 
-You can pass the error as an [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object, e.g. caught by the `catch`-block:
+Можно передать объект [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error), например из блока `catch`:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
   try {
-    /* code that might throw an error */
+    /* код, который может выбросить ошибку */
   } catch (err) {
     return abortNavigation(err)
   }

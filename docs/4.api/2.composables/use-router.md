@@ -19,7 +19,7 @@ const router = useRouter()
 ```vue [app/pages/index.vue]
 <template>
   <button @click="$router.back()">
-    Back
+    Назад
   </button>
 </template>
 ```

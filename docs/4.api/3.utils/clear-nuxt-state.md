@@ -9,7 +9,7 @@ links:
 ---
 
 ::note
-This method is useful if you want to invalidate the state of `useState`.
+Удобно для инвалидации состояния, созданного через `useState`.
 ::
 
 ## Тип
@@ -20,4 +20,4 @@ export function clearNuxtState (keys?: string | string[] | ((key: string) => boo
 
 ## Параметры
 
-- `keys`: One or an array of keys that are used in [`useState`](/docs/4.x/api/composables/use-state) to delete their cached state. If no keys are provided, **all state** will be invalidated.
+- `keys`: один ключ, массив ключей или функция `(key: string) => boolean` — ключи из [`useState`](/docs/4.x/api/composables/use-state), кэш которых удалить. Без аргумента инвалидируется **весь** state.

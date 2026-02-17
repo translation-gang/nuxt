@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-`defineNuxtPlugin` is a helper function for creating Nuxt plugins with enhanced functionality and type safety. This utility normalizes different plugin formats into a consistent structure that works seamlessly within Nuxt's plugin system.
+`defineNuxtPlugin` — хелпер для создания Nuxt-плагинов с улучшенной типизацией. Приводит разные форматы плагинов к единой структуре, совместимой с системой плагинов Nuxt.
 
 ```ts twoslash [plugins/hello.ts]
 export default defineNuxtPlugin((nuxtApp) => {
@@ -41,32 +41,31 @@ interface ObjectPlugin<T> {
 
 ## Параметры
 
-**plugin**: A plugin can be defined in two ways:
-1. **Function Plugin**: A function that receives the [`NuxtApp`](/docs/4.x/guide/going-further/internals#the-nuxtapp-interface) instance and can return a promise with a potential object with a [`provide`](/docs/4.x/directory-structure/app/plugins#providing-helpers) property if you want to provide a helper on [`NuxtApp`](/docs/4.x/guide/going-further/internals#the-nuxtapp-interface) instance.
-2. **Object Plugin**: An object that can include various properties to configure the plugin's behavior, such as `name`, `enforce`, `dependsOn`, `order`, `parallel`, `setup`, `hooks`, and `env`.
+**plugin**: плагин задаётся одним из двух способов:
+1. **Функция**: получает экземпляр [`NuxtApp`](/docs/4.x/guide/going-further/internals#the-nuxtapp-interface), может вернуть объект с [`provide`](/docs/4.x/directory-structure/app/plugins#providing-helpers) для добавления хелперов в NuxtApp.
+2. **Объект**: свойства `name`, `enforce`, `dependsOn`, `order`, `parallel`, `setup`, `hooks`, `env` для настройки поведения.
 
-| Property    | Type                                   | Required | Description                                                                                                                                                         |
-|-------------|----------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`      | `string`                               | `false`  | Optional name for the plugin, useful for debugging and dependency management.                                                                                       |
-| `enforce`   | `'pre'` \| `'default'` \| `'post'`     | `false`  | Controls when the plugin runs relative to other plugins.                                                                                                            |
-| `dependsOn` | `string[]`                             | `false`  | Array of plugin names this plugin depends on. Ensures proper execution order.                                                                                       |
-| `order`     | `number`                               | `false`  | This allows more granular control over plugin order and should only be used by advanced users. **It overrides the value of `enforce` and is used to sort plugins.** |
-| `parallel`  | `boolean`                              | `false`  | Whether to execute the plugin in parallel with other parallel plugins.                                                                                              |
-| `setup`     | `Plugin<T>`{lang="ts"}                 | `false`  | The main plugin function, equivalent to a function plugin.                                                                                                          |
-| `hooks`     | `Partial<RuntimeNuxtHooks>`{lang="ts"} | `false`  | Nuxt app runtime hooks to register directly.                                                                                                                        |
-| `env`       | `{ islands?: boolean }`{lang="ts"}     | `false`  | Set this value to `false` if you don't want the plugin to run when rendering server-only or island components.                                                      |
+| Свойство   | Тип                                    | Обязательный | Описание |
+|------------|----------------------------------------|--------------|----------|
+| `name`     | `string`                               | нет          | Имя плагина (отладка, зависимости). |
+| `enforce`  | `'pre'` \| `'default'` \| `'post'`     | нет          | Когда выполнять плагин относительно других. |
+| `dependsOn`| `string[]`                             | нет          | Имена плагинов, от которых зависит этот. Задаёт порядок выполнения. |
+| `order`     | `number`                               | нет          | Тонкая настройка порядка. **Переопределяет `enforce` при сортировке.** Для продвинутых. |
+| `parallel` | `boolean`                              | нет          | Выполнять параллельно с другими помеченными плагинами. |
+| `setup`    | `Plugin<T>`                            | нет          | Основная функция плагина (как при передаче функции). |
+| `hooks`    | `Partial<RuntimeNuxtHooks>`            | нет          | Хуки runtime Nuxt для регистрации. |
+| `env`      | `{ islands?: boolean }`                | нет          | `false` — не запускать плагин при рендере server-only и island-компонентов. |
 
-:video-accordion{title="Watch a video from Alexander Lichter about the Object Syntax for Nuxt plugins" videoId="2aXZyXB1QGQ"}
+:video-accordion{title="Видео Alexander Lichter про объектный синтаксис плагинов Nuxt" videoId="2aXZyXB1QGQ"}
 
 ## Примеры
 
-### Basic Usage
+### Базовое использование
 
-The example below demonstrates a simple plugin that adds global functionality:
+Плагин с глобальным хелпером:
 
 ```ts twoslash [plugins/hello.ts]
 export default defineNuxtPlugin((nuxtApp) => {
-  // Add a global method
   return {
     provide: {
       hello: (name: string) => `Hello ${name}!`,
@@ -75,16 +74,15 @@ export default defineNuxtPlugin((nuxtApp) => {
 })
 ```
 
-### Object Syntax Plugin
+### Плагин в виде объекта
 
-The example below shows the object syntax with advanced configuration:
+Объектный синтаксис с расширенной настройкой:
 
 ```ts twoslash [plugins/advanced.ts]
 export default defineNuxtPlugin({
   name: 'my-plugin',
   enforce: 'pre',
   async setup (nuxtApp) {
-    // Plugin setup logic
     const data = await $fetch('/api/config')
 
     return {

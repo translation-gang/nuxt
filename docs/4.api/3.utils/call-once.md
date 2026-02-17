@@ -9,61 +9,61 @@ links:
 ---
 
 ::important
-This utility is available since [Nuxt v3.9](/blog/v3-9).
+Утилита доступна начиная с [Nuxt v3.9](/blog/v3-9).
 ::
 
-## Purpose
+## Назначение
 
-The `callOnce` function is designed to execute a given function or block of code only once during:
-- server-side rendering but not hydration
-- client-side navigation
+`callOnce` выполняет переданную функцию или блок кода только один раз:
+- при серверном рендеринге (но не при гидрации);
+- при клиентской навигации.
 
-This is useful for code that should be executed only once, such as logging an event or setting up a global state.
+Подходит для кода, который должен выполниться один раз: логирование, инициализация глобального состояния и т.п.
 
 ## Использование
 
-The default mode of `callOnce` is to run code only once. For example, if the code runs on the server it won't run again on the client. It also won't run again if you `callOnce` more than once on the client, for example by navigating back to this page.
+По умолчанию код выполняется один раз: если он выполнился на сервере, на клиенте не повторится. Повторный вызов `callOnce` на клиенте (например, при возврате на страницу) тоже не запустит код снова.
 
 ```vue [app/app.vue]
 <script setup lang="ts">
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('This will only be logged once')
+  console.log('Выведется только один раз')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 })
 </script>
 ```
 
-It is also possible to run on every navigation while still avoiding the initial server/client double load. For this, it is possible to use the `navigation` mode:
+Чтобы выполнять код при каждой навигации, но без двойного запуска при первом SSR/гидрации, используйте режим `navigation`:
 
 ```vue [app/app.vue]
 <script setup lang="ts">
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('This will only be logged once and then on every client side navigation')
+  console.log('Один раз при загрузке и при каждой клиентской навигации')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 }, { mode: 'navigation' })
 </script>
 ```
 
 ::important
-`navigation` mode is available since [Nuxt v3.15](/blog/v3-15).
+Режим `navigation` доступен с [Nuxt v3.15](/blog/v3-15).
 ::
 
 ::tip{to="/docs/4.x/getting-started/state-management#usage-with-pinia"}
-`callOnce` is useful in combination with the [Pinia module](/modules/pinia) to call store actions.
+`callOnce` удобен вместе с [модулем Pinia](/modules/pinia) для вызова экшенов стора.
 ::
 
 :read-more{to="/docs/4.x/getting-started/state-management"}
 
 ::warning
-Note that `callOnce` doesn't return anything. You should use [`useAsyncData`](/docs/4.x/api/composables/use-async-data) or [`useFetch`](/docs/4.x/api/composables/use-fetch) if you want to do data fetching during SSR.
+`callOnce` ничего не возвращает. Для загрузки данных при SSR используйте [`useAsyncData`](/docs/4.x/api/composables/use-async-data) или [`useFetch`](/docs/4.x/api/composables/use-fetch).
 ::
 
 ::note
-`callOnce` is a composable meant to be called directly in a setup function, plugin, or route middleware, because it needs to add data to the Nuxt payload to avoid re-calling the function on the client when the page hydrates.
+`callOnce` нужно вызывать в setup, плагине или маршрутном middleware: он добавляет данные в payload Nuxt, чтобы не вызывать функцию повторно на клиенте при гидрации.
 ::
 
 ## Тип
@@ -83,8 +83,8 @@ type CallOnceOptions = {
 
 ## Параметры
 
-- `key`: A unique key ensuring that the code is run once. If you do not provide a key, then a key that is unique to the file and line number of the instance of `callOnce` will be generated for you.
-- `fn`: The function to run once. It can be asynchronous.
-- `options`: Setup the mode, either to re-execute on navigation (`navigation`) or just once for the lifetime of the app (`render`). Defaults to `render`.
-  - `render`: Executes once during initial render (either SSR or CSR) - Default mode
-  - `navigation`: Executes once during initial render and once per subsequent client-side navigation
+- `key`: уникальный ключ, чтобы код выполнился один раз. Если не задан, генерируется по файлу и строке вызова.
+- `fn`: функция для однократного выполнения (может быть асинхронной).
+- `options`: режим выполнения. По умолчанию `render`.
+  - `render`: один раз при первом рендере (SSR или CSR).
+  - `navigation`: один раз при первом рендере и при каждой последующей клиентской навигации.

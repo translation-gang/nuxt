@@ -9,19 +9,18 @@ links:
 ---
 
 ::important
-`setPageLayout` allows you to dynamically change the layout of a page. It relies on access to the Nuxt context and therefore can only be called within the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
+`setPageLayout` меняет макет страницы во время выполнения. Требует контекст Nuxt, поэтому вызывать можно только в [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ```ts [app/middleware/custom-layout.ts]
 export default defineNuxtRouteMiddleware((to) => {
-  // Set the layout on the route you are navigating _to_
   setPageLayout('other')
 })
 ```
 
-## Passing Props to Layouts
+## Передача пропсов в макет
 
-You can pass props to the layout by providing an object as the second argument:
+Второй аргумент — объект с пропсами для макета:
 
 ```ts [app/middleware/admin-layout.ts]
 export default defineNuxtRouteMiddleware((to) => {
@@ -32,7 +31,7 @@ export default defineNuxtRouteMiddleware((to) => {
 })
 ```
 
-The layout can then receive these props:
+Макет принимает эти пропсы:
 
 ```vue [app/layouts/admin.vue]
 <script setup lang="ts">
@@ -45,7 +44,7 @@ const props = defineProps<{
 <template>
   <div>
     <aside v-if="sidebar">
-      Sidebar
+      Боковая панель
     </aside>
     <main>
       <h1>{{ title }}</h1>
@@ -56,5 +55,5 @@ const props = defineProps<{
 ```
 
 ::note
-If you choose to set the layout dynamically on the server side, you _must_ do so before the layout is rendered by Vue (that is, within a plugin or route middleware) to avoid a hydration mismatch.
+При динамической смене макета на сервере вызывайте `setPageLayout` до рендера макета Vue (в плагине или route middleware), иначе возможна рассинхронизация при гидрации.
 ::

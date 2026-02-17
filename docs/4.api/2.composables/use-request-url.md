@@ -8,12 +8,12 @@ links:
     size: xs
 ---
 
-`useRequestURL` is a helper function that returns an [URL object](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) working on both server-side and client-side.
+`useRequestURL` — хелпер, возвращающий [объект URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL), работающий и на сервере, и на клиенте.
 
 ::important
-When utilizing [Hybrid Rendering](/docs/4.x/guide/concepts/rendering#hybrid-rendering) with cache strategies, all incoming request headers are dropped when handling the cached responses via the [Nitro caching layer](https://nitro.build/guide/cache) (meaning `useRequestURL` will return `localhost` for the `host`).
+При [гибридном рендеринге](/docs/4.x/guide/concepts/rendering#hybrid-rendering) с кэшированием заголовки входящего запроса при отдаче закэшированного ответа через [кэш Nitro](https://nitro.build/guide/cache) отбрасываются — в том числе для `useRequestURL` (например, `host` может стать `localhost`).
 
-You can define the [`cache.varies` option](https://nitro.build/guide/cache#options) to specify headers that will be considered when caching and serving the responses, such as `host` and `x-forwarded-host` for multi-tenant environments.
+Опция [`cache.varies`](https://nitro.build/guide/cache#options) позволяет указать заголовки, учитываемые при кэшировании и отдаче (например, `host` и `x-forwarded-host` для мультитенантных окружений).
 ::
 
 ::code-group
@@ -24,12 +24,12 @@ const url = useRequestURL()
 </script>
 
 <template>
-  <p>URL is: {{ url }}</p>
-  <p>Path is: {{ url.pathname }}</p>
+  <p>URL: {{ url }}</p>
+  <p>Path: {{ url.pathname }}</p>
 </template>
 ```
 
-```html [Result in development]
+```html [Результат в dev]
 <p>URL is: http://localhost:3000/about</p>
 <p>Path is: /about</p>
 ```
@@ -37,5 +37,5 @@ const url = useRequestURL()
 ::
 
 ::tip{icon="i-simple-icons-mdnwebdocs" to="https://developer.mozilla.org/en-US/docs/Web/API/URL#instance_properties" target="_blank"}
-Read about the URL instance properties on the MDN documentation.
+Свойства экземпляра URL в документации MDN.
 ::

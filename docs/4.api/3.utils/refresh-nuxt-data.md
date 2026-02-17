@@ -8,10 +8,10 @@ links:
     size: xs
 ---
 
-`refreshNuxtData` is used to refetch all or specific `asyncData` instances, including those from [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useLazyAsyncData`](/docs/4.x/api/composables/use-lazy-async-data), [`useFetch`](/docs/4.x/api/composables/use-fetch), and [`useLazyFetch`](/docs/4.x/api/composables/use-lazy-fetch).  
+`refreshNuxtData` перезапрашивает все или указанные экземпляры asyncData из [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useLazyAsyncData`](/docs/4.x/api/composables/use-lazy-async-data), [`useFetch`](/docs/4.x/api/composables/use-fetch) и [`useLazyFetch`](/docs/4.x/api/composables/use-lazy-fetch).
 
 ::note
-If your component is cached by `<KeepAlive>` and enters a deactivated state, the `asyncData` inside the component will still be refetched until the component is unmounted.
+Если компонент кэшируется через `<KeepAlive>` и деактивируется, asyncData внутри него всё равно будет перезапрашиваться до размонтирования компонента.
 ::
 
 ## Тип
@@ -22,17 +22,17 @@ export function refreshNuxtData (keys?: string | string[])
 
 ## Параметры
 
-* `keys`: A single string or an array of strings as `keys` that are used to fetch the data. This parameter is **optional**. All [`useAsyncData`](/docs/4.x/api/composables/use-async-data) and [`useFetch`](/docs/4.x/api/composables/use-fetch) keys are re-fetched when no `keys` are explicitly specified.
+* `keys`: одна строка или массив строк — ключи, по которым загружались данные. Параметр **необязателен**. Без `keys` перезапрашиваются все ключи [`useAsyncData`](/docs/4.x/api/composables/use-async-data) и [`useFetch`](/docs/4.x/api/composables/use-fetch).
 
 ## Возвращаемые значения
 
-`refreshNuxtData` returns a promise, resolving when all or specific `asyncData` instances have been refreshed.
+`refreshNuxtData` возвращает промис, который резолвится после обновления всех или указанных экземпляров asyncData.
 
 ## Примеры
 
-### Refresh All Data
+### Обновить все данные
 
-This example below refreshes all data being fetched using `useAsyncData` and `useFetch` in Nuxt application.
+Пример перезапроса всех данных, загружаемых через `useAsyncData` и `useFetch`:
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">
@@ -54,15 +54,15 @@ async function refreshAll () {
       :disabled="refreshing"
       @click="refreshAll"
     >
-      Refetch All Data
+      Обновить все данные
     </button>
   </div>
 </template>
 ```
 
-### Refresh Specific Data
+### Обновить выбранные данные
 
-This example below refreshes only data where the key matches to `count` and `user`.
+Пример перезапроса только данных с ключами `count` и `user`:
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">
@@ -71,7 +71,6 @@ const refreshing = ref(false)
 async function refresh () {
   refreshing.value = true
   try {
-    // you could also pass an array of keys to refresh multiple data
     await refreshNuxtData(['count', 'user'])
   } finally {
     refreshing.value = false
@@ -81,16 +80,16 @@ async function refresh () {
 
 <template>
   <div v-if="refreshing">
-    Loading
+    Загрузка…
   </div>
   <button @click="refresh">
-    Refresh
+    Обновить
   </button>
 </template>
 ```
 
 ::note
-If you have access to the `asyncData` instance, it is recommended to use its `refresh` or `execute` method as the preferred way to refetch the data.
+Если доступен экземпляр asyncData, предпочтительнее вызывать его метод `refresh` или `execute`.
 ::
 
 :read-more{to="/docs/4.x/getting-started/data-fetching"}

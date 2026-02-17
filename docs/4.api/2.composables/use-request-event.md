@@ -8,16 +8,16 @@ links:
     size: xs
 ---
 
-Within the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context) you can use `useRequestEvent` to access the incoming request.
+В [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context) композабл `useRequestEvent` даёт доступ к объекту входящего запроса.
 
 ```ts
-// Get underlying request event
+// объект события запроса
 const event = useRequestEvent()
 
-// Get the URL
+// URL
 const url = event?.path
 ```
 
 ::tip
-In the browser, `useRequestEvent` will return `undefined`.
+В браузере `useRequestEvent` возвращает `undefined`.
 ::

@@ -8,22 +8,20 @@ links:
     size: xs
 ---
 
-Within your pages, components, and plugins, you can use `clearError` to clear all errors and redirect the user.
+В страницах, компонентах и плагинах можно вызвать `clearError`, чтобы сбросить все ошибки и при необходимости перенаправить пользователя.
 
-**Parameters:**
+**Параметры:**
 
-- `options?: { redirect?: string }`
-
-You can provide an optional path to redirect to (for example, if you want to navigate to a 'safe' page).
+- `options?: { redirect?: string }` — необязательный путь для редиректа (например, на «безопасную» страницу).
 
 ```ts
-// Without redirect
+// без редиректа
 clearError()
 
-// With redirect
+// с редиректом
 clearError({ redirect: '/homepage' })
 ```
 
-Errors are set in state using [`useError()`](/docs/4.x/api/composables/use-error). The `clearError` composable will reset this state and calls the `app:error:cleared` hook with the provided options.
+Ошибки хранятся в состоянии через [`useError()`](/docs/4.x/api/composables/use-error). `clearError` сбрасывает это состояние и вызывает хук `app:error:cleared` с переданными опциями.
 
 :read-more{to="/docs/4.x/getting-started/error-handling"}

@@ -8,19 +8,19 @@ links:
     size: xs
 ---
 
-`useHydration` is a built-in composable that provides a way to set data on the server side every time a new HTTP request is made and receive that data on the client side. This way `useHydration` allows you to take full control of the hydration cycle.
+`useHydration` — встроенный композабл для передачи данных с сервера при каждом новом HTTP-запросе и получения их на клиенте. Даёт полный контроль над циклом гидратации.
 
 ::note
-This is an advanced composable, primarily designed for use within plugins, mostly used by Nuxt modules.
+Продвинутый композабл, в основном для плагинов и модулей Nuxt.
 ::
 
 ::note
-`useHydration` is designed to **ensure state synchronization and restoration during SSR**. If you need to create a globally reactive state that is SSR-friendly in Nuxt, [`useState`](/docs/4.x/api/composables/use-state) is the recommended choice.
+`useHydration` нужен для **синхронизации и восстановления состояния при SSR**. Для глобального реактивного состояния, совместимого с SSR, рекомендуют [`useState`](/docs/4.x/api/composables/use-state).
 ::
 
 ## Использование
 
-The data returned from the `get` function on the server is stored in `nuxtApp.payload` under the unique key provided as the first parameter to `useHydration`. During hydration, this data is then retrieved on the client, preventing redundant computations or API calls.
+Данные, возвращаемые функцией `get` на сервере, сохраняются в `nuxtApp.payload` под ключом (первый аргумент `useHydration`). При гидрации они читаются на клиенте, без повторных вычислений или запросов.
 
 ::code-group
 
@@ -65,10 +65,10 @@ export function useHydration<T> (key: string, get: () => T, set: (value: T) => v
 
 | Parameter | Тип | Описание |
 | --- | --- | --- |
-| `key` | `string` | A unique key that identifies the data in your Nuxt application. |
-| `get` | `() => T` | A function executed **only on the server** (called when SSR rendering is done) to set the initial value. |
-| `set` | `(value: T) => void` | A function executed **only on the client** (called when initial Vue instance is created) to receive the data. |
+| `key` | `string` | Уникальный ключ данных в приложении Nuxt. |
+| `get` | `() => T` | Функция, вызываемая **только на сервере** (после завершения SSR) — задаёт начальное значение. |
+| `set` | `(value: T) => void` | Функция, вызываемая **только на клиенте** (при создании экземпляра Vue) — получает данные. |
 
 ## Возвращаемые значения
 
-This composable does not return any value.
+Композабл ничего не возвращает.
