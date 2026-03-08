@@ -76,6 +76,7 @@ export function useLazyFetch<DataT, ErrorT> (
 | `execute`| то же                                              | Алиас для `refresh`. |
 | `error`  | `Ref<ErrorT \| undefined>`                          | Ошибка при сбое загрузки. |
 | `status` | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>` | Статус запроса. |
+| `pending`| `Ref<boolean>`                                     | Флаг: идёт ли в данный момент запрос. |
 | `clear`  | `() => void`                                       | Сброс данных, ошибки, статуса и отмена запросов. |
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#return-values"}

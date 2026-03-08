@@ -161,6 +161,7 @@ type AsyncDataRequestContext = {
 
 type AsyncData<DataT, ErrorT> = {
   data: Ref<DataT | undefined>
+  pending: Ref<boolean>
   refresh: (opts?: AsyncDataExecuteOptions) => Promise<void>
   execute: (opts?: AsyncDataExecuteOptions) => Promise<void>
   clear: () => void
@@ -229,6 +230,7 @@ const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating
 | `execute`| `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Синоним для `refresh`.                                                                                                                                            |
 | `error`  | `Ref<ErrorT \| undefined>`                         | Объект ошибки при неудачной загрузке.                                                                                                                              |
 | `status` | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>`  | Статус запроса. Возможные значения см. ниже.                                                                                                                       |
+| `pending`| `Ref<boolean>`                                     | Флаг: идёт ли в данный момент запрос.                                                                                                                             |
 | `clear`  | `() => void`                                       | Сбрасывает `data` в `undefined` (или в `options.default()`, если задано), `error` в `undefined`, устанавливает `status` в `idle` и отменяет ожидающие запросы.   |
 
 ### Значения status

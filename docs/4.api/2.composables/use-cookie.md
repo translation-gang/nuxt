@@ -36,6 +36,7 @@ export interface CookieOptions<T = any> extends Omit<CookieSerializeOptions & Co
   default?: () => T | Ref<T>
   watch?: boolean | 'shallow'
   readonly?: boolean
+  refresh?: boolean
 }
 
 export interface CookieRef<T> extends Ref<T> {}
@@ -60,6 +61,7 @@ export function useCookie<T = string | null | undefined> (
 | `encode`      | `(value: T) => string` | `JSON.stringify` + `encodeURIComponent`                       | Функция кодирования значения в строку для cookie.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `default`     | `() => T \| Ref<T>`    | `undefined`                                                    | Функция, возвращающая значение по умолчанию, если cookie нет. Может возвращать `Ref`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `watch`       | `boolean \| 'shallow'` | `true`                                                         | Следить за изменениями и обновлять cookie. `true` — глубокий watch, `'shallow'` — только верхний уровень, `false` — отключить. <br/> **Примечание:** при изменении cookie извне обновляйте значение вручную через [`refreshCookie`](/docs/4.x/api/utils/refresh-cookie).                                                                                                                                                                                                                                                                                                                                                                        |
+| `refresh`     | `boolean`              | `false`                                                        | Если `true`, срок действия cookie обновляется при каждой явной записи (например, `cookie.value = cookie.value`). Обновление срабатывает только при присвоении в `.value`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `readonly`    | `boolean`              | `false`                                                        | Если `true`, запись в cookie отключена.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `maxAge`      | `number`               | `undefined`                                                    | Время жизни cookie в секундах ([атрибут `Max-Age`](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.2)). Число округляется вниз. По умолчанию не задано.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `expires`     | `Date`                 | `undefined`                                                    | Дата истечения cookie. По умолчанию не задана; без неё или без `maxAge` cookie считается сессионной и удаляется при закрытии браузера. <br/> **Примечание:** по [спецификации](https://datatracker.ietf.org/doc/html/rfc6265#section-5.3) при наличии обоих `expires` и `maxAge` приоритет у `maxAge`; лучше задавать одну и ту же дату.                                                                                                                                                                                                                                                                                                                  |
@@ -160,6 +162,28 @@ function save () {
       Сохранить
     </button>
   </div>
+</template>
+```
+
+### Обновление срока действия cookie
+
+```vue
+<script setup lang="ts">
+const session = useCookie(
+  'session', {
+    maxAge: 60 * 60, // 1 час
+    refresh: true,
+    default: () => 'active',
+  })
+
+// Даже если значение не меняется,
+// срок действия cookie обновится
+// при каждом присвоении
+session.value = 'active'
+</script>
+
+<template>
+  <div>Сессия: {{ session }}</div>
 </template>
 ```
 

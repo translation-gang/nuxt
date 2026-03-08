@@ -32,9 +32,9 @@ npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] 
 | `--cwd=<directory>`                  |              | Рабочая директория (приоритет над ROOTDIR)                                                 |
 | `--logLevel=<silent\|info\|verbose>` |              | Уровень логирования при сборке                                                             |
 | `--prerender`                        |              | Собрать Nuxt и пререндерить статические маршруты                                            |
-| `--preset`                           |              | Пресет сервера Nitro                                                                        |
+| `--preset=<preset>`                  |              | Пресет Nitro (например `node-server`, `vercel`, `netlify`, `static`)                     |
 | `--dotenv`                           |              | Путь к `.env` относительно корня                                                            |
-| `--envName`                          |              | Окружение для конфигурации                                                                  |
+| `--envName`                          |              | Окружение для переопределения конфига (при сборке по умолчанию `production`, при dev — `development`) |
 | `-e, --extends=<layer-name>`         |              | Подключить слой Nuxt                                                                        |
 <!--/build-opts-->
 

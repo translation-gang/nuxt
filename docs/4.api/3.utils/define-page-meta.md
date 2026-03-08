@@ -35,7 +35,7 @@ interface PageMeta {
   groups?: string[]
   pageTransition?: boolean | TransitionProps
   layoutTransition?: boolean | TransitionProps
-  viewTransition?: boolean | 'always'
+  viewTransition?: ViewTransitionPageOptions['enabled'] | ViewTransitionPageOptions
   key?: false | string | ((route: RouteLocationNormalizedLoaded) => string)
   keepalive?: boolean | KeepAliveProps
   layout?: false | LayoutKey | Ref<LayoutKey> | ComputedRef<LayoutKey>
@@ -110,9 +110,15 @@ interface PageMeta {
 
   **`viewTransition`**
 
-  - **Тип**: `boolean | 'always'`  
+  - **Тип**: `boolean | 'always' | ViewTransitionPageOptions`  
   **Экспериментально, нужно [включить в nuxt.config](/docs/4.x/getting-started/transitions#view-transitions-api-experimental).**  
   Включить/выключить View Transitions для страницы. `true` — не применять при `prefers-reduced-motion: reduce`. `'always'` — применять всегда.
+
+    Можно передать объект `ViewTransitionPageOptions` для настройки [типов view transition](/docs/4.x/getting-started/transitions#view-transition-types):
+    - `enabled`: `boolean | 'always'` — включить/выключить переход
+    - `types`: `string[] | (to, from) => string[]` — типы для любого перехода с этой страницей
+    - `toTypes`: `string[] | (to, from) => string[]` — типы только при переходе **на** эту страницу
+    - `fromTypes`: `string[] | (to, from) => string[]` — типы только при переходе **с** этой страницы
 
   **`redirect`**
 
