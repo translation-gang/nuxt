@@ -1,6 +1,6 @@
 ---
 title: 'useAnnouncer'
-description: A composable for announcing messages to screen readers.
+description: Композабл для озвучивания сообщений программами чтения с экрана.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -9,46 +9,46 @@ links:
 ---
 
 ::important
-This composable is available in Nuxt v3.17+.
+Композабл доступен в Nuxt v3.17+.
 ::
 
-## Description
+## Описание
 
-A composable for announcing dynamic content changes to screen readers. Unlike [`useRouteAnnouncer`](/docs/api/composables/use-route-announcer) which automatically announces route changes, `useAnnouncer` gives you manual control over what and when to announce.
+Композабл для озвучивания программ чтения с экрана при изменении контента. В отличие от [`useRouteAnnouncer`](/docs/api/composables/use-route-announcer), который автоматически озвучивает смену маршрута, `useAnnouncer` даёт ручной контроль над тем, что и когда озвучивать.
 
-Use this for in-page updates like form validation, async operations, toast notifications, and live content changes.
+Подходит для обновлений на странице: валидация форм, асинхронные операции, уведомления и изменения контента в реальном времени.
 
-## Parameters
+## Параметры
 
-- `politeness`: Sets the default urgency for screen reader announcements: `off` (disable the announcement), `polite` (waits for silence), or `assertive` (interrupts immediately). (default `polite`)
+- `politeness`: срочность озвучивания: `off` (отключить), `polite` (дождаться паузы), `assertive` (озвучить сразу). (по умолчанию `polite`)
 
-## Properties
+## Свойства
 
 ### `message`
 
 - **type**: `Ref<string>`
-- **description**: The current message to announce
+- **description**: Текущее сообщение для озвучивания
 
 ### `politeness`
 
 - **type**: `Ref<'polite' | 'assertive' | 'off'>`
-- **description**: Screen reader announcement urgency level
+- **description**: Уровень срочности озвучивания
 
-## Methods
+## Методы
 
 ### `set(message, politeness = "polite")`
 
-Sets the message to announce with its urgency level.
+Задаёт сообщение для озвучивания и уровень срочности.
 
 ### `polite(message)`
 
-Sets the message with `politeness = "polite"`. Use for non-urgent updates that can wait for the screen reader to finish its current task.
+Задаёт сообщение с `politeness = "polite"`. Используйте для некритичных обновлений, когда можно дождаться окончания текущего озвучивания.
 
 ### `assertive(message)`
 
-Sets the message with `politeness = "assertive"`. Use for urgent updates that should interrupt the screen reader immediately.
+Задаёт сообщение с `politeness = "assertive"`. Используйте для срочных обновлений, которые должны озвучиваться сразу.
 
-## Example
+## Пример
 
 ```vue [app/pages/contact.vue]
 <script setup lang="ts">
@@ -57,17 +57,17 @@ const { polite, assertive } = useAnnouncer()
 async function submitForm () {
   try {
     await $fetch('/api/contact', { method: 'POST', body: formData })
-    polite('Message sent successfully')
+    polite('Сообщение успешно отправлено')
   } catch (error) {
-    assertive('Error: Failed to send message')
+    assertive('Ошибка: не удалось отправить сообщение')
   }
 }
 </script>
 ```
 
-## Use Cases
+## Сценарии использования
 
-### Form Validation
+### Валидация формы
 
 ```vue [app/components/LoginForm.vue]
 <script setup lang="ts">
@@ -75,11 +75,11 @@ const { assertive } = useAnnouncer()
 
 function validateForm () {
   const errors = []
-  if (!email.value) { errors.push('Email is required') }
-  if (!password.value) { errors.push('Password is required') }
+  if (!email.value) { errors.push('Укажите email') }
+  if (!password.value) { errors.push('Укажите пароль') }
 
   if (errors.length) {
-    assertive(`Form has ${errors.length} errors: ${errors.join(', ')}`)
+    assertive(`В форме ${errors.length} ошибок: ${errors.join(', ')}`)
     return false
   }
   return true
@@ -87,7 +87,7 @@ function validateForm () {
 </script>
 ```
 
-### Loading States
+### Состояния загрузки
 
 ```vue [app/pages/dashboard.vue]
 <script setup lang="ts">
@@ -97,15 +97,15 @@ const { data, status } = await useFetch('/api/data')
 
 watch(status, (newStatus) => {
   if (newStatus === 'pending') {
-    polite('Loading data...')
+    polite('Загрузка данных...')
   } else if (newStatus === 'success') {
-    polite('Data loaded successfully')
+    polite('Данные загружены')
   }
 })
 </script>
 ```
 
-### Search Results
+### Результаты поиска
 
 ```vue [app/components/Search.vue]
 <script setup lang="ts">
@@ -114,15 +114,15 @@ const { polite } = useAnnouncer()
 const results = ref([])
 
 watch(results, (newResults) => {
-  polite(`Found ${newResults.length} results`)
+  polite(`Найдено результатов: ${newResults.length}`)
 })
 </script>
 ```
 
 ::callout
-You need to add the [`<NuxtAnnouncer>`](/docs/4.x/api/components/nuxt-announcer) component to your app for the announcements to be rendered in the DOM.
+Чтобы сообщения попадали в DOM, в приложении должен быть добавлен компонент [`<NuxtAnnouncer>`](/docs/4.x/api/components/nuxt-announcer).
 ::
 
 ::callout
-For automatic announcements of route/page changes, use [`useRouteAnnouncer`](/docs/4.x/api/composables/use-route-announcer) with the [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer) component instead.
+Для автоматического озвучивания смены маршрута/страницы используйте [`useRouteAnnouncer`](/docs/4.x/api/composables/use-route-announcer) вместе с компонентом [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer).
 ::
