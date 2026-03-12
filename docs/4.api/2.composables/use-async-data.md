@@ -29,6 +29,10 @@ const { data, status, pending, error, refresh, clear } = await useAsyncData(
 При использовании собственной обёртки `useAsyncData` не вызывайте в ней `await` — это может привести к неожиданному поведению. См. рецепт кастомного загрузчика асинхронных данных.
 ::
 
+::tip{to="/docs/4.x/guide/recipes/custom-usefetch#custom-usefetch-with-createusefetch"}
+Нужен кастомный `useAsyncData` с заданными по умолчанию опциями? Используйте `createUseAsyncData` для создания полностью типизированного композабла. Подробнее в [рецепте кастомного useFetch](/docs/4.x/guide/recipes/custom-usefetch).
+::
+
 ::note
 `data`, `status`, `pending` и `error` — это ref-ы Vue, к ним нужно обращаться через `.value` внутри `<script setup>`, тогда как `refresh`/`execute` и `clear` — обычные функции.
 ::

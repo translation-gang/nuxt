@@ -18,7 +18,7 @@ const config = useRuntimeConfig()
 
 ```ts [server/api/foo.ts]
 export default defineEventHandler((event) => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
 })
 ```
 
@@ -56,7 +56,7 @@ export default defineNuxtConfig({
 
 ```ts [server/api/test.ts]
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
 
   // Доступ к публичным переменным
   const result = await $fetch(`/test`, {
@@ -128,7 +128,7 @@ export default defineNuxtPlugin((NuxtApp) => {
 
 ```ts [server/api/foo.ts]
 export default defineEventHandler((event) => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
 
   // cdnURL доступен везде
   const cdnURL = config.app.cdnURL

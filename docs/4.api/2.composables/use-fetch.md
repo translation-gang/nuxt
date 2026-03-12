@@ -29,6 +29,10 @@ const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
 Если вы используете собственную обёртку `useFetch`, не вызывайте в ней `await` — это может привести к неожиданному поведению. См. рецепт кастомного загрузчика асинхронных данных.
 ::
 
+::tip{to="/docs/4.x/guide/recipes/custom-usefetch#custom-usefetch-with-createusefetch"}
+Нужен кастомный `useFetch` с заданными по умолчанию опциями (например `baseURL` или заголовки авторизации)? Используйте `createUseFetch` для создания полностью типизированного композабла.
+::
+
 ::note
 `data`, `status` и `error` — это ref-ы Vue, к ним нужно обращаться через `.value` внутри `<script setup>`, тогда как `refresh`/`execute` и `clear` — обычные функции.
 ::
@@ -87,7 +91,7 @@ const { data: post } = await useFetch(() => `/api/posts/${id.value}`)
 ::
 
 ::warning
-`useFetch` — зарезервированное имя, обрабатываемое компилятором, поэтому не называйте так свою функцию.
+`useFetch` — зарезервированное имя, обрабатываемое компилятором, поэтому не называйте так свою функцию. Для кастомного варианта с заданными опциями используйте [`createUseFetch`](/docs/4.x/guide/recipes/custom-usefetch#custom-usefetch-with-createusefetch).
 ::
 
 ::warning
@@ -151,7 +155,6 @@ type UseFetchOptions<DataT> = {
   pick?: string[]
   $fetch?: typeof globalThis.$fetch
   watch?: MultiWatchSources | false
-  timeout?: MaybeRefOrGetter<number>
 }
 
 type AsyncDataRequestContext = {

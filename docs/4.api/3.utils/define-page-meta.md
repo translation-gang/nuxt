@@ -38,7 +38,7 @@ interface PageMeta {
   viewTransition?: ViewTransitionPageOptions['enabled'] | ViewTransitionPageOptions
   key?: false | string | ((route: RouteLocationNormalizedLoaded) => string)
   keepalive?: boolean | KeepAliveProps
-  layout?: false | LayoutKey | Ref<LayoutKey> | ComputedRef<LayoutKey>
+  layout?: false | LayoutKey | Ref<LayoutKey> | ComputedRef<LayoutKey> | { name?: LayoutKey | false, props?: Record<string, unknown> /* or the selected layout's props */ }
   middleware?: MiddlewareKey | NavigationGuard | Array<MiddlewareKey | NavigationGuard>
   scrollToTop?: boolean | ((to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) => boolean)
   [key: string]: unknown
@@ -90,8 +90,9 @@ interface PageMeta {
 
   **`layout`**
 
-  - **Тип**: `false` | `LayoutKey` | `Ref<LayoutKey>` | `ComputedRef<LayoutKey>`  
-  Имя макета для маршрута (статическое или реактивное). `false` — отключить макет по умолчанию.
+  - **Тип**: `false` | `LayoutKey` | `Ref<LayoutKey>` | `ComputedRef<LayoutKey>` | `{ name?: LayoutKey | false; props?: Record<string, unknown> }`
+
+    Имя макета для маршрута (статическое или реактивное). `false` — отключить макет по умолчанию. Можно передать объект с полями `name` и `props`, чтобы передать типизированные пропсы в компонент лейаута. При определении пропсов в лейауте через `defineProps` они будут полностью типизированы в `definePageMeta`.
 
   **`layoutTransition`**
 
@@ -225,3 +226,52 @@ definePageMeta({
 })
 </script>
 ```
+
+### Passing Props to a Layout
+
+You can pass props to a layout by using the object syntax for `layout`. If your layout defines props with `defineProps`, the props will be fully typed.
+
+::code-group
+
+```vue [app/pages/dashboard.vue]
+<script setup lang="ts">
+definePageMeta({
+  layout: {
+    name: 'panel',
+    props: {
+      sidebar: true,
+      title: 'Dashboard',
+    },
+  },
+})
+</script>
+```
+
+```vue [app/layouts/panel.vue]
+<script setup lang="ts">
+const props = defineProps<{
+  sidebar?: boolean
+  title?: string
+}>()
+</script>
+
+<template>
+  <div>
+    <aside v-if="sidebar">
+      Sidebar
+    </aside>
+    <main>
+      <h1>{{ title }}</h1>
+      <slot />
+    </main>
+  </div>
+</template>
+```
+
+::
+
+::tip
+Layout props set via `definePageMeta` are fully typed based on the layout's `defineProps`. You'll get autocomplete and type-checking in your editor.
+::
+
+:read-more{to="/docs/4.x/directory-structure/app/layouts#passing-props-to-layouts"}

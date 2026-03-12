@@ -10,7 +10,7 @@ links:
 
 <!--build-cmd-->
 ```bash [Terminal]
-npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--prerender] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>]
+npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--prerender] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>] [--profile[=verbose]]
 ```
 <!--/build-cmd-->
 
@@ -36,6 +36,7 @@ npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] 
 | `--dotenv`                           |              | Путь к `.env` относительно корня                                                            |
 | `--envName`                          |              | Окружение для переопределения конфига (при сборке по умолчанию `production`, при dev — `development`) |
 | `-e, --extends=<layer-name>`         |              | Подключить слой Nuxt                                                                        |
+| `--profile`                          |              | Профилирование производительности (v4.4+). Записывает V8 CPU profile и JSON-отчёт при выходе. Для полного отчёта в консоль: `--profile=verbose`. |
 <!--/build-opts-->
 
 ::note

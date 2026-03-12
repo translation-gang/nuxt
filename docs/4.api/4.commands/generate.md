@@ -10,7 +10,7 @@ links:
 
 <!--generate-cmd-->
 ```bash [Terminal]
-npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>]
+npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>] [--profile[=verbose]]
 ```
 <!--/generate-cmd-->
 
@@ -35,6 +35,7 @@ npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose
 | `--dotenv`                           |              | Путь к `.env` относительно корня                                                            |
 | `--envName`                          |              | Окружение для конфигурации                                                                  |
 | `-e, --extends=<layer-name>`         |              | Подключить слой Nuxt                                                                        |
+| `--profile`                          |              | Профилирование производительности (v4.4+). Записывает V8 CPU profile и JSON-отчёт при выходе. Для полного отчёта в консоль: `--profile=verbose`. |
 <!--/generate-opts-->
 
 ::read-more{to="/docs/4.x/getting-started/deployment#static-hosting"}

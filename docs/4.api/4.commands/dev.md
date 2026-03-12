@@ -10,7 +10,7 @@ links:
 
 <!--dev-cmd-->
 ```bash [Terminal]
-npx nuxt dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dotenv] [--envName] [-e, --extends=<layer-name>] [--clear] [--no-f, --no-fork] [-p, --port] [-h, --host] [--clipboard] [-o, --open] [--https] [--publicURL] [--qr] [--public] [--tunnel] [--sslCert] [--sslKey]
+npx nuxt dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dotenv] [--envName] [-e, --extends=<layer-name>] [--clear] [--no-f, --no-fork] [-p, --port] [-h, --host] [--clipboard] [-o, --open] [--https] [--publicURL] [--qr] [--public] [--tunnel] [--profile[=verbose]] [--sslCert] [--sslKey]
 ```
 <!--/dev-cmd-->
 
@@ -45,6 +45,7 @@ npx nuxt dev [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [-
 | `--qr`                               |              | Показывать QR-код публичного URL                                                            |
 | `--public`                           |              | Слушать все сетевые интерфейсы                                                             |
 | `--tunnel`                           |              | Туннель через unjs/untun                                                                    |
+| `--profile`                          |              | Профилирование производительности (v4.4+). Записывает V8 CPU profile и JSON-отчёт при выходе. Для полного отчёта в консоль: `--profile=verbose`. |
 | `--sslCert`                          |              | (УСТАРЕЛО) Используйте `--https.cert`                                                      |
 | `--sslKey`                           |              | (УСТАРЕЛО) Используйте `--https.key`                                                        |
 <!--/dev-opts-->
