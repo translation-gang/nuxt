@@ -279,6 +279,6 @@ export function useStandType () {
 }
 ```
 
-<!-- ### Params
+<!-- ### Параметры
 
-- `appName`: an optional application name. If you do not provide it, the Nuxt `buildId` option is used. Otherwise, it must match with an existing `buildId`. -->
+- `appName`: необязательное имя приложения. Если не задано, используется опция Nuxt `buildId`. Иначе должно совпадать с существующим `buildId`. -->

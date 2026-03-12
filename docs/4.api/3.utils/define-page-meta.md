@@ -55,37 +55,37 @@ interface PageMeta {
 
   **`name`**
 
-  - **Тип**: `string`  
+  - **Тип**: `string`
   Имя маршрута страницы. По умолчанию генерируется по пути в [`app/pages/`](/docs/4.x/directory-structure/app/pages).
 
   **`path`**
 
-  - **Тип**: `string`  
+  - **Тип**: `string`
   [Своё регулярное выражение](/docs/4.x/api/utils/define-page-meta#using-a-custom-regular-expression) для маршрута, если имени файла недостаточно.
 
   **`props`**
 
-  - **Тип**: [`RouteRecordRaw['props']`](https://router.vuejs.org/guide/essentials/passing-props)  
+  - **Тип**: [`RouteRecordRaw['props']`](https://router.vuejs.org/guide/essentials/passing-props)
   Передавать `params` маршрута как пропсы в страничный компонент.
 
   **`alias`**
 
-  - **Тип**: `string | string[]`  
+  - **Тип**: `string | string[]`
   Псевдонимы маршрута — дополнительные пути, ведущие на ту же страницу (например `/users/:id` и `/u/:id`). Параметры у `alias` и `path` должны совпадать.
 
   **`groups`**
 
-  - **Тип**: `string[]`  
+  - **Тип**: `string[]`
   Группы маршрутов по структуре папок. Заполняется автоматически для [route groups](/docs/4.x/guide/directory-structure/app/pages#route-groups).
 
   **`keepalive`**
 
-  - **Тип**: `boolean` | [`KeepAliveProps`](https://vuejs.org/api/built-in-components#keepalive)  
+  - **Тип**: `boolean` | [`KeepAliveProps`](https://vuejs.org/api/built-in-components#keepalive)
   `true` — сохранять состояние страницы при смене маршрута; объект — тонкая настройка KeepAlive.
 
   **`key`**
 
-  - **Тип**: `false` | `string` | `((route) => string)`  
+  - **Тип**: `false` | `string` | `((route) => string)`
   Ключ для управления перерисовкой `<NuxtPage>`.
 
   **`layout`**
@@ -96,23 +96,23 @@ interface PageMeta {
 
   **`layoutTransition`**
 
-  - **Тип**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)  
+  - **Тип**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)
   Имя перехода для смены макета. `false` — отключить переход.
 
   **`middleware`**
 
-  - **Тип**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/navigationguard) | массив  
+  - **Тип**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/navigationguard) | массив
   Middleware для страницы (анонимный или по имени). Подробнее: [маршрутный middleware](/docs/4.x/directory-structure/app/middleware).
 
   **`pageTransition`**
 
-  - **Тип**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)  
+  - **Тип**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)
   Имя перехода для страницы. `false` — отключить.
 
   **`viewTransition`**
 
-  - **Тип**: `boolean | 'always' | ViewTransitionPageOptions`  
-  **Экспериментально, нужно [включить в nuxt.config](/docs/4.x/getting-started/transitions#view-transitions-api-experimental).**  
+  - **Тип**: `boolean | 'always' | ViewTransitionPageOptions`
+  **Экспериментально, нужно [включить в nuxt.config](/docs/4.x/getting-started/transitions#view-transitions-api-experimental).**
   Включить/выключить View Transitions для страницы. `true` — не применять при `prefers-reduced-motion: reduce`. `'always'` — применять всегда.
 
     Можно передать объект `ViewTransitionPageOptions` для настройки [типов view transition](/docs/4.x/getting-started/transitions#view-transition-types):
@@ -123,22 +123,22 @@ interface PageMeta {
 
   **`redirect`**
 
-  - **Тип**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias)  
+  - **Тип**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias)
   Куда редиректить при прямом совпадении маршрута. Редирект выполняется до навигационных охранников.
 
   **`validate`**
 
-  - **Тип**: `(route) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>`  
+  - **Тип**: `(route) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>`
   Проверка, можно ли отобразить маршрут этой страницей. `true` — да, `false` — нет (при отсутствии других совпадений — 404). Можно вернуть объект с `status`/`statusText` для немедленной ошибки.
 
   **`scrollToTop`**
 
-  - **Тип**: `boolean | (to, from) => boolean`  
+  - **Тип**: `boolean | (to, from) => boolean`
   Прокручивать ли вверх перед отображением страницы. Глобальное поведение можно переопределить в `~/router.options.ts` ([кастомный роутинг](/docs/4.x/guide/recipes/custom-routing#using-routeroptions)).
 
   **`[key: string]`**
 
-  - **Тип**: `any`  
+  - **Тип**: `any`
   Произвольные метаданные. Типы можно расширить [через augmentation](/docs/4.x/directory-structure/app/pages/#typing-custom-metadata).
 
 ## Примеры
@@ -227,9 +227,9 @@ definePageMeta({
 </script>
 ```
 
-### Passing Props to a Layout
+### Передача пропсов в лейаут
 
-You can pass props to a layout by using the object syntax for `layout`. If your layout defines props with `defineProps`, the props will be fully typed.
+Пропсы в лейаут можно передать через объектный синтаксис опции `layout`. Если в лейауте пропсы объявлены через `defineProps`, они будут полностью типизированы.
 
 ::code-group
 
@@ -271,7 +271,7 @@ const props = defineProps<{
 ::
 
 ::tip
-Layout props set via `definePageMeta` are fully typed based on the layout's `defineProps`. You'll get autocomplete and type-checking in your editor.
+Пропсы лейаута, заданные через `definePageMeta`, полностью типизированы на основе `defineProps` лейаута. В редакторе будут доступны автодополнение и проверка типов.
 ::
 
 :read-more{to="/docs/4.x/directory-structure/app/layouts#passing-props-to-layouts"}

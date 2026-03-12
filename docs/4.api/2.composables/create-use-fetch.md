@@ -1,6 +1,6 @@
 ---
 title: 'createUseFetch'
-description: A factory function to create a custom useFetch composable with pre-defined default options.
+description: Фабричная функция для создания кастомного композабла useFetch с заданными опциями по умолчанию.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -8,13 +8,13 @@ links:
     size: xs
 ---
 
-`createUseFetch` creates a custom [`useFetch`](/docs/4.x/api/composables/use-fetch) composable with pre-defined options. The resulting composable is fully typed and works exactly like `useFetch`, but with your defaults baked in.
+`createUseFetch` создаёт кастомный композабл [`useFetch`](/docs/4.x/api/composables/use-fetch) с заданными опциями. Результат полностью типизирован и ведёт себя как `useFetch`, но с вашими значениями по умолчанию.
 
 ::note
-`createUseFetch` is a compiler macro. It must be used as an **exported** declaration in the `composables/` directory (or any directory scanned by the Nuxt compiler). Nuxt automatically injects de-duplication keys at build time.
+`createUseFetch` — макрос компилятора. Его нужно использовать как **экспортируемое** объявление в каталоге `composables/` (или в любом каталоге, сканируемом компилятором Nuxt). Nuxt автоматически подставляет ключи дедупликации на этапе сборки.
 ::
 
-## Usage
+## Использование
 
 ```ts [app/composables/useAPI.ts]
 export const useAPI = createUseFetch({
@@ -28,9 +28,9 @@ const { data: modules } = await useAPI('/modules')
 </script>
 ```
 
-The resulting `useAPI` composable has the same signature and return type as [`useFetch`](/docs/4.x/api/composables/use-fetch), with all options available for the caller to use or override.
+Получившийся композабл `useAPI` имеет ту же сигнатуру и тип возврата, что и [`useFetch`](/docs/4.x/api/composables/use-fetch); вызывающий код может использовать или переопределять любые опции.
 
-## Type
+## Тип
 
 ```ts [Signature]
 function createUseFetch (
@@ -42,17 +42,17 @@ function createUseFetch (
 ): typeof useFetch
 ```
 
-## Options
+## Опции
 
-`createUseFetch` accepts all the same options as [`useFetch`](/docs/4.x/api/composables/use-fetch#parameters), including `baseURL`, `headers`, `query`, `onRequest`, `onResponse`, `server`, `lazy`, `transform`, `getCachedData`, and more.
+`createUseFetch` принимает те же опции, что и [`useFetch`](/docs/4.x/api/composables/use-fetch#parameters): `baseURL`, `headers`, `query`, `onRequest`, `onResponse`, `server`, `lazy`, `transform`, `getCachedData` и другие.
 
-See the full list of options in the [`useFetch` documentation](/docs/4.x/api/composables/use-fetch#parameters).
+Полный список опций см. в [документации useFetch](/docs/4.x/api/composables/use-fetch#parameters).
 
-## Default vs Override Mode
+## Режим по умолчанию и режим переопределения
 
-### Default Mode (plain object)
+### Режим по умолчанию (обычный объект)
 
-When you pass a plain object, the factory options act as **defaults**. Callers can override any option:
+При передаче обычного объекта опции фабрики выступают как **значения по умолчанию**. Вызывающий код может переопределить любую опцию:
 
 ```ts [app/composables/useAPI.ts]
 export const useAPI = createUseFetch({
@@ -62,29 +62,29 @@ export const useAPI = createUseFetch({
 ```
 
 ```ts
-// Uses the default baseURL
+// Используется baseURL по умолчанию
 const { data } = await useAPI('/modules')
 
-// Caller overrides the baseURL
+// Вызывающий переопределяет baseURL
 const { data } = await useAPI('/modules', { baseURL: 'https://other-api.com' })
 ```
 
-### Override Mode (function)
+### Режим переопределения (функция)
 
-When you pass a function, the factory options **override** the caller's options. The function receives the caller's options as its argument, so you can read them to compute your overrides:
+При передаче функции опции фабрики **переопределяют** опции вызывающего. Функция получает опции вызывающего аргументом, так что по ним можно вычислить свои переопределения:
 
 ```ts [app/composables/useAPI.ts]
-// baseURL is always enforced, regardless of what the caller passes
+// baseURL всегда задаётся фабрикой, независимо от того, что передал вызывающий
 export const useAPI = createUseFetch(callerOptions => ({
   baseURL: 'https://api.nuxt.com',
 }))
 ```
 
-This is useful for enforcing settings like authentication headers or a specific base URL that should not be changed by the caller.
+Это удобно для жёсткой настройки заголовков авторизации или базового URL, которые не должны меняться вызывающим кодом.
 
-## Combining with a Custom `$fetch`
+## Совместное использование с кастомным `$fetch`
 
-You can pass a custom `$fetch` instance to `createUseFetch`:
+В `createUseFetch` можно передать кастомный экземпляр `$fetch`:
 
 ```ts [app/composables/useAPI.ts]
 export const useAPI = createUseFetch({

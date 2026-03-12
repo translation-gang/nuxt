@@ -1,6 +1,6 @@
 ---
 title: 'createUseAsyncData'
-description: A factory function to create a custom useAsyncData composable with pre-defined default options.
+description: Фабричная функция для создания кастомного композабла useAsyncData с заданными опциями по умолчанию.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -8,13 +8,13 @@ links:
     size: xs
 ---
 
-`createUseAsyncData` creates a custom [`useAsyncData`](/docs/4.x/api/composables/use-async-data) composable with pre-defined options. The resulting composable is fully typed and works exactly like `useAsyncData`, but with your defaults baked in.
+`createUseAsyncData` создаёт кастомный композабл [`useAsyncData`](/docs/4.x/api/composables/use-async-data) с заданными опциями. Результат полностью типизирован и ведёт себя как `useAsyncData`, но с вашими значениями по умолчанию.
 
 ::note
-`createUseAsyncData` is a compiler macro. It must be used as an **exported** declaration in the `composables/` directory (or any directory scanned by the Nuxt compiler). Nuxt automatically injects de-duplication keys at build time.
+`createUseAsyncData` — макрос компилятора. Его нужно использовать как **экспортируемое** объявление в каталоге `composables/` (или в любом каталоге, сканируемом компилятором Nuxt). Nuxt автоматически подставляет ключи дедупликации на этапе сборки.
 ::
 
-## Usage
+## Использование
 
 ```ts [app/composables/useCachedData.ts]
 export const useCachedData = createUseAsyncData({
@@ -33,9 +33,9 @@ const { data: mountains } = await useCachedData(
 </script>
 ```
 
-The resulting composable has the same signature and return type as [`useAsyncData`](/docs/4.x/api/composables/use-async-data), with all options available for the caller to use or override.
+Получившийся композабл имеет ту же сигнатуру и тип возврата, что и [`useAsyncData`](/docs/4.x/api/composables/use-async-data); вызывающий код может использовать или переопределять любые опции.
 
-## Type
+## Тип
 
 ```ts [Signature]
 function createUseAsyncData (
@@ -47,17 +47,17 @@ function createUseAsyncData (
 ): typeof useAsyncData
 ```
 
-## Options
+## Опции
 
-`createUseAsyncData` accepts all the same options as [`useAsyncData`](/docs/4.x/api/composables/use-async-data#params), including `server`, `lazy`, `immediate`, `default`, `transform`, `pick`, `getCachedData`, `deep`, `dedupe`, `timeout`, and `watch`.
+`createUseAsyncData` принимает те же опции, что и [`useAsyncData`](/docs/4.x/api/composables/use-async-data#params): `server`, `lazy`, `immediate`, `default`, `transform`, `pick`, `getCachedData`, `deep`, `dedupe`, `timeout`, `watch` и другие.
 
-See the full list of options in the [`useAsyncData` documentation](/docs/4.x/api/composables/use-async-data#params).
+Полный список опций см. в [документации useAsyncData](/docs/4.x/api/composables/use-async-data#params).
 
-## Default vs Override Mode
+## Режим по умолчанию и режим переопределения
 
-### Default Mode (plain object)
+### Режим по умолчанию (обычный объект)
 
-When you pass a plain object, the factory options act as **defaults**. Callers can override any option:
+При передаче обычного объекта опции фабрики выступают как **значения по умолчанию**. Вызывающий код может переопределить любую опцию:
 
 ```ts [app/composables/useLazyData.ts]
 export const useLazyData = createUseAsyncData({
@@ -67,19 +67,19 @@ export const useLazyData = createUseAsyncData({
 ```
 
 ```ts
-// Uses the defaults (lazy: true, server: false)
+// Используются значения по умолчанию (lazy: true, server: false)
 const { data } = await useLazyData('key', () => fetchSomeData())
 
-// Caller overrides server to true
+// Вызывающий переопределяет server в true
 const { data } = await useLazyData('key', () => fetchSomeData(), { server: true })
 ```
 
-### Override Mode (function)
+### Режим переопределения (функция)
 
-When you pass a function, the factory options **override** the caller's options. The function receives the caller's options as its argument:
+При передаче функции опции фабрики **переопределяют** опции вызывающего. Функция получает опции вызывающего аргументом:
 
 ```ts [app/composables/useStrictData.ts]
-// deep is always enforced as false
+// deep всегда принудительно false
 export const useStrictData = createUseAsyncData(callerOptions => ({
   deep: false,
 }))
