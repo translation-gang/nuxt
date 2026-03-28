@@ -1,29 +1,29 @@
 ---
 title: 'createError'
-description: Create an error object with additional metadata.
+description: Создаёт объект ошибки с дополнительными метаданными.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/error.ts
     size: xs
 ---
 
-You can use this function to create an error object with additional metadata. It is usable in both the Vue and Nitro portions of your app, and is meant to be thrown.
+Эта функция создаёт объект ошибки с дополнительными метаданными. Её можно использовать и во Vue-части приложения, и в Nitro; её предполагается выбрасывать (`throw`).
 
-## Parameters
+## Параметры
 
 - `err`: `string | { cause, data, message, name, stack, status, statusText, fatal }`
 
-You can pass either a string or an object to the `createError` function. If you pass a string, it will be used as the error `message`, and the `status` will default to `500`. If you pass an object, you can set multiple properties of the error, such as `status`, `message`, and other error properties.
+В `createError` можно передать строку или объект. Строка станет полем `message` ошибки, а `status` по умолчанию будет `500`. В объекте можно задать `status`, `message` и другие свойства ошибки.
 
-## In Vue App
+## Во Vue-приложении
 
-If you throw an error created with `createError`:
+Если выбросить ошибку, созданную через `createError`:
 
-- on server-side, it will trigger a full-screen error page which you can clear with `clearError`.
-- on client-side, it will throw a non-fatal error for you to handle. If you need to trigger a full-screen error page, then you can do this by setting `fatal: true`.
+- на сервере откроется полноэкранная страница ошибки, которую можно сбросить через `clearError`;
+- на клиенте это будет некритичная ошибка для вашей обработки. Чтобы снова показать полноэкранную страницу ошибки, укажите `fatal: true`.
 
-### Example
+### Пример
 
 ```vue [pages/movies/[slug\\].vue]
 <script setup lang="ts">
@@ -35,11 +35,11 @@ if (!data.value) {
 </script>
 ```
 
-## In API Routes
+## В API-маршрутах
 
-Use `createError` to trigger error handling in server API routes.
+Используйте `createError`, чтобы включить обработку ошибок в серверных API-маршрутах.
 
-### Example
+### Пример
 
 ```ts [server/api/error.ts]
 export default eventHandler(() => {
@@ -50,6 +50,6 @@ export default eventHandler(() => {
 })
 ```
 
-In API routes, using `createError` by passing an object with a short `statusText` is recommended because it can be accessed on the client side. Otherwise, a `message` passed to `createError` on an API route will not propagate to the client. Alternatively, you can use the `data` property to pass data back to the client. In any case, always consider avoiding to put dynamic user input to the message to avoid potential security issues.
+В API-маршрутах рекомендуется передавать в `createError` объект с коротким `statusText`: так его проще использовать на клиенте. Иначе `message` из API-маршрута может не дойти до клиента. Альтернатива — свойство `data` для передачи данных клиенту. В любом случае не подставляйте в сообщение произвольный пользовательский ввод, чтобы снизить риски для безопасности.
 
 :read-more{to="/docs/3.x/getting-started/error-handling"}
