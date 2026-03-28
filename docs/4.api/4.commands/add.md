@@ -18,7 +18,7 @@ npx nuxt add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verb
 Шаблоны создают файлы в стандартных каталогах (`components/`, `pages/` и т. д.) — см. [структуру директорий](/docs/3.x/directory-structure/).
 ::
 
-### Аргументы
+## Аргументы
 
 <!--add-args-->
 Аргумент | Описание
@@ -27,7 +27,7 @@ npx nuxt add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verb
 `NAME` | Имя создаваемого файла
 <!--/add-args-->
 
-### Опции
+## Опции
 
 <!--add-opts-->
 Опция | По умолчанию | Описание
