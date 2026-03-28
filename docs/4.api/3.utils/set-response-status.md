@@ -1,8 +1,8 @@
 ---
 title: 'setResponseStatus'
-description: setResponseStatus устанавливает statusCode (и, опционально, statusMessage) ответа.
+description: Функция setResponseStatus задаёт statusCode (и при необходимости statusMessage) ответа.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs

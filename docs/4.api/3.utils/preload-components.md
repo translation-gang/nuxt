@@ -2,7 +2,7 @@
 title: 'preloadComponents'
 description: Nuxt предоставляет утилиты, которые позволяют вам управлять предварительной загрузкой компонентов.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/preload.ts
     size: xs

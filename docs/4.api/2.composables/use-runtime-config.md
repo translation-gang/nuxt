@@ -2,7 +2,7 @@
 title: 'useRuntimeConfig'
 description: 'Доступ к переменным runtime-конфигурации через композабл useRuntimeConfig.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/nuxt.ts
     size: xs

@@ -2,7 +2,7 @@
 title: "useError"
 description: "Композабл useError возвращает глобальную ошибку Nuxt, которую можно обработать."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/error.ts
     size: xs

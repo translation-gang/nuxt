@@ -1,8 +1,8 @@
 ---
 title: 'updateAppConfig'
-description: 'Обновляет конфигурацию приложения во время выполнения (runtime).'
+description: 'Обновляет конфигурацию приложения в процессе работы (без перезапуска).'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/config.ts
     size: xs

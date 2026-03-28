@@ -2,7 +2,7 @@
 title: useHead
 description: 'Композабл useHead задаёт содержимое `<head>` отдельных страниц приложения Nuxt.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/unjs/unhead/blob/main/packages/vue/src/composables.ts
     size: xs

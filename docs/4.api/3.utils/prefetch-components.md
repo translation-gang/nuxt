@@ -2,7 +2,7 @@
 title: 'prefetchComponents'
 description: Nuxt предоставляет утилиты, которые позволяют вам управлять предварительной загрузкой компонентов.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/preload.ts
     size: xs
@@ -20,7 +20,7 @@ await prefetchComponents(['MyGlobalComponent1', 'MyGlobalComponent2'])
 ```
 
 ::note
-Текущая реализация ведет себя точно так же, как и [`preloadComponents`](/docs/3.x/api/utils/preload-components), предзагружая компоненты вместо их предварительной загрузки. Мы работаем над улучшением этого поведения.
+Сейчас поведение совпадает с [`preloadComponents`](/docs/3.x/api/utils/preload-components): фактически выполняется предзагрузка (preload), а не отдельная семантика prefetch. Поведение планируется доработать.
 ::
 
 ::note

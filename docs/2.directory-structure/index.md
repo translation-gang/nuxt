@@ -49,7 +49,7 @@ navigation: false
 
 ## `content/`
 
-[`content/`](/docs/3.x/directory-structure/content) используется вместе с модулем [Nuxt Content](https://content.nuxt.com) — файловым CMS на Markdown.
+[`content/`](/docs/3.x/directory-structure/content) используется вместе с модулем [Nuxt Content](https://content.nuxt.com) — файловой CMS на Markdown.
 
 ## `modules/`
 

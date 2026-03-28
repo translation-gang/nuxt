@@ -1,8 +1,8 @@
 ---
 title: 'setPageLayout'
-description: setPageLayout позволяет динамически изменять лейаут страницы.
+description: Функция setPageLayout позволяет динамически менять лейаут страницы.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs

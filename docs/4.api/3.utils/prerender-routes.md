@@ -1,8 +1,8 @@
 ---
 title: 'prerenderRoutes'
-description: prerenderRoutes указывает Nitro на необходимость пререндера дополнительного маршрута.
+description: Функция prerenderRoutes указывает Nitro пререндерить дополнительный маршрут.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs

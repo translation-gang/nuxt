@@ -1,6 +1,6 @@
 ---
 title: 'preloadRouteComponents'
-description: preloadRouteComponents позволяет вручную предзагрузить отдельные страницы в приложении Nuxt.
+description: Функция preloadRouteComponents позволяет вручную предзагрузить компоненты отдельных страниц в приложении Nuxt.
 links:
   - label: Исходный код
     icon: i-simple-icons-github

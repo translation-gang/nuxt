@@ -1,8 +1,8 @@
 ---
 title: 'reloadNuxtApp'
-description: reloadNuxtApp выполнит жесткую перезагрузку страницы.
+description: Функция reloadNuxtApp выполняет жёсткую перезагрузку страницы.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/chunk.ts
     size: xs

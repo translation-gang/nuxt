@@ -2,7 +2,7 @@
 title: 'useRequestURL'
 description: 'URL входящего запроса через композабл useRequestURL.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/url.ts
     size: xs

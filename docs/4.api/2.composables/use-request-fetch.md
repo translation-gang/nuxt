@@ -2,7 +2,7 @@
 title: 'useRequestFetch'
 description: 'Передача контекста запроса и заголовков при серверных вызовах fetch через композабл useRequestFetch.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs

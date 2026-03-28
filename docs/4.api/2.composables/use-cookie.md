@@ -2,7 +2,7 @@
 title: 'useCookie'
 description: "Композабл useCookie для чтения и записи cookie с поддержкой SSR."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/cookie.ts
     size: xs

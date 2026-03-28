@@ -2,7 +2,7 @@
 title: "useRequestHeader"
 description: "Доступ к отдельному заголовку входящего запроса через композабл useRequestHeader."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs

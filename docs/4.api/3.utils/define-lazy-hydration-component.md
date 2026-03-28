@@ -2,7 +2,7 @@
 title: 'defineLazyHydrationComponent'
 description: 'Определяет компонент с отложенной гидратацией и заданной стратегией.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/components/plugins/lazy-hydration-macro-transform.ts
     size: xs

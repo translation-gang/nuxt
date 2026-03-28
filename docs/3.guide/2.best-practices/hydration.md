@@ -184,5 +184,5 @@ onMounted(() => {
 4. **Без побочных эффектов в setup**: браузерный код — в `onMounted`.
 
 ::tip
-Подробнее о несовпадении гидратации при SSR — в [документации Vue](https://vuejs.org/guide/scaling-up/ssr.html#hydration-mismatch).
+Подробнее о несовпадении гидратации при SSR — в [документации Vue](https://ru.vuejs.org/guide/scaling-up/ssr.html#hydration-mismatch).
 ::

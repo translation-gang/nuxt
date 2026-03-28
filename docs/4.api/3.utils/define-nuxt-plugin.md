@@ -1,8 +1,8 @@
 ---
 title: "defineNuxtPlugin"
-description: defineNuxtPlugin() — вспомогательная функция для создания плагинов Nuxt.
+description: Функция defineNuxtPlugin() — вспомогательная обёртка для создания плагинов Nuxt.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/nuxt.ts
     size: xs

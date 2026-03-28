@@ -2,7 +2,7 @@
 title: 'useSeoMeta'
 description: 'SEO-метатеги плоским объектом с полной поддержкой TypeScript через композабл useSeoMeta.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/unjs/unhead/blob/main/packages/vue/src/composables.ts
     size: xs

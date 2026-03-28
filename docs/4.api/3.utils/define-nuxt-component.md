@@ -1,8 +1,8 @@
 ---
 title: "defineNuxtComponent"
-description: defineNuxtComponent() — вспомогательная функция для определения типобезопасных компонентов с использованием Options API.
+description: Функция defineNuxtComponent() — вспомогательная обёртка для типобезопасных компонентов на Options API.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/component.ts
     size: xs

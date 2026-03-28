@@ -2,7 +2,7 @@
 title: 'useFetch'
 description: 'Получение данных из эндпоинта API с помощью SSR-композабла.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/fetch.ts
     size: xs

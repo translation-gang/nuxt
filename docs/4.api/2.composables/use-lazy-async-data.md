@@ -2,7 +2,7 @@
 title: useLazyAsyncData
 description: "Обёртка над useAsyncData: навигация не ждёт завершения запроса."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
     size: xs

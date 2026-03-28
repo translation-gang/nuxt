@@ -2,7 +2,7 @@
 title: "usePreviewMode"
 description: "Используйте usePreviewMode для проверки и управления режимом предварительного просмотра в Nuxt"
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/preview.ts
     size: xs

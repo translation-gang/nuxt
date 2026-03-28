@@ -2,7 +2,7 @@
 title: "clearError"
 description: "Композабл clearError очищает все обработанные ошибки."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/error.ts
     size: xs

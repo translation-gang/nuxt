@@ -2,7 +2,7 @@
 title: 'useLoadingIndicator'
 description: "Доступ к состоянию индикатора загрузки страницы приложения."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/loading-indicator.ts
     size: xs

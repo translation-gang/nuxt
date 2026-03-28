@@ -2,7 +2,7 @@
 title: 'useHydration'
 description: 'Позволяет полностью контролировать цикл гидратации, задавать и получать данные с сервера.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/hydrate.ts
     size: xs

@@ -2,7 +2,7 @@
 title: "useResponseHeader"
 description: "Установка заголовка ответа сервера через композабл useResponseHeader."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs

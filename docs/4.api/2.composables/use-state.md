@@ -2,7 +2,7 @@
 title: "useState"
 description: "Общее реактивное состояние с поддержкой SSR через композабл useState."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/state.ts
     size: xs

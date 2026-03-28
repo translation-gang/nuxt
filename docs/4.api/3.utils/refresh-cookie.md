@@ -1,10 +1,10 @@
 ---
 title: "refreshCookie"
-description: "Обновляйте значения useCookie вручную, когда cookie изменились"
+description: "Обновляет значения useCookie вручную после изменения cookie в браузере."
 navigation:
   badge: Новое
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/cookie.ts
     size: xs

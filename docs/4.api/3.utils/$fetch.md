@@ -2,7 +2,7 @@
 title: "$fetch"
 description: Nuxt использует ofetch и предоставляет глобально доступную вспомогательную функцию $fetch для выполнения HTTP-запросов.
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/entry.ts
     size: xs

@@ -2,7 +2,7 @@
 title: "onPrehydrate"
 description: "Используйте onPrehydrate, чтобы запустить коллбэк-функцию на клиенте непосредственно перед тем, как Nuxt гидратирует страницу."
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
