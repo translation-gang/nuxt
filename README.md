@@ -1,62 +1,62 @@
-<a href="https://nuxt.com"><img width="830" height="213" src="./.github/assets/banner.svg" alt="Nuxt banner"></a>
+<a href="https://nuxt.com"><img width="830" height="213" src="./.github/assets/banner.svg" alt="Баннер Nuxt"></a>
 
 # Nuxt
 
 <p>
-  <a href="https://npmx.dev/package/nuxt"><img src="https://npmx.dev/api/registry/badge/version/nuxt" alt="Version"></a>
-  <a href="https://npmx.dev/package/nuxt"><img src="https://npmx.dev/api/registry/badge/downloads/nuxt" alt="Downloads"></a>
-  <a href="https://github.com/nuxt/nuxt/blob/main/LICENSE"><img src="https://img.shields.io/github/license/nuxt/nuxt.svg?style=flat&colorA=18181B&colorB=28CF8D" alt="License"></a>
-  <a href="https://nuxt.com/modules"><img src="https://img.shields.io/badge/dynamic/json?url=https://nuxt.com/api/v1/modules&query=$.stats.modules&label=Modules&style=flat&colorA=18181B&colorB=28CF8D" alt="Modules"></a>
-  <a href="https://nuxt.com"><img src="https://img.shields.io/badge/Nuxt%20Docs-18181B?logo=nuxt" alt="Website"></a>
+  <a href="https://npmx.dev/package/nuxt"><img src="https://npmx.dev/api/registry/badge/version/nuxt" alt="Версия"></a>
+  <a href="https://npmx.dev/package/nuxt"><img src="https://npmx.dev/api/registry/badge/downloads/nuxt" alt="Загрузки"></a>
+  <a href="https://github.com/nuxt/nuxt/blob/main/LICENSE"><img src="https://img.shields.io/github/license/nuxt/nuxt.svg?style=flat&colorA=18181B&colorB=28CF8D" alt="Лицензия"></a>
+  <a href="https://nuxt.com/modules"><img src="https://img.shields.io/badge/dynamic/json?url=https://nuxt.com/api/v1/modules&query=$.stats.modules&label=Modules&style=flat&colorA=18181B&colorB=28CF8D" alt="Модули"></a>
+  <a href="https://nuxt.com"><img src="https://img.shields.io/badge/Nuxt%20Docs-18181B?logo=nuxt" alt="Сайт"></a>
   <a href="https://chat.nuxt.dev"><img src="https://img.shields.io/badge/Nuxt%20Discord-18181B?logo=discord" alt="Discord"></a>
-  <a href="https://securityscorecards.dev/viewer/?uri=github.com/nuxt/nuxt"><img src="https://api.securityscorecards.dev/projects/github.com/nuxt/nuxt/badge" alt="Nuxt openssf scorecard score"></a>
-  <a href="https://deepwiki.com/nuxt/nuxt"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
+  <a href="https://securityscorecards.dev/viewer/?uri=github.com/nuxt/nuxt"><img src="https://api.securityscorecards.dev/projects/github.com/nuxt/nuxt/badge" alt="Оценка OpenSSF Scorecard для Nuxt"></a>
+  <a href="https://deepwiki.com/nuxt/nuxt"><img src="https://deepwiki.com/badge.svg" alt="Спросить DeepWiki"></a>
 </p>
 
-Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.
+Nuxt — бесплатный фреймворк с открытым исходным кодом для интуитивной и расширяемой разработки типобезопасных, производительных и готовых к продакшену full-stack веб-приложений и сайтов на Vue.js.
 
-It provides a number of features that make it easy to build fast, SEO-friendly, and scalable web applications, including:
-- Server-side rendering, static site generation, hybrid rendering and edge-side rendering
-- Automatic routing with code-splitting and pre-fetching
-- Data fetching and state management
-- Search engine optimization and defining meta tags
-- Auto imports of components, composables and utils
-- TypeScript with zero configuration
-- Go full-stack with our server/ directory
-- Extensible with [300+ modules](https://nuxt.com/modules)
-- Deployment to a variety of [hosting platforms](https://nuxt.com/deploy)
-- ...[and much more](https://nuxt.com) 🚀
+Среди возможностей, упрощающих создание быстрых, удобных для SEO и масштабируемых приложений:
+- Рендеринг на сервере (SSR), статическая генерация, гибридный и edge-рендеринг
+- Автоматическая маршрутизация с разбиением кода и предзагрузкой
+- Загрузка данных и управление состоянием
+- SEO и метатеги
+- Автоимпорт компонентов, композаблов и утилит
+- TypeScript без дополнительной настройки
+- Full-stack с каталогом `server/`
+- Расширение через [300+ модулей](https://nuxt.com/modules)
+- Деплой на множество [платформ хостинга](https://nuxt.com/deploy)
+- …[и многое другое](https://nuxt.com) 🚀
 
-### Table of Contents
+### Содержание
 
-- 🚀 [Getting Started](#getting-started)
-- 💻 [Vue Development](#vue-development)
-- 📖 [Documentation](#documentation)
-- 🧩 [Modules](#modules)
-- ❤️ [Contribute](#contribute)
-- 🏠 [Local Development](#local-development)
-- 🛟 [Professional Support](#professional-support)
-- 🔗 [Follow Us](#follow-us)
-- ⚖️ [License](#license)
+- 🚀 [Быстрый старт](#getting-started)
+- 💻 [Разработка на Vue](#vue-development)
+- 📖 [Документация](#documentation)
+- 🧩 [Модули](#modules)
+- ❤️ [Участие в проекте](#contribute)
+- 🏠 [Локальная разработка](#local-development)
+- 🛟 [Профессиональная поддержка](#professional-support)
+- 🔗 [Мы в соцсетях](#follow-us)
+- ⚖️ [Лицензия](#license)
 
 ---
 
-## <a name="getting-started">🚀 Getting Started</a>
+## <a name="getting-started">🚀 Быстрый старт</a>
 
-Use the following command to create a new starter project. This will create a starter project with all the necessary files and dependencies:
+Создайте новый стартовый проект одной командой — будут созданы нужные файлы и зависимости:
 
 ```bash
 npm create nuxt@latest <my-project>
 ```
 
 > [!TIP]
-> Discover also [nuxt.new](https://nuxt.new): Open a Nuxt starter on CodeSandbox, StackBlitz or locally to get up and running in a few seconds.
+> Загляните на [nuxt.new](https://nuxt.new): откройте стартер Nuxt в CodeSandbox, StackBlitz или локально и начните работу за считанные секунды.
 
-## <a name="vue-development">💻 Vue Development</a>
+## <a name="vue-development">💻 Разработка на Vue</a>
 
-Simple, intuitive and powerful, Nuxt lets you write Vue components in a way that makes sense. Every repetitive task is automated, so you can focus on writing your full-stack Vue application with confidence.
+Nuxt простой, предсказуемый и мощный: вы пишете компоненты Vue естественным образом. Рутина автоматизирована — можно сосредоточиться на full-stack приложении.
 
-Example of an `app.vue`:
+Пример `app.vue`:
 
 ```vue
 <script setup lang="ts">
@@ -82,38 +82,37 @@ useSeoMeta({
 </style>
 ```
 
-## <a name="documentation">📖 Documentation</a>
+## <a name="documentation">📖 Документация</a>
 
-We highly recommend you take a look at the [Nuxt documentation](https://nuxt.com/docs) to level up. It’s a great resource for learning more about the framework. It covers everything from getting started to advanced topics.
+Рекомендуем [документацию Nuxt](https://nuxt.com/docs/3.x): от быстрого старта до продвинутых тем.
 
-## <a name="modules">🧩 Modules</a>
+## <a name="modules">🧩 Модули</a>
 
-Discover our [list of modules](https://nuxt.com/modules) to supercharge your Nuxt project, created by the Nuxt team and community.
+[Каталог модулей](https://nuxt.com/modules) от команды Nuxt и сообщества расширяет возможности проекта.
 
-## <a name="contribute">❤️ Contribute</a>
+## <a name="contribute">❤️ Участие в проекте</a>
 
-We invite you to contribute and help improve Nuxt 💚
+Приглашаем помогать развивать Nuxt 💚
 
-Here are a few ways you can get involved:
-- **Reporting Bugs:** If you come across any bugs or issues, please check out the [reporting bugs guide](https://nuxt.com/docs/community/reporting-bugs) to learn how to submit a bug report.
-- **Suggestions:** Have ideas to enhance Nuxt? We'd love to hear them! Check out the [contribution guide](https://nuxt.com/docs/community/contribution) to share your suggestions.
-- **Questions:** If you have questions or need assistance, the [getting help guide](https://nuxt.com/docs/community/getting-help) provides resources to help you out.
+- **Сообщения об ошибках:** перед отправкой отчёта см. [руководство по багам](https://nuxt.com/docs/3.x/community/reporting-bugs).
+- **Предложения:** идеи по улучшению — в [руководстве для контрибьюторов](https://nuxt.com/docs/3.x/community/contribution).
+- **Вопросы:** помощь и ресурсы — в [разделе «Получить помощь»](https://nuxt.com/docs/3.x/community/getting-help).
 
-## <a name="local-development">🏠 Local Development</a>
+## <a name="local-development">🏠 Локальная разработка</a>
 
-Follow the docs to [Set Up Your Local Development Environment](https://nuxt.com/docs/community/framework-contribution#setup) to contribute to the framework and documentation.
+Настройка окружения для контрибуции в фреймворк и документацию: [настройка локальной среды разработки](https://nuxt.com/docs/3.x/community/framework-contribution#setup).
 
-## <a name="professional-support">🛟 Professional Support</a>
+## <a name="professional-support">🛟 Профессиональная поддержка</a>
 
-- Technical audit & consulting: [Nuxt Experts](https://nuxt.com/enterprise/support)
-- Custom development & more: [Nuxt Agencies Partners](https://nuxt.com/enterprise/agencies)
+- Технический аудит и консалтинг: [Nuxt Experts](https://nuxt.com/enterprise/support)
+- Кастомная разработка и другое: [Nuxt Agencies Partners](https://nuxt.com/enterprise/agencies)
 
-## <a name="follow-us">🔗 Follow Us</a>
+## <a name="follow-us">🔗 Мы в соцсетях</a>
 
 <p valign="center">
   <a href="https://go.nuxt.com/discord"><img width="20" src="./.github/assets/discord.svg" alt="Discord"></a>&nbsp;&nbsp;<a href="https://go.nuxt.com/x"><img width="20" src="./.github/assets/twitter.svg" alt="Twitter"></a>&nbsp;&nbsp;<a href="https://go.nuxt.com/github"><img width="20" src="./.github/assets/github.svg" alt="GitHub"></a>&nbsp;&nbsp;<a href="https://go.nuxt.com/bluesky"><img width="20" src="./.github/assets/bluesky.svg" alt="Bluesky"></a>
 </p>
 
-## <a name="license">⚖️ License</a>
+## <a name="license">⚖️ Лицензия</a>
 
 [MIT](https://github.com/nuxt/nuxt/blob/main/LICENSE)
