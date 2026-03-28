@@ -3,7 +3,6 @@ import { fileURLToPath } from 'node:url'
 import { basename, isAbsolute, join, normalize, parse, relative, resolve } from 'pathe'
 import { hash } from 'ohash'
 import type { Nuxt, NuxtServerTemplate, NuxtTemplate, NuxtTypeTemplate, ResolvedNuxtTemplate, TSReference } from '@nuxt/schema'
-import { withTrailingSlash } from 'ufo'
 import { defu } from 'defu'
 import type { TSConfig } from 'pkg-types'
 import { gte } from 'semver'
@@ -11,23 +10,24 @@ import { readPackageJSON } from 'pkg-types'
 import { resolveModulePath } from 'exsolve'
 import { captureStackTrace } from 'errx'
 
-import { distDirURL, filterInPlace } from './utils'
-import { directoryToURL } from './internal/esm'
-import { getDirectory } from './module/install'
-import { tryUseNuxt, useNuxt } from './context'
-import { resolveNuxtModule } from './resolve'
+import { distDirURL, filterInPlace } from './utils.ts'
+import { directoryToURL } from './internal/esm.ts'
+import { getDirectory } from './module/install.ts'
+import { tryUseNuxt, useNuxt } from './context.ts'
+import { resolveNuxtModule } from './resolve.ts'
+import { getLayerDirectories } from './layers.ts'
 
 /**
  * Renders given template during build into the virtual file system (and optionally to disk in the project `buildDir`)
  */
-export function addTemplate<T> (_template: NuxtTemplate<T> | string) {
+export function addTemplate<T> (_template: NuxtTemplate<T> | string): ResolvedNuxtTemplate<T> {
   const nuxt = useNuxt()
 
   // Normalize template
   const template = normalizeTemplate(_template)
 
   // Remove any existing template with the same destination path
-  filterInPlace(nuxt.options.build.templates, p => normalizeTemplate(p).dst !== template.dst)
+  filterInPlace(nuxt.options.build.templates, p => (p.dst || normalizeTemplate(p).dst) !== template.dst)
 
   try {
     const distDir = distDirURL.toString()
@@ -51,7 +51,7 @@ export function addTemplate<T> (_template: NuxtTemplate<T> | string) {
 /**
  * Adds a virtual file that can be used within the Nuxt Nitro server build.
  */
-export function addServerTemplate (template: NuxtServerTemplate) {
+export function addServerTemplate (template: NuxtServerTemplate): NuxtServerTemplate {
   const nuxt = useNuxt()
 
   nuxt.options.nitro.virtual ||= {}
@@ -68,7 +68,7 @@ export function addServerTemplate (template: NuxtServerTemplate) {
  *
  * If no context object is passed, then it will only be added to the nuxt context.
  */
-export function addTypeTemplate<T> (_template: NuxtTypeTemplate<T>, context?: { nitro?: boolean, nuxt?: boolean }) {
+export function addTypeTemplate<T> (_template: NuxtTypeTemplate<T>, context?: { nitro?: boolean, nuxt?: boolean }): ResolvedNuxtTemplate<T> {
   const nuxt = useNuxt()
 
   const template = addTemplate(_template)
@@ -81,6 +81,13 @@ export function addTypeTemplate<T> (_template: NuxtTypeTemplate<T>, context?: { 
   if (!context || context.nuxt) {
     nuxt.hook('prepare:types', ({ references }) => {
       references.push({ path: template.dst })
+    })
+
+    // expose global types to vue compiler
+    nuxt.options.vite.vue = defu(nuxt.options.vite.vue, {
+      script: {
+        globalTypeFiles: [template.dst],
+      },
     })
   }
   if (context?.nitro) {
@@ -142,16 +149,24 @@ export function normalizeTemplate<T> (template: NuxtTemplate<T> | string, buildD
  *
  * You can pass a filter within the options to selectively regenerate a subset of templates.
  */
-export async function updateTemplates (options?: { filter?: (template: ResolvedNuxtTemplate<any>) => boolean }) {
-  return await tryUseNuxt()?.hooks.callHook('builder:generateApp', options)
+export async function updateTemplates (options?: { filter?: (template: ResolvedNuxtTemplate<any>) => boolean }): Promise<void> {
+  await tryUseNuxt()?.hooks.callHook('builder:generateApp', options)
 }
 
 const EXTENSION_RE = /\b(?:\.d\.[cm]?ts|\.\w+)$/g
 // Exclude bridge alias types to support Volar
 const excludedAlias = [/^@vue\/.*$/, /^#internal\/nuxt/]
-export async function _generateTypes (nuxt: Nuxt) {
+
+interface GenerateTypesReturn {
+  declaration: string
+  tsConfig: TSConfig
+}
+
+export async function _generateTypes (nuxt: Nuxt): Promise<GenerateTypesReturn> {
   const rootDirWithSlash = withTrailingSlash(nuxt.options.rootDir)
   const relativeRootDir = relativeWithDot(nuxt.options.buildDir, nuxt.options.rootDir)
+
+  const layerDirs = getLayerDirectories(nuxt)
 
   const include = new Set<string>([
     join(relativeRootDir, '**/*'),
@@ -167,10 +182,9 @@ export async function _generateTypes (nuxt: Nuxt) {
     include.add(join(relative(nuxt.options.buildDir, nuxt.options.workspaceDir), '**/*'))
   }
 
-  for (const layer of nuxt.options._layers) {
-    const srcOrCwd = layer.config.srcDir ?? layer.cwd
-    if (!srcOrCwd.startsWith(rootDirWithSlash) || srcOrCwd.includes('node_modules')) {
-      include.add(join(relative(nuxt.options.buildDir, srcOrCwd), '**/*'))
+  for (const dirs of layerDirs) {
+    if (!dirs.app.startsWith(rootDirWithSlash) || dirs.app.includes('node_modules')) {
+      include.add(join(relative(nuxt.options.buildDir, dirs.app), '**/*'))
     }
   }
 
@@ -181,8 +195,14 @@ export async function _generateTypes (nuxt: Nuxt) {
     relativeWithDot(nuxt.options.buildDir, resolve(nuxt.options.rootDir, '.data')),
   ])
 
+  const sourceDirs = layerDirs.map(d => d.app)
+
   for (const dir of nuxt.options.modulesDir) {
-    exclude.add(relativeWithDot(nuxt.options.buildDir, dir))
+    // we only need to exclude node_modules directories if they are
+    // being included automatically by being inside the source directory
+    if (!sourceDirs.some(srcDir => dir.startsWith(srcDir))) {
+      exclude.add(relativeWithDot(nuxt.options.buildDir, dir))
+    }
   }
 
   const moduleEntryPaths: string[] = []
@@ -234,6 +254,7 @@ export async function _generateTypes (nuxt: Nuxt) {
       moduleDetection: 'force',
       isolatedModules: true,
       verbatimModuleSyntax: true,
+      allowArbitraryExtensions: true,
       /* Strictness */
       strict: nuxt.options.typescript?.strict ?? true,
       noUncheckedIndexedAccess: isV4,
@@ -362,12 +383,7 @@ export async function _generateTypes (nuxt: Nuxt) {
   tsConfig.exclude = [...new Set(tsConfig.exclude!.map(p => isAbsolute(p) ? relativeWithDot(nuxt.options.buildDir, p) : p))]
 
   const declaration = [
-    ...references.map((ref) => {
-      if ('path' in ref && isAbsolute(ref.path)) {
-        ref.path = relative(nuxt.options.buildDir, ref.path)
-      }
-      return `/// <reference ${renderAttrs(ref)} />`
-    }),
+    ...references.map(ref => renderReference(ref, nuxt.options.buildDir)),
     ...declarations,
     '',
     'export {}',
@@ -380,7 +396,7 @@ export async function _generateTypes (nuxt: Nuxt) {
   }
 }
 
-export async function writeTypes (nuxt: Nuxt) {
+export async function writeTypes (nuxt: Nuxt): Promise<void> {
   const { tsConfig, declaration } = await _generateTypes(nuxt)
 
   async function writeFile () {
@@ -406,19 +422,18 @@ function sortTsPaths (paths: Record<string, string[]>) {
   }
 }
 
-function renderAttrs (obj: Record<string, string>) {
-  const attrs: string[] = []
-  for (const key in obj) {
-    attrs.push(renderAttr(key, obj[key]))
-  }
-  return attrs.join(' ')
-}
-
-function renderAttr (key: string, value?: string) {
-  return value ? `${key}="${value}"` : ''
+function renderReference (ref: TSReference, baseDir: string) {
+  const stuff = 'path' in ref
+    ? `path="${isAbsolute(ref.path) ? relative(baseDir, ref.path) : ref.path}"`
+    : `types="${ref.types}"`
+  return `/// <reference ${stuff} />`
 }
 
 const RELATIVE_WITH_DOT_RE = /^([^.])/
 function relativeWithDot (from: string, to: string) {
   return relative(from, to).replace(RELATIVE_WITH_DOT_RE, './$1') || '.'
+}
+
+function withTrailingSlash (dir: string) {
+  return dir.replace(/[^/]$/, '$&/')
 }

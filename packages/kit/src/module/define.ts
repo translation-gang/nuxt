@@ -4,22 +4,22 @@ import { defu } from 'defu'
 import { applyDefaults } from 'untyped'
 import { dirname } from 'pathe'
 import type { ModuleDefinition, ModuleOptions, ModuleSetupInstallResult, ModuleSetupReturn, Nuxt, NuxtModule, NuxtOptions, ResolvedModuleOptions, ResolvedNuxtTemplate } from '@nuxt/schema'
-import { logger } from '../logger'
-import { nuxtCtx, tryUseNuxt, useNuxt } from '../context'
-import { checkNuxtCompatibility, isNuxt2 } from '../compatibility'
-import { compileTemplate, templateUtils } from '../internal/template'
+import { logger } from '../logger.ts'
+import { nuxtCtx, tryUseNuxt, useNuxt } from '../context.ts'
+import { checkNuxtCompatibility, isNuxtMajorVersion } from '../compatibility.ts'
+import { compileTemplate, templateUtils } from '../internal/template.ts'
 
 /**
  * Define a Nuxt module, automatically merging defaults with user provided options, installing
  * any hooks that are provided, and calling an optional setup function for full control.
  */
 export function defineNuxtModule<TOptions extends ModuleOptions> (
-  definition: ModuleDefinition<TOptions, Partial<TOptions>, false> | NuxtModule<TOptions, Partial<TOptions>, false>
+  definition: ModuleDefinition<TOptions, Partial<TOptions>, false> | NuxtModule<TOptions, Partial<TOptions>, false>,
 ): NuxtModule<TOptions, TOptions, false>
 
 export function defineNuxtModule<TOptions extends ModuleOptions> (): {
   with: <TOptionsDefaults extends Partial<TOptions>> (
-    definition: ModuleDefinition<TOptions, TOptionsDefaults, true> | NuxtModule<TOptions, TOptionsDefaults, true>
+    definition: ModuleDefinition<TOptions, TOptionsDefaults, true> | NuxtModule<TOptions, TOptionsDefaults, true>,
   ) => NuxtModule<TOptions, TOptionsDefaults, true>
 }
 
@@ -66,7 +66,7 @@ function _defineNuxtModule<
     const optionsDefaults: TOptionsDefaults =
       module.defaults instanceof Function
         ? await module.defaults(nuxt)
-        : module.defaults ?? <TOptionsDefaults> {}
+        : module.defaults ?? {} as TOptionsDefaults
 
     let options = defu(inlineOptions, nuxtConfigOptions, optionsDefaults)
 
@@ -76,6 +76,13 @@ function _defineNuxtModule<
 
     // @ts-expect-error ignore type mismatch when calling `defineNuxtModule` without `.with()`
     return Promise.resolve(options)
+  }
+
+  function getModuleDependencies (nuxt: Nuxt = useNuxt()) {
+    if (typeof module.moduleDependencies === 'function') {
+      return module.moduleDependencies(nuxt)
+    }
+    return module.moduleDependencies
   }
 
   // Module format is always a simple function
@@ -135,25 +142,29 @@ function _defineNuxtModule<
     if (res === false) { return false }
 
     // Return module install result
-    return defu(res, <ModuleSetupInstallResult> {
+    return defu(res, {
       timings: {
         setup: setupTime,
       },
-    })
+    } as ModuleSetupInstallResult)
   }
 
   // Define getters for options and meta
   normalizedModule.getMeta = () => Promise.resolve(module.meta)
   normalizedModule.getOptions = getOptions
+  normalizedModule.getModuleDependencies = getModuleDependencies
 
-  return <NuxtModule<TOptions, TOptionsDefaults, TWith>> normalizedModule
+  normalizedModule.onInstall = module.onInstall
+  normalizedModule.onUpgrade = module.onUpgrade
+
+  return normalizedModule as NuxtModule<TOptions, TOptionsDefaults, TWith>
 }
 
 // -- Nuxt 2 compatibility shims --
 const NUXT2_SHIMS_KEY = '__nuxt2_shims_key__'
 function nuxt2Shims (nuxt: Nuxt) {
   // Avoid duplicate install and only apply to Nuxt2
-  if (!isNuxt2(nuxt) || nuxt[NUXT2_SHIMS_KEY as keyof Nuxt]) { return }
+  if (!isNuxtMajorVersion(2, nuxt) || nuxt[NUXT2_SHIMS_KEY as keyof Nuxt]) { return }
   nuxt[NUXT2_SHIMS_KEY as keyof Nuxt] = true
 
   // Allow using nuxt.hooks
@@ -161,8 +172,11 @@ function nuxt2Shims (nuxt: Nuxt) {
   nuxt.hooks = nuxt
 
   // Allow using useNuxt()
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   if (!nuxtCtx.tryUse()) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     nuxtCtx.set(nuxt)
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     nuxt.hook('close', () => nuxtCtx.unset())
   }
 
@@ -179,6 +193,7 @@ function nuxt2Shims (nuxt: Nuxt) {
   nuxt.hook('build:templates', async (templates) => {
     const context = {
       nuxt,
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       utils: templateUtils,
       app: {
         dir: nuxt.options.srcDir,
@@ -192,6 +207,7 @@ function nuxt2Shims (nuxt: Nuxt) {
       },
     }
     for await (const template of virtualTemplates) {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const contents = await compileTemplate({ ...template, src: '' }, context)
       await fsp.mkdir(dirname(template.dst), { recursive: true })
       await fsp.writeFile(template.dst, contents)

@@ -1,48 +1,58 @@
 ---
 title: "useState"
-description: Композабл useState создает реактивное и совместимое с SSR общее состояние.
+description: The useState composable creates a reactive and SSR-friendly shared state.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/state.ts
     size: xs
 ---
 
-## Использование
+## Usage
 
 ```ts
-// Создайте реактивное состояние и установите значение по умолчанию
+// Create a reactive state and set default value
 const count = useState('counter', () => Math.round(Math.random() * 100))
 ```
 
-:read-more{to="/docs/getting-started/state-management"}
+:read-more{to="/docs/3.x/getting-started/state-management"}
 
 ::important
-Поскольку данные внутри `useState` будут сериализованы в JSON, важно, чтобы они не содержали ничего, что нельзя сериализовать, например, классы, функции или symbol.
+Because the data inside `useState` will be serialized to JSON, it is important that it does not contain anything that cannot be serialized, such as classes, functions or symbols.
 ::
 
 ::warning
-`useState` это зарезервированное имя функции, преобразуемое компилятором, поэтому вы не должны называть свою собственную функцию `useState`.
+`useState` is a reserved function name transformed by the compiler, so you should not name your own function `useState`.
 ::
 
-:video-accordion{title="Посмотрите видео Александра Лихтера о том, почему и когда следует использовать useState" videoId="mv0WcBABcIk"}
+:video-accordion{title="Watch a video from Alexander Lichter about why and when to use useState" videoId="mv0WcBABcIk"}
 
-## Использование `shallowRef`
+## Using `shallowRef`
 
-Если вам не нужно, чтобы ваше состояние было глубоко реактивным, вы можете объединить  `useState` с [`shallowRef`](https://ru.vuejs.org/api/reactivity-advanced.html#shallowref). Это может улучшить производительность, когда ваше состояние содержит большие объекты и массивы.
+If you don't need your state to be deeply reactive, you can combine `useState` with [`shallowRef`](https://vuejs.org/api/reactivity-advanced#shallowref). This can improve performance when your state contains large objects and arrays.
 
 ```ts
 const state = useState('my-shallow-state', () => shallowRef({ deep: 'not reactive' }))
 // isShallow(state) === true
 ```
 
-## Тип
+## Type
 
-```ts
-useState<T>(init?: () => T | Ref<T>): Ref<T>
-useState<T>(key: string, init?: () => T | Ref<T>): Ref<T>
+```ts [Signature]
+export function useState<T> (init?: () => T | Ref<T>): Ref<T>
+export function useState<T> (key: string, init?: () => T | Ref<T>): Ref<T>
 ```
 
-- `key`: Уникальный ключ, который гарантирует, что получение данных правильно дедублируется по запросам. Если вы не предоставите ключ, то будет сгенерирован ключ, уникальный для файла и номера строки экземпляра [`useState`](/docs/api/composables/use-state).
-- `init`: Функция, которая предоставляет начальное значение для состояния, когда оно не инициализировано. Эта функция также может возвращать `Ref`.
-- `T`: (только для TypeScript) Укажите тип состояния
+- `key`: A unique key ensuring that data fetching is properly de-duplicated across requests. If you do not provide a key, then a key that is unique to the file and line number of the instance of [`useState`](/docs/3.x/api/composables/use-state) will be generated for you.
+- `init`: A function that provides initial value for the state when not initiated. This function can also return a `Ref`.
+- `T`: (typescript only) Specify the type of state
+
+## Troubleshooting
+
+### `Cannot stringify arbitrary non-POJOs`
+
+This error occurs when you try to store a non-serializable payload with `useState`, such as class instances.
+
+If you want to store class instances with `useState` that are not supported by Nuxt, you can use [`definePayloadPlugin`](/docs/3.x/api/composables/use-nuxt-app#custom-reducerreviver) to add a custom serializer and deserializer for your classes.
+
+:read-more{to="/docs/3.x/api/composables/use-nuxt-app#payload"}

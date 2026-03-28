@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { Nuxt, NuxtConfig } from '@nuxt/schema'
 import { defu } from 'defu'
 
-import { _generateTypes } from '../src/template'
+import { _generateTypes } from '../src/template.ts'
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Record<string, any> ? DeepPartial<T[P]> : T[P]
@@ -21,7 +21,7 @@ const mockNuxt = {
     modulesDir: ['/my-app/node_modules', '/node_modules'],
     modules: [],
     extensions: ['.ts', '.mjs', '.js'],
-    _layers: [{ config: { srcDir: '/my-app' } }],
+    _layers: [{ config: { rootDir: '/my-app', srcDir: '/my-app' } }],
     _installedModules: [],
     _modules: [],
   },
@@ -53,10 +53,6 @@ describe('tsConfig generation', () => {
       [
         "../dist",
         "../.data",
-        "../modules/test/node_modules",
-        "../modules/node_modules",
-        "../node_modules/@some/module/node_modules",
-        "../node_modules",
         "../../node_modules",
       ]
     `)

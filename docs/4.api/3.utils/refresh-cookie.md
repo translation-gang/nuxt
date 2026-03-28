@@ -1,33 +1,31 @@
 ---
 title: "refreshCookie"
-description: "Обновляйте значения useCookie вручную, когда cookie изменились"
-navigation:
-  badge: Новое
+description: "Refresh useCookie values manually when a cookie has changed"
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/cookie.ts
     size: xs
 ---
 
 ::important
-Эта утилита доступна с [Nuxt v3.10](/blog/v3-10).
+This utility is available since [Nuxt v3.10](/blog/v3-10).
 ::
 
-## Назначение
+## Purpose
 
-Функция `refreshCookie` предназначена для обновления значения куки, возвращаемого функцией `useCookie`.
+The `refreshCookie` function is designed to refresh cookie value returned by `useCookie`.
 
-Это полезно для обновления ref-ссылки `useCookie`, когда мы знаем, что новое значение cookie было установлено в браузере.
+This is useful for updating the `useCookie` ref when we know the new cookie value has been set in the browser.
 
-## Использование
+## Usage
 
 ```vue [app.vue]
 <script setup lang="ts">
 const tokenCookie = useCookie('token')
 
 const login = async (username, password) => {
-  const token = await $fetch('/api/token', { ... }) // Устанавливает cookie `token` в ответ на запрос
+  const token = await $fetch('/api/token', { /** ... */ }) // Sets `token` cookie on response
   refreshCookie('token')
 }
 
@@ -35,12 +33,12 @@ const loggedIn = computed(() => !!tokenCookie.value)
 </script>
 ```
 
-::note{to="/docs/guide/going-further/experimental-features#cookiestore"}
-Вы можете включить экспериментальную опцию `cookieStore`, чтобы автоматически обновлять значение `useCookie` при изменении cookie в браузере.
+::note{to="/docs/3.x/guide/going-further/experimental-features#cookiestore"}
+Since [Nuxt v3.12.0](https://github.com/nuxt/nuxt/releases/tag/v3.12.0), the experimental `cookieStore` option is enabled by default. It automatically refreshes the `useCookie` value when cookies change in the browser.
 ::
 
-## Тип
+## Type
 
-```ts
-refreshCookie(name: string): void
+```ts [Signature]
+export function refreshCookie (name: string): void
 ```

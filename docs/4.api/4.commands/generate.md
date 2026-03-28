@@ -1,8 +1,8 @@
 ---
 title: "nuxt generate"
-description: Предварительный рендеринг каждого маршрута приложения и сохранение результата в обычных HTML-файлах.
+description: Pre-renders every route of the application and stores the result in plain HTML files.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/generate.ts
     size: xs
@@ -10,32 +10,33 @@ links:
 
 <!--generate-cmd-->
 ```bash [Terminal]
-npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName]
+npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>]
 ```
 <!--/generate-cmd-->
 
-Команда `generate` предварительно рендерит каждый маршрут вашего приложения и сохраняет результат в обычных HTML-файлах, которые вы можете разместить на любых статических хостинговых сервисах. Команда запускает `nuxt build` с аргументом `prerender` установленным в `true`
+The `generate` command pre-renders every route of your application and stores the result in plain HTML files that you can deploy on any static hosting services. The command triggers the `nuxt build` command with the `prerender` argument set to `true`
 
 ## Arguments
 
 <!--generate-args-->
-Argument | Description
---- | ---
-`ROOTDIR="."` | Specifies the working directory (default: `.`)
+| Argument      | Description                                    |
+|---------------|------------------------------------------------|
+| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
 <!--/generate-args-->
 
 ## Options
 
 <!--generate-opts-->
-Option | Default | Description
---- | --- | ---
-`--cwd=<directory>` |  | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)
-`--logLevel=<silent\|info\|verbose>` |  | Specify build-time log level
-`--preset` |  | Nitro server preset
-`--dotenv` |  | Path to `.env` file to load, relative to the root directory
-`--envName` |  | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server)
+| Option                               | Default | Description                                                                                                                                          |
+|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
+| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
+| `--preset`                           |         | Nitro server preset                                                                                                                                  |
+| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
+| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
+| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
 <!--/generate-opts-->
 
-::read-more{to="/docs/getting-started/deployment#static-hosting"}
-Узнайте больше о предварительном рендеринге и статическом хостинге.
+::read-more{to="/docs/3.x/getting-started/deployment#static-hosting"}
+Read more about pre-rendering and static hosting.
 ::

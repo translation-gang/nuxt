@@ -1,23 +1,23 @@
 ---
 title: 'clearNuxtState'
-description: Удаляет кэшированное состояние useState.
+description: Delete the cached state of useState.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/state.ts
     size: xs
 ---
 
 ::note
-Этот метод полезен, если вы хотите аннулировать состояние `useState`.
+This method is useful if you want to invalidate the state of `useState`.
 ::
 
-## Тип
+## Type
 
-```ts
-clearNuxtState (keys?: string | string[] | ((key: string) => boolean)): void
+```ts [Signature]
+export function clearNuxtState (keys?: string | string[] | ((key: string) => boolean)): void
 ```
 
-## Параметры
+## Parameters
 
-- `keys`: Ключ или массив ключей, используемых в [`useState`](/docs/api/composables/use-state) для удаления их кэшированного состояния. Если ключи не указаны, **все состояния** будут аннулированы.
+- `keys`: One or an array of keys that are used in [`useState`](/docs/3.x/api/composables/use-state) to delete their cached state. If no keys are provided, **all state** will be invalidated.

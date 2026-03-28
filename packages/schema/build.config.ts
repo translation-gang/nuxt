@@ -1,5 +1,4 @@
 import { defineBuildConfig } from 'unbuild'
-import { stubOptions } from '../../debug/build-config'
 
 export default defineBuildConfig({
   declaration: true,
@@ -21,7 +20,6 @@ export default defineBuildConfig({
     'src/index',
     'src/builder-env',
   ],
-  stubOptions,
   rollup: {
     dts: { respectExternal: false },
     inlineDependencies: ['untyped', 'knitwork'],
@@ -36,7 +34,6 @@ export default defineBuildConfig({
     'autoprefixer',
     'c12',
     'compatx',
-    'consola',
     'css-minimizer-webpack-plugin',
     'cssnano',
     'esbuild',
@@ -51,7 +48,6 @@ export default defineBuildConfig({
     'nuxt/app',
     'ofetch',
     'oxc-transform',
-    'pkg-types',
     'postcss',
     'pug',
     'rollup-plugin-visualizer',
@@ -71,6 +67,5 @@ export default defineBuildConfig({
     // Implicit
     '@vue/compiler-core',
     '@vue/compiler-sfc',
-    '@vue/shared',
   ],
 })

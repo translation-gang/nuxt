@@ -1,8 +1,8 @@
-import { resolve } from 'pathe'
 import VueLoaderPlugin from 'vue-loader/dist/pluginWebpack5.js'
-import VueSSRClientPlugin from '../plugins/vue/client'
-import VueSSRServerPlugin from '../plugins/vue/server'
-import type { WebpackConfigContext } from '../utils/config'
+import { resolveModulePath } from 'exsolve'
+import VueSSRClientPlugin from '../plugins/vue/client.ts'
+import VueSSRServerPlugin from '../plugins/vue/server.ts'
+import type { WebpackConfigContext } from '../utils/config.ts'
 
 import { webpack } from '#builder'
 
@@ -13,18 +13,25 @@ export function vue (ctx: WebpackConfigContext) {
   ctx.config.module!.rules!.push({
     test: /\.vue$/i,
     loader: 'vue-loader',
-    options: ctx.userConfig.loaders.vue,
+    options: { ...ctx.userConfig.loaders.vue, isServerBuild: ctx.isServer },
   })
 
   if (ctx.isClient) {
-    ctx.config.plugins!.push(new VueSSRClientPlugin({
-      filename: resolve(ctx.options.buildDir, 'dist/server', `${ctx.name}.manifest.json`),
-      nuxt: ctx.nuxt,
-    }))
+    ctx.config.plugins!.push(new VueSSRClientPlugin({ nuxt: ctx.nuxt }))
   } else {
     ctx.config.plugins!.push(new VueSSRServerPlugin({
       filename: `${ctx.name}.manifest.json`,
     }))
+
+    const loaderPath = resolveModulePath('#vue-module-identifier', { from: import.meta.url })
+    ctx.config.module!.rules!.push({
+      test: /\.vue$/i,
+      enforce: 'post',
+      use: [{
+        loader: loaderPath,
+        options: { srcDir: ctx.nuxt.options.srcDir },
+      }],
+    })
   }
 
   // Feature flags

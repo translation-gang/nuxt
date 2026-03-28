@@ -29,11 +29,20 @@ export interface CookieRef<T> extends Ref<T> {}
 const CookieDefaults = {
   path: '/',
   watch: true,
-  decode: val => destr(decodeURIComponent(val)),
+  decode: (val) => {
+    const decoded = decodeURIComponent(val)
+    const parsed = destr(decoded)
+    // destr can return Infinity or precision-loss numbers - keep original string
+    if (typeof parsed === 'number' && (!Number.isFinite(parsed) || String(parsed) !== decoded)) {
+      return decoded
+    }
+    return parsed
+  },
   encode: val => encodeURIComponent(typeof val === 'string' ? val : JSON.stringify(val)),
 } satisfies CookieOptions<any>
 
-const store = import.meta.client && cookieStore ? window.cookieStore : undefined
+// we use globalThis to avoid crashes in web workers
+const store = import.meta.client && cookieStore ? globalThis.cookieStore : undefined
 
 /** @since 3.0.0 */
 export function useCookie<T = string | null | undefined> (name: string, _opts?: CookieOptions<T> & { readonly?: false }): CookieRef<T>
@@ -167,7 +176,14 @@ export function useCookie<T = string | null | undefined> (name: string, _opts?: 
 export function refreshCookie (name: string) {
   if (import.meta.server || store || typeof BroadcastChannel === 'undefined') { return }
 
-  new BroadcastChannel(`nuxt:cookies:${name}`)?.postMessage({ refresh: true })
+  try {
+    const channel = new BroadcastChannel(`nuxt:cookies:${name}`)
+    channel.postMessage({ refresh: true })
+    channel.close()
+  } catch {
+    // BroadcastChannel will fail in certain situations when cookies are disabled
+    // or running in an iframe: see https://github.com/nuxt/nuxt/issues/26338
+  }
 }
 
 function readRawCookies (opts: CookieOptions = {}): Record<string, unknown> | undefined {
@@ -230,18 +246,22 @@ function cookieRef<T> (value: T | undefined, delay: number, shouldWatch: boolean
   return customRef((track, trigger) => {
     if (shouldWatch) { unsubscribe = watch(internalRef, trigger) }
 
-    function createExpirationTimeout () {
-      elapsed = 0
-      clearTimeout(timeout)
+    function scheduleTimeout () {
       const timeRemaining = delay - elapsed
       const timeoutLength = timeRemaining < MAX_TIMEOUT_DELAY ? timeRemaining : MAX_TIMEOUT_DELAY
       timeout = setTimeout(() => {
         elapsed += timeoutLength
-        if (elapsed < delay) { return createExpirationTimeout() }
+        if (elapsed < delay) { return scheduleTimeout() }
 
         internalRef.value = undefined
         trigger()
       }, timeoutLength)
+    }
+
+    function createExpirationTimeout () {
+      elapsed = 0
+      clearTimeout(timeout)
+      scheduleTimeout()
     }
 
     return {

@@ -1,65 +1,67 @@
 ---
 title: "$fetch"
-description: Nuxt использует ofetch для предоставления глобально хелпера $fetch для выполнения HTTP-запросов.
+description: Nuxt uses ofetch to expose globally the $fetch helper for making HTTP requests.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/entry.ts
     size: xs
 ---
 
-Nuxt использует [ofetch](https://github.com/unjs/ofetch) для предоставления глобально хелпера `$fetch` для выполнения HTTP-запросов в вашем приложении Vue или маршрутах API.
+Nuxt uses [ofetch](https://github.com/unjs/ofetch) to expose globally the `$fetch` helper for making HTTP requests within your Vue app or API routes.
 
 ::tip{icon="i-lucide-rocket"}
-During server-side rendering, calling `$fetch` to fetch your internal [API routes](/docs/guide/directory-structure/server) will directly call the relevant function (emulating the request), **saving an additional API call**.
+During server-side rendering, calling `$fetch` to fetch your internal [API routes](/docs/3.x/directory-structure/server) will directly call the relevant function (emulating the request), **saving an additional API call**.
 ::
 
 ::note{color="blue" icon="i-lucide-info"}
-Using `$fetch` in components without wrapping it with [`useAsyncData`](/docs/api/composables/use-async-data) causes fetching the data twice: initially on the server, then again on the client-side during hydration, because `$fetch` does not transfer state from the server to the client. Thus, the fetch will be executed on both sides because the client has to get the data again.
+Using `$fetch` in components without wrapping it with [`useAsyncData`](/docs/3.x/api/composables/use-async-data) causes fetching the data twice: initially on the server, then again on the client-side during hydration, because `$fetch` does not transfer state from the server to the client. Thus, the fetch will be executed on both sides because the client has to get the data again.
 ::
 
-## Использование
+## Usage
 
-Для предотвращения двойного извлечения данных при получении данных компонента мы рекомендуем использовать [`useFetch`](/docs/api/composables/use-fetch) или [`useAsyncData`](/docs/api/composables/use-async-data) + `$fetch`.
+We recommend using [`useFetch`](/docs/3.x/api/composables/use-fetch) or [`useAsyncData`](/docs/3.x/api/composables/use-async-data) + `$fetch` to prevent double data fetching when fetching the component data.
 
 ```vue [app.vue]
 <script setup lang="ts">
-// Во время SSR данные извлекаются дважды, один раз на сервере и один раз на клиенте.
+// During SSR data is fetched twice, once on the server and once on the client.
 const dataTwice = await $fetch('/api/item')
 
-// Во время SSR данные извлекаются только на сервере и передаются клиенту.
+// During SSR data is fetched only on the server side and transferred to the client.
 const { data } = await useAsyncData('item', () => $fetch('/api/item'))
 
-// Вы также можете использовать useFetch в качестве шортката для useAsyncData + $fetch
+// You can also useFetch as shortcut of useAsyncData + $fetch
 const { data } = await useFetch('/api/item')
 </script>
 ```
 
-:read-more{to="/docs/getting-started/data-fetching"}
+:read-more{to="/docs/3.x/getting-started/data-fetching"}
 
-Вы можете использовать `$fetch` в любых методах, которые выполняются только на клиенте.
+You can use `$fetch` in any methods that are executed only on client-side.
 
 ```vue [pages/contact.vue]
 <script setup lang="ts">
-async function contactForm() {
+async function contactForm () {
   await $fetch('/api/contact', {
     method: 'POST',
-    body: { hello: 'world '}
+    body: { hello: 'world' },
   })
 }
 </script>
 
 <template>
-  <button @click="contactForm">Contact</button>
+  <button @click="contactForm">
+    Contact
+  </button>
 </template>
 ```
 
 ::tip
-`$fetch` является предпочтительным способом выполнения HTTP-запросов в Nuxt, в отличие от [@nuxt/http](https://github.com/nuxt/http) и [@nuxtjs/axios](https://github.com/nuxt-community/axios-module), которые были созданы для Nuxt 2.
+`$fetch` is the preferred way to make HTTP calls in Nuxt instead of [@nuxt/http](https://github.com/nuxt/http) and [@nuxtjs/axios](https://github.com/nuxt-community/axios-module) that are made for Nuxt 2.
 ::
 
 ::note
-Если вы используете `$fetch` для вызова (внешнего) HTTPS URL-адреса с самоподписанным сертификатом в разработке, вам необходимо установить `NODE_TLS_REJECT_UNAUTHORIZED=0` в своей среде.
+If you use `$fetch` to call an (external) HTTPS URL with a self-signed certificate in development, you will need to set `NODE_TLS_REJECT_UNAUTHORIZED=0` in your environment.
 ::
 
 ### Passing Headers and Cookies
@@ -95,4 +97,4 @@ const { data } = await useAsyncData(() => requestFetch('/api/cookies'))
 </script>
 ```
 
-However, when calling `useFetch` with a relative URL on the server, Nuxt will use [`useRequestFetch`](/docs/api/composables/use-request-fetch) to proxy headers and cookies (with the exception of headers not meant to be forwarded, like `host`).
+However, when calling `useFetch` with a relative URL on the server, Nuxt will use [`useRequestFetch`](/docs/3.x/api/composables/use-request-fetch) to proxy headers and cookies (with the exception of headers not meant to be forwarded, like `host`).

@@ -1,37 +1,37 @@
 ---
 title: "useRequestHeaders"
-description: "Используйте useRequestHeaders, чтобы получить доступ к заголовкам входящих запросов."
+description: "Use useRequestHeaders to access the incoming request headers."
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-Вы можете использовать встроенный композабл [`useRequestHeaders`](/docs/api/composables/use-request-headers) для доступа к заголовкам входящих запросов на ваших страницах, в компонентах и плагинах.
+You can use built-in [`useRequestHeaders`](/docs/3.x/api/composables/use-request-headers) composable to access the incoming request headers within your pages, components, and plugins.
 
-```js
-// Получите все заголовки запросов
+```ts
+// Get all request headers
 const headers = useRequestHeaders()
 
-// Получите только заголовок запроса cookie
-const headers = useRequestHeaders(['cookie'])
+// Get only cookie request header
+const { cookie } = useRequestHeaders(['cookie'])
 ```
 
 ::tip
-В браузере `useRequestHeaders` вернет пустой объект.
+In the browser, `useRequestHeaders` will return an empty object.
 ::
 
-## Пример
+## Example
 
-Мы можем использовать `useRequestHeaders` для доступа и проксирования заголовка `authorization` первоначального запроса к любым последующим внутренним запросам во время SSR.
+We can use `useRequestHeaders` to access and proxy the initial request's `authorization` header to any future internal requests during SSR.
 
-Пример ниже добавляет заголовок запроса `authorization` к изоморфному вызову `$fetch`.
+The example below adds the `authorization` request header to an isomorphic `$fetch` call.
 
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
 const { data } = await useFetch('/api/confidential', {
-  headers: useRequestHeaders(['authorization'])
+  headers: useRequestHeaders(['authorization']),
 })
 </script>
 ```

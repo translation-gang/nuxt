@@ -1,29 +1,29 @@
 ---
 title: "clearError"
-description: "Композабл clearError очищает все обработанные ошибки."
+description: "The clearError composable clears all handled errors."
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/error.ts
     size: xs
 ---
 
-В ваших страницах, компонентах и плагинах вы можете использовать `clearError`, чтобы очистить все ошибки и перенаправить пользователя.
+Within your pages, components, and plugins, you can use `clearError` to clear all errors and redirect the user.
 
-**Параметры:**
+**Parameters:**
 
 - `options?: { redirect?: string }`
 
-Вы можете предоставить опциональный путь для перенаправления (например, если вы хотите перейти на "безопасную" страницу).
+You can provide an optional path to redirect to (for example, if you want to navigate to a 'safe' page).
 
-```js
-// Без перенаправления
+```ts
+// Without redirect
 clearError()
 
-// С перенаправлением
+// With redirect
 clearError({ redirect: '/homepage' })
 ```
 
-Ошибки устанавливаются в состоянии с помощью [`useError()`](/docs/api/composables/use-error). Композабл `clearError` сбросит это состояние и вызовет хук `app:error:cleared` с предоставленными параметрами.
+Errors are set in state using [`useError()`](/docs/3.x/api/composables/use-error). The `clearError` composable will reset this state and calls the `app:error:cleared` hook with the provided options.
 
-:read-more{to="/docs/getting-started/error-handling"}
+:read-more{to="/docs/3.x/getting-started/error-handling"}

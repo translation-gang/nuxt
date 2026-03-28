@@ -1,34 +1,34 @@
 ---
 title: 'abortNavigation'
-description: 'abortNavigation - это хелпер функция, которая предотвращает навигацию и выбрасывает ошибку, если она задана в качестве параметра.'
+description: 'abortNavigation is a helper function that prevents navigation from taking place and throws an error if one is set as a parameter.'
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs
 ---
 
 ::warning
-`abortNavigation` можно использовать только внутри [обработчика middleware маршрута](/docs/guide/directory-structure/middleware).
+`abortNavigation` is only usable inside a [route middleware handler](/docs/3.x/directory-structure/middleware).
 ::
 
-## Тип
+## Type
 
-```ts
-abortNavigation(err?: Error | string): false
+```ts [Signature]
+export function abortNavigation (err?: Error | string): false
 ```
 
-## Параметры
+## Parameters
 
 ### `err`
 
-- **тип**: [`Error`](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Error) | `string`
+- **Type**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | `string`
 
-  Опциональная ошибка, которая будет выброшена при вызове `abortNavigation`.
+  Optional error to be thrown by `abortNavigation`.
 
-## Примеры
+## Examples
 
-В примере ниже показано, как можно использовать `abortNavigation` в middleware маршрута для предотвращения несанкционированного доступа к маршруту:
+The example below shows how you can use `abortNavigation` in a route middleware to prevent unauthorized route access:
 
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -44,28 +44,28 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-### `err` в виде String
+### `err` as a String
 
-Вы можете передать ошибку в виде строки:
+You can pass the error as a string:
 
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
   const user = useState('user')
 
   if (!user.value.isAuthorized) {
-    return abortNavigation('Недостаточно прав.')
+    return abortNavigation('Insufficient permissions.')
   }
 })
 ```
 
-### `err` в виде Error Object
+### `err` as an Error Object
 
-Вы можете передать ошибку в виде объекта [`Error`](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Error), например, перехваченного блоком `catch`:
+You can pass the error as an [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object, e.g. caught by the `catch`-block:
 
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
   try {
-    /* код, который может вызвать ошибку */
+    /* code that might throw an error */
   } catch (err) {
     return abortNavigation(err)
   }

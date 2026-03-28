@@ -1,28 +1,28 @@
 ---
 title: 'preloadRouteComponents'
-description: preloadRouteComponents позволяет вам вручную предзагружать отдельные страницы в вашем приложении Nuxt.
+description: preloadRouteComponents allows you to manually preload individual pages in your Nuxt app.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/preload.ts
     size: xs
 ---
 
-Предварительная загрузка маршрутов загружает компоненты заданного маршрута, к которому пользователь может перейти в будущем. Это гарантирует, что компоненты будут доступны раньше и менее вероятно, что они заблокируют навигацию, улучшая производительность.
+Preloading routes loads the components of a given route that the user might navigate to in future. This ensures that the components are available earlier and less likely to block the navigation, improving performance.
 
 ::tip{icon="i-lucide-rocket"}
-Nuxt уже автоматически предзагружает необходимые маршруты, если вы используете компонент `NuxtLink`.
+Nuxt already automatically preloads the necessary routes if you're using the `NuxtLink` component.
 ::
 
-:read-more{to="/docs/api/components/nuxt-link"}
+:read-more{to="/docs/3.x/api/components/nuxt-link"}
 
-## Пример
+## Example
 
-Предварительная загрузка маршрута при использовании `navigateTo`.
+Preload a route when using `navigateTo`.
 
 ```ts
-// мы не ожидаем эту асинхронную функцию, чтобы избежать блокировки рендеринга
-// setup-функцией этого компонента
+// we don't await this async function, to avoid blocking rendering
+// this component's setup function
 preloadRouteComponents('/dashboard')
 
 const submit = async () => {
@@ -34,8 +34,8 @@ const submit = async () => {
 }
 ```
 
-:read-more{to="/docs/api/utils/navigate-to"}
+:read-more{to="/docs/3.x/api/utils/navigate-to"}
 
 ::note
-На сервере `preloadRouteComponents` не будет иметь никакого эффекта.
+On server, `preloadRouteComponents` will have no effect.
 ::

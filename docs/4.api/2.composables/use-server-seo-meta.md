@@ -1,27 +1,27 @@
 ---
 title: 'useServerSeoMeta'
-description: Композабл useServerSeoMeta позволяет определить SEO-метатеги вашего сайта в виде плоского объекта с полной поддержкой TypeScript.
+description: The useServerSeoMeta composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/unjs/unhead/blob/main/packages/vue/src/composables.ts
     size: xs
 ---
 
-Как и [`useSeoMeta`](/docs/api/composables/use-seo-meta), композабл `useServerSeoMeta` позволяет определить SEO-метатеги вашего сайта в виде плоского объекта с полной поддержкой TypeScript.
+Just like [`useSeoMeta`](/docs/3.x/api/composables/use-seo-meta), `useServerSeoMeta` composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
 
-:read-more{to="/docs/api/composables/use-seo-meta"}
+:read-more{to="/docs/3.x/api/composables/use-seo-meta"}
 
-В большинстве случаев мета не должна быть реактивной, так как роботы будут сканировать только начальную загрузку. Поэтому мы рекомендуем использовать [`useServerSeoMeta`](/docs/api/composables/use-server-seo-meta) как утилиту, ориентированную на производительность, которая не будет ничего делать (или возвращать объект `head`) на клиенте.
+In most instances, the meta doesn't need to be reactive as robots will only scan the initial load. So we recommend using [`useServerSeoMeta`](/docs/3.x/api/composables/use-server-seo-meta) as a performance-focused utility that will not do anything (or return a `head` object) on the client.
 
 ```vue [app.vue]
 <script setup lang="ts">
 useServerSeoMeta({
-  robots: 'index, follow'
+  robots: 'index, follow',
 })
 </script>
 ```
 
-Параметры точно такие же, как и у [`useSeoMeta`](/docs/api/composables/use-seo-meta)
+Parameters are exactly the same as with [`useSeoMeta`](/docs/3.x/api/composables/use-seo-meta)
 
-:read-more{to="/docs/getting-started/seo-meta"}
+:read-more{to="/docs/3.x/getting-started/seo-meta"}

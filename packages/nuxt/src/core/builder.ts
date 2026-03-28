@@ -1,17 +1,17 @@
 import type { EventType } from '@parcel/watcher'
 import type { FSWatcher } from 'chokidar'
 import { watch as chokidarWatch } from 'chokidar'
-import { createIsIgnored, directoryToURL, importModule, isIgnored, useNuxt } from '@nuxt/kit'
+import { createIsIgnored, directoryToURL, getLayerDirectories, importModule, isIgnored, useNuxt } from '@nuxt/kit'
 import { debounce } from 'perfect-debounce'
 import { dirname, join, normalize, relative, resolve } from 'pathe'
 
-import { isDirectory, logger } from '../utils'
-import { generateApp as _generateApp, createApp } from './app'
-import { checkForExternalConfigurationFiles } from './external-config-files'
-import { cleanupCaches, getVueHash } from './cache'
+import { isDirectory, logger } from '../utils.ts'
+import { generateApp as _generateApp, createApp } from './app.ts'
+import { checkForExternalConfigurationFiles } from './external-config-files.ts'
+import { cleanupCaches, getVueHash } from './cache.ts'
 import type { Nuxt, NuxtBuilder } from 'nuxt/schema'
 
-export async function build (nuxt: Nuxt) {
+export async function build (nuxt: Nuxt): Promise<void> {
   const app = createApp(nuxt)
   nuxt.apps.default = app
 
@@ -24,13 +24,13 @@ export async function build (nuxt: Nuxt) {
       // Unset mainComponent and errorComponent if app or error component is changed
       if (event === 'add' || event === 'unlink') {
         const path = resolve(nuxt.options.srcDir, relativePath)
-        for (const layer of nuxt.options._layers) {
-          const relativePath = relative(layer.config.srcDir || layer.cwd, path)
-          if (relativePath.match(/^app\./i)) {
+        for (const dirs of getLayerDirectories(nuxt)) {
+          const relativePath = relative(dirs.app, path)
+          if (/^app\./i.test(relativePath)) {
             app.mainComponent = undefined
             break
           }
-          if (relativePath.match(/^error\./i)) {
+          if (/^error\./i.test(relativePath)) {
             app.errorComponent = undefined
             break
           }
@@ -51,7 +51,8 @@ export async function build (nuxt: Nuxt) {
     const { restoreCache, collectCache } = await getVueHash(nuxt)
     if (await restoreCache()) {
       await nuxt.callHook('build:done')
-      return await nuxt.callHook('close', nuxt)
+      await nuxt.callHook('close', nuxt)
+      return
     }
     nuxt.hooks.hookOnce('nitro:build:before', () => collectCache())
     nuxt.hooks.hookOnce('close', () => cleanupCaches(nuxt))
@@ -102,7 +103,17 @@ function createWatcher () {
   const nuxt = useNuxt()
   const isIgnored = createIsIgnored(nuxt)
 
-  const watcher = chokidarWatch(nuxt.options._layers.map(i => i.config.srcDir as string).filter(Boolean), {
+  const layerDirs = getLayerDirectories(nuxt)
+  const paths: string[] = []
+  for (const layer of layerDirs) {
+    paths.push(layer.app)
+    // Only add server if it's not inside app (avoid double-watching)
+    if (!layer.server.startsWith(layer.app.replace(/\/?$/, '/'))) {
+      paths.push(layer.server)
+    }
+  }
+
+  const watcher = chokidarWatch(paths, {
     ...nuxt.options.watchers.chokidar,
     ignoreInitial: true,
     ignored: [isIgnored, /[\\/]node_modules[\\/]/],
@@ -195,7 +206,7 @@ async function createParcelWatcher () {
     const pathsToWatch = resolvePathsToWatch(nuxt, { parentDirectories: true })
     for (const dir of pathsToWatch) {
       if (!await isDirectory(dir)) { continue }
-      const watcher = subscribe(dir, (err, events) => {
+      const subscription = await subscribe(dir, (err, events) => {
         if (err) { return }
         for (const event of events) {
           if (isIgnored(event.path)) { continue }
@@ -208,13 +219,11 @@ async function createParcelWatcher () {
           'node_modules',
         ],
       })
-      watcher.then((subscription) => {
-        if (nuxt.options.debug && nuxt.options.debug.watchers) {
-          // eslint-disable-next-line no-console
-          console.timeEnd('[nuxt] builder:parcel:watch')
-        }
-        nuxt.hook('close', () => subscription.unsubscribe())
-      })
+      nuxt.hook('close', () => subscription.unsubscribe())
+    }
+    if (nuxt.options.debug && nuxt.options.debug.watchers) {
+      // eslint-disable-next-line no-console
+      console.timeEnd('[nuxt] builder:parcel:watch')
     }
     return true
   } catch {
@@ -251,11 +260,14 @@ async function loadBuilder (nuxt: Nuxt, builder: string): Promise<NuxtBuilder> {
 
 function resolvePathsToWatch (nuxt: Nuxt, opts: { parentDirectories?: boolean } = {}): Set<string> {
   const pathsToWatch = new Set<string>()
-  for (const layer of nuxt.options._layers) {
-    const dir = layer.config.srcDir || layer.cwd
-    if (!dir || isIgnored(dir)) { continue }
-
-    pathsToWatch.add(dir.replace(/[^/]$/, '$&/'))
+  for (const dirs of getLayerDirectories(nuxt)) {
+    if (!isIgnored(dirs.app)) {
+      pathsToWatch.add(dirs.app)
+    }
+    // Only add server if it's not inside app (avoid double-watching)
+    if (!isIgnored(dirs.server) && !dirs.server.startsWith(dirs.app.replace(/\/?$/, '/'))) {
+      pathsToWatch.add(dirs.server)
+    }
   }
   for (const pattern of nuxt.options.watch) {
     if (typeof pattern !== 'string') { continue }

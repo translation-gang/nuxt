@@ -1,20 +1,26 @@
 ---
 title: "useRoute"
-description: Композабл useRoute возвращает текущий маршрут.
+description: The useRoute composable returns the current route.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs
 ---
 
 ::note
-В шаблоне компонента Vue вы можете получить доступ к маршруту с помощью `$route`.
+Within the template of a Vue component, you can access the route using `$route`.
 ::
 
-## Пример
+The `useRoute` composable is a wrapper around the identically named composable from `vue-router`, providing access to the current route in a Nuxt application.
 
-В следующем примере мы вызываем API через [`useFetch`](/docs/api/composables/use-fetch), используя динамический параметр страницы - `slug` - как часть URL.
+The key difference is that in Nuxt, the composable ensures that the route is updated **only after** the page content has changed after navigation.
+In contrast, the `vue-router` version updates the route **immediately**, which can lead to synchronization issues between different parts of the template
+that rely on the route metadata, for example.
+
+## Example
+
+In the following example, we call an API via [`useFetch`](/docs/3.x/api/composables/use-fetch) using a dynamic page parameter - `slug` - as part of the URL.
 
 ```html [~/pages/[slug\\].vue]
 <script setup lang="ts">
@@ -30,23 +36,52 @@ const { data: mountain } = await useFetch(`/api/mountains/${route.params.slug}`)
 </template>
 ```
 
-Если вам нужно получить доступ к параметрам запроса маршрута (например, `example` в пути `/test?example=true`), то вы можете использовать `useRoute().query` вместо `useRoute().params`.
+If you need to access the route query parameters (for example `example` in the path `/test?example=true`), then you can use `useRoute().query` instead of `useRoute().params`.
 
 ## API
 
-Помимо динамических параметров и query-параметров, `useRoute()` также предоставляет следующие вычисляемые ссылки, связанные с текущим маршрутом:
+Apart from dynamic parameters and query parameters, `useRoute()` also provides the following computed references related to the current route:
 
-- `fullPath`: кодированный URL, связанный с текущим маршрутом, который содержит путь, запрос и хэш
-- `hash`: декодированная хэш-секция URL, начинающаяся с #
+- `fullPath`: encoded URL associated with the current route that contains path, query and hash
+- `hash`: decoded hash section of the URL that starts with a #
 - `query`: access route query parameters
-- `matched`: массив нормализованных маршрутов, совпадающих с текущим местоположением маршрута
-- `meta`: пользовательские данные, прикрепленные к записи
-- `name`: уникальное имя для записи маршрута
-- `path`: закодированная часть с именем пути в URL
-- `redirectedFrom`: местоположение маршрута, к которому пытались получить доступ, прежде чем попасть в текущее местоположение маршрута
+- `matched`: array of normalized matched routes with current route location
+- `meta`: custom data attached to the record
+- `name`: unique name for the route record
+- `path`: encoded pathname section of the URL
+- `redirectedFrom`: route location that was attempted to access before ending up on the current route location
 
-::note
-Браузеры не отправляют [фрагменты URL](https://url.spec.whatwg.org/#concept-url-fragment) (например, `#foo`) при выполнении запросов. Поэтому использование `route.fullPath` в вашем шаблоне может вызвать проблемы с гидрацией, так как это будет включать фрагмент на клиенте, но не на сервере.
+## Common Pitfalls
+
+### Route Synchronization Issues
+
+It’s important to use the `useRoute()` composable from Nuxt rather than the one from `vue-router` to avoid synchronization issues during page navigation.
+Importing `useRoute` directly from `vue-router` bypasses Nuxt's implementation.
+
+```ts twoslash
+// ❌ do not use `useRoute` from `vue-router`
+// @errors: 2300
+import { useRoute } from 'vue-router'
+// ✅ use Nuxt's `useRoute` composable
+import { useRoute } from '#app'
+```
+
+### Calling `useRoute` in Middleware
+
+Using `useRoute` in middleware is not recommended because it can lead to unexpected behavior.
+There is no concept of a "current route" in middleware.
+The `useRoute()` composable should only be used in the setup function of a Vue component or in a Nuxt plugin.
+
+::warning
+This applies to any composable that uses `useRoute()` internally too.
 ::
 
-:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/type-aliases/RouteLocationNormalizedLoaded.html"}
+::read-more{to="/docs/3.x/directory-structure/middleware"}
+Read more about accessing the route in the middleware section.
+::
+
+### Hydration Issues with `route.fullPath`
+
+Browsers don't send [URL fragments](https://url.spec.whatwg.org/#concept-url-fragment) (for example `#foo`) when making requests. So using `route.fullPath` to affect the template can trigger hydration issues because this will include the fragment on client but not the server.
+
+:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/type-aliases/routelocationnormalizedloaded"}

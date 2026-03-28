@@ -1,38 +1,99 @@
 ---
 title: 'useLazyFetch'
-description: Эта обертка вокруг useFetch запускает навигацию немедленно.
+description: This wrapper around useFetch triggers navigation immediately.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/fetch.ts
     size: xs
 ---
 
-## Описание
+`useLazyFetch` provides a wrapper around [`useFetch`](/docs/3.x/api/composables/use-fetch) that triggers navigation before the handler is resolved by setting the `lazy` option to `true`.
 
-По умолчанию [`useFetch`](/docs/api/composables/use-fetch) блокирует навигацию до разрешения своего асинхронного обработчика. `useLazyFetch` предоставляет обертку вокруг [`useFetch`](/docs/api/composables/use-fetch), которая запускает навигацию до разрешения обработчика, установив опцию `lazy` в `true`.
+## Usage
 
-::note
-`useLazyFetch` имеет ту же сигнатуру, что и [`useFetch`](/docs/api/composables/use-fetch).
-::
-
-::note
-Awaiting `useLazyFetch` in this mode only ensures the call is initialized. On client-side navigation, data may not be immediately available, and you should make sure to handle the pending state in your app.
-::
-
-:read-more{to="/docs/api/composables/use-fetch"}
-
-## Пример
+By default, [`useFetch`](/docs/3.x/api/composables/use-fetch) blocks navigation until its async handler is resolved. `useLazyFetch` allows navigation to proceed immediately, with data being fetched in the background.
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-/* Навигация будет происходить до завершения получения данных.
-  Обрабатывайте состояния 'pending' и 'error' непосредственно в шаблоне вашего компонента
-*/
-const { pending, data: posts } = await useLazyFetch('/api/posts')
+const { status, data: posts } = await useLazyFetch('/api/posts')
+</script>
+
+<template>
+  <div v-if="status === 'pending'">
+    Loading ...
+  </div>
+  <div v-else>
+    <div v-for="post in posts">
+      <!-- do something -->
+    </div>
+  </div>
+</template>
+```
+
+::note
+`useLazyFetch` has the same signature as [`useFetch`](/docs/3.x/api/composables/use-fetch).
+::
+
+::warning
+Awaiting `useLazyFetch` only ensures the call is initialized. On client-side navigation, data may not be immediately available, and you must handle the `pending` state in your component's template.
+::
+
+::warning
+`useLazyFetch` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyFetch`.
+::
+
+## Type
+
+```ts [Signature]
+export function useLazyFetch<DataT, ErrorT> (
+  url: string | Request | Ref<string | Request> | (() => string | Request),
+  options?: UseFetchOptions<DataT>,
+): Promise<AsyncData<DataT, ErrorT>>
+```
+
+::note
+`useLazyFetch` is equivalent to `useFetch` with `lazy: true` option set. See [`useFetch`](/docs/3.x/api/composables/use-fetch) for full type definitions.
+::
+
+## Parameters
+
+`useLazyFetch` accepts the same parameters as [`useFetch`](/docs/3.x/api/composables/use-fetch):
+
+- `URL` (`string | Request | Ref<string | Request> | () => string | Request`): The URL or request to fetch.
+- `options` (object): Same as [`useFetch` options](/docs/3.x/api/composables/use-fetch#parameters), with `lazy` automatically set to `true`.
+
+:read-more{to="/docs/3.x/api/composables/use-fetch#parameters"}
+
+## Return Values
+
+Returns the same `AsyncData` object as [`useFetch`](/docs/3.x/api/composables/use-fetch):
+
+| Name      | Type                                                | Description                                                                                                      |
+|-----------|-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `data`    | `Ref<DataT \| undefined>`                           | The result of the asynchronous fetch.                                                                            |
+| `refresh` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Function to manually refresh the data.                                                                           |
+| `execute` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Alias for `refresh`.                                                                                             |
+| `error`   | `Ref<ErrorT \| undefined>`                          | Error object if the data fetching failed.                                                                        |
+| `status`  | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>`  | Status of the data request.                                                                                      |
+| `pending` | `Ref<boolean>`                                      | Boolean flag indicating whether the current request is in progress.                                              |
+| `clear`   | `() => void`                                        | Resets `data` to `undefined`, `error` to `undefined`, sets `status` to `idle`, and cancels any pending requests. |
+
+:read-more{to="/docs/3.x/api/composables/use-fetch#return-values"}
+
+## Examples
+
+### Handling Pending State
+
+```vue [pages/index.vue]
+<script setup lang="ts">
+/* Navigation will occur before fetching is complete.
+ * Handle 'pending' and 'error' states directly within your component's template
+ */
+const { status, data: posts } = await useLazyFetch('/api/posts')
 watch(posts, (newPosts) => {
-  // Поскольку posts может быть изначально равным null, у вас не будет доступа
-  // к его содержимому сразу, но вы сможете наблюдать за ним.
+  // Because posts might start out null, you won't have access
+  // to its contents immediately, but you can watch it.
 })
 </script>
 
@@ -42,14 +103,10 @@ watch(posts, (newPosts) => {
   </div>
   <div v-else>
     <div v-for="post in posts">
-      <!-- Сделай что-нибудь -->
+      <!-- do something -->
     </div>
   </div>
 </template>
 ```
 
-::note
-`useLazyFetch` - это зарезервированное имя функции, которое трансформируется компилятором, поэтому вы не должны называть свою собственную функцию `useLazyFetch`.
-::
-
-:read-more{to="/docs/getting-started/data-fetching"}
+:read-more{to="/docs/3.x/getting-started/data-fetching"}

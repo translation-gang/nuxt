@@ -22,8 +22,8 @@ You can use this composable in your components, pages, or plugins to access or r
 
 ```ts
 interface NuxtError<DataT = unknown> {
-  statusCode: number
-  statusMessage: string
+  status: number
+  statusText: string
   message: string
   data?: DataT
   error?: true
@@ -42,7 +42,7 @@ Returns a `Ref` containing the current Nuxt error (or `undefined` if there is no
 
 ## Example
 
-```ts
+```vue
 <script setup lang="ts">
 const error = useError()
 
@@ -52,4 +52,4 @@ if (error.value) {
 </script>
 ```
 
-:read-more{to="/docs/getting-started/error-handling"}
+:read-more{to="/docs/3.x/getting-started/error-handling"}

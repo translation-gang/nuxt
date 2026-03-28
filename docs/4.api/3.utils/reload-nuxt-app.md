@@ -1,27 +1,27 @@
 ---
 title: 'reloadNuxtApp'
-description: reloadNuxtApp выполнит жесткую перезагрузку страницы.
+description: reloadNuxtApp will perform a hard reload of the page.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/chunk.ts
     size: xs
 ---
 
 ::note
-`reloadNuxtApp` выполнит жесткую перезагрузку вашего приложения, повторно запрашивая страницу и ее зависимости у сервера.
+`reloadNuxtApp` will perform a hard reload of your app, re-requesting a page and its dependencies from the server.
 ::
 
-По умолчанию он также сохраняет текущий `state` вашего приложения (то есть любое состояние, к которому вы могли получить доступ с помощью `useState`).
+By default, it will also save the current `state` of your app (that is, any state you could access with `useState`).
 
-::read-more{to="/docs/guide/going-further/experimental-features#restorestate" icon="i-lucide-star"}
-Вы можете включить экспериментальное восстановление этого состояния, включив опцию `experimental.restoreState` в файле `nuxt.config`.
+::read-more{to="/docs/3.x/guide/going-further/experimental-features#restorestate" icon="i-lucide-star"}
+You can enable experimental restoration of this state by enabling the `experimental.restoreState` option in your `nuxt.config` file.
 ::
 
-## Тип
+## Type
 
-```ts
-reloadNuxtApp(options?: ReloadNuxtAppOptions)
+```ts [Signature]
+export function reloadNuxtApp (options?: ReloadNuxtAppOptions)
 
 interface ReloadNuxtAppOptions {
   ttl?: number
@@ -31,41 +31,44 @@ interface ReloadNuxtAppOptions {
 }
 ```
 
-### `options` (опционально)
+### `options` (optional)
 
-**Тип**: `ReloadNuxtAppOptions`
+**Type**: `ReloadNuxtAppOptions`
 
-Объект, принимающий следующие свойства:
+An object accepting the following properties:
 
-- `path` (опционально)
+- `path` (optional)
 
-  **Тип**: `string`
+  **Type**: `string`
 
-  **По умолчанию**: `window.location.pathname`
+  **Default**: `window.location.pathname`
 
-  Путь для перезагрузки (по умолчанию - текущий путь). Если он отличается от текущего местоположения окна (window.location), это вызовет навигацию и добавит запись в историю браузера.
+  The path to reload (defaulting to the current path). If this is different from the current window location it
+  will trigger a navigation and add an entry in the browser history.
 
-- `ttl` (опционально)
+- `ttl` (optional)
 
-  **Тип**: `number`
+  **Type**: `number`
 
-  **По умолчанию**: `10000`
+  **Default**: `10000`
 
-  Количество миллисекунд, в течение которых следует игнорировать последующие запросы на перезагрузку. При повторном вызове в течение этого периода времени,
-  `reloadNuxtApp` не будет перезагружать ваше приложение, чтобы избежать циклов перезагрузки.
+  The number of milliseconds in which to ignore future reload requests. If called again within this time period,
+  `reloadNuxtApp` will not reload your app to avoid reload loops.
 
-- `force` (опционально)
+- `force` (optional)
 
-  **Тип**: `boolean`
+  **Type**: `boolean`
 
-  **По умолчанию**: `false`
+  **Default**: `false`
 
-  Эта опция позволяет полностью обойти защиту цикла перезагрузки, принудительно перезагружая его, даже если он уже произошел в течение ранее заданного TTL.
+  This option allows bypassing reload loop protection entirely, forcing a reload even if one has occurred within
+  the previously specified TTL.
 
-- `persistState` (опционально)
+- `persistState` (optional)
 
-  **Тип**: `boolean`
+  **Type**: `boolean`
 
-  **По умолчанию**: `false`
+  **Default**: `false`
 
-  Нужно ли сбрасывать текущее состояние Nuxt в sessionStorage (как `nuxt:reload:state`). По умолчанию это не будет иметь никакого эффекта на перезагрузку, если только `experimental.restoreState` также не установлен, или если вы сами не занимаетесь восстановлением состояния.
+  Whether to dump the current Nuxt state to sessionStorage (as `nuxt:reload:state`). By default this will have no
+  effect on reload unless `experimental.restoreState` is also set, or unless you handle restoring the state yourself.

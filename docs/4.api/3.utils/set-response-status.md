@@ -1,36 +1,36 @@
 ---
 title: 'setResponseStatus'
-description: setResponseStatus устанавливает statusCode (и, опционально, statusMessage) ответа.
+description: setResponseStatus sets the status (and optionally the statusText) of the response.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-Nuxt предоставляет композаблы и утилиты для первоклассной поддержки серверного рендеринга.
+Nuxt provides composables and utilities for first-class server-side-rendering support.
 
-`setResponseStatus` задает statusCode (и необязательно statusMessage) ответа.
+`setResponseStatus` sets the status (and optionally the statusText) of the response.
 
 ::important
-`setResponseStatus` может быть вызван только в [Nuxt-контексте](/docs/guide/going-further/nuxt-app#the-nuxt-context).
+`setResponseStatus` can only be called in the [Nuxt context](/docs/3.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
-```js
+```ts
 const event = useRequestEvent()
 
-// event будет undefined в браузере
+// event will be undefined in the browser
 if (event) {
-  // Установите статус код 404 для пользовательской страницы 404
+  // Set the status code to 404 for a custom 404 page
   setResponseStatus(event, 404)
 
-  // Установите также статусное сообщение
-  setResponseStatus(event, 404, 'Страница не найдена')
+  // Set the status message as well
+  setResponseStatus(event, 404, 'Page Not Found')
 }
 ```
 
 ::note
-В браузере `setResponseStatus` не будет иметь никакого эффекта.
+In the browser, `setResponseStatus` will have no effect.
 ::
 
-:read-more{to="/docs/getting-started/error-handling"}
+:read-more{to="/docs/3.x/getting-started/error-handling"}

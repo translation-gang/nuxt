@@ -1,29 +1,26 @@
 ---
 title: "callOnce"
-description: "Запустите заданную функцию или блок кода один раз во время SSR или CSR."
-navigation:
-  badge: Новое
+description: "Run a given function or block of code once during SSR or CSR."
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/once.ts
     size: xs
 ---
 
 ::important
-Эта утилита доступна с [Nuxt v3.9](/blog/v3-9).
+This utility is available since [Nuxt v3.9](/blog/v3-9).
 ::
 
-## Назначение
+## Purpose
 
-Функция `callOnce` предназначена для выполнения заданной функции или блока кода только один раз во время:
+The `callOnce` function is designed to execute a given function or block of code only once during:
+- server-side rendering but not hydration
+- client-side navigation
 
-- серверного рендеринга, но не гидратации,
-- навигации на клиенте.
+This is useful for code that should be executed only once, such as logging an event or setting up a global state.
 
-Это полезно для кода, который должен выполняться только один раз, например, для регистрации события или настройки глобального состояния.
-
-## Использование
+## Usage
 
 The default mode of `callOnce` is to run code only once. For example, if the code runs on the server it won't run again on the client. It also won't run again if you `callOnce` more than once on the client, for example by navigating back to this page.
 
@@ -32,7 +29,7 @@ The default mode of `callOnce` is to run code only once. For example, if the cod
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('Это будет выведено только один раз')
+  console.log('This will only be logged once')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 })
 </script>
@@ -55,25 +52,25 @@ await callOnce(async () => {
 `navigation` mode is available since [Nuxt v3.15](/blog/v3-15).
 ::
 
-::tip{to="/docs/getting-started/state-management#usage-with-pinia"}
-`callOnce` полезен в сочетании с [модулем Pinia](/modules/pinia) для вызова действий хранилища.
+::tip{to="/docs/3.x/getting-started/state-management#usage-with-pinia"}
+`callOnce` is useful in combination with the [Pinia module](/modules/pinia) to call store actions.
 ::
 
-:read-more{to="/docs/getting-started/state-management"}
+:read-more{to="/docs/3.x/getting-started/state-management"}
 
 ::warning
-Обратите внимание, что `callOnce` ничего не возвращает. Если вы хотите выполнять получение данных во время SSR, вы должны использовать [`useAsyncData`](/docs/api/composables/use-async-data) или [`useFetch`](/docs/api/composables/use-fetch).
+Note that `callOnce` doesn't return anything. You should use [`useAsyncData`](/docs/3.x/api/composables/use-async-data) or [`useFetch`](/docs/3.x/api/composables/use-fetch) if you want to do data fetching during SSR.
 ::
 
 ::note
-`callOnce` это композабл, предназначенный для непосредственного вызова в функции setup, плагине или middleware роута, поскольку ему необходимо добавить данные в полезную нагрузку Nuxt, чтобы избежать повторного вызова функции на клиенте при гидратации страницы.
+`callOnce` is a composable meant to be called directly in a setup function, plugin, or route middleware, because it needs to add data to the Nuxt payload to avoid re-calling the function on the client when the page hydrates.
 ::
 
-## Тип
+## Type
 
-```ts
-callOnce (key?: string, fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
-callOnce(fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
+```ts [Signature]
+export function callOnce (key?: string, fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
+export function callOnce (fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
 
 type CallOnceOptions = {
   /**

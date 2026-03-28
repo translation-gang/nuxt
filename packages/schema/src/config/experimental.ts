@@ -1,4 +1,4 @@
-import { defineResolvers } from '../utils/definition'
+import { defineResolvers } from '../utils/definition.ts'
 
 export default defineResolvers({
   /**
@@ -94,13 +94,11 @@ export default defineResolvers({
         if (
           val === false ||
           (await get('dev')) ||
-          (await get('ssr')) === false ||
-          // @ts-expect-error TODO: handled normalised types
-          (await get('builder')) === '@nuxt/webpack-builder'
+          (await get('ssr')) === false
         ) {
           return false
         }
-        // Enabled by default for vite prod with ssr (for vue components)
+        // Enabled by default for prod with ssr (for vue components)
         return val ?? ((await get('future')).compatibilityVersion === 4 ? (id?: string) => !!id && id.includes('.vue') : true)
       },
     },
@@ -144,6 +142,7 @@ export default defineResolvers({
     },
   },
   experimental: {
+    runtimeBaseURL: false,
     /**
      * Enable to use experimental decorators in Nuxt and Nitro.
      *
@@ -180,6 +179,8 @@ export default defineResolvers({
         return typeof val === 'boolean' ? val : true
       },
     },
+
+    serverAppConfig: true,
 
     /**
      * Emit `app:chunkError` hook when there is an error loading vite/webpack
@@ -255,7 +256,13 @@ export default defineResolvers({
      * When this option is enabled (by default) payload of pages that are prerendered are extracted
      * @type {boolean | undefined}
      */
-    payloadExtraction: true,
+    payloadExtraction: {
+      $resolve: async (val, get) => {
+        if (await get('ssr') === false) { return false }
+        if (typeof val === 'boolean') { return val }
+        return true
+      },
+    },
 
     /**
      * Whether to enable the experimental `<NuxtClientFallback>` component for rendering content on the client
@@ -649,7 +656,7 @@ export default defineResolvers({
      * @see [Chrome DevTools Performance API](https://developer.chrome.com/docs/devtools/performance/extension#tracks)
      */
     browserDevtoolsTiming: {
-      $resolve: async (val, get) => typeof val === 'boolean' ? val : await get('dev'),
+      $resolve: (val, get) => typeof val === 'boolean' ? val : get('dev'),
     },
 
     /**
@@ -804,6 +811,22 @@ export default defineResolvers({
     pendingWhenIdle: {
       $resolve: async (val, get) => {
         return typeof val === 'boolean' ? val : (await get('future')).compatibilityVersion !== 4
+      },
+    },
+    entryImportMap: true,
+    extractAsyncDataHandlers: {
+      $resolve: (val) => {
+        return typeof val === 'boolean' ? val : false
+      },
+    },
+    viteEnvironmentApi: {
+      $resolve: async (val, get) => {
+        return typeof val === 'boolean' ? val : (await get('future.compatibilityVersion')) >= 5
+      },
+    },
+    nitroAutoImports: {
+      $resolve: async (val, get) => {
+        return typeof val === 'boolean' ? val : (await get('future.compatibilityVersion')) < 5
       },
     },
   },

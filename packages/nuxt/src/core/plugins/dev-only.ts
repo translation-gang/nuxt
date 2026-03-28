@@ -2,14 +2,14 @@ import MagicString from 'magic-string'
 import { createUnplugin } from 'unplugin'
 import { parse } from 'ultrahtml'
 import type { Node } from 'ultrahtml'
-import { isVue } from '../utils'
+import { isVue } from '../utils/index.ts'
 
 interface DevOnlyPluginOptions {
   sourcemap?: boolean
 }
 
-const DEVONLY_COMP_SINGLE_RE = /<(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)>[\s\S]*?<\/(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)>/
-const DEVONLY_COMP_RE = /<(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)>[\s\S]*?<\/(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)>/g
+const DEVONLY_COMP_SINGLE_RE = /<(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)(?:\s(?:[^>"']|"[^"]*"|'[^']*')*)?>[\s\S]*?<\/(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)>/
+const DEVONLY_COMP_RE = /<(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)(?:\s(?:[^>"']|"[^"]*"|'[^']*')*)?>[\s\S]*?<\/(?:dev-only|DevOnly|lazy-dev-only|LazyDevOnly)>/g
 
 export const DevOnlyPlugin = (options: DevOnlyPluginOptions) => createUnplugin(() => {
   return {
@@ -28,9 +28,9 @@ export const DevOnlyPlugin = (options: DevOnlyPluginOptions) => createUnplugin((
           const ast: Node = parse(match[0]).children[0]
           const fallback: Node | undefined = ast.children?.find((n: Node) => {
             if (n.name !== 'template') { return false }
-            return 'fallback' in n.attributes || '#fallback' in n.attributes
+            return 'fallback' in n.attributes || '#fallback' in n.attributes || 'v-slot:fallback' in n.attributes
           })
-          const replacement = fallback ? match[0].slice(fallback.loc[0].end, fallback.loc[fallback.loc.length - 1].start) : ''
+          const replacement = fallback ? match[0].slice(fallback.loc[0].end, fallback.loc.at(-1).start) : ''
           s.overwrite(match.index!, match.index! + match[0].length, replacement)
         }
 

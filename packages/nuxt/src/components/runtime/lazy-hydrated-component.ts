@@ -1,4 +1,4 @@
-import { defineAsyncComponent, defineComponent, h, hydrateOnIdle, hydrateOnInteraction, hydrateOnMediaQuery, hydrateOnVisible, mergeProps, watch } from 'vue'
+import { defineAsyncComponent, defineComponent, h, hydrateOnIdle, hydrateOnInteraction, hydrateOnMediaQuery, hydrateOnVisible, mergeProps } from 'vue'
 import type { AsyncComponentLoader, ComponentObjectPropsOptions, ExtractPropTypes, HydrationStrategy } from 'vue'
 import { useNuxtApp } from '#app/nuxt'
 
@@ -11,8 +11,10 @@ function defineLazyComponent<P extends ComponentObjectPropsOptions> (props: P, d
       if (import.meta.server) {
         const nuxtApp = useNuxtApp()
         nuxtApp.hook('app:rendered', ({ ssrContext }) => {
-          // strip the lazy hydrated component from the ssrContext so prefetch/preload tags are not rendered for it
-          ssrContext!.modules!.delete(id)
+          // track lazy hydrated components so prefetch/preload tags are not rendered for them
+          // but keep them in modules so CSS links are still rendered
+          ssrContext!['~lazyHydratedModules'] ||= new Set()
+          ssrContext!['~lazyHydratedModules'].add(id)
         })
       }
       // wrap the async component in a second component to avoid loading the chunk too soon
@@ -83,10 +85,7 @@ export const createLazyIfComponent = defineLazyComponent({
 },
 props => props.hydrateWhen
   ? undefined /* hydrate immediately */
-  : (hydrate) => {
-      const unwatch = watch(() => props.hydrateWhen, () => hydrate(), { once: true })
-      return () => unwatch()
-    },
+  : () => {}, /* Vue will trigger the hydration automatically when the prop changes */
 )
 
 /* @__NO_SIDE_EFFECTS__ */

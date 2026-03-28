@@ -1,24 +1,24 @@
 ---
 title: 'prerenderRoutes'
-description: prerenderRoutes указывает Nitro на необходимость пререндера дополнительного маршрута.
+description: prerenderRoutes hints to Nitro to prerender an additional route.
 links:
-  - label: Исходники
+  - label: Source
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-При предварительном рендеринге вы можете подсказать Nitro предварительно отрендерить дополнительные пути, даже если их URL-адреса не отображаются в HTML-коде сгенерированной страницы.
+When prerendering, you can hint to Nitro to prerender additional paths, even if their URLs do not show up in the HTML of the generated page.
 
 ::important
-`prerenderRoutes` может быть вызвана только в рамках [контекста Nuxt](/docs/guide/going-further/nuxt-app#the-nuxt-context).
+`prerenderRoutes` can only be called within the [Nuxt context](/docs/3.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ::note
-`prerenderRoutes` должен быть выполнен во время пререндеринга. Если `prerenderRoutes` используется в динамических страницах/роутах, которые не подвергаются пререндерингу, то он не будет выполнен.
+`prerenderRoutes` has to be executed during prerendering. If the `prerenderRoutes` is used in dynamic pages/routes which are not prerendered, then it will not be executed.
 ::
 
-```js
+```ts
 const route = useRoute()
 
 prerenderRoutes('/')
@@ -26,12 +26,12 @@ prerenderRoutes(['/', '/about'])
 ```
 
 ::note
-В браузере или при вызове вне пререндеринга `prerenderRoutes` не будет иметь никакого эффекта.
+In the browser, or if called outside prerendering, `prerenderRoutes` will have no effect.
 ::
 
 You can even prerender API routes which is particularly useful for full statically generated sites (SSG) because you can then `$fetch` data as if you have an available server!
 
-```js
+```ts
 prerenderRoutes('/api/content/article/name-of-article')
 
 // Somewhere later in App
