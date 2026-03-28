@@ -155,7 +155,7 @@ function save() {
 </template>
 ```
 
-### Cookies в маршрутах API
+### Куки в серверных маршрутах API
 
 Вы можете использовать `getCookie` и `setCookie` из пакета [`h3`](https://github.com/h3js/h3) для установки cookies в маршрутах API сервера.
 

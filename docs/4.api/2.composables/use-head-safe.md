@@ -1,6 +1,6 @@
 ---
 title: useHeadSafe
-description: Рекомендуемый способ предоставления данных head с помощью ввода пользователя.
+description: Рекомендуемый способ задания содержимого `<head>` из пользовательского ввода.
 links:
   - label: Исходники
     icon: i-simple-icons-github

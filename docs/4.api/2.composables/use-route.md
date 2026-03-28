@@ -14,7 +14,7 @@ links:
 
 ## Пример
 
-Ниже вызывается API через [`useFetch`](/docs/3.x/api/composables/use-fetch), а динамический параметр страницы `slug` подставляется в URL.
+Ниже к API обращаются через [`useFetch`](/docs/3.x/api/composables/use-fetch), а динамический параметр страницы `slug` подставляется в URL.
 
 ```html [~/pages/[slug\\].vue]
 <script setup lang="ts">
@@ -32,7 +32,7 @@ const { data: mountain } = await useFetch(`/api/mountains/${route.params.slug}`)
 
 Для доступа к query-параметрам маршрута (например, `example` в `/test?example=true`) используйте `useRoute().query`, а не `useRoute().params`.
 
-## API
+## Поля маршрута
 
 Помимо динамических сегментов и query-параметров `useRoute()` отдаёт реактивные поля текущего маршрута:
 

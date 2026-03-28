@@ -16,7 +16,7 @@ links:
 
 ## Описание
 
-Композабл следит за изменением заголовка страницы и обновляет текст объявления маршрута. Его использует [`<NuxtRouteAnnouncer>`](/docs/3.x/api/components/nuxt-route-announcer); поведение настраивается через этот API.
+Композабл следит за изменением заголовка страницы и обновляет текст объявления маршрута. Его использует [`<NuxtRouteAnnouncer>`](/docs/3.x/api/components/nuxt-route-announcer); поведение настраивается через этот композабл.
 
 Подписка идёт на хук Unhead [`dom:rendered`](https://unhead.unjs.io/docs/typescript/head/api/hooks/dom-rendered): из DOM читается заголовок страницы и задаётся как сообщение объявления.
 

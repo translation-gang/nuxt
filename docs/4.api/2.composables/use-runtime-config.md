@@ -45,7 +45,7 @@ export default defineNuxtConfig({
 ```
 
 ::note
-Секреты и сервер-only значения объявляйте на верхнем уровне `runtimeConfig`. То, что должно быть доступно и в браузере, — внутри `runtimeConfig.public`.
+Секреты и значения, доступные только на сервере, объявляйте на верхнем уровне `runtimeConfig`. То, что должно быть доступно и в браузере, — внутри `runtimeConfig.public`.
 ::
 
 :read-more{to="/docs/3.x/guide/going-further/runtime-config"}
@@ -90,7 +90,7 @@ NUXT_API_SECRET = "123"
 ::
 
 ::warning
-В **production** на сервере используйте переменные окружения платформы; файл `.env` обычно не подключается.
+В **продакшене** на сервере используйте переменные окружения платформы; файл `.env` обычно не подключается.
 ::
 
 :read-more{to="/docs/3.x/directory-structure/env"}

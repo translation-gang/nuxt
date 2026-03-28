@@ -133,7 +133,7 @@ const { data: user } = useAsyncData(
 - `watch`
 
 ```ts
-// ❌ Вызовет предупреждение в dev
+// ❌ Вызовет предупреждение в режиме разработки
 const { data: users1 } = useAsyncData('users', () => $fetch('/api/users'), { deep: false })
 const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { deep: true })
 

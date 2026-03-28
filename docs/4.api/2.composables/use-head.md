@@ -1,6 +1,6 @@
 ---
 title: useHead
-description: useHead задаёт содержимое `<head>` отдельных страниц приложения Nuxt.
+description: 'Композабл useHead задаёт содержимое `<head>` отдельных страниц приложения Nuxt.'
 links:
   - label: Исходники
     icon: i-simple-icons-github
@@ -8,7 +8,7 @@ links:
     size: xs
 ---
 
-Композабл [`useHead`](/docs/3.x/api/composables/use-head) позволяет управлять тегами head программным и реактивным способом, опираясь на [Unhead](https://unhead.unjs.io). Если данные поступают от пользователя или из другого ненадёжного источника, мы рекомендуем ознакомиться с композаблом [`useHeadSafe`](/docs/3.x/api/composables/use-head-safe).
+Композабл [`useHead`](/docs/3.x/api/composables/use-head) позволяет управлять тегами в `<head>` программным и реактивным способом, опираясь на [Unhead](https://unhead.unjs.io). Если данные поступают от пользователя или из другого ненадёжного источника, мы рекомендуем ознакомиться с композаблом [`useHeadSafe`](/docs/3.x/api/composables/use-head-safe).
 
 :read-more{to="/docs/3.x/getting-started/seo-meta"}
 

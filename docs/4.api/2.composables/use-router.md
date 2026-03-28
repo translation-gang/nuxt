@@ -50,7 +50,7 @@ router.resolve({ name: 'home' })
 `router.addRoute()` дополняет конфигурацию маршрутов и удобен в [плагинах Nuxt](/docs/3.x/directory-structure/plugins). `router.push()` сразу запускает навигацию — его чаще используют в страницах, компонентах и композаблах.
 ::
 
-## History API
+## Интерфейс History браузера
 
 - [`back()`](https://router.vuejs.org/api/interfaces/Router.html#back): шаг назад по истории, аналог `router.go(-1)`.
 - [`forward()`](https://router.vuejs.org/api/interfaces/Router.html#forward): шаг вперёд, аналог `router.go(1)`.
@@ -69,14 +69,14 @@ router.replace({ hash: "#bio" })
 ```
 
 ::read-more{icon="i-simple-icons-mdnwebdocs" to="https://developer.mozilla.org/en-US/docs/Web/API/History" target="_blank"}
-Подробнее о History API в MDN.
+Подробнее об интерфейсе History — в MDN.
 ::
 
 ## Навигационные хуки
 
 У `useRouter` есть `afterEach`, `beforeEach` и `beforeResolve` для перехвата навигации.
 
-В Nuxt проще опираться на **route middleware** — отдельный механизм защиты маршрутов и лучший DX.
+В Nuxt проще опираться на **middleware маршрутов** — отдельный механизм защиты маршрутов, удобнее в повседневной разработке.
 
 :read-more{to="/docs/3.x/directory-structure/middleware"}
 

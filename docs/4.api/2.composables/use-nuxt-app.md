@@ -183,7 +183,7 @@ export default defineComponent({
 Скорее всего, вы попали сюда, потому что получили сообщение «Экземпляр Nuxt недоступен» (`Nuxt instance unavailable`). Пожалуйста, используйте этот метод осторожно и сообщайте о примерах, вызывающих проблемы, чтобы в конечном итоге их можно было решить на уровне фреймворка.
 ::
 
-Метод `runWithContext` предназначен для вызова функции и передачи ей явного контекста Nuxt. Обычно контекст Nuxt передается неявно, и вам не нужно беспокоиться об этом. Однако в сложных сценариях с `async`/`await` в middleware или плагинах контекст может сброситься после асинхронного шага.
+Метод `runWithContext` предназначен для вызова функции и передачи ей явного контекста Nuxt. Обычно контекст Nuxt передаётся неявно, и вам не нужно беспокоиться об этом. Однако в сложных сценариях с `async`/`await` в middleware или плагинах контекст может сброситься после асинхронного шага.
 
 ```ts [middleware/auth.ts]
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -250,7 +250,7 @@ getCurrentInstance() // снова работает
 
 Именно здесь можно использовать `runWithContext` для восстановления контекста, аналогично тому, как работает `<script setup>`.
 
-Внутри Nuxt использует [unjs/unctx](https://github.com/unjs/unctx), чтобы плагины и middleware вели себя как композаблы Vue: `navigateTo()` и аналоги работают без явной передачи `nuxtApp`.
+Внутри Nuxt использует [unjs/unctx](https://github.com/unjs/unctx), чтобы плагины и прослойки маршрутов (middleware) вели себя как композаблы Vue: `navigateTo()` и аналоги работают без явной передачи `nuxtApp`.
 
 У Nuxt-композаблов та же модель, что у Composition API, поэтому нужна такая же поддержка контекста. См. [unjs/unctx#2](https://github.com/unjs/unctx/issues/2), [unjs/unctx#4](https://github.com/unjs/unctx/pull/4) и [nuxt/framework#3884](https://github.com/nuxt/framework/pull/3884).
 
