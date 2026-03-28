@@ -100,7 +100,7 @@ const { data: post } = await useFetch(() => `/api/posts/${id.value}`)
 
 ## Тип
 
-```ts [Signature]
+```ts [Сигнатура]
 function useFetch<DataT, ErrorT>(
   url: string | Request | Ref<string | Request> | (() => string | Request),
   options?: UseFetchOptions<DataT>

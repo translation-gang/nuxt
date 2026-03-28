@@ -12,7 +12,7 @@ links:
 Композабл доступен в Nuxt v3.14+.
 ::
 
-```ts [signature]
+```ts [Сигнатура]
 function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks>(
   name: THookName,
   fn: RuntimeNuxtHooks[THookName] extends HookCallback ? RuntimeNuxtHooks[THookName] : never

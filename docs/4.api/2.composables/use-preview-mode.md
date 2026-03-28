@@ -102,7 +102,7 @@ const { data } = await useFetch('/api/preview', {
 
 Теперь вы можете сгенерировать свой сайт и обслуживать его:
 
-```bash [Terminal]
+```bash [Терминал]
 npx nuxt generate
 npx nuxt preview
 ```

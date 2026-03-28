@@ -1,6 +1,6 @@
 ---
 title: 'abortNavigation'
-description: 'abortNavigation — вспомогательная функция, которая предотвращает навигацию и при переданном параметре выбрасывает ошибку.'
+description: 'Функция abortNavigation отменяет навигацию; при переданном аргументе выбрасывает ошибку.'
 links:
   - label: Исходный код
     icon: i-simple-icons-github

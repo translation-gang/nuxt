@@ -1,6 +1,6 @@
 ---
 title: 'addRouteMiddleware'
-description: 'addRouteMiddleware() является вспомогательной функцией для динамического добавления middleware в ваше приложение.'
+description: 'Функция addRouteMiddleware() динамически добавляет middleware маршрута в приложение.'
 links:
   - label: Исходный код
     icon: i-simple-icons-github

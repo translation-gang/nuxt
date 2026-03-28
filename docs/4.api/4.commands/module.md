@@ -8,9 +8,9 @@ links:
     size: xs
 ---
 
-CLI Nuxt (`nuxi`) предоставляет утилиты для работы с [каталогом модулей Nuxt](https://nuxt.com/modules).
+Командная строка Nuxt (`nuxi`) предоставляет утилиты для работы с [каталогом модулей Nuxt](https://nuxt.com/modules).
 
-## nuxt module add
+## Добавление модуля (`nuxt module add`)
 
 <!--module-add-cmd-->
 ```bash [Terminal]
@@ -58,7 +58,7 @@ npx nuxt module add pinia
 Обзор экосистемы модулей Nuxt и сценариев использования.
 ::
 
-## nuxt module search
+## Поиск модулей (`nuxt module search`)
 
 <!--module-search-cmd-->
 ```bash [Terminal]

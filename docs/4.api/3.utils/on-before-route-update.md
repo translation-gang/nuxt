@@ -1,6 +1,6 @@
 ---
 title: "onBeforeRouteUpdate"
-description: Композабл onBeforeRouteUpdate позволяет зарегистрировать навигационный guard внутри компонента.
+description: Композабл onBeforeRouteUpdate — регистрация хука навигации Vue Router внутри компонента.
 links:
   - label: Исходный код
     icon: i-simple-icons-github

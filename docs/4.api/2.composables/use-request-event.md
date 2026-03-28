@@ -14,7 +14,7 @@ links:
 // Базовое событие запроса
 const event = useRequestEvent()
 
-// URL
+// путь URL
 const url = event?.path
 ```
 

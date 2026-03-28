@@ -26,7 +26,7 @@ const cookie = useCookie(name, options)
 
 ## Тип
 
-```ts [Signature]
+```ts [Сигнатура]
 import type { Ref } from 'vue'
 import type { CookieParseOptions, CookieSerializeOptions } from 'cookie-es'
 
@@ -89,7 +89,7 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 
 <template>
   <div>
-    <h1>Counter: {{ counter || '-' }}</h1>
+    <h1>Счётчик: {{ counter || '—' }}</h1>
     <button @click="counter = null">сброс</button>
     <button @click="counter--">-</button>
     <button @click="counter++">+</button>
@@ -120,7 +120,7 @@ if (user.value) {
 </template>
 ```
 
-### Запись и наблюдение shallow
+### Запись с поверхностным наблюдением (`watch: 'shallow'`)
 
 ```vue
 <script setup lang="ts">

@@ -26,7 +26,7 @@ header.value = 'my-value';
 
 ```vue [pages/test.vue]
 <script setup>
-// pages/test.vue
+// файл pages/test.vue
 const header = useResponseHeader('X-My-Header');
 header.value = 'my-value';
 </script>

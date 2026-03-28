@@ -124,7 +124,7 @@ interface PageMeta {
 
   - **тип**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias.html#redirect-and-alias)
 
-    Куда перенаправить при прямом совпадении маршрута. Перенаправление выполняется до срабатывания navigation guards и инициирует новую навигацию с новым целевым адресом.
+    Куда перенаправить при прямом совпадении маршрута. Перенаправление выполняется до срабатывания хуков навигации Vue Router и инициирует новую навигацию с новым целевым адресом.
 
   **`validate`**
 

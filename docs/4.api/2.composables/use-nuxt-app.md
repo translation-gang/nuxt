@@ -37,8 +37,8 @@ const nuxtApp = useNuxtApp()
 const nuxtApp = useNuxtApp()
 nuxtApp.provide('hello', (name) => `Привет, ${name}!`)
 
-// Выведет "Привет, name!"
-console.log(nuxtApp.$hello('name'))
+// Выведет «Привет, мир!»
+console.log(nuxtApp.$hello('мир'))
 ```
 
 Как в примере выше, `$hello` становится частью `nuxtApp` и доступен везде, где есть контекст Nuxt.
