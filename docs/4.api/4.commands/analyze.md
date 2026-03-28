@@ -1,8 +1,8 @@
 ---
-title: "nuxt analyze"
+title: "Анализ бандла (nuxt analyze)"
 description: "Анализ продакшен-бандла приложения Nuxt."
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/analyze.ts
     size: xs

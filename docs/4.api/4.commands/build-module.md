@@ -1,8 +1,8 @@
 ---
-title: 'nuxt build-module'
-description: 'Собирает модуль Nuxt перед публикацией.'
+title: "Сборка модуля (nuxt build-module)"
+description: "Собирает модуль Nuxt перед публикацией."
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/module-builder/blob/main/src/cli.ts
     size: xs
@@ -33,7 +33,7 @@ npx nuxt build-module [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|ver
 `--logLevel=<silent\|info\|verbose>` |  | Уровень логирования при сборке
 `--build` | `false` | Собрать модуль для публикации
 `--stub` | `false` | Заглушка `dist` вместо полной сборки (для разработки)
-`--sourcemap` | `false` | Генерировать source map
+`--sourcemap` | `false` | Генерировать карту исходников (source map)
 `--prepare` | `false` | Подготовить модуль к локальной разработке
 <!--/build-module-opts-->
 

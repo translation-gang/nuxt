@@ -1,8 +1,8 @@
 ---
-title: "nuxt test"
+title: "Запуск тестов (nuxt test)"
 description: Запуск тестов через @nuxt/test-utils.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/test.ts
     size: xs
@@ -40,5 +40,5 @@ npx nuxt test [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [
 ::
 
 ::read-more{to="/docs/3.x/getting-started/testing"}
-Настройка Vitest, `@nuxt/test-utils` и сценарии e2e.
+Настройка Vitest, `@nuxt/test-utils` и сценарии сквозного тестирования (e2e).
 ::

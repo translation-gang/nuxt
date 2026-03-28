@@ -1,8 +1,8 @@
 ---
-title: "nuxt upgrade"
+title: "Обновление Nuxt (nuxt upgrade)"
 description: Обновляет Nuxt до последней версии.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/upgrade.ts
     size: xs

@@ -1,8 +1,8 @@
 ---
-title: "create nuxt"
+title: "Создание проекта (create nuxt)"
 description: Команда init создаёт новый проект Nuxt.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/init.ts
     size: xs
@@ -36,7 +36,7 @@ npm create nuxt@latest [DIR] [--cwd=<directory>] [-t, --template] [-f, --force] 
 `--preferOffline` |  | Предпочитать офлайн-режим
 `--no-install` |  | Пропустить установку зависимостей
 `--gitInit` |  | Инициализировать git-репозиторий
-`--shell` |  | Открыть shell в каталоге проекта после настройки
+`--shell` |  | Открыть командную оболочку в каталоге проекта после настройки
 `--packageManager` |  | Менеджер пакетов (npm, pnpm, yarn, bun)
 `--modules` |  | Модули Nuxt для установки (через запятую, без пробелов)
 `--no-modules` |  | Пропустить запрос на установку модулей

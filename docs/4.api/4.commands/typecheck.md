@@ -1,8 +1,8 @@
 ---
-title: "nuxt typecheck"
+title: "Проверка типов (nuxt typecheck)"
 description: Запускает vue-tsc для проверки типов приложения.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/typecheck.ts
     size: xs

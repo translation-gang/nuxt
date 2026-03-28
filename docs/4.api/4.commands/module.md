@@ -1,8 +1,8 @@
 ---
-title: "nuxt module"
+title: "Поиск и установка модулей (nuxt module)"
 description: "Поиск и добавление модулей Nuxt из командной строки."
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/module/
     size: xs

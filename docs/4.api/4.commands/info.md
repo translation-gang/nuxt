@@ -1,8 +1,8 @@
 ---
-title: "nuxt info"
+title: "Сведения о проекте (nuxt info)"
 description: Выводит сведения о текущем или указанном проекте Nuxt.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/info.ts
     size: xs

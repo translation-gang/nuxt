@@ -1,8 +1,8 @@
 ---
-title: 'nuxt dev'
+title: "Режим разработки (nuxt dev)"
 description: Запуск dev-сервера с HMR на http://localhost:3000
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/dev.ts
     size: xs

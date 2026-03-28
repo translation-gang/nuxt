@@ -1,8 +1,8 @@
 ---
-title: 'nuxt cleanup'
-description: 'Удаляет типичные артефакты сборки и кэши Nuxt.'
+title: "Очистка артефактов (nuxt cleanup)"
+description: "Удаляет типичные артефакты сборки и кэши Nuxt."
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/cleanup.ts
     size: xs

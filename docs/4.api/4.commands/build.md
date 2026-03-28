@@ -1,8 +1,8 @@
 ---
-title: "nuxt build"
+title: "Сборка приложения (nuxt build)"
 description: "Сборка приложения Nuxt."
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/build.ts
     size: xs

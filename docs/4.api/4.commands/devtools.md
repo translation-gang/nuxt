@@ -1,8 +1,8 @@
 ---
-title: "nuxt devtools"
+title: "Nuxt DevTools (nuxt devtools)"
 description: Включение или отключение Nuxt DevTools для проекта.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/devtools.ts
     size: xs

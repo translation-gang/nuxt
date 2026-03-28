@@ -1,8 +1,8 @@
 ---
-title: "nuxt preview"
+title: "Предпросмотр сборки (nuxt preview)"
 description: Запуск локального сервера предпросмотра после сборки.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/preview.ts
     size: xs

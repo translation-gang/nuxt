@@ -1,8 +1,8 @@
 ---
-title: "nuxt generate"
+title: "Статическая генерация (nuxt generate)"
 description: Предрендерит все маршруты приложения и записывает статические HTML-файлы.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/generate.ts
     size: xs

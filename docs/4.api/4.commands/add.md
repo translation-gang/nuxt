@@ -1,8 +1,8 @@
 ---
-title: "nuxt add"
+title: "Генерация файлов (nuxt add)"
 description: "Создаёт сущность в приложении Nuxt."
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/add.ts
     size: xs
@@ -15,7 +15,7 @@ npx nuxt add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verb
 <!--/add-cmd-->
 
 ::tip
-Шаблоны создают файлы в стандартных каталогах (`components/`, `pages/` и т. д.) — см. [структуру директорий](/docs/3.x/directory-structure).
+Шаблоны создают файлы в стандартных каталогах (`components/`, `pages/` и т. д.) — см. [структуру директорий](/docs/3.x/directory-structure/).
 ::
 
 ### Аргументы

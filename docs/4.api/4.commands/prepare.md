@@ -1,8 +1,8 @@
 ---
-title: 'nuxt prepare'
+title: "Подготовка проекта (nuxt prepare)"
 description: Создаёт каталог `.nuxt` в приложении и генерирует типы.
 links:
-  - label: Исходный код
+  - label: "«Исходный код»"
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/prepare.ts
     size: xs
