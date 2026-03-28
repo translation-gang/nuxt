@@ -143,6 +143,7 @@ type UseFetchOptions<DataT> = {
   body?: MaybeRefOrGetter<RequestInit['body'] | Record<string, any>>
   headers?: MaybeRefOrGetter<Record<string, string> | [key: string, value: string][] | Headers>
   baseURL?: MaybeRefOrGetter<string>
+  cache?: false | 'default' | 'force-cache' | 'no-cache' | 'no-store' | 'only-if-cached' | 'reload'
   server?: boolean
   lazy?: boolean
   immediate?: boolean
@@ -196,8 +197,7 @@ type AsyncDataRequestStatus = 'idle' | 'pending' | 'success' | 'error'
 | `body`         | `MaybeRefOrGetter<RequestInit['body'] \| Record<string, any>>`          | -            | Тело запроса. Объекты автоматически сериализуются.                                                            |
 | `headers`      | `MaybeRefOrGetter<Record<string, string> \| [key, value][] \| Headers>` | -            | Заголовки запроса.                                                                                            |
 | `baseURL`      | `MaybeRefOrGetter<string>`                                              | -            | Базовый URL запроса.                                                                                          |
-| `timeout`      | `MaybeRefOrGetter<number>`                                              | -            | Таймаут в миллисекундах для отмены запроса.                                                                   |
-| `cache`        | `boolean \| string`                                                     | -            | Управление кэшем. `false` отключает кэш; можно использовать значения Fetch API: `default`, `no-store` и т.д.  |
+| `cache`        | `false \| string`                                                       | -            | Управление кэшем. `false` отключает кэш; можно использовать значения Fetch API: `default`, `no-store` и т.д. |
 | `server`       | `boolean`                                                               | `true`       | Выполнять ли запрос на сервере.                                                                               |
 | `lazy`         | `boolean`                                                               | `false`      | Если `true`, данные подгружаются после перехода по маршруту (не блокируют навигацию).                        |
 | `immediate`    | `boolean`                                                               | `true`       | Если `false`, запрос не выполняется сразу.                                                                    |
