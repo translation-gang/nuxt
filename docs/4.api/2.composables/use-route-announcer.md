@@ -1,58 +1,61 @@
 ---
 title: 'useRouteAnnouncer'
-description: This composable observes the page title changes and updates the announcer message accordingly.
+description: 'Отслеживание смены заголовка страницы и обновление сообщения для объявления маршрута.'
+navigation:
+  badge: Новое
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/route-announcer.ts
     size: xs
 ---
 
 ::important
-This composable is available in Nuxt v3.12+.
+Композабл доступен в Nuxt v3.12+.
 ::
 
-## Description
+## Описание
 
-A composable which observes the page title changes and updates the announcer message accordingly. Used by [`<NuxtRouteAnnouncer>`](/docs/3.x/api/components/nuxt-route-announcer) and controllable.
-It hooks into Unhead's `dom:rendered` hook to read the page's title and set it as the announcer message.
+Композабл следит за изменением заголовка страницы и обновляет текст объявления маршрута. Его использует [`<NuxtRouteAnnouncer>`](/docs/3.x/api/components/nuxt-route-announcer); поведение настраивается через этот API.
 
-## Parameters
+Подписка идёт на хук Unhead [`dom:rendered`](https://unhead.unjs.io/docs/typescript/head/api/hooks/dom-rendered): из DOM читается заголовок страницы и задаётся как сообщение объявления.
 
-- `politeness`: Sets the urgency for screen reader announcements: `off` (disable the announcement), `polite` (waits for silence), or `assertive` (interrupts immediately).  (default `polite`).
+## Параметры
 
-## Properties
+- `politeness`: срочность объявления для программ чтения с экрана: `off` (не объявлять), `polite` (дождаться паузы) или `assertive` (прервать текущее озвучивание). По умолчанию `polite`.
+
+## Свойства
 
 ### `message`
 
-- **type**: `Ref<string>`
-- **description**: The message to announce
+- **тип**: `Ref<string>`
+- **описание**: текст, который будет объявлен
 
 ### `politeness`
 
-- **type**: `Ref<string>`
-- **description**: Screen reader announcement urgency level `off`, `polite`, or `assertive`
+- **тип**: `Ref<string>`
+- **описание**: режим для программы чтения с экрана: `off`, `polite` или `assertive`
 
-## Methods
+## Методы
 
 ### `set(message, politeness = "polite")`
 
-Sets the message to announce with its urgency level.
+Задаёт сообщение и режим объявления.
 
 ### `polite(message)`
 
-Sets the message with `politeness = "polite"`
+Устанавливает сообщение с `politeness = "polite"`.
 
 ### `assertive(message)`
 
-Sets the message with `politeness = "assertive"`
+Устанавливает сообщение с `politeness = "assertive"`.
 
-## Example
+## Пример
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-const { message, politeness, set, polite, assertive } = useRouteAnnouncer({
-  politeness: 'assertive',
-})
+  const { message, politeness, set, polite, assertive } = useRouteAnnouncer({
+    politeness: 'assertive'
+  })
 </script>
 ```

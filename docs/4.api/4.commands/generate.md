@@ -1,8 +1,8 @@
 ---
 title: "nuxt generate"
-description: Pre-renders every route of the application and stores the result in plain HTML files.
+description: Предрендерит все маршруты приложения и записывает статические HTML-файлы.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/generate.ts
     size: xs
@@ -10,33 +10,32 @@ links:
 
 <!--generate-cmd-->
 ```bash [Terminal]
-npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>]
+npx nuxt generate [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--preset] [--dotenv] [--envName]
 ```
 <!--/generate-cmd-->
 
-The `generate` command pre-renders every route of your application and stores the result in plain HTML files that you can deploy on any static hosting services. The command triggers the `nuxt build` command with the `prerender` argument set to `true`
+Команда `generate` предрендерит маршруты и сохранит статический HTML для выкладки на статический хостинг. По сути это `nuxt build` с включённым `prerender`.
 
-## Arguments
+## Аргументы
 
 <!--generate-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)
 <!--/generate-args-->
 
-## Options
+## Опции
 
 <!--generate-opts-->
-| Option                               | Default | Description                                                                                                                                          |
-|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--preset`                           |         | Nitro server preset                                                                                                                                  |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` |  | Рабочая директория; переопределяет ROOTDIR (по умолчанию: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Уровень логирования при сборке
+`--preset` |  | Пресет сервера Nitro
+`--dotenv` |  | Путь к файлу `.env` для загрузки, относительно корня проекта
+`--envName` |  | Окружение для разрешения переопределений конфигурации (для сборки по умолчанию `production`, для dev-сервера — `development`)
 <!--/generate-opts-->
 
 ::read-more{to="/docs/3.x/getting-started/deployment#static-hosting"}
-Read more about pre-rendering and static hosting.
+Подробнее о предрендеринге и статическом хостинге.
 ::

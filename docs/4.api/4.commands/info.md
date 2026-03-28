@@ -1,8 +1,8 @@
 ---
 title: "nuxt info"
-description: The info command logs information about the current or specified Nuxt project.
+description: Выводит сведения о текущем или указанном проекте Nuxt.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/info.ts
     size: xs
@@ -14,20 +14,24 @@ npx nuxt info [ROOTDIR] [--cwd=<directory>]
 ```
 <!--/info-cmd-->
 
-The `info` command logs information about the current or specified Nuxt project.
+Команда `info` выводит сведения о текущем или указанном проекте Nuxt (версии Nuxt, Nitro, Node и др.).
 
-## Arguments
+::tip
+Вывод команды удобно прикладывать к вопросам в сообществе или к отчёту об ошибке.
+::
+
+## Аргументы
 
 <!--info-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)
 <!--/info-args-->
 
-## Options
+## Опции
 
 <!--info-opts-->
-| Option              | Default | Description                                                                      |
-|---------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>` |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` |  | Рабочая директория; переопределяет ROOTDIR (по умолчанию: `.`)
 <!--/info-opts-->

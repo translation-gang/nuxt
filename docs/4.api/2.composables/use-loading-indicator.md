@@ -1,77 +1,77 @@
 ---
 title: 'useLoadingIndicator'
-description: This composable gives you access to the loading state of the app page.
+description: "Доступ к состоянию индикатора загрузки страницы приложения."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/loading-indicator.ts
     size: xs
 ---
 
-## Description
+## Описание
 
-A composable which returns the loading state of the page. Used by [`<NuxtLoadingIndicator>`](/docs/3.x/api/components/nuxt-loading-indicator) and controllable.
-It hooks into [`page:loading:start`](/docs/3.x/api/advanced/hooks#app-hooks-runtime) and [`page:loading:end`](/docs/3.x/api/advanced/hooks#app-hooks-runtime) to change its state.
+Композабл возвращает состояние индикатора загрузки страницы. Им пользуется [`<NuxtLoadingIndicator>`](/docs/3.x/api/components/nuxt-loading-indicator); состоянием можно управлять из кода.
+Он реагирует на хуки [`page:loading:start`](/docs/3.x/api/advanced/hooks#app-hooks-runtime) и [`page:loading:end`](/docs/3.x/api/advanced/hooks#app-hooks-runtime).
 
-## Parameters
+## Параметры
 
-- `duration`: Duration of the loading bar, in milliseconds (default `2000`).
-- `throttle`: Throttle the appearing and hiding, in milliseconds (default `200`).
-- `estimatedProgress`: By default Nuxt will back off as it approaches 100%. You can provide a custom function to customize the progress estimation, which is a function that receives the duration of the loading bar (above) and the elapsed time. It should return a value between 0 and 100.
+- `duration`: длительность анимации полосы в миллисекундах (по умолчанию `2000`);
+- `throttle`: задержка показа и скрытия в миллисекундах (по умолчанию `200`);
+- `estimatedProgress`: по умолчанию Nuxt сглаживает рост прогресса к 100%. Можно передать свою функцию `(duration, elapsed) => number` — она получает ту же `duration` и прошедшее время в мс и должна вернуть число от 0 до 100.
 
-## Properties
+## Свойства
 
 ### `isLoading`
 
-- **type**: `Ref<boolean>`
-- **description**: The loading state
+- **тип:** `Ref<boolean>`
+- **описание:** идёт ли сейчас загрузка
 
 ### `error`
 
-- **type**: `Ref<boolean>`
-- **description**: The error state
+- **тип:** `Ref<boolean>`
+- **описание:** флаг ошибки (см. `finish` с `{ error: true }`)
 
 ### `progress`
 
-- **type**: `Ref<number>`
-- **description**: The progress state. From `0` to `100`.
+- **тип:** `Ref<number>`
+- **описание:** текущий прогресс от `0` до `100`
 
-## Methods
+## Методы
 
 ### `start()`
 
-Set `isLoading` to true and start to increase the `progress` value. `start` accepts a `{ force: true }` option to skip the interval and show the loading state immediately.
+Установит `isLoading` в `true` и начнёт увеличивать `progress`. У `start` есть опция `{ force: true }`: без интервала сразу показать состояние загрузки.
 
 ### `set()`
 
-Set the `progress` value to a specific value. `set` accepts a `{ force: true }` option to skip the interval and show the loading state immediately.
+Задаёт `progress` конкретным значением. У `set` есть опция `{ force: true }`: без интервала сразу показать состояние загрузки.
 
 ### `finish()`
 
-Set the `progress` value to `100`, stop all timers and intervals then reset the loading state `500` ms later. `finish` accepts a `{ force: true }` option to skip the interval before the state is reset, and `{ error: true }` to change the loading bar color and set the error property to true.
+Установит значение `progress` в `100`, остановит все таймеры и интервалы, а затем сбросит состояние загрузки на `500` мс позже. `finish` принимает опцию `{ force: true }`, чтобы пропустить интервал до сброса состояния, и `{ error: true }`, чтобы изменить цвет полосы загрузки и установить свойство ошибки в `true`.
 
 ### `clear()`
 
-Used by `finish()`. Clear all timers and intervals used by the composable.
+Используется функцией `finish()`. Очищает все таймеры и интервалы, используемые композаблом.
 
-## Example
+## Пример
 
 ```vue
 <script setup lang="ts">
-const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
-  duration: 2000,
-  throttle: 200,
-  // This is how progress is calculated by default
-  estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50),
-})
+  const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
+    duration: 2000,
+    throttle: 200,
+    // Вот как рассчитывается прогресс по умолчанию:
+    estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50)
+  })
 </script>
 ```
 
 ```vue
 <script setup lang="ts">
-const { start, set } = useLoadingIndicator()
-// same as set(0, { force: true })
-// set the progress to 0, and show loading immediately
-start({ force: true })
+  const { start, set } = useLoadingIndicator()
+  // то же, что set(0, { force: true })
+  // progress = 0 и сразу показать загрузку
+  start({ force: true })
 </script>
 ```

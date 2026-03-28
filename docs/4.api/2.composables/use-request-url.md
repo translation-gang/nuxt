@@ -1,19 +1,19 @@
 ---
 title: 'useRequestURL'
-description: 'Access the incoming request URL with the useRequestURL composable.'
+description: 'URL входящего запроса через композабл useRequestURL.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/url.ts
     size: xs
 ---
 
-`useRequestURL` is a helper function that returns an [URL object](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) working on both server-side and client-side.
+`useRequestURL` — вспомогательная функция, возвращающая объект [`URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) одинаково на сервере и на клиенте.
 
 ::important
-When utilizing [Hybrid Rendering](/docs/3.x/guide/concepts/rendering#hybrid-rendering) with cache strategies, all incoming request headers are dropped when handling the cached responses via the [Nitro caching layer](https://nitro.build/guide/cache) (meaning `useRequestURL` will return `localhost` for the `host`).
+При [гибридном рендеринге](/docs/3.x/guide/concepts/rendering#hybrid-rendering) со стратегиями кэширования все заголовки входящего запроса отбрасываются при отдаче ответа из кэша через [слой кэширования Nitro](https://nitro.build/guide/cache) (то есть для `host` в `useRequestURL` может вернуться `localhost`).
 
-You can define the [`cache.varies` option](https://nitro.build/guide/cache#options) to specify headers that will be considered when caching and serving the responses, such as `host` and `x-forwarded-host` for multi-tenant environments.
+Задайте опцию [`cache.varies`](https://nitro.build/guide/cache#options), чтобы при кэшировании и выдаче ответа учитывались нужные заголовки — например `host` и `x-forwarded-host` в мультитенантных средах.
 ::
 
 ::code-group
@@ -24,18 +24,18 @@ const url = useRequestURL()
 </script>
 
 <template>
-  <p>URL is: {{ url }}</p>
-  <p>Path is: {{ url.pathname }}</p>
+  <p>URL-адрес: {{ url }}</p>
+  <p>Путь: {{ url.pathname }}</p>
 </template>
 ```
 
-```html [Result in development]
-<p>URL is: http://localhost:3000/about</p>
-<p>Path is: /about</p>
+```html [Результат в разработке]
+<p>URL-адрес: http://localhost:3000/about</p>
+<p>Путь: /about</p>
 ```
 
 ::
 
 ::tip{icon="i-simple-icons-mdnwebdocs" to="https://developer.mozilla.org/en-US/docs/Web/API/URL#instance_properties" target="_blank"}
-Read about the URL instance properties on the MDN documentation.
+Свойства экземпляра `URL` описаны в документации MDN.
 ::

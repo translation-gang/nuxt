@@ -1,52 +1,52 @@
 ---
 title: 'defineRouteRules'
-description: 'Define route rules for hybrid rendering at the page level.'
+description: 'Определите правила маршрутов для гибридного рендеринга на уровне страницы.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/pages/runtime/composables.ts
     size: xs
 ---
 
 ::read-more{to="/docs/3.x/guide/going-further/experimental-features#inlinerouterules" icon="i-lucide-star"}
-This feature is experimental and in order to use it you must enable the `experimental.inlineRouteRules` option in your `nuxt.config`.
+Эта функция является экспериментальной, и для ее использования необходимо включить опцию `experimental.inlineRouteRules` в вашем `nuxt.config`.
 ::
 
-## Usage
+## Использование
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
 defineRouteRules({
-  prerender: true,
+  prerender: true
 })
 </script>
 
 <template>
-  <h1>Hello world!</h1>
+  <h1>Привет мир!</h1>
 </template>
 ```
 
-Will be translated to:
+При сборке это преобразуется в:
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   routeRules: {
-    '/': { prerender: true },
-  },
+    '/': { prerender: true }
+  }
 })
 ```
 
 ::note
-When running [`nuxt build`](/docs/3.x/api/commands/build), the home page will be pre-rendered in `.output/public/index.html` and statically served.
+При выполнении [`nuxt build`](/docs/3.x/api/commands/build) главная страница пререндерится в файл `.output/public/index.html` и будет отдаваться статически.
 ::
 
-## Notes
+## Заметки
 
-- A rule defined in `~/pages/foo/bar.vue` will be applied to `/foo/bar` requests.
-- A rule in `~/pages/foo/[id].vue` will be applied to `/foo/**` requests.
+- Правило, определенное в `~/pages/foo/bar.vue`, будет применено к запросам `/foo/bar`.
+- Правило в `~/pages/foo/[id].vue` будет применено к запросам `/foo/**`.
 
-For more control, such as if you are using a custom `path` or `alias` set in the page's [`definePageMeta`](/docs/3.x/api/utils/define-page-meta), you should set `routeRules` directly within your `nuxt.config`.
+Для более точного управления, например, если вы используете настраиваемый `path` или `alias`, заданный в [`definePageMeta`](/docs/3.x/api/utils/define-page-meta) страницы, задайте `routeRules` напрямую в `nuxt.config`.
 
 ::read-more{to="/docs/3.x/guide/concepts/rendering#hybrid-rendering" icon="i-lucide-medal"}
-Read more about the `routeRules`.
+Узнайте больше о `routeRules`.
 ::

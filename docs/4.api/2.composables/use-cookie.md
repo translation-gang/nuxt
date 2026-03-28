@@ -1,30 +1,30 @@
 ---
 title: 'useCookie'
-description: useCookie is an SSR-friendly composable to read and write cookies.
+description: "Композабл useCookie для чтения и записи cookie с поддержкой SSR."
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/cookie.ts
     size: xs
 ---
 
-## Usage
+## Использование
 
-Within your pages, components, and plugins, you can use `useCookie` to read and write cookies in an SSR-friendly way.
+В своих страницах, компонентах и плагинах вы можете использовать `useCookie`, SSR-совместимый композабл для чтения и записи cookies.
 
 ```ts
 const cookie = useCookie(name, options)
 ```
 
 ::note
-`useCookie` only works in the [Nuxt context](/docs/3.x/guide/going-further/nuxt-app#the-nuxt-context).
+`useCookie` работает только внутри [Nuxt-контекста](/docs/3.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ::tip
-The returned ref will automatically serialize and deserialize cookie values to JSON.
+Возвращаемый ref автоматически сериализует и десериализует значения cookie в JSON.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 import type { Ref } from 'vue'
@@ -40,70 +40,64 @@ export interface CookieOptions<T = any> extends Omit<CookieSerializeOptions & Co
 
 export interface CookieRef<T> extends Ref<T> {}
 
-export function useCookie<T = string | null | undefined> (
+export function useCookie<T = string | null | undefined>(
   name: string,
-  options?: CookieOptions<T>,
+  options?: CookieOptions<T>
 ): CookieRef<T>
 ```
 
-## Parameters
+## Параметры
 
-`name`: The name of the cookie.
+`name`: имя cookie.
 
-`options`: Options to control cookie behavior. The object can have the following properties:
+`options`: настройки поведения cookie. Объект может содержать свойства ниже.
 
-Most of the options will be directly passed to the [cookie](https://github.com/jshttp/cookie) package.
+Большинство опций передаются в пакет [cookie](https://github.com/jshttp/cookie).
 
-| Property      | Type                   | Default                                                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|---------------|------------------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `decode`      | `(value: string) => T` | `decodeURIComponent` + [destr](https://github.com/unjs/destr). | Custom function to decode the cookie value.  Since the value of a cookie has a limited character set (and must be a simple string), this function can be used to decode a previously encoded cookie value into a JavaScript string or other object. <br/> **Note:** If an error is thrown from this function, the original, non-decoded cookie value will be returned as the cookie's value.                                                                                                                                                                                                                                                       |
-| `encode`      | `(value: T) => string` | `JSON.stringify` + `encodeURIComponent`                        | Custom function to encode the cookie value. Since the value of a cookie has a limited character set (and must be a simple string), this function can be used to encode a value into a string suited for a cookie's value.                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `default`     | `() => T \| Ref<T>`    | `undefined`                                                    | Function returning the default value if the cookie does not exist.  The function can also return a `Ref`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `watch`       | `boolean \| 'shallow'` | `true`                                                         | Whether to watch for changes and update the cookie. `true` for deep watch, `'shallow'` for shallow watch, i.e. data changes for only top level properties, `false` to disable. <br/> **Note:** Refresh `useCookie` values manually when a cookie has changed with [`refreshCookie`](/docs/3.x/api/utils/refresh-cookie).                                                                                                                                                                                                                                                                                                                           |
-| `readonly`    | `boolean`              | `false`                                                        | If `true`, disables writing to the cookie.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `maxAge`      | `number`               | `undefined`                                                    | Max age in seconds for the cookie, i.e. the value for the [`Max-Age` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.2). The given number will be converted to an integer by rounding down. By default, no maximum age is set.                                                                                                                                                                                                                                                                                                                                                                                   |
-| `expires`     | `Date`                 | `undefined`                                                    | Expiration date for the cookie. By default, no expiration is set. Most clients will consider this a "non-persistent cookie" and will delete it on a condition like exiting a web browser application. <br/> **Note:** The [cookie storage model specification](https://datatracker.ietf.org/doc/html/rfc6265#section-5.3) states that if both `expires` and `maxAge` is set, then `maxAge` takes precedence, but not all clients may obey this, so if both are set, they should point to the same date and time! <br/>If neither of `expires` and `maxAge` is set, the cookie will be session-only and removed when the user closes their browser. |
-| `httpOnly`    | `boolean`              | `false`                                                        | Sets the HttpOnly attribute. <br/> **Note:** Be careful when setting this to `true`, as compliant clients will not allow client-side JavaScript to see the cookie in `document.cookie`.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `secure`      | `boolean`              | `false`                                                        | Sets the [`Secure` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.5). <br/>**Note:** Be careful when setting this to `true`, as compliant clients will not send the cookie back to the server in the future if the browser does not have an HTTPS connection. This can lead to hydration errors.                                                                                                                                                                                                                                                                                                                |
-| `partitioned` | `boolean`              | `false`                                                        | Sets the [`Partitioned` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/draft-cutler-httpbis-partitioned-cookies#section-2.1). <br/>**Note:** This is an attribute that has not yet been fully standardized, and may change in the future. <br/>This also means many clients may ignore this attribute until they understand it.<br/>More information can be found in the [proposal](https://github.com/privacycg/CHIPS).                                                                                                                                                                                                            |
-| `domain`      | `string`               | `undefined`                                                    | Sets the [`Domain` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.3). By default, no domain is set, and most clients will consider applying the cookie only to the current domain.                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `path`        | `string`               | `'/'`                                                          | Sets the [`Path` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.4). By default, the path is considered the ["default path"](https://datatracker.ietf.org/doc/html/rfc6265#section-5.1.4).                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `sameSite`    | `boolean \| string`    | `undefined`                                                    | Sets the [`SameSite` `Set-Cookie` attribute](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.2.7). <br/>- `true` will set the `SameSite` attribute to `Strict` for strict same-site enforcement.<br/>- `false` will not set the `SameSite` attribute.<br/>- `'lax'` will set the `SameSite` attribute to `Lax` for lax same-site enforcement.<br/>- `'none'` will set the `SameSite` attribute to `None` for an explicit cross-site cookie.<br/>- `'strict'` will set the `SameSite` attribute to `Strict` for strict same-site enforcement.                                                                    |
+| Свойство | Тип | По умолчанию | Описание |
+| --- | --- | --- | --- |
+| `decode` | `(value: string) => T` | `decodeURIComponent` + [destr](https://github.com/unjs/destr). | Пользовательская функция декодирования значения cookie. Значение cookie ограничено набором символов (простая строка); функция превращает ранее закодированное значение в строку JavaScript или другой объект. <br/> **Примечание:** при ошибке в функции вернётся исходное не декодированное значение. |
+| `encode` | `(value: T) => string` | `JSON.stringify` + `encodeURIComponent` | Пользовательская функция кодирования значения cookie для строки, пригодной для значения cookie. |
+| `default` | `() => T \| Ref<T>` | `undefined` | Фабрика значения по умолчанию, если cookie нет. Может возвращать `Ref`. |
+| `watch` | `boolean \| 'shallow'` | `true`  | Следить за изменениями и обновлять cookie: `true` — глубокое наблюдение, `'shallow'` — только верхний уровень, `false` — отключить. <br/> **Примечание:** при изменении cookie снаружи обновите значения `useCookie` вручную через [`refreshCookie`](/docs/3.x/api/utils/refresh-cookie). |
+| `readonly` | `boolean` | `false` | При `true` запись в cookie отключена. |
+| `maxAge` | `number` | `undefined` | Максимальный возраст в секундах ([атрибут `Max-Age`](https://tools.ietf.org/html/rfc6265#section-5.2.2)). Число округляется вниз до целого. По умолчанию не задано. |
+| `expires` | `Date` | `undefined` | Дата истечения. По умолчанию не задана; клиенты обычно считают cookie несессионной и удаляют при выходе из браузера. <br/> **Примечание:** по [модели хранения cookie](https://tools.ietf.org/html/rfc6265#section-5.3), если заданы и `expires`, и `maxAge`, приоритет у `maxAge`, но не все клиенты так делают — лучше указывать одну и ту же дату/время. <br/>Если ни `expires`, ни `maxAge` нет, cookie сессионная и удалится при закрытии браузера. |
+| `httpOnly` | `boolean` | `false` | Атрибут HttpOnly. <br/> **Примечание:** при `true` клиентский JavaScript не увидит cookie в `document.cookie`. |
+| `secure` | `boolean` | `false` | Атрибут [`Secure`](https://tools.ietf.org/html/rfc6265#section-5.2.5). <br/>**Примечание:** при `true` без HTTPS клиент может не отправлять cookie обратно — возможны ошибки гидратации. |
+| `partitioned` | `boolean` | `false` | Атрибут [`Partitioned`](https://datatracker.ietf.org/doc/html/draft-cutler-httpbis-partitioned-cookies#section-2.1). <br/>**Примечание:** спецификация ещё не финальна. Многие клиенты могут игнорировать атрибут. Подробнее — в [предложении CHIPS](https://github.com/privacycg/CHIPS). |
+| `domain` | `string` | `undefined` | Атрибут [`Domain`](https://tools.ietf.org/html/rfc6265#section-5.2.3). По умолчанию домен не задаётся; cookie обычно действует для текущего домена. |
+| `path` | `string` | `'/'` | Атрибут [`Path`](https://tools.ietf.org/html/rfc6265#section-5.2.4). По умолчанию считается ["путь по умолчанию"](https://tools.ietf.org/html/rfc6265#section-5.1.4). |
+| `sameSite` | `boolean \| string` | `undefined` | Атрибут [`SameSite`](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.2.7). <br/>- `true` — `SameSite=Strict`.<br/>- `false` — атрибут не задаётся.<br/>- `'lax'` — `Lax`.<br/>- `'none'` — `None` (явная кросс-сайтовая cookie).<br/>- `'strict'` — `Strict`. |
 
-## Return Values
+## Возвращаемое значение
 
-Returns a Vue `Ref<T>` representing the cookie value. Updating the ref will update the cookie (unless `readonly` is set). The ref is SSR-friendly and will work on both client and server.
+Vue-`Ref<T>` со значением cookie. Изменение ref обновляет cookie (если не задан `readonly`). Ref совместим с SSR и работает на клиенте и сервере.
 
-## Examples
+## Примеры
 
-### Basic Usage
+### Базовое использование
 
-The example below creates a cookie called `counter`. If the cookie doesn't exist, it is initially set to a random value. Whenever we update the `counter` variable, the cookie will be updated accordingly.
+В приведённом ниже примере создаётся cookie с именем `counter`. Если куки не существует, то первоначально ему присваивается случайное значение. Всякий раз, когда мы обновляем переменную `counter`, cookie будет обновляться соответствующим образом.
 
 ```vue [app.vue]
 <script setup lang="ts">
 const counter = useCookie('counter')
 
-counter.value ||= Math.round(Math.random() * 1000)
+counter.value = counter.value || Math.round(Math.random() * 1000)
 </script>
 
 <template>
   <div>
     <h1>Counter: {{ counter || '-' }}</h1>
-    <button @click="counter = null">
-      reset
-    </button>
-    <button @click="counter--">
-      -
-    </button>
-    <button @click="counter++">
-      +
-    </button>
+    <button @click="counter = null">сброс</button>
+    <button @click="counter--">-</button>
+    <button @click="counter++">+</button>
   </div>
 </template>
 ```
 
-### Readonly Cookies
+### Только для чтения
 
 ```vue
 <script setup lang="ts">
@@ -111,22 +105,22 @@ const user = useCookie(
   'userInfo',
   {
     default: () => ({ score: -1 }),
-    watch: false,
-  },
+    watch: false
+  }
 )
 
 if (user.value) {
-  // the actual `userInfo` cookie will not be updated
+  // cookie «userInfo» не обновится при этом изменении
   user.value.score++
 }
 </script>
 
 <template>
-  <div>User score: {{ user?.score }}</div>
+  <div>Счёт пользователя: {{ user?.score }}</div>
 </template>
 ```
 
-### Writable Cookies
+### Запись и наблюдение shallow
 
 ```vue
 <script setup lang="ts">
@@ -134,48 +128,46 @@ const list = useCookie(
   'list',
   {
     default: () => [],
-    watch: 'shallow',
-  },
+    watch: 'shallow'
+  }
 )
 
-function add () {
+function add() {
   list.value?.push(Math.round(Math.random() * 1000))
-  // list cookie won't be updated with this change
+  // список в cookie при этом не обновится
 }
 
-function save () {
-  // the actual `list` cookie will be updated
-  list.value &&= [...list.value]
+function save() {
+  if (list.value) {
+    // обновится именно cookie `list`
+    list.value = [...list.value]
+  }
 }
 </script>
 
 <template>
   <div>
-    <h1>List</h1>
+    <h1>Список</h1>
     <pre>{{ list }}</pre>
-    <button @click="add">
-      Add
-    </button>
-    <button @click="save">
-      Save
-    </button>
+    <button @click="add">Добавить</button>
+    <button @click="save">Сохранить</button>
   </div>
 </template>
 ```
 
-### Cookies in API Routes
+### Cookies в маршрутах API
 
-You can use `getCookie` and `setCookie` from [`h3`](https://github.com/h3js/h3) package to set cookies in server API routes.
+Вы можете использовать `getCookie` и `setCookie` из пакета [`h3`](https://github.com/h3js/h3) для установки cookies в маршрутах API сервера.
 
 ```ts [server/api/counter.ts]
-export default defineEventHandler((event) => {
-  // Read counter cookie
+export default defineEventHandler(event => {
+  // Считываем cookie counter
   let counter = getCookie(event, 'counter') || 0
 
-  // Increase counter cookie by 1
+  // Увеличиваем counter cookie на 1
   setCookie(event, 'counter', ++counter)
 
-  // Send JSON response
+  // Отправляем ответ в формате JSON
   return { counter }
 })
 ```

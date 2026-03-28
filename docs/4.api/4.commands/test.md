@@ -1,8 +1,8 @@
 ---
 title: "nuxt test"
-description: The test command runs tests using @nuxt/test-utils.
+description: Запуск тестов через @nuxt/test-utils.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/test.ts
     size: xs
@@ -14,27 +14,31 @@ npx nuxt test [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [
 ```
 <!--/test-cmd-->
 
-The `test` command runs tests using [`@nuxt/test-utils`](/docs/getting-started/testing). This command sets `process.env.NODE_ENV` to `test` if not already set.
+Команда `test` запускает тесты через [`@nuxt/test-utils`](/docs/3.x/getting-started/testing).
 
-## Arguments
+## Аргументы
 
 <!--test-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)
 <!--/test-args-->
 
-## Options
+## Опции
 
 <!--test-opts-->
-| Option                               | Default | Description                                                                      |
-|--------------------------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                     |
-| `--dev`                              |         | Run in dev mode                                                                  |
-| `--watch`                            |         | Watch mode                                                                       |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` |  | Рабочая директория; переопределяет ROOTDIR (по умолчанию: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Уровень логирования при сборке
+`--dev` |  | Режим разработки
+`--watch` |  | Режим наблюдения (перезапуск при изменениях)
 <!--/test-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `test`.
+Если `NODE_ENV` не задан, команда выставляет `process.env.NODE_ENV` в `test`.
+::
+
+::read-more{to="/docs/3.x/getting-started/testing"}
+Настройка Vitest, `@nuxt/test-utils` и сценарии e2e.
 ::

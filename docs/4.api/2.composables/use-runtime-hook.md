@@ -1,43 +1,42 @@
 ---
-title: useRuntimeHook
-description: Registers a runtime hook in a Nuxt application and ensures it is properly disposed of when the scope is destroyed.
+title: 'useRuntimeHook'
+description: 'Регистрация runtime-хука в приложении с автоматической отпиской при размонтировании компонента.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/runtime-hook.ts
     size: xs
 ---
 
 ::important
-This composable is available in Nuxt v3.14+.
+Композабл доступен в Nuxt v3.14+.
 ::
 
 ```ts [signature]
-function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks> (
+function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks>(
   name: THookName,
-  fn: RuntimeNuxtHooks[THookName] extends HookCallback ? RuntimeNuxtHooks[THookName] : never,
+  fn: RuntimeNuxtHooks[THookName] extends HookCallback ? RuntimeNuxtHooks[THookName] : never
 ): void
 ```
 
-## Usage
+## Использование
 
-### Parameters
+### Параметры
 
-- `name`: The name of the runtime hook to register. You can see the full list of [runtime Nuxt hooks here](/docs/3.x/api/advanced/hooks#app-hooks-runtime).
-- `fn`: The callback function to execute when the hook is triggered. The function signature varies based on the hook name.
+- `name`: имя runtime-хука. Полный список — в разделе [runtime-хуки приложения](/docs/3.x/api/advanced/hooks#app-hooks-runtime).
+- `fn`: обработчик; сигнатура зависит от имени хука.
 
-### Returns
+### Возвращаемое значение
 
-The composable doesn't return a value, but it automatically unregisters the hook when the component's scope is destroyed.
+Композабл ничего не возвращает; подписка снимается автоматически при размонтировании компонента.
 
-## Example
+## Пример
 
 ```vue twoslash [pages/index.vue]
 <script setup lang="ts">
-// Register a hook that runs every time a link is prefetched, but which will be
-// automatically cleaned up (and not called again) when the component is unmounted
+// Хук при каждой предзагрузке ссылки; после размонтирования компонента обработчик больше не вызывается
 useRuntimeHook('link:prefetch', (link) => {
-  console.log('Prefetching', link)
+  console.log('Предзагрузка', link)
 })
 </script>
 ```

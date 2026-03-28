@@ -1,8 +1,8 @@
 ---
 title: 'nuxt cleanup'
-description: 'Удаляет общие сгенерированные файлы Nuxt и кэши.'
+description: 'Удаляет типичные артефакты сборки и кэши Nuxt.'
 links:
-  - label: Исходники
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/cleanup.ts
     size: xs
@@ -14,25 +14,29 @@ npx nuxt cleanup [ROOTDIR] [--cwd=<directory>]
 ```
 <!--/cleanup-cmd-->
 
-Команда `cleanup` удаляет общие сгенерированные файлы Nuxt и кэши, включая
+Команда `cleanup` удаляет типичные файлы и кэши, которые создаёт Nuxt, в том числе:
 
 - `.nuxt`
 - `.output`
 - `node_modules/.vite`
 - `node_modules/.cache`
 
-## Arguments
+::warning
+После очистки для локальной работы снова выполните `nuxt prepare` или `nuxt dev` — каталог `.nuxt` будет пересоздан.
+::
+
+## Аргументы
 
 <!--cleanup-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)
 <!--/cleanup-args-->
 
-## Options
+## Опции
 
 <!--cleanup-opts-->
-| Option              | Default | Description                                                                      |
-|---------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>` |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` |  | Рабочая директория; переопределяет ROOTDIR (по умолчанию: `.`)
 <!--/cleanup-opts-->

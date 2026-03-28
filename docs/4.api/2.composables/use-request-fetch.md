@@ -1,39 +1,39 @@
 ---
 title: 'useRequestFetch'
-description: 'Forward the request context and headers for server-side fetch requests with the useRequestFetch composable.'
+description: 'Передача контекста запроса и заголовков при серверных вызовах fetch через композабл useRequestFetch.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-You can use `useRequestFetch` to forward the request context and headers when making server-side fetch requests.
+Композабл `useRequestFetch` передаёт контекст запроса и заголовки при выполнении запросов `fetch` на сервере.
 
-When making a client-side fetch request, the browser automatically sends the necessary headers.
-However, when making a request during server-side rendering, due to security considerations, we need to forward the headers manually.
+В браузере `fetch` сам подставляет нужные заголовки.
+При запросе во время SSR по соображениям безопасности заголовки нужно передавать вручную.
 
 ::note
-Headers that are **not meant to be forwarded** will **not be included** in the request. These headers include, for example:
+Заголовки, которые **не предназначены для пересылки**, **не попадут** в запрос. К таким относятся, например:
 `transfer-encoding`, `connection`, `keep-alive`, `upgrade`, `expect`, `host`, `accept`
 ::
 
 ::tip
-The [`useFetch`](/docs/3.x/api/composables/use-fetch) composable uses `useRequestFetch` under the hood to automatically forward the request context and headers.
+Композабл [`useFetch`](/docs/3.x/api/composables/use-fetch) внутри использует `useRequestFetch`, чтобы автоматически передавать контекст и заголовки запроса.
 ::
 
 ::code-group
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-// This will forward the user's headers to the `/api/cookies` event handler
-// Result: { cookies: { foo: 'bar' } }
-const requestFetch = useRequestFetch()
-const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))
-
-// This will NOT forward anything
-// Result: { cookies: {} }
-const { data: notForwarded } = await useAsyncData((_nuxtApp, { signal }) => $fetch('/api/cookies', { signal }))
+  // Заголовки клиента пересылаются в обработчик `/api/cookies`
+  // Результат: { cookies: { foo: 'bar' } }
+  const requestFetch = useRequestFetch()
+  const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))
+  
+  // Здесь заголовки не пересылаются
+  // Результат: { cookies: {} }
+  const { data: notForwarded } = await useAsyncData(() => $fetch('/api/cookies')) 
 </script>
 ```
 
@@ -48,5 +48,5 @@ export default defineEventHandler((event) => {
 ::
 
 ::tip
-In the browser during client-side navigation, `useRequestFetch` will behave just like regular [`$fetch`](/docs/3.x/api/utils/dollarfetch).
+В браузере при клиентской навигации `useRequestFetch` ведёт себя так же, как обычный [`$fetch`](/docs/3.x/api/utils/dollarfetch).
 ::

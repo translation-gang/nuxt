@@ -1,8 +1,8 @@
 ---
 title: "create nuxt"
-description: The init command initializes a fresh Nuxt project.
+description: Команда init создаёт новый проект Nuxt.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/init.ts
     size: xs
@@ -10,41 +10,43 @@ links:
 
 <!--init-cmd-->
 ```bash [Terminal]
-npm create nuxt@latest [DIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [-t, --template] [-f, --force] [--offline] [--preferOffline] [--no-install] [--gitInit] [--shell] [--packageManager] [-M, --modules] [--no-modules] [--nightly]
+npm create nuxt@latest [DIR] [--cwd=<directory>] [-t, --template] [-f, --force] [--offline] [--preferOffline] [--no-install] [--gitInit] [--shell] [--packageManager]
 ```
 <!--/init-cmd-->
 
-The `create-nuxt` command initializes a fresh Nuxt project using [unjs/giget](https://github.com/unjs/giget).
+Команда [`npm create nuxt@latest`](https://github.com/nuxt/cli) (или эквивалент для вашего менеджера пакетов) инициализирует новый проект Nuxt с помощью [unjs/giget](https://github.com/unjs/giget).
 
-## Arguments
+## Аргументы
 
 <!--init-args-->
-| Argument | Description       |
-|----------|-------------------|
-| `DIR=""` | Project directory |
+Аргумент | Описание
+--- | ---
+`DIR=""` | Каталог проекта
 <!--/init-args-->
 
-## Options
+## Опции
 
 <!--init-opts-->
-| Option                               | Default | Description                                              |
-|--------------------------------------|---------|----------------------------------------------------------|
-| `--cwd=<directory>`                  | `.`     | Specify the working directory                            |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                             |
-| `-t, --template`                     |         | Template name                                            |
-| `-f, --force`                        |         | Override existing directory                              |
-| `--offline`                          |         | Force offline mode                                       |
-| `--preferOffline`                    |         | Prefer offline mode                                      |
-| `--no-install`                       |         | Skip installing dependencies                             |
-| `--gitInit`                          |         | Initialize git repository                                |
-| `--shell`                            |         | Start shell after installation in project directory      |
-| `--packageManager`                   |         | Package manager choice (npm, pnpm, yarn, bun)            |
-| `-M, --modules`                      |         | Nuxt modules to install (comma separated without spaces) |
-| `--no-modules`                       |         | Skip module installation prompt                          |
-| `--nightly`                          |         | Use Nuxt nightly release channel (3x or latest)          |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` | `.` | Рабочая директория
+`-t, --template` |  | Имя шаблона
+`-f, --force` |  | Перезаписать существующий каталог
+`--offline` |  | Принудительный офлайн-режим
+`--preferOffline` |  | Предпочитать офлайн-режим
+`--no-install` |  | Пропустить установку зависимостей
+`--gitInit` |  | Инициализировать git-репозиторий
+`--shell` |  | Открыть shell в каталоге проекта после настройки
+`--packageManager` |  | Менеджер пакетов (npm, pnpm, yarn, bun)
+`--modules` |  | Модули Nuxt для установки (через запятую, без пробелов)
+`--no-modules` |  | Пропустить запрос на установку модулей
 <!--/init-opts-->
 
-## Environment variables
+## Переменные окружения
 
-- `NUXI_INIT_REGISTRY`: Set to a custom template registry. ([learn more](https://github.com/unjs/giget#custom-registry)).
-  - Default registry is loaded from [nuxt/starter/templates](https://github.com/nuxt/starter/tree/templates/templates)
+- `NUXI_INIT_REGISTRY` — пользовательский реестр шаблонов ([подробнее в giget](https://github.com/unjs/giget#custom-registry)).
+  - Реестр по умолчанию берётся из [nuxt/starter/templates](https://github.com/nuxt/starter/tree/templates/templates).
+
+::read-more{to="/docs/3.x/getting-started/installation"}
+Установка и первый запуск проекта Nuxt.
+::

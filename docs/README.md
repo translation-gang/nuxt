@@ -2,10 +2,10 @@
 navigation: false
 ---
 
-# Nuxt Docs
+# Документация Nuxt
 
-This repository contains the documentation of Nuxt hosted on <https://nuxt.com/docs>
+В этом репозитории находится документация фреймворка Nuxt, которая публикуется на <https://nuxt.com/docs/3.x>.
 
-## Contributing
+## Участие в проекте
 
-Have a look at <https://github.com/nuxt/nuxt.com> to run the website locally.
+Как запустить сайт документации локально, см. в репозитории <https://github.com/nuxt/nuxt.com>.

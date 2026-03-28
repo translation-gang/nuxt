@@ -1,90 +1,93 @@
 ---
 title: "callOnce"
-description: "Run a given function or block of code once during SSR or CSR."
+description: "Запустите заданную функцию или блок кода один раз во время SSR или CSR."
+navigation:
+  badge: Новое
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/once.ts
     size: xs
 ---
 
 ::important
-This utility is available since [Nuxt v3.9](/blog/v3-9).
+Эта утилита доступна с [Nuxt v3.9](/blog/v3-9).
 ::
 
-## Purpose
+## Назначение
 
-The `callOnce` function is designed to execute a given function or block of code only once during:
-- server-side rendering but not hydration
-- client-side navigation
+Функция `callOnce` предназначена для выполнения заданной функции или блока кода только один раз во время:
 
-This is useful for code that should be executed only once, such as logging an event or setting up a global state.
+- серверного рендеринга, но не гидратации,
+- навигации на клиенте.
 
-## Usage
+Это полезно для кода, который должен выполняться только один раз, например, для регистрации события или настройки глобального состояния.
 
-The default mode of `callOnce` is to run code only once. For example, if the code runs on the server it won't run again on the client. It also won't run again if you `callOnce` more than once on the client, for example by navigating back to this page.
+## Использование
+
+Поведение по умолчанию: код выполняется один раз. Если он уже выполнился на сервере, на клиенте не повторится. Повторный вызов `callOnce` на клиенте (например, при возврате на страницу) тоже не запустит код снова.
 
 ```vue [app.vue]
 <script setup lang="ts">
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('This will only be logged once')
+  console.log('Это будет выведено только один раз')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 })
 </script>
 ```
 
-It is also possible to run on every navigation while still avoiding the initial server/client double load. For this, it is possible to use the `navigation` mode:
+Можно выполнять код при каждой навигации, избегая двойного запуска при первой загрузке сервер+клиент — для этого режим `navigation`:
 
 ```vue [app.vue]
 <script setup lang="ts">
 const websiteConfig = useState('config')
 
 await callOnce(async () => {
-  console.log('This will only be logged once and then on every client side navigation')
+  console.log('Один раз при первой загрузке и при каждой клиентской навигации')
   websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
 }, { mode: 'navigation' })
 </script>
 ```
 
 ::important
-`navigation` mode is available since [Nuxt v3.15](/blog/v3-15).
+Режим `navigation` доступен с [Nuxt v3.15](/blog/v3-15).
 ::
 
 ::tip{to="/docs/3.x/getting-started/state-management#usage-with-pinia"}
-`callOnce` is useful in combination with the [Pinia module](/modules/pinia) to call store actions.
+`callOnce` полезен в сочетании с [модулем Pinia](/modules/pinia) для вызова действий хранилища.
 ::
 
 :read-more{to="/docs/3.x/getting-started/state-management"}
 
 ::warning
-Note that `callOnce` doesn't return anything. You should use [`useAsyncData`](/docs/3.x/api/composables/use-async-data) or [`useFetch`](/docs/3.x/api/composables/use-fetch) if you want to do data fetching during SSR.
+Обратите внимание, что `callOnce` ничего не возвращает. Если вы хотите выполнять получение данных во время SSR, вы должны использовать [`useAsyncData`](/docs/3.x/api/composables/use-async-data) или [`useFetch`](/docs/3.x/api/composables/use-fetch).
 ::
 
 ::note
-`callOnce` is a composable meant to be called directly in a setup function, plugin, or route middleware, because it needs to add data to the Nuxt payload to avoid re-calling the function on the client when the page hydrates.
+`callOnce` — композабл, предназначенный для непосредственного вызова в функции setup, плагине или middleware маршрута, поскольку ему необходимо добавить данные в полезную нагрузку Nuxt, чтобы избежать повторного вызова функции на клиенте при гидратации страницы.
 ::
 
-## Type
+## Тип
 
-```ts [Signature]
-export function callOnce (key?: string, fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
-export function callOnce (fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
+```ts
+callOnce (key?: string, fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
+callOnce(fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
 
 type CallOnceOptions = {
   /**
-   * Execution mode for the callOnce function
+   * Режим выполнения для callOnce
    * @default 'render'
    */
   mode?: 'navigation' | 'render'
 }
 ```
 
-## Parameters
+## Параметры
 
-- `key`: A unique key ensuring that the code is run once. If you do not provide a key, then a key that is unique to the file and line number of the instance of `callOnce` will be generated for you.
-- `fn`: The function to run once. It can be asynchronous.
-- `options`: Setup the mode, either to re-execute on navigation (`navigation`) or just once for the lifetime of the app (`render`). Defaults to `render`.
-  - `render`: Executes once during initial render (either SSR or CSR) - Default mode
-  - `navigation`: Executes once during initial render and once per subsequent client-side navigation
+- `key`: уникальный ключ, гарантирующий однократный запуск. Если не указать, сгенерируется ключ по файлу и номеру строки вызова `callOnce`.
+- `fn`: функция, которую нужно выполнить один раз; может быть асинхронной.
+- `options`: режим — повтор при навигации (`navigation`) или один раз за жизнь приложения (`render`). По умолчанию `render`.
+  - `render`: один раз при первом рендере (SSR или CSR) — режим по умолчанию
+  - `navigation`: один раз при первом рендере и по разу при каждой последующей клиентской навигации

@@ -1,8 +1,8 @@
 ---
 title: "nuxt upgrade"
-description: The upgrade command upgrades Nuxt to the latest version.
+description: Обновляет Nuxt до последней версии.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/upgrade.ts
     size: xs
@@ -10,28 +10,32 @@ links:
 
 <!--upgrade-cmd-->
 ```bash [Terminal]
-npx nuxt upgrade [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dedupe] [-f, --force] [-ch, --channel=<stable|nightly|v3|v4|v4-nightly|v3-nightly>]
+npx nuxt upgrade [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--dedupe] [-f, --force] [-ch, --channel=<stable|nightly>]
 ```
 <!--/upgrade-cmd-->
 
-The `upgrade` command upgrades Nuxt to the latest version.
+Команда `upgrade` обновляет Nuxt до последней версии.
 
-## Arguments
+## Аргументы
 
 <!--upgrade-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)
 <!--/upgrade-args-->
 
-## Options
+## Опции
 
 <!--upgrade-opts-->
-| Option                                                             | Default  | Description                                                                      |
-|--------------------------------------------------------------------|----------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                                                |          | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>`                               |          | Specify build-time log level                                                     |
-| `--dedupe`                                                         |          | Dedupe dependencies after upgrading                                              |
-| `-f, --force`                                                      |          | Force upgrade to recreate lockfile and node_modules                              |
-| `-ch, --channel=<stable\|nightly\|v3\|v4\|v4-nightly\|v3-nightly>` | `stable` | Specify a channel to install from (default: stable)                              |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` |  | Рабочая директория; переопределяет ROOTDIR (по умолчанию: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Уровень логирования при сборке
+`--dedupe` |  | Дедуплицировать зависимости без пересоздания lockfile
+`-f, --force` |  | Принудительное обновление: пересоздать lockfile и `node_modules`
+`-ch, --channel=<stable\|nightly>` | `stable` | Канал релизов (по умолчанию: stable)
 <!--/upgrade-opts-->
+
+::read-more{to="/docs/3.x/getting-started/upgrade"}
+Пошаговое обновление Nuxt и заметные изменения между версиями.
+::

@@ -1,4 +1,4 @@
 ---
 navigation: false
-redirect: /guide/going-further/tooling
+redirect: /docs/3.x/guide/going-further/features
 ---

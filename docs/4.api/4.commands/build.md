@@ -1,8 +1,8 @@
 ---
 title: "nuxt build"
-description: "Build your Nuxt application."
+description: "Сборка приложения Nuxt."
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/cli/blob/main/packages/nuxi/src/commands/build.ts
     size: xs
@@ -10,38 +10,41 @@ links:
 
 <!--build-cmd-->
 ```bash [Terminal]
-npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--prerender] [--preset] [--dotenv] [--envName] [-e, --extends=<layer-name>]
+npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [--prerender] [--preset] [--dotenv] [--envName]
 ```
 <!--/build-cmd-->
 
-The `build` command creates a `.output` directory with all your application, server and dependencies ready for production.
+Команда `build` создаёт каталог `.output` с приложением, сервером и зависимостями, готовыми к продакшену.
 
-## Arguments
+## Аргументы
 
 <!--build-args-->
-| Argument      | Description                                    |
-|---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+Аргумент | Описание
+--- | ---
+`ROOTDIR="."` | Рабочая директория (по умолчанию: `.`)
 <!--/build-args-->
 
-## Options
+## Опции
 
 <!--build-opts-->
-| Option                               | Default | Description                                                                                                                                          |
-|--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--prerender`                        |         | Build Nuxt and prerender static routes                                                                                                               |
-| `--preset=<preset>`                  |         | Specify Nitro server preset. Available presets depend on Nitro (e.g. `node-server`, `vercel`, `netlify`, `static`)                                  |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
+Опция | По умолчанию | Описание
+--- | --- | ---
+`--cwd=<directory>` |  | Рабочая директория; переопределяет ROOTDIR (по умолчанию: `.`)
+`--logLevel=<silent\|info\|verbose>` |  | Уровень логирования при сборке
+`--prerender` |  | Собрать Nuxt и предрендерить статические маршруты
+`--preset` |  | Пресет сервера Nitro
+`--dotenv` |  | Путь к файлу `.env` для загрузки, относительно корня проекта
+`--envName` |  | Окружение для разрешения переопределений конфигурации (для сборки по умолчанию `production`, для dev-сервера — `development`)
 <!--/build-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Команда устанавливает `process.env.NODE_ENV` в `production`.
 ::
 
 ::note
-`--prerender` will always set the `preset` to `static`
+`--prerender` всегда устанавливает `preset` в `static`.
+::
+
+::read-more{to="/docs/3.x/getting-started/prerendering"}
+Статическая генерация и предрендер маршрутов.
 ::

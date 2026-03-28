@@ -1,75 +1,74 @@
 ---
 title: 'useSeoMeta'
-description: The useSeoMeta composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+description: 'SEO-метатеги плоским объектом с полной поддержкой TypeScript через композабл useSeoMeta.'
 links:
-  - label: Source
+  - label: Исходники
     icon: i-simple-icons-github
     to: https://github.com/unjs/unhead/blob/main/packages/vue/src/composables.ts
     size: xs
 ---
 
-This helps you avoid common mistakes, such as using `name` instead of `property`, as well as typos - with over 100+ meta tags fully typed.
+Композабл снижает риск типичных ошибок — например, путаницы `name` и `property` — и даёт автодополнение по более чем сотне метатегов.
 
 ::important
-This is the recommended way to add meta tags to your site as it is XSS safe and has full TypeScript support.
+Рекомендуемый способ задавать метатеги: безопаснее по XSS и удобнее в TypeScript.
 ::
 
 :read-more{to="/docs/3.x/getting-started/seo-meta"}
 
-## Usage
+## Использование
 
 ```vue [app.vue]
 <script setup lang="ts">
 useSeoMeta({
-  title: 'My Amazing Site',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
+  title: 'Мой удивительный сайт',
+  ogTitle: 'Мой удивительный сайт',
+  description: 'Это мой удивительный сайт, позвольте мне рассказать вам о нём',
+  ogDescription: 'Это мой удивительный сайт, позвольте мне рассказать вам о нём',
   ogImage: 'https://example.com/image.png',
   twitterCard: 'summary_large_image',
 })
 </script>
 ```
 
-When inserting tags that are reactive, you should use the computed getter syntax (`() => value`):
+Для реактивных значений используйте геттеры `() => value`:
 
 ```vue [app.vue]
 <script setup lang="ts">
-const title = ref('My title')
+const title = ref('Мой заголовок')
 
 useSeoMeta({
   title,
-  description: () => `This is a description for the ${title.value} page`,
+  description: () => `Описание страницы «${title.value}»`
 })
 </script>
 ```
 
-## Parameters
+## Параметры
 
-There are over 100 parameters. See the [full list of parameters in the source code](https://github.com/harlan-zw/zhead/blob/main/packages/zhead/src/metaFlat.ts#L1035).
+Более 100 полей; полный перечень — в [исходниках zhead](https://github.com/harlan-zw/zhead/blob/main/packages/zhead/src/metaFlat.ts#L1035).
 
 :read-more{to="/docs/3.x/getting-started/seo-meta"}
 
-## Performance
+## Производительность
 
-In most instances, SEO meta tags don't need to be reactive as search engine robots primarily scan the initial page load.
+Чаще всего SEO-метатеги не должны быть реактивными: поисковики опираются на первый HTML.
 
-For better performance, you can wrap your `useSeoMeta` calls in a server-only condition when the meta tags don't need to be reactive:
+Если реактивность не нужна, вызывайте `useSeoMeta` только на сервере — так дешевле:
 
 ```vue [app.vue]
 <script setup lang="ts">
 if (import.meta.server) {
-  // These meta tags will only be added during server-side rendering
   useSeoMeta({
     robots: 'index, follow',
-    description: 'Static description that does not need reactivity',
+    description: 'Статическое описание без реактивности',
     ogImage: 'https://example.com/image.png',
-    // other static meta tags...
+    // другие статические метатеги...
   })
 }
 
-const dynamicTitle = ref('My title')
-// Only use reactive meta tags outside the condition when necessary
+const dynamicTitle = ref('Мой заголовок')
+// Реактивные метатеги — вне условия, только когда это действительно нужно
 useSeoMeta({
   title: () => dynamicTitle.value,
   ogTitle: () => dynamicTitle.value,
@@ -77,4 +76,4 @@ useSeoMeta({
 </script>
 ```
 
-This previously used the [`useServerSeoMeta`](/docs/3.x/api/composables/use-server-seo-meta) composable, but it has been deprecated in favor of this approach.
+Раньше для этого использовали [`useServerSeoMeta`](/docs/3.x/api/composables/use-server-seo-meta); этот подход предпочтительнее.
