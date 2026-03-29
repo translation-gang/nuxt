@@ -19,6 +19,42 @@ export default defineNuxtRouteMiddleware((to) => {
 })
 ```
 
+## Передача пропсов в лейаут
+
+Пропсы можно передать вторым аргументом — объектом:
+
+```ts [middleware/admin-layout.ts]
+export default defineNuxtRouteMiddleware((to) => {
+  setPageLayout('admin', {
+    sidebar: true,
+    title: 'Dashboard',
+  })
+})
+```
+
+Лейаут принимает их через `defineProps`:
+
+```vue [layouts/admin.vue]
+<script setup lang="ts">
+const props = defineProps<{
+  sidebar?: boolean
+  title?: string
+}>()
+</script>
+
+<template>
+  <div>
+    <aside v-if="sidebar">
+      Sidebar
+    </aside>
+    <main>
+      <h1>{{ title }}</h1>
+      <slot />
+    </main>
+  </div>
+</template>
+```
+
 ::note
-Если вы решили установить лейаут динамически на стороне сервера, вы _должны_ сделать это до того, как макет будет отрисован Vue (то есть в плагине или в middleware маршрута), чтобы избежать несоответствия гидратации.
+Если вы задаёте лейаут динамически на сервере, сделайте это до отрисовки лейаута Vue (в плагине или middleware маршрута), иначе возможен сбой гидратации.
 ::

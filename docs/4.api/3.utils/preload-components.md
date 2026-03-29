@@ -12,7 +12,7 @@ links:
 
 Используйте `preloadComponents`, чтобы вручную предварительно загрузить отдельные компоненты, которые были зарегистрированы глобально в вашем приложении Nuxt. По умолчанию Nuxt регистрирует их как асинхронные компоненты. Указывайте имя компонента в нотации PascalCase (каждое слово с заглавной буквы, без разделителей).
 
-```js
+```ts
 await preloadComponents('MyGlobalComponent')
 
 await preloadComponents(['MyGlobalComponent1', 'MyGlobalComponent2'])

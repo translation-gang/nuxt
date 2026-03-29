@@ -8,19 +8,38 @@ links:
     size: xs
 ---
 
-Композабл [`useHead`](/docs/3.x/api/composables/use-head) позволяет управлять тегами в `<head>` программным и реактивным способом, опираясь на [Unhead](https://unhead.unjs.io). Если данные поступают от пользователя или из другого ненадёжного источника, мы рекомендуем ознакомиться с композаблом [`useHeadSafe`](/docs/3.x/api/composables/use-head-safe).
+## Использование
 
-:read-more{to="/docs/3.x/getting-started/seo-meta"}
+Композабл `useHead` управляет тегами в `<head>` программно и реактивно на базе [Unhead](https://unhead.unjs.io): мета-теги, ссылки, скрипты и другие элементы документа.
+
+```vue [app.vue]
+<script setup lang="ts">
+useHead({
+  title: 'Моё приложение',
+  meta: [
+    { name: 'description', content: 'Мой замечательный сайт.' },
+  ],
+  bodyAttrs: {
+    class: 'test',
+  },
+  script: [{ innerHTML: 'console.log(\'Hello world\')' }],
+})
+</script>
+```
+
+::warning
+Если данные приходят от пользователя или из другого недоверенного источника, используйте [`useHeadSafe`](/docs/3.x/api/composables/use-head-safe).
+::
+
+::note
+Поля `useHead` могут быть динамическими: `ref`, `computed`, `reactive`. Параметр `meta` может быть функцией, возвращающей объект, чтобы сделать весь объект реактивным.
+::
 
 ## Тип
 
-```ts
-declare function useHead (meta: MaybeComputedRef<MetaObject>): void
-```
+```ts [Signature]
+export function useHead (meta: MaybeComputedRef<MetaObject>): ActiveHeadEntry<UseHeadInput>
 
-Ниже приведены нереактивные типы для [`useHead`](/docs/3.x/api/composables/use-head).
-
-```ts
 interface MetaObject {
   title?: string
   titleTemplate?: string | ((title?: string) => string)
@@ -33,37 +52,133 @@ interface MetaObject {
   htmlAttrs?: HtmlAttributes
   bodyAttrs?: BodyAttributes
 }
+
+interface ActiveHeadEntry<Input> {
+  /**
+   * Обновляет запись новым вводом.
+   *
+   * Сначала снимает побочные эффекты предыдущего ввода.
+   */
+  patch: (input: Input) => void
+  /**
+   * Удаляет запись из активного head.
+   *
+   * Постановка побочных эффектов на удаление в очередь.
+   */
+  dispose: () => void
+}
 ```
 
-Более подробную информацию о типах см. в [@unhead/vue](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/schema.ts).
-
-::note
-Свойства `useHead` могут быть динамическими, принимая свойства `ref`, `computed` и `reactive`. Параметр `meta` может также принимать функцию, возвращающую объект, чтобы сделать весь объект реактивным.
-::
+Более подробную информацию о типах см. в [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/schema.ts).
 
 ## Параметры
 
-### `meta`
+`meta`: объект с метаданными для `<head>`. Все поля поддерживают реактивные значения (`ref`, `computed`, `reactive`) или функцию, возвращающую объект метаданных.
 
-**Тип**: `MetaObject`
+| Свойство | Тип | Описание |
+| --- | --- | --- |
+| `title` | `string` | Заголовок страницы. |
+| `titleTemplate` | `string \| ((title?: string) => string)` | Шаблон заголовка: строка с `%s` или функция. |
+| `base` | `Base` | Тег `<base>`. |
+| `link` | `Link[]` | Массив объектов ссылок → `<link>`. |
+| `meta` | `Meta[]` | Массив мета-объектов → `<meta>`. |
+| `style` | `Style[]` | Массив объектов стилей → `<style>`. |
+| `script` | `Script[]` | Массив объектов скриптов → `<script>`. |
+| `noscript` | `Noscript[]` | Массив объектов → `<noscript>`. |
+| `htmlAttrs` | `HtmlAttributes` | Атрибуты тега `<html>`. |
+| `bodyAttrs` | `BodyAttributes` | Атрибуты тега `<body>`. |
 
-Объект с метаданными для `<head>`:
+## Возвращаемые значения
 
-- `meta`: Каждый элемент массива сопоставляется с вновь созданным тегом `<meta>`, где свойства объекта сопоставляются с соответствующими атрибутами.
-  - **тип**: `Array<Record<string, any>>`.
-- `link`: Каждый элемент массива сопоставляется с вновь созданным тегом `<link>`, где свойства объекта сопоставляются с соответствующими атрибутами.
-  - **тип**: `Array<Record<string, any>>`.
-- `style`: Каждый элемент массива сопоставляется с вновь созданным тегом `<style>`, где свойства объекта сопоставляются с соответствующими атрибутами.
-  - **тип**: `Array<Record<string, any>>`.
-- `script`: Каждый элемент массива сопоставляется с вновь созданным тегом `<script>`, где свойства объекта сопоставляются с соответствующими атрибутами.
-  - **тип**: `Array<Record<string, any>>`.
-- `noscript`: Каждый элемент массива сопоставляется с вновь созданным тегом `<noscript>`, где свойства объекта сопоставляются с соответствующими атрибутами.
-  - **тип**: `Array<Record<string, any>>`.
-- `titleTemplate`: Конфигурирует динамический шаблон для настройки заголовка страницы на отдельной странице.
-  - **тип**: `string` | `((title: string) => string)`.
-- `title`: Устанавливает статический заголовок страницы на отдельной странице.
-  - **тип**: `string`
-- `bodyAttrs`: Задаёт атрибуты тега `<body>`. Каждое свойство объекта сопоставляется с соответствующим атрибутом.
-  - **тип**: `Record<string, any>`.
-- `htmlAttrs`: Задаёт атрибуты тега `<html>`. Каждое свойство объекта сопоставляется с соответствующим атрибутом.
-  - **тип**: `Record<string, any>`.
+Композабл ничего не возвращает. Метаданные регистрируются в Unhead, который обновляет DOM.
+
+## Примеры
+
+### Базовые мета-теги
+
+```vue [pages/about.vue]
+<script setup lang="ts">
+useHead({
+  title: 'О нас',
+  meta: [
+    { name: 'description', content: 'Узнайте больше о нашей компании' },
+    { property: 'og:title', content: 'О нас' },
+    { property: 'og:description', content: 'Узнайте больше о нашей компании' },
+  ],
+})
+</script>
+```
+
+### Реактивные мета-теги
+
+```vue [pages/profile.vue]
+<script setup lang="ts">
+const profile = ref({ name: 'Иван Иванов' })
+
+useHead({
+  title: computed(() => profile.value.name),
+  meta: [
+    {
+      name: 'description',
+      content: computed(() => `Страница профиля: ${profile.value.name}`),
+    },
+  ],
+})
+</script>
+```
+
+### Функция для полной реактивности
+
+```vue [pages/dynamic.vue]
+<script setup lang="ts">
+const count = ref(0)
+
+useHead(() => ({
+  title: `Счётчик: ${count.value}`,
+  meta: [
+    { name: 'description', content: `Текущее значение: ${count.value}` },
+  ],
+}))
+</script>
+```
+
+### Внешние скрипты и стили
+
+```vue [pages/external.vue]
+<script setup lang="ts">
+useHead({
+  link: [
+    {
+      rel: 'stylesheet',
+      href: 'https://cdn.example.com/styles.css',
+    },
+  ],
+  script: [
+    {
+      src: 'https://cdn.example.com/script.js',
+      async: true,
+    },
+  ],
+})
+</script>
+```
+
+### Атрибуты `html` и `body`
+
+```vue [pages/themed.vue]
+<script setup lang="ts">
+const isDark = ref(true)
+
+useHead({
+  htmlAttrs: {
+    lang: 'ru',
+    class: computed(() => isDark.value ? 'dark' : 'light'),
+  },
+  bodyAttrs: {
+    class: 'themed-page',
+  },
+})
+</script>
+```
+
+:read-more{to="/docs/3.x/getting-started/seo-meta"}

@@ -17,7 +17,7 @@ links:
 export default defineNuxtPlugin(() => {
   onNuxtReady(async () => {
     const myAnalyticsLibrary = await import('my-big-analytics-library')
-    // do something with myAnalyticsLibrary
+    // здесь можно инициализировать myAnalyticsLibrary
   })
 })
 ```

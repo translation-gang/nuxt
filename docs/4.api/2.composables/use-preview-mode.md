@@ -14,18 +14,19 @@ links:
 
 Вы можете использовать встроенный композабл `usePreviewMode` для доступа и управления состоянием предварительного просмотра в Nuxt. Если композабл обнаружит режим предварительного просмотра, он автоматически принудительно выполнит все обновления, нужные [`useAsyncData`](/docs/3.x/api/composables/use-async-data) и [`useFetch`](/docs/3.x/api/composables/use-fetch), чтобы отрисовать содержимое предпросмотра.
 
-```js
+```ts
 const { enabled, state } = usePreviewMode()
 ```
 
-## Параметры
+## Опции
 
-### Пользовательская проверка `enable`
+### Своя проверка включения (`shouldEnable`)
 
 Можно задать свой критерий включения предпросмотра. По умолчанию режим включается, если в URL есть `preview=true` (например, `http://localhost:3000?preview=true`). Имеет смысл вынести вызов `usePreviewMode` в свой композабл с фиксированными опциями — так проще не ошибиться в настройках.
 
-```js
+```ts
 export function useMyPreviewMode () {
+  const route = useRoute()
   return usePreviewMode({
     shouldEnable: () => {
       return !!route.query.customPreview
@@ -38,7 +39,7 @@ export function useMyPreviewMode () {
 
 `usePreviewMode` попытается сохранить значение параметра `token` из URL-адреса в state. Вы можете изменить это состояние, и оно будет доступно для всех вызовов [`usePreviewMode`](/docs/3.x/api/composables/use-preview-mode).
 
-```js
+```ts
 const data1 = ref('data1')
 
 const { enabled, state } = usePreviewMode({
@@ -60,7 +61,7 @@ const { enabled, state } = usePreviewMode({
 
 Можно задать свои функции в опциях `onEnable` и `onDisable`:
 
-```js
+```ts
 const { enabled, state } = usePreviewMode({
   onEnable: () => {
     console.log('режим предпросмотра включён')
@@ -102,16 +103,12 @@ const { data } = await useFetch('/api/preview', {
 
 Теперь вы можете сгенерировать свой сайт и обслуживать его:
 
-```bash [Терминал]
+```bash [Terminal]
 npx nuxt generate
 npx nuxt preview
 ```
 
-Затем вы можете увидеть страницу предварительного просмотра, добавив параметр запроса `preview` в конец страницы, которую вы хотите просмотреть один раз:
-
-```text
-?preview=true
-```
+Затем откройте нужную страницу с параметром `preview`, например `http://localhost:3000/?preview=true`.
 
 ::note
 `usePreviewMode` следует тестировать локально с помощью `nuxt generate`, затем `nuxt preview`, а не `nuxt dev`. ([Команда preview](/docs/3.x/api/commands/preview) не имеет отношения к режиму предварительного просмотра).

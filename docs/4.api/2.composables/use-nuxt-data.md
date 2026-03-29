@@ -81,7 +81,7 @@ let previousTodos = []
 const { data: todos } = useNuxtData('todos')
 
 async function addTodo () {
-  return $fetch('/api/addTodo', {
+  await $fetch('/api/addTodo', {
     method: 'post',
     body: {
       todo: newTodo.value,

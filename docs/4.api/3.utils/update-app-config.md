@@ -14,7 +14,7 @@ links:
 
 ## Использование
 
-```js
+```ts
 const appConfig = useAppConfig() // { foo: 'bar' }
 
 const newAppConfig = { foo: 'baz' }

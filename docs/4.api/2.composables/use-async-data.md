@@ -1,6 +1,6 @@
 ---
 title: 'useAsyncData'
-description: "Композабл useAsyncData для асинхронных данных с поддержкой SSR."
+description: 'Композабл useAsyncData загружает асинхронные данные в формате, дружественном к SSR.'
 links:
   - label: Исходный код
     icon: i-simple-icons-github
@@ -18,19 +18,19 @@ links:
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-const { data, status, error, refresh, clear } = await useAsyncData(
+const { data, status, pending, error, refresh, clear } = await useAsyncData(
   'mountains',
-  () => $fetch('https://api.nuxtjs.dev/mountains'),
+  (_nuxtApp, { signal }) => $fetch('https://api.nuxtjs.dev/mountains', { signal }),
 )
 </script>
 ```
 
-::warning
-Если вы используете собственную обёртку над `useAsyncData`, не используйте `await` внутри неё — это может дать непредсказуемое поведение. См. [рецепт с пользовательским композаблом](/docs/3.x/guide/recipes/custom-usefetch#custom-usefetch), как правильно оформить свою функцию загрузки данных.
+::warning{to="/docs/3.x/guide/recipes/custom-usefetch#custom-usefetchuseasyncdata"}
+Если вы используете собственную обёртку над `useAsyncData`, не используйте `await` внутри неё — это может дать непредсказуемое поведение. См. рецепт про пользовательский `useFetch`/`useAsyncData`.
 ::
 
 ::note
-`data`, `status` и `error` — это `ref`; к ним нужно обращаться через `.value` внутри `<script setup>`, а `refresh`/`execute` и `clear` — обычные функции.
+`data`, `status`, `pending` и `error` — это `ref`; к ним нужно обращаться через `.value` внутри `<script setup>`, а `refresh`/`execute` и `clear` — обычные функции.
 ::
 
 ### Наблюдение за параметрами
@@ -42,10 +42,11 @@ const { data, status, error, refresh, clear } = await useAsyncData(
 const page = ref(1)
 const { data: posts } = await useAsyncData(
   'posts',
-  () => $fetch('https://fakeApi.com/posts', {
+  (_nuxtApp, { signal }) => $fetch('https://fakeApi.com/posts', {
     params: {
       page: page.value,
     },
+    signal,
   }), {
     watch: [page],
   },
@@ -69,6 +70,64 @@ const { data: user } = useAsyncData(
 )
 </script>
 ```
+
+### Прерываемый `handler`
+
+Передайте `signal` из второго аргумента обработчика, чтобы отменять запросы, когда они больше не нужны (например, при уходе со страницы). `$fetch` поддерживает `AbortSignal`.
+
+```ts
+const { data, error } = await useAsyncData(
+  'users',
+  (_nuxtApp, { signal }) => $fetch('/api/users', { signal }),
+)
+
+refresh() // при `dedupe: 'cancel'` отменит текущий запрос $fetch
+refresh()
+refresh()
+
+clear() // отменит последний ожидающий обработчик
+```
+
+Можно передать свой `AbortSignal` в `refresh`/`execute`, чтобы вручную отменять отдельные запросы.
+
+```ts
+const { refresh } = await useAsyncData(
+  'users',
+  (_nuxtApp, { signal }) => $fetch('/api/users', { signal }),
+)
+let abortController: AbortController | undefined
+
+function handleUserAction () {
+  abortController = new AbortController()
+  refresh({ signal: abortController.signal })
+}
+
+function handleCancel () {
+  abortController?.abort() // прерывает текущий refresh
+}
+```
+
+Если ваш `handler` не умеет сигналы, реализуйте отмену сами, подписавшись на `signal`:
+
+```ts
+const { data, error } = await useAsyncData(
+  'users',
+  (_nuxtApp, { signal }) => {
+    return new Promise((resolve, reject) => {
+      signal?.addEventListener('abort', () => {
+        reject(new Error('Request aborted'))
+      })
+      return Promise.resolve(callback.call(this, yourHandler)).then(resolve, reject)
+    })
+  },
+)
+```
+
+Сигнал обработчика будет прерван, когда:
+
+- выполнен новый запрос с `dedupe: 'cancel'`
+- вызвана функция `clear`
+- истёк `options.timeout`
 
 ::warning
 [`useAsyncData`](/docs/3.x/api/composables/use-async-data) — зарезервированное имя компилятора; свою функцию так называть нельзя.
@@ -102,6 +161,7 @@ const { data: user } = useAsyncData(
   - `dedupe`: избегайте получения одного и того же ключа более одного раза за раз (по умолчанию `cancel`). Возможные параметры:
     - `cancel` — отменяет существующие запросы при поступлении нового
     - `defer` — вообще не делает новых запросов, если есть отложенный запрос
+  - `timeout` — время ожидания в миллисекундах до таймаута запроса (по умолчанию `undefined`, таймаута нет)
 
 ::note
 Под капотом `lazy: false` использует `<Suspense>` и удерживает загрузку маршрута до получения данных. Для более отзывчивого интерфейса рассмотрите `lazy: true` и отображение состояния загрузки в шаблоне.
@@ -115,7 +175,7 @@ const { data: user } = useAsyncData(
 
 ### Общее состояние и согласованность опций
 
-При одинаковом ключе у нескольких вызовов `useAsyncData` общие `data`, `error` и `status`. Это согласует компоненты, но опции должны быть согласованы.
+При одинаковом ключе у нескольких вызовов `useAsyncData` общие `data`, `error`, `status` и `pending`. Это согласует компоненты, но опции должны быть согласованы.
 
 Следующие опции **должны совпадать** у всех вызовов с одним ключом:
 - функция `handler`
@@ -134,12 +194,12 @@ const { data: user } = useAsyncData(
 
 ```ts
 // ❌ Вызовет предупреждение в режиме разработки
-const { data: users1 } = useAsyncData('users', () => $fetch('/api/users'), { deep: false })
-const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { deep: true })
+const { data: users1 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { deep: false })
+const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { deep: true })
 
 // ✅ Допустимо
-const { data: users1 } = useAsyncData('users', () => $fetch('/api/users'), { immediate: true })
-const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { immediate: false })
+const { data: users1 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { immediate: true })
+const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { immediate: false })
 ```
 
 ::tip
@@ -158,6 +218,7 @@ const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { imm
   - `pending`: запрос выполняется
   - `success`: запрос успешно завершён
   - `error`: запрос завершился с ошибкой
+- `pending`: `Ref<boolean>` — `true`, пока запрос выполняется.
 - `clear`: сбрасывает `data` в `undefined` (или в `options.default()`, если задано), `error` в `null`, `status` в `idle` и отменяет ожидающие запросы.
 
 По умолчанию Nuxt ждёт, пока `refresh` не будет завершён, прежде чем его можно будет выполнить снова.
@@ -168,14 +229,16 @@ const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { imm
 
 ## Тип
 
-```ts [Сигнатура]
-function useAsyncData<DataT, DataE> (
-  handler: (nuxtApp?: NuxtApp) => Promise<DataT>,
+```ts [Signature]
+export type AsyncDataHandler<ResT> = (nuxtApp: NuxtApp, options: { signal: AbortSignal }) => Promise<ResT>
+
+export function useAsyncData<DataT, DataE> (
+  handler: AsyncDataHandler<DataT>,
   options?: AsyncDataOptions<DataT>,
 ): AsyncData<DataT, DataE>
-function useAsyncData<DataT, DataE> (
+export function useAsyncData<DataT, DataE> (
   key: MaybeRefOrGetter<string>,
-  handler: (nuxtApp?: NuxtApp) => Promise<DataT>,
+  handler: AsyncDataHandler<DataT>,
   options?: AsyncDataOptions<DataT>,
 ): Promise<AsyncData<DataT, DataE>>
 
@@ -190,6 +253,7 @@ type AsyncDataOptions<DataT> = {
   pick?: string[]
   watch?: MultiWatchSources | false
   getCachedData?: (key: string, nuxtApp: NuxtApp, ctx: AsyncDataRequestContext) => DataT | undefined
+  timeout?: number
 }
 
 type AsyncDataRequestContext = {
@@ -204,10 +268,13 @@ type AsyncData<DataT, ErrorT> = {
   clear: () => void
   error: Ref<ErrorT | null>
   status: Ref<AsyncDataRequestStatus>
+  pending: Ref<boolean>
 }
 
 interface AsyncDataExecuteOptions {
   dedupe?: 'cancel' | 'defer'
+  timeout?: number
+  signal?: AbortSignal
 }
 
 type AsyncDataRequestStatus = 'idle' | 'pending' | 'success' | 'error'

@@ -1,6 +1,6 @@
 ---
 title: "useState"
-description: "Общее реактивное состояние с поддержкой SSR через композабл useState."
+description: "Композабл useState создаёт реактивное общее состояние, совместимое с SSR."
 links:
   - label: Исходный код
     icon: i-simple-icons-github
@@ -18,7 +18,7 @@ const count = useState('counter', () => Math.round(Math.random() * 100))
 :read-more{to="/docs/3.x/getting-started/state-management"}
 
 ::important
-Данные из `useState` сериализуются в JSON: не кладите туда классы, функции, `Symbol` и другое несериализуемое.
+Содержимое `useState` сериализуется в JSON: не храните классы, функции, символы и другие несериализуемые значения.
 ::
 
 ::warning
@@ -33,16 +33,26 @@ const count = useState('counter', () => Math.round(Math.random() * 100))
 
 ```ts
 const state = useState('my-shallow-state', () => shallowRef({ deep: 'без глубокой реактивности' }))
-// поверхностная реактивность: isShallow(state) === true
+// isShallow(state) === true
 ```
 
 ## Тип
 
-```ts
-declare function useState<T> (init?: () => T | Ref<T>): Ref<T>
-declare function useState<T> (key: string, init?: () => T | Ref<T>): Ref<T>
+```ts [Signature]
+export function useState<T> (init?: () => T | Ref<T>): Ref<T>
+export function useState<T> (key: string, init?: () => T | Ref<T>): Ref<T>
 ```
 
-- `key`: уникальный ключ; без него сгенерируется ключ по файлу и строке вызова [`useState`](/docs/3.x/api/composables/use-state). Ключ нужен, чтобы состояние корректно совпадало между запросами SSR.
+- `key`: уникальный ключ дедупликации между запросами; без ключа сгенерируется ключ по файлу и строке вызова [`useState`](/docs/3.x/api/composables/use-state).
 - `init`: ленивая инициализация, если состояние ещё не создано; может вернуть `Ref`.
-- `T`: (TypeScript) тип значения состояния.
+- `T`: (только TypeScript) тип значения состояния.
+
+## Устранение неполадок
+
+### `Cannot stringify arbitrary non-POJOs`
+
+Ошибка возникает, если в `useState` кладут несериализуемые данные (например, экземпляры классов).
+
+Для классов, которые Nuxt не сериализует из коробки, можно задать свой сериализатор и десериализатор через [`definePayloadPlugin`](/docs/3.x/api/composables/use-nuxt-app#custom-reducerreviver).
+
+:read-more{to="/docs/3.x/api/composables/use-nuxt-app#payload"}

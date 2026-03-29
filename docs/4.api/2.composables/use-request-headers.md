@@ -10,7 +10,7 @@ links:
 
 Композабл `useRequestHeaders` возвращает заголовки входящего HTTP-запроса на страницах, в компонентах и плагинах.
 
-```js
+```ts
 // Все заголовки запроса
 const headers = useRequestHeaders()
 

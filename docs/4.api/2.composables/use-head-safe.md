@@ -1,6 +1,6 @@
 ---
 title: useHeadSafe
-description: Рекомендуемый способ задания содержимого `<head>` из пользовательского ввода.
+description: Рекомендуемый способ задавать содержимое `<head>` при данных от пользователя.
 links:
   - label: Исходный код
     icon: i-simple-icons-github
@@ -8,37 +8,23 @@ links:
     size: xs
 ---
 
-Композабл `useHeadSafe` — это обёртка вокруг композабла [`useHead`](/docs/3.x/api/composables/use-head), который ограничивает входные данные, позволяя использовать только безопасные значения.
-
 ## Использование
 
-Вы можете передать все те же значения, что и [`useHead`](/docs/3.x/api/composables/use-head)
+`useHeadSafe` — обёртка над [`useHead`](/docs/3.x/api/composables/use-head), которая пропускает только безопасные значения. Так безопаснее работать с пользовательским вводом и снижать риск XSS.
 
-```ts
-useHeadSafe({
-  script: [
-    { id: 'xss-script', innerHTML: 'alert("xss")' },
-  ],
-  meta: [
-    { 'http-equiv': 'refresh', 'content': '0;javascript:alert(1)' },
-  ],
-})
-// Будет безопасно генерироваться
-// <script id="xss-script"></script>
-// <meta content="0;javascript:alert(1)">
-```
-
-::read-more{to="https://unhead.unjs.io/docs/typescript/head/api/composables/use-head-safe" target="_blank"}
-Подробнее — в документации Unhead (`useHeadSafe`).
+::warning
+В `useHeadSafe` потенциально опасные атрибуты (например, `innerHTML` в `script` или `http-equiv` в `meta`) автоматически отбрасываются. Используйте этот композабл, когда в разметку попадает пользовательский контент.
 ::
 
 ## Тип
 
-```ts
-declare function useHeadSafe (input: MaybeComputedRef<HeadSafe>): void
+```ts [Signature]
+export function useHeadSafe (input: MaybeComputedRef<HeadSafe>): void
 ```
 
-Список разрешённых значений:
+### Разрешённые атрибуты
+
+Белый список атрибутов по типам элементов:
 
 ```ts
 const WhitelistAttributes = {
@@ -52,4 +38,35 @@ const WhitelistAttributes = {
 }
 ```
 
-Более подробную информацию о типах см. в [@unhead/vue](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/safeSchema.ts).
+Подробнее о типах — в [@unhead/vue](https://github.com/unjs/unhead/blob/main/packages/vue/src/types/safeSchema.ts).
+
+## Параметры
+
+`input`: объект `MaybeComputedRef<HeadSafe>` с данными для `<head>`. Допустимы те же поля, что и в [`useHead`](/docs/3.x/api/composables/use-head), но в DOM попадут только безопасные атрибуты.
+
+## Возвращаемые значения
+
+Композабл ничего не возвращает.
+
+## Пример
+
+```vue [pages/user-profile.vue]
+<script setup lang="ts">
+// Пользовательский контент, в котором теоретически может быть вредоносный код
+const userBio = ref('<script>alert("xss")<' + '/script>')
+
+useHeadSafe({
+  title: `Профиль пользователя`,
+  meta: [
+    {
+      name: 'description',
+      content: userBio.value, // безопасно санитизируется
+    },
+  ],
+})
+</script>
+```
+
+::read-more{to="https://unhead.unjs.io/docs/typescript/head/api/composables/use-head-safe" target="_blank"}
+Подробнее в документации Unhead (`useHeadSafe`).
+::

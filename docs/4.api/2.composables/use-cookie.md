@@ -84,7 +84,7 @@ Vue-`Ref<T>` со значением cookie. Изменение ref обновл
 <script setup lang="ts">
 const counter = useCookie('counter')
 
-counter.value = counter.value || Math.round(Math.random() * 1000)
+counter.value ||= Math.round(Math.random() * 1000)
 </script>
 
 <template>
@@ -144,10 +144,8 @@ function add () {
 }
 
 function save () {
-  if (list.value) {
-    // обновится именно cookie `list`
-    list.value = [...list.value]
-  }
+  // обновится именно cookie `list`
+  list.value &&= [...list.value]
 }
 </script>
 

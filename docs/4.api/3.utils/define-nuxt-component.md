@@ -25,7 +25,7 @@ links:
 ```vue [pages/index.vue]
 <script lang="ts">
 export default defineNuxtComponent({
-  async asyncData () {
+  asyncData () {
     return {
       data: {
         greetings: 'привет мир!',

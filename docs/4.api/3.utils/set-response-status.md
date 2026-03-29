@@ -16,7 +16,7 @@ Nuxt предоставляет композаблы и утилиты для п
 `setResponseStatus` может быть вызван только в [Nuxt-контексте](/docs/3.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
-```js
+```ts
 const event = useRequestEvent()
 
 // event будет undefined в браузере
