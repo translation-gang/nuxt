@@ -18,6 +18,14 @@ const nuxtApp = useNuxtApp()
 
 Если контекст недоступен, `useNuxtApp` выбросит исключение. В композаблах, где `nuxtApp` не обязателен, или для проверки наличия контекста без исключения используйте [`tryUseNuxtApp`](/docs/4.x/api/composables/use-nuxt-app#tryusenuxtapp).
 
+<!--
+note
+По умолчанию общий runtime-контекст Nuxt изолирован под опцией [`buildId`](/docs/4.x/api/nuxt-config#buildid). Это позволяет поддерживать несколько runtime-контекстов.
+
+## Параметры
+
+- `appName`: необязательное имя приложения. Если не указать, используется опция Nuxt `buildId`. Иначе значение должно совпадать с существующим `buildId`. -->
+
 ## Методы
 
 ### `provide (name, value)`

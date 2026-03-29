@@ -28,7 +28,7 @@ export function onPrehydrate (callback: (el: HTMLElement) => void): void
 export function onPrehydrate (callback: string | ((el: HTMLElement) => void), key?: string): undefined | string
 ```
 
-Она будет иметь эффект только при вызове на сервере, и не будет включена в сборку клиента.
+## Параметры
 
 | Параметр  | Тип                               | Обязательный | Описание |
 | --------- | --------------------------------- | ------------ | -------- |

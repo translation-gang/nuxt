@@ -25,10 +25,6 @@ const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
 </script>
 ```
 
-::warning{to="/docs/4.x/guide/recipes/custom-usefetch#custom-usefetchuseasyncdata"}
-Если вы используете собственную обёртку `useFetch`, не вызывайте в ней `await` — это может привести к неожиданному поведению. См. рецепт кастомного загрузчика асинхронных данных.
-::
-
 ::tip{to="/docs/4.x/guide/recipes/custom-usefetch#custom-usefetch-with-createusefetch"}
 Нужен кастомный `useFetch` с заданными по умолчанию опциями (например `baseURL` или заголовки авторизации)? Используйте `createUseFetch` для создания полностью типизированного композабла.
 ::
