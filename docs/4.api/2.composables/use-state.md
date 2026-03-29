@@ -39,8 +39,8 @@ const state = useState('my-shallow-state', () => shallowRef({ deep: 'без гл
 ## Тип
 
 ```ts
-useState<T>(init?: () => T | Ref<T>): Ref<T>
-useState<T>(key: string, init?: () => T | Ref<T>): Ref<T>
+declare function useState<T> (init?: () => T | Ref<T>): Ref<T>
+declare function useState<T> (key: string, init?: () => T | Ref<T>): Ref<T>
 ```
 
 - `key`: уникальный ключ; без него сгенерируется ключ по файлу и строке вызова [`useState`](/docs/3.x/api/composables/use-state). Ключ нужен, чтобы состояние корректно совпадало между запросами SSR.

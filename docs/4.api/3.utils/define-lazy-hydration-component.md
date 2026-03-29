@@ -20,7 +20,7 @@ links:
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'visible',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 </script>
 
@@ -53,7 +53,7 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'idle',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 </script>
 
@@ -81,7 +81,7 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'interaction',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 </script>
 
@@ -110,7 +110,7 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'mediaQuery',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 </script>
 
@@ -137,7 +137,7 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'time',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 </script>
 
@@ -159,12 +159,12 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'if',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 
 const isReady = ref(false)
 
-function myFunction() {
+function myFunction () {
   // Запуск пользовательской стратегии гидратации...
   isReady.value = true
 }
@@ -188,7 +188,7 @@ function myFunction() {
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'never',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 </script>
 
@@ -208,10 +208,10 @@ const LazyHydrationMyComponent = defineLazyHydrationComponent(
 <script setup lang="ts">
 const LazyHydrationMyComponent = defineLazyHydrationComponent(
   'visible',
-  () => import('./components/MyComponent.vue')
+  () => import('./components/MyComponent.vue'),
 )
 
-function onHydrate() {
+function onHydrate () {
   console.log('Компонент гидратирован!')
 }
 </script>

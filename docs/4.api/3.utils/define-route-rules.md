@@ -17,7 +17,7 @@ links:
 ```vue [pages/index.vue]
 <script setup lang="ts">
 defineRouteRules({
-  prerender: true
+  prerender: true,
 })
 </script>
 
@@ -31,8 +31,8 @@ defineRouteRules({
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   routeRules: {
-    '/': { prerender: true }
-  }
+    '/': { prerender: true },
+  },
 })
 ```
 

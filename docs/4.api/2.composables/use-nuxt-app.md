@@ -35,7 +35,7 @@ const nuxtApp = useNuxtApp()
 
 ```js
 const nuxtApp = useNuxtApp()
-nuxtApp.provide('hello', (name) => `Привет, ${name}!`)
+nuxtApp.provide('hello', name => `Привет, ${name}!`)
 
 // Выведет «Привет, мир!»
 console.log(nuxtApp.$hello('мир'))
@@ -112,7 +112,7 @@ Nuxt предоставляет через `ssrContext`:
   </script>
   ```
   ```ts [server/api/count.ts]
-  export default defineEventHandler(event => {
+  export default defineEventHandler((event) => {
     return { count: 1 }
   })
   ```
@@ -173,7 +173,7 @@ export default defineComponent({
         // ...
       }
     })
-  }
+  },
 })
 ```
 
@@ -225,7 +225,7 @@ const getCurrentInstance = () => _vueInstance
 // ---
 
 // Vue / Nuxt устанавливает глобальную переменную, ссылающуюся на текущий компонент, в _vueInstance при вызове setup()
-async function setup() {
+async function setup () {
   getCurrentInstance() // Работает
   await someAsyncOperation() // Vue отменяет контекст в том же тике перед async-операцией!
   getCurrentInstance() // null
@@ -279,7 +279,7 @@ Vue пока поддерживает восстановление async-кон�
 Пример использования:
 
 ```ts [composable.ts]
-export function useStandType() {
+export function useStandType () {
   // Всегда работает на клиенте
   if (tryUseNuxtApp()) {
     return useRuntimeConfig().public.STAND_TYPE

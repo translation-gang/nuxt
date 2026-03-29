@@ -13,7 +13,7 @@ links:
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
 definePageMeta({
-  layout: 'default'
+  layout: 'default',
 })
 </script>
 ```
@@ -23,7 +23,7 @@ definePageMeta({
 ## Тип
 
 ```ts
-definePageMeta(meta: PageMeta) => void
+declare function definePageMeta (meta: PageMeta): void
 
 interface PageMeta {
   validate?: (route: RouteLocationNormalized) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>
@@ -157,13 +157,13 @@ interface PageMeta {
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
 definePageMeta({
-  key: (route) => route.fullPath,
+  key: route => route.fullPath,
 
   keepalive: {
-    exclude: ['modal']
+    exclude: ['modal'],
   },
 
-  pageType: 'Оформление'
+  pageType: 'Оформление',
 })
 </script>
 ```
@@ -172,32 +172,45 @@ definePageMeta({
 
 В примере ниже показано, как задать middleware прямо в `definePageMeta`: анонимной функцией или строкой с именем файла middleware из каталога `middleware/`:
 
-```vue [pages/some-page.vue]
+::code-group
+
+```vue [Функция]
 <script setup lang="ts">
 definePageMeta({
-  // определить middleware в виде функции
   middleware: [
     function (to, from) {
       const auth = useState('auth')
 
       if (!auth.value.authenticated) {
-          return navigateTo('/login')
+        return navigateTo('/login')
       }
 
       if (to.path !== '/checkout') {
         return navigateTo('/checkout')
       }
-    }
+    },
   ],
-
-  // ... или в виде строки
-  middleware: 'auth'
-
-  // ... или в виде нескольких строк
-  middleware: ['auth', 'another-named-middleware']
 })
 </script>
 ```
+
+```vue [Строка]
+<script setup lang="ts">
+definePageMeta({
+  middleware: 'auth',
+})
+</script>
+```
+
+```vue [Несколько имён]
+<script setup lang="ts">
+definePageMeta({
+  middleware: ['auth', 'another-named-middleware'],
+})
+</script>
+```
+
+::
 
 ### Использование пользовательского регулярного выражения
 
@@ -210,7 +223,7 @@ definePageMeta({
 ```vue [pages/[postId\\]-[postSlug\\].vue]
 <script setup lang="ts">
 definePageMeta({
-  path: '/:postId(\\d+)-:postSlug'
+  path: '/:postId(\\d+)-:postSlug',
 })
 </script>
 ```
@@ -221,14 +234,22 @@ definePageMeta({
 
 Вы можете определить лейаут, который соответствует имени файла лейаута, расположенного (по умолчанию) в [директории `layouts/`](/docs/3.x/directory-structure/layouts). Вы также можете отключить лейаут, установив для него значение `false`:
 
-```vue [pages/some-page.vue]
+::code-group
+
+```vue [Кастомный лейаут]
 <script setup lang="ts">
 definePageMeta({
-  // Установить кастомный лейаут
-  layout: 'admin'
-
-  // ... или выключить лейаут по умолчанию
-  layout: false
+  layout: 'admin',
 })
 </script>
 ```
+
+```vue [Без лейаута]
+<script setup lang="ts">
+definePageMeta({
+  layout: false,
+})
+</script>
+```
+
+::

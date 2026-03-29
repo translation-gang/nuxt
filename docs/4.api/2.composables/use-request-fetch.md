@@ -26,14 +26,14 @@ links:
 
 ```vue [pages/index.vue]
 <script setup lang="ts">
-  // Заголовки клиента пересылаются в обработчик `/api/cookies`
-  // Результат: { cookies: { foo: 'bar' } }
-  const requestFetch = useRequestFetch()
-  const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))
-  
-  // Здесь заголовки не пересылаются
-  // Результат: { cookies: {} }
-  const { data: notForwarded } = await useAsyncData(() => $fetch('/api/cookies')) 
+// Заголовки клиента пересылаются в обработчик `/api/cookies`
+// Результат: { cookies: { foo: 'bar' } }
+const requestFetch = useRequestFetch()
+const { data: forwarded } = await useAsyncData(() => requestFetch('/api/cookies'))
+
+// Здесь заголовки не пересылаются
+// Результат: { cookies: {} }
+const { data: notForwarded } = await useAsyncData(() => $fetch('/api/cookies'))
 </script>
 ```
 

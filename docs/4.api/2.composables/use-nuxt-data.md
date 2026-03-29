@@ -51,10 +51,10 @@ const route = useRoute()
 
 const { data } = useLazyFetch(`/api/posts/${route.params.id}`, {
   key: `post-${route.params.id}`,
-  default() {
+  default () {
     // пост из кэша как значение по умолчанию
     return posts.value.find(post => post.id === id)
-  }
+  },
 })
 </script>
 ```
@@ -84,7 +84,7 @@ async function addTodo () {
   return $fetch('/api/addTodo', {
     method: 'post',
     body: {
-      todo: newTodo.value
+      todo: newTodo.value,
     },
     onRequest () {
       // сохраняем копию на случай отката при ошибке
@@ -100,7 +100,7 @@ async function addTodo () {
     async onResponse () {
       // после успеха синхронизируемся с сервером
       await refreshNuxtData('todos')
-    }
+    },
   })
 }
 </script>
@@ -109,5 +109,7 @@ async function addTodo () {
 ## Тип
 
 ```ts
-useNuxtData<DataT = any> (key: string): { data: Ref<DataT | null> }
+declare function useNuxtData<DataT = any> (
+  key: string,
+): { data: Ref<DataT | null> }
 ```

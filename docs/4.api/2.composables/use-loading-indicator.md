@@ -58,20 +58,20 @@ links:
 
 ```vue
 <script setup lang="ts">
-  const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
-    duration: 2000,
-    throttle: 200,
-    // Вот как рассчитывается прогресс по умолчанию:
-    estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50)
-  })
+const { progress, isLoading, start, finish, clear } = useLoadingIndicator({
+  duration: 2000,
+  throttle: 200,
+  // Вот как рассчитывается прогресс по умолчанию:
+  estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50),
+})
 </script>
 ```
 
 ```vue
 <script setup lang="ts">
-  const { start, set } = useLoadingIndicator()
-  // то же, что set(0, { force: true })
-  // progress = 0 и сразу показать загрузку
-  start({ force: true })
+const { start, set } = useLoadingIndicator()
+// то же, что set(0, { force: true })
+// progress = 0 и сразу показать загрузку
+start({ force: true })
 </script>
 ```

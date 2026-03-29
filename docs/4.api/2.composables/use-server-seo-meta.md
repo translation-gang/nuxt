@@ -17,7 +17,7 @@ links:
 ```vue [app.vue]
 <script setup lang="ts">
 useServerSeoMeta({
-  robots: 'index, follow'
+  robots: 'index, follow',
 })
 </script>
 ```

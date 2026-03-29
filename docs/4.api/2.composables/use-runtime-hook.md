@@ -13,9 +13,9 @@ links:
 ::
 
 ```ts [Сигнатура]
-function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks>(
+function useRuntimeHook<THookName extends keyof RuntimeNuxtHooks> (
   name: THookName,
-  fn: RuntimeNuxtHooks[THookName] extends HookCallback ? RuntimeNuxtHooks[THookName] : never
+  fn: RuntimeNuxtHooks[THookName] extends HookCallback ? RuntimeNuxtHooks[THookName] : never,
 ): void
 ```
 

@@ -15,7 +15,7 @@ links:
 ## Тип
 
 ```ts
-useHead(meta: MaybeComputedRef<MetaObject>): void
+declare function useHead (meta: MaybeComputedRef<MetaObject>): void
 ```
 
 Ниже приведены нереактивные типы для [`useHead`](/docs/3.x/api/composables/use-head).

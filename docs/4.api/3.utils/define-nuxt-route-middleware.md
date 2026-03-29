@@ -13,7 +13,9 @@ links:
 ## Тип
 
 ```ts
-defineNuxtRouteMiddleware(middleware: RouteMiddleware) => RouteMiddleware
+declare function defineNuxtRouteMiddleware (
+  middleware: RouteMiddleware,
+): RouteMiddleware
 
 interface RouteMiddleware {
   (to: RouteLocationNormalized, from: RouteLocationNormalized): ReturnType<NavigationGuard>

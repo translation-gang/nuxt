@@ -15,7 +15,9 @@ links:
 ## Тип
 
 ```ts
-clearNuxtState (keys?: string | string[] | ((key: string) => boolean)): void
+declare function clearNuxtState (
+  keys?: string | string[] | ((key: string) => boolean),
+): void
 ```
 
 ## Параметры

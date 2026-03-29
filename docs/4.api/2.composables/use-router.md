@@ -18,7 +18,9 @@ const router = useRouter()
 
 ```vue [pages/index.vue]
 <template>
-  <button @click="$router.back()">Назад</button>
+  <button @click="$router.back()">
+    Назад
+  </button>
 </template>
 ```
 
@@ -64,8 +66,8 @@ const router = useRouter()
 router.back()
 router.forward()
 router.go(3)
-router.push({ path: "/home" })
-router.replace({ hash: "#bio" })
+router.push({ path: '/home' })
+router.replace({ hash: '#bio' })
 ```
 
 ::read-more{icon="i-simple-icons-mdnwebdocs" to="https://developer.mozilla.org/en-US/docs/Web/API/History" target="_blank"}

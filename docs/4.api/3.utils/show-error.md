@@ -15,10 +15,10 @@ links:
 - `error`: `string | Error | Partial<{ cause, data, message, name, stack, statusCode, statusMessage }>`
 
 ```ts
-showError("😱 О нет, произошла ошибка.")
+showError('😱 О нет, произошла ошибка.')
 showError({
   statusCode: 404,
-  statusMessage: "Страница не найдена"
+  statusMessage: 'Страница не найдена',
 })
 ```
 

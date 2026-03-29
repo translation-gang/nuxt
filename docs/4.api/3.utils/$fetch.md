@@ -41,16 +41,18 @@ const { data } = await useFetch('/api/item')
 
 ```vue [pages/contact.vue]
 <script setup lang="ts">
-async function contactForm() {
+async function contactForm () {
   await $fetch('/api/contact', {
     method: 'POST',
-    body: { hello: 'world '}
+    body: { hello: 'world ' },
   })
 }
 </script>
 
 <template>
-  <button @click="contactForm">Отправить</button>
+  <button @click="contactForm">
+    Отправить
+  </button>
 </template>
 ```
 

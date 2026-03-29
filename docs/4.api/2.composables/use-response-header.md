@@ -16,8 +16,8 @@ links:
 
 ```ts
 // Произвольный заголовок ответа
-const header = useResponseHeader('X-My-Header');
-header.value = 'my-value';
+const header = useResponseHeader('X-My-Header')
+header.value = 'my-value'
 ```
 
 ## Пример
@@ -27,8 +27,8 @@ header.value = 'my-value';
 ```vue [pages/test.vue]
 <script setup>
 // файл pages/test.vue
-const header = useResponseHeader('X-My-Header');
-header.value = 'my-value';
+const header = useResponseHeader('X-My-Header')
+header.value = 'my-value'
 </script>
 
 <template>
@@ -41,7 +41,7 @@ header.value = 'my-value';
 
 ```ts [middleware/my-header-middleware.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
-  const header = useResponseHeader('X-My-Always-Header');
-  header.value = 'always';
+  const header = useResponseHeader('X-My-Always-Header')
+  header.value = 'always'
 })
 ```

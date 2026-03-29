@@ -20,7 +20,7 @@ links:
 <script setup lang="ts">
 const { data, status, error, refresh, clear } = await useAsyncData(
   'mountains',
-  () => $fetch('https://api.nuxtjs.dev/mountains')
+  () => $fetch('https://api.nuxtjs.dev/mountains'),
 )
 </script>
 ```
@@ -44,11 +44,11 @@ const { data: posts } = await useAsyncData(
   'posts',
   () => $fetch('https://fakeApi.com/posts', {
     params: {
-      page: page.value
-    }
+      page: page.value,
+    },
   }), {
-    watch: [page]
-  }
+    watch: [page],
+  },
 )
 </script>
 ```
@@ -65,7 +65,7 @@ const userId = computed(() => `user-${route.params.id}`)
 // При смене маршрута и обновлении userId данные перезапросятся автоматически
 const { data: user } = useAsyncData(
   userId,
-  () => fetchUserById(route.params.id)
+  () => fetchUserById(route.params.id),
 )
 </script>
 ```
@@ -91,8 +91,8 @@ const { data: user } = useAsyncData(
   - `transform`: функция, которая может быть использована для изменения результата функции-обработчика после её разрешения.
   - `getCachedData`: функция, возвращающая кэшированные данные; при `null` или `undefined` выполняется запрос. По умолчанию:
     ```ts
-    const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating 
-      ? nuxtApp.payload.data[key] 
+    const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating
+      ? nuxtApp.payload.data[key]
       : nuxtApp.static.data[key]
     ```
     Кэширование работает только при включённом `experimental.payloadExtraction` в `nuxt.config`.
@@ -169,14 +169,14 @@ const { data: users2 } = useAsyncData('users', () => $fetch('/api/users'), { imm
 ## Тип
 
 ```ts [Сигнатура]
-function useAsyncData<DataT, DataE>(
+function useAsyncData<DataT, DataE> (
   handler: (nuxtApp?: NuxtApp) => Promise<DataT>,
-  options?: AsyncDataOptions<DataT>
+  options?: AsyncDataOptions<DataT>,
 ): AsyncData<DataT, DataE>
-function useAsyncData<DataT, DataE>(
+function useAsyncData<DataT, DataE> (
   key: MaybeRefOrGetter<string>,
   handler: (nuxtApp?: NuxtApp) => Promise<DataT>,
-  options?: AsyncDataOptions<DataT>
+  options?: AsyncDataOptions<DataT>,
 ): Promise<AsyncData<DataT, DataE>>
 
 type AsyncDataOptions<DataT> = {
@@ -204,7 +204,7 @@ type AsyncData<DataT, ErrorT> = {
   clear: () => void
   error: Ref<ErrorT | null>
   status: Ref<AsyncDataRequestStatus>
-};
+}
 
 interface AsyncDataExecuteOptions {
   dedupe?: 'cancel' | 'defer'

@@ -21,7 +21,7 @@ links:
 ## Тип
 
 ```ts
-reloadNuxtApp(options?: ReloadNuxtAppOptions)
+declare function reloadNuxtApp (options?: ReloadNuxtAppOptions): void
 
 interface ReloadNuxtAppOptions {
   ttl?: number

@@ -29,8 +29,8 @@ export function useMyPreviewMode () {
   return usePreviewMode({
     shouldEnable: () => {
       return !!route.query.customPreview
-    }
-  });
+    },
+  })
 }
 ```
 
@@ -44,7 +44,7 @@ const data1 = ref('data1')
 const { enabled, state } = usePreviewMode({
   getState: (currentState) => {
     return { data1, data2: 'data2' }
-  }
+  },
 })
 ```
 
@@ -67,7 +67,7 @@ const { enabled, state } = usePreviewMode({
   },
   onDisable: () => {
     console.log('режим предпросмотра выключен')
-  }
+  },
 })
 ```
 
@@ -81,8 +81,8 @@ const { enabled, state } = usePreviewMode()
 
 const { data } = await useFetch('/api/preview', {
   query: {
-    apiKey: state.token
-  }
+    apiKey: state.token,
+  },
 })
 </script>
 
@@ -109,7 +109,7 @@ npx nuxt preview
 
 Затем вы можете увидеть страницу предварительного просмотра, добавив параметр запроса `preview` в конец страницы, которую вы хотите просмотреть один раз:
 
-```js
+```text
 ?preview=true
 ```
 

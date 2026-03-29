@@ -35,8 +35,8 @@ await navigateTo({
   path: '/search',
   query: {
     page: 1,
-    sort: 'asc'
-  }
+    sort: 'asc',
+  },
 })
 </script>
 ```
@@ -92,7 +92,7 @@ await navigateTo('https://nuxt.com')
 
 // успешный переход на внешний URL при external: true
 await navigateTo('https://nuxt.com', {
-  external: true
+  external: true,
 })
 </script>
 ```
@@ -107,9 +107,9 @@ await navigateTo('https://nuxt.com', {
     target: '_blank',
     windowFeatures: {
       width: 500,
-      height: 500
-    }
-  }
+      height: 500,
+    },
+  },
 })
 </script>
 ```
@@ -117,10 +117,10 @@ await navigateTo('https://nuxt.com', {
 ## Тип
 
 ```ts
-function navigateTo(
+declare function navigateTo (
   to: RouteLocationRaw | undefined | null,
-  options?: NavigateToOptions
-) => Promise<void | NavigationFailure | false> | false | void | RouteLocationRaw 
+  options?: NavigateToOptions,
+): Promise<void | NavigationFailure | false> | false | void | RouteLocationRaw
 
 interface NavigateToOptions {
   replace?: boolean

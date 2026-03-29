@@ -20,7 +20,7 @@ links:
 ```vue [pages/modules.vue]
 <script setup lang="ts">
 const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
-  pick: ['title']
+  pick: ['title'],
 })
 </script>
 ```
@@ -38,7 +38,7 @@ const { data, status, error, refresh, clear } = await useFetch('/api/modules', {
 ```ts
 const param1 = ref('value1')
 const { data, status, error, refresh } = await useFetch('/api/modules', {
-  query: { param1, param2: 'value2' }
+  query: { param1, param2: 'value2' },
 })
 ```
 
@@ -48,21 +48,21 @@ const { data, status, error, refresh } = await useFetch('/api/modules', {
 
 ```ts
 const { data, status, error, refresh, clear } = await useFetch('/api/auth/login', {
-  onRequest({ request, options }) {
+  onRequest ({ request, options }) {
     // Устанавливает заголовки запроса
     // нужен ofetch >= 1.4.0 — при необходимости обновите lockfile
     options.headers.set('Authorization', '...')
   },
-  onRequestError({ request, options, error }) {
+  onRequestError ({ request, options, error }) {
     // Обрабатывает ошибки запроса
   },
-  onResponse({ request, response, options }) {
+  onResponse ({ request, response, options }) {
     // Обрабатывает данные ответа
     localStorage.setItem('token', response._data.token)
   },
-  onResponseError({ request, response, options }) {
+  onResponseError ({ request, response, options }) {
     // Обрабатывает ошибки ответа
-  }
+  },
 })
 ```
 
@@ -101,9 +101,9 @@ const { data: post } = await useFetch(() => `/api/posts/${id.value}`)
 ## Тип
 
 ```ts [Сигнатура]
-function useFetch<DataT, ErrorT>(
+function useFetch<DataT, ErrorT> (
   url: string | Request | Ref<string | Request> | (() => string | Request),
-  options?: UseFetchOptions<DataT>
+  options?: UseFetchOptions<DataT>,
 ): Promise<AsyncData<DataT, ErrorT>>
 
 type UseFetchOptions<DataT> = {
@@ -184,9 +184,9 @@ type AsyncDataRequestStatus = 'idle' | 'pending' | 'success' | 'error'
 **Значение `getCachedData` по умолчанию:**
 
 ```ts
-const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating 
- ? nuxtApp.payload.data[key] 
- : nuxtApp.static.data[key]
+const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating
+  ? nuxtApp.payload.data[key]
+  : nuxtApp.static.data[key]
 ```
 Кэширование срабатывает только при включённом `experimental.payloadExtraction` в `nuxt.config`.
 

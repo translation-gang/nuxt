@@ -15,7 +15,7 @@ links:
 const headers = useRequestHeaders()
 
 // Только заголовок Cookie
-const headers = useRequestHeaders(['cookie'])
+const cookieHeaders = useRequestHeaders(['cookie'])
 ```
 
 ::tip
@@ -31,7 +31,7 @@ const headers = useRequestHeaders(['cookie'])
 ```vue [pages/some-page.vue]
 <script setup lang="ts">
 const { data } = await useFetch('/api/confidential', {
-  headers: useRequestHeaders(['authorization'])
+  headers: useRequestHeaders(['authorization']),
 })
 </script>
 ```

@@ -40,7 +40,10 @@ watch(posts, (newPosts) => {
     Загрузка…
   </div>
   <div v-else>
-    <div v-for="(post, index) in posts" :key="index">
+    <div
+      v-for="(post, index) in posts"
+      :key="index"
+    >
       <!-- обработка элемента post -->
     </div>
   </div>

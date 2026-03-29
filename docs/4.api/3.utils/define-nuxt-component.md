@@ -25,11 +25,11 @@ links:
 ```vue [pages/index.vue]
 <script lang="ts">
 export default defineNuxtComponent({
-  async asyncData() {
+  async asyncData () {
     return {
       data: {
-        greetings: 'привет мир!'
-      }
+        greetings: 'привет мир!',
+      },
     }
   },
 })
@@ -43,9 +43,9 @@ export default defineNuxtComponent({
 ```vue [pages/index.vue]
 <script lang="ts">
 export default defineNuxtComponent({
-  head(nuxtApp) {
+  head (nuxtApp) {
     return {
-      title: 'Мой сайт'
+      title: 'Мой сайт',
     }
   },
 })

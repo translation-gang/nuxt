@@ -17,7 +17,9 @@ links:
 ## Тип
 
 ```ts
-refreshNuxtData(keys?: string | string[])
+declare function refreshNuxtData (
+  keys?: string | string[],
+): Promise<void>
 ```
 
 ## Параметры
@@ -50,7 +52,10 @@ async function refreshAll () {
 
 <template>
   <div>
-    <button :disabled="refreshing" @click="refreshAll">
+    <button
+      :disabled="refreshing"
+      @click="refreshAll"
+    >
       Обновить все данные
     </button>
   </div>
@@ -80,7 +85,9 @@ async function refresh () {
   <div v-if="refreshing">
     Загрузка
   </div>
-  <button @click="refresh">Обновить</button>
+  <button @click="refresh">
+    Обновить
+  </button>
 </template>
 ```
 

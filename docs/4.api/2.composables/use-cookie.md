@@ -40,9 +40,9 @@ export interface CookieOptions<T = any> extends Omit<CookieSerializeOptions & Co
 
 export interface CookieRef<T> extends Ref<T> {}
 
-export function useCookie<T = string | null | undefined>(
+export function useCookie<T = string | null | undefined> (
   name: string,
-  options?: CookieOptions<T>
+  options?: CookieOptions<T>,
 ): CookieRef<T>
 ```
 
@@ -90,9 +90,15 @@ counter.value = counter.value || Math.round(Math.random() * 1000)
 <template>
   <div>
     <h1>Счётчик: {{ counter || '—' }}</h1>
-    <button @click="counter = null">сброс</button>
-    <button @click="counter--">-</button>
-    <button @click="counter++">+</button>
+    <button @click="counter = null">
+      сброс
+    </button>
+    <button @click="counter--">
+      -
+    </button>
+    <button @click="counter++">
+      +
+    </button>
   </div>
 </template>
 ```
@@ -105,8 +111,8 @@ const user = useCookie(
   'userInfo',
   {
     default: () => ({ score: -1 }),
-    watch: false
-  }
+    watch: false,
+  },
 )
 
 if (user.value) {
@@ -128,16 +134,16 @@ const list = useCookie(
   'list',
   {
     default: () => [],
-    watch: 'shallow'
-  }
+    watch: 'shallow',
+  },
 )
 
-function add() {
+function add () {
   list.value?.push(Math.round(Math.random() * 1000))
   // список в cookie при этом не обновится
 }
 
-function save() {
+function save () {
   if (list.value) {
     // обновится именно cookie `list`
     list.value = [...list.value]
@@ -149,8 +155,12 @@ function save() {
   <div>
     <h1>Список</h1>
     <pre>{{ list }}</pre>
-    <button @click="add">Добавить</button>
-    <button @click="save">Сохранить</button>
+    <button @click="add">
+      Добавить
+    </button>
+    <button @click="save">
+      Сохранить
+    </button>
   </div>
 </template>
 ```
@@ -160,7 +170,7 @@ function save() {
 Вы можете использовать `getCookie` и `setCookie` из пакета [`h3`](https://github.com/h3js/h3) для установки cookies в маршрутах API сервера.
 
 ```ts [server/api/counter.ts]
-export default defineEventHandler(event => {
+export default defineEventHandler((event) => {
   // Считываем cookie counter
   let counter = getCookie(event, 'counter') || 0
 

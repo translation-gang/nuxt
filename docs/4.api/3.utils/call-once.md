@@ -72,9 +72,6 @@ await callOnce(async () => {
 ## Тип
 
 ```ts
-callOnce (key?: string, fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
-callOnce(fn?: (() => any | Promise<any>), options?: CallOnceOptions): Promise<void>
-
 type CallOnceOptions = {
   /**
    * Режим выполнения для callOnce
@@ -82,6 +79,18 @@ type CallOnceOptions = {
    */
   mode?: 'navigation' | 'render'
 }
+
+type CallOnceCallback = () => any | Promise<any>
+
+declare function callOnce (
+  key?: string,
+  fn?: CallOnceCallback,
+  options?: CallOnceOptions,
+): Promise<void>
+declare function callOnce (
+  fn?: CallOnceCallback,
+  options?: CallOnceOptions,
+): Promise<void>
 ```
 
 ## Параметры

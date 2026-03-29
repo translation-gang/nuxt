@@ -80,9 +80,9 @@ export default defineNuxtPlugin(() => {
   ```ts [plugins/my-plugin.ts]
   export default defineNuxtPlugin(() => {
     addRouteMiddleware('global-middleware', (to, from) => {
-        console.log('именованный глобальный middleware при каждой смене маршрута')
-      },
-      { global: true }
+      console.log('именованный глобальный middleware при каждой смене маршрута')
+    },
+    { global: true },
     )
   })
   ```

@@ -27,7 +27,7 @@ links:
 const tokenCookie = useCookie('token')
 
 const login = async (username, password) => {
-  const token = await $fetch('/api/token', { ... }) // Устанавливает cookie `token` в ответ на запрос
+  const token = await $fetch('/api/token', { body: { username, password } }) // Устанавливает cookie `token` в ответ на запрос
   refreshCookie('token')
 }
 
@@ -42,5 +42,5 @@ const loggedIn = computed(() => !!tokenCookie.value)
 ## Тип
 
 ```ts
-refreshCookie(name: string): void
+declare function refreshCookie (name: string): void
 ```

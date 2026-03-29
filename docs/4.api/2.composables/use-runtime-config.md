@@ -38,9 +38,9 @@ export default defineNuxtConfig({
 
     // Доступно и на клиенте
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
-    }
-  }
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
+    },
+  },
 })
 ```
 
@@ -61,8 +61,8 @@ export default defineEventHandler(async (event) => {
     baseURL: config.public.apiBase,
     headers: {
       // Секрет только на сервере
-      Authorization: `Bearer ${config.apiSecret}`
-    }
+      Authorization: `Bearer ${config.apiSecret}`,
+    },
   })
   return result
 })

@@ -21,8 +21,6 @@ export default defineNuxtPlugin((nuxtApp) => {
 ## Тип
 
 ```ts
-defineNuxtPlugin<T extends Record<string, unknown>>(plugin: Plugin<T> | ObjectPlugin<T>): Plugin<T> & ObjectPlugin<T>
-
 type Plugin<T> = (nuxt: NuxtApp) => Promise<void> | Promise<{ provide?: T }> | void | { provide?: T }
 
 interface ObjectPlugin<T> {
@@ -37,6 +35,10 @@ interface ObjectPlugin<T> {
     islands?: boolean
   }
 }
+
+declare function defineNuxtPlugin<T extends Record<string, unknown>> (
+  plugin: Plugin<T> | ObjectPlugin<T>,
+): Plugin<T> & ObjectPlugin<T>
 ```
 
 ## Параметры
@@ -69,8 +71,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   // глобальный метод
   return {
     provide: {
-      hello: (name: string) => `Привет, ${name}!`
-    }
+      hello: (name: string) => `Привет, ${name}!`,
+    },
   }
 })
 ```
@@ -86,17 +88,17 @@ export default defineNuxtPlugin({
   async setup (nuxtApp) {
     // логика инициализации плагина
     const data = await $fetch('/api/config')
-    
+
     return {
       provide: {
-        config: data
-      }
+        config: data,
+      },
     }
   },
   hooks: {
-    'app:created'() {
+    'app:created' () {
       console.log('Приложение создано')
-    }
+    },
   },
 })
 ```

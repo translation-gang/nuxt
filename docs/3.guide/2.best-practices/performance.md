@@ -34,8 +34,8 @@ export default defineNuxtConfig({
       nuxtLink: {
         prefetchOn: 'interaction',
       },
-    }
-  }
+    },
+  },
 })
 ```
 
@@ -51,18 +51,18 @@ export default defineNuxtConfig({
 export default defineNuxtConfig({
   routeRules: {
     '/': {
-      prerender: true
+      prerender: true,
     },
     '/products/**': {
-      swr: 3600
+      swr: 3600,
     },
     '/blog': {
-      isr: 3600
+      isr: 3600,
     },
     '/admin/**': {
-      ssr: false
+      ssr: false,
     },
-  }
+  },
 })
 ```
 
@@ -193,7 +193,7 @@ Nuxt Scripts даёт слой абстракции над сторонними 
 
 ```ts
 const { onLoaded, proxy } = useScriptGoogleAnalytics(
-  { 
+  {
     id: 'G-1234567',
     scriptOptions: {
       trigger: 'manual',

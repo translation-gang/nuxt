@@ -17,11 +17,11 @@ links:
 ```ts
 useHeadSafe({
   script: [
-    { id: 'xss-script', innerHTML: 'alert("xss")' }
+    { id: 'xss-script', innerHTML: 'alert("xss")' },
   ],
   meta: [
-    { 'http-equiv': 'refresh', content: '0;javascript:alert(1)' }
-  ]
+    { 'http-equiv': 'refresh', 'content': '0;javascript:alert(1)' },
+  ],
 })
 // Будет безопасно генерироваться
 // <script id="xss-script"></script>
@@ -35,7 +35,7 @@ useHeadSafe({
 ## Тип
 
 ```ts
-useHeadSafe(input: MaybeComputedRef<HeadSafe>): void
+declare function useHeadSafe (input: MaybeComputedRef<HeadSafe>): void
 ```
 
 Список разрешённых значений:

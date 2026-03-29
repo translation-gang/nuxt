@@ -15,7 +15,7 @@ links:
 ## Тип
 
 ```ts
-abortNavigation(err?: Error | string): false
+declare function abortNavigation (err?: Error | string): false
 ```
 
 ## Параметры
