@@ -274,10 +274,6 @@ export interface NuxtHooks {
    * @param options.references Array of TypeScript references to add
    * @param options.declarations Array of declaration strings to add
    * @param options.tsConfig The Vue TypeScript config object
-   * @param options.nodeTsConfig The Node TypeScript config object
-   * @param options.nodeReferences Array of Node TypeScript references
-   * @param options.sharedTsConfig The shared TypeScript config object
-   * @param options.sharedReferences Array of shared TypeScript references
    * @returns Promise
    */
   'prepare:types': (options: { references: TSReference[], declarations: string[], tsConfig: VueTSConfig }) => HookResult

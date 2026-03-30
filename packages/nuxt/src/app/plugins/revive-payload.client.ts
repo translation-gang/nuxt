@@ -44,6 +44,7 @@ export default defineNuxtPlugin({
       definePayloadReviver(reviver, fn)
     }
     Object.assign(nuxtApp.payload, await nuxtApp.runWithContext(getNuxtClientPayload))
-    delete window.__NUXT__
+    // For backwards compatibility - TODO: remove later
+    window.__NUXT__ = nuxtApp.payload
   },
 })

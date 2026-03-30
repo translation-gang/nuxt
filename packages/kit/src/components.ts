@@ -10,6 +10,8 @@ import { MODE_RE } from './utils.ts'
 
 /**
  * Register a directory to be scanned for components and imported only when used.
+ *
+ * Requires Nuxt 2.13+
  */
 export function addComponentsDir (dir: ComponentsDir, opts: { prepend?: boolean } = {}): void {
   const nuxt = useNuxt()
@@ -45,6 +47,8 @@ export function addComponentExports (opts: Omit<AddComponentOptions, 'name'> & {
 
 /**
  * Register a component by its name and filePath.
+ *
+ * Requires Nuxt 2.13+
  */
 export function addComponent (opts: AddComponentOptions): void {
   const component = normalizeComponent(opts)

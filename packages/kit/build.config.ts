@@ -13,7 +13,6 @@ export default defineBuildConfig({
     '@nuxt/schema',
     'nitro',
     'nitropack',
-    'nitro',
     'webpack',
     'vite',
     'h3',

@@ -2,7 +2,7 @@ import { defineResolvers } from '../utils/definition.ts'
 
 export default defineResolvers({
   /** @private */
-  _majorVersion: 4,
+  _majorVersion: 3,
   /** @private */
   _legacyGenerate: false,
   /** @private */

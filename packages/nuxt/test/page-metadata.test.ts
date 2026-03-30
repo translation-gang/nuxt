@@ -90,7 +90,10 @@ definePageMeta({
     for (const ext of ['js', 'jsx', 'ts', 'tsx', 'mjs', 'cjs']) {
       const meta = getRouteMeta(fileContents, `/app/pages/index.${ext}`)
       expect(meta).toStrictEqual({
-        name: 'bar',
+        'name': 'bar',
+        'meta': {
+          '__nuxt_dynamic_meta_key': new Set(['meta']),
+        },
       })
     }
   })

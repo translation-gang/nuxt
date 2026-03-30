@@ -41,7 +41,8 @@ import { ResolveDeepImportsPlugin } from './plugins/resolve-deep-imports.ts'
 import { ResolveExternalsPlugin } from './plugins/resolved-externals.ts'
 
 export const bundle: NuxtBuilder['bundle'] = async (nuxt) => {
-  const useAsyncEntry = nuxt.options.experimental.asyncEntry || nuxt.options.dev
+  const useAsyncEntry = nuxt.options.experimental.asyncEntry ||
+    (nuxt.options.vite.devBundler === 'vite-node' && nuxt.options.dev)
   const entry = await resolvePath(resolve(nuxt.options.appDir, useAsyncEntry ? 'entry.async' : 'entry'))
 
   nuxt.options.modulesDir.push(distDir)

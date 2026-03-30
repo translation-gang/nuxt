@@ -1,6 +1,6 @@
 <script setup>
 // break server-side
-const data = window.useNuxtApp().payload
+const data = window.__NUXT__
 </script>
 
 <template>

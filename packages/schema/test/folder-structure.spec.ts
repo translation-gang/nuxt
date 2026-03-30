@@ -16,13 +16,13 @@ describe('nuxt folder structure', () => {
     expect(getDirs(result as unknown as NuxtOptions)).toMatchInlineSnapshot(`
       {
         "dir": {
-          "app": "<cwd>/app",
-          "modules": "<cwd>/modules",
-          "public": "<cwd>/public",
+          "app": "app",
+          "modules": "modules",
+          "public": "public",
         },
         "rootDir": "<cwd>",
         "serverDir": "<cwd>/server",
-        "srcDir": "<cwd>/app",
+        "srcDir": "<cwd>",
         "workspaceDir": "<cwd>",
       }
     `)
@@ -33,12 +33,12 @@ describe('nuxt folder structure', () => {
     expect(getDirs(result as unknown as NuxtOptions)).toMatchInlineSnapshot(`
       {
         "dir": {
-          "app": "/test/src",
-          "modules": "/test/modules",
-          "public": "/test/public",
+          "app": "app",
+          "modules": "modules",
+          "public": "public",
         },
         "rootDir": "/test",
-        "serverDir": "/test/server",
+        "serverDir": "/test/src/server",
         "srcDir": "/test/src",
         "workspaceDir": "/test",
       }

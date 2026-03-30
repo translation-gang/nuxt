@@ -84,7 +84,7 @@ useSeoMeta({
 
 ## <a name="documentation">📖 Документация</a>
 
-Рекомендуем [документацию Nuxt](https://nuxt.com/docs/3.x): от быстрого старта до продвинутых тем.
+Настоятельно рекомендуем [документацию Nuxt](https://nuxt.com/docs): от быстрого старта до продвинутых тем — это лучший способ глубже разобраться во фреймворке.
 
 ## <a name="modules">🧩 Модули</a>
 
@@ -94,13 +94,15 @@ useSeoMeta({
 
 Приглашаем помогать развивать Nuxt 💚
 
-- **Сообщения об ошибках:** перед отправкой отчёта см. [руководство по багам](https://nuxt.com/docs/3.x/community/reporting-bugs).
-- **Предложения:** идеи по улучшению — в [руководстве для контрибьюторов](https://nuxt.com/docs/3.x/community/contribution).
-- **Вопросы:** помощь и ресурсы — в [разделе «Получить помощь»](https://nuxt.com/docs/3.x/community/getting-help).
+Вот несколько способов поучаствовать:
+
+- **Сообщения об ошибках:** если нашли баг, сначала загляните в [руководство по сообщению об ошибках](https://nuxt.com/docs/community/reporting-bugs).
+- **Предложения:** есть идеи по улучшению — [руководство для контрибьюторов](https://nuxt.com/docs/community/contribution).
+- **Вопросы:** нужна помощь — в [разделе «Получить помощь»](https://nuxt.com/docs/community/getting-help) собраны ресурсы.
 
 ## <a name="local-development">🏠 Локальная разработка</a>
 
-Настройка окружения для контрибуции в фреймворк и документацию: [настройка локальной среды разработки](https://nuxt.com/docs/3.x/community/framework-contribution#setup).
+Следуйте инструкции: [настройка локальной среды разработки](https://nuxt.com/docs/community/framework-contribution#setup), чтобы вносить вклад во фреймворк и документацию.
 
 ## <a name="professional-support">🛟 Профессиональная поддержка</a>
 

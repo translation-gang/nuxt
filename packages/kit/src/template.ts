@@ -408,6 +408,11 @@ export async function writeTypes (nuxt: Nuxt): Promise<void> {
     await fsp.writeFile(declarationPath, declaration)
   }
 
+  // This is needed for Nuxt 2 which clears the build directory again before building
+  // https://github.com/nuxt/nuxt/blob/2.x/packages/builder/src/builder.js#L144
+  // @ts-expect-error TODO: Nuxt 2 hook
+  nuxt.hook('builder:prepared', writeFile)
+
   await writeFile()
 }
 
