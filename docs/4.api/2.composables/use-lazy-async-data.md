@@ -1,20 +1,20 @@
 ---
 title: useLazyAsyncData
-description: This wrapper around useAsyncData triggers navigation immediately.
+description: Обёртка над useAsyncData: навигация выполняется сразу, без ожидания данных.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
     size: xs
 ---
 
-`useLazyAsyncData` provides a wrapper around [`useAsyncData`](/docs/4.x/api/composables/use-async-data) that triggers navigation before the handler is resolved by setting the `lazy` option to `true`.
+`useLazyAsyncData` — обёртка над [`useAsyncData`](/docs/4.x/api/composables/use-async-data) с `lazy: true`: навигация не ждёт завершения обработчика.
 
 ::note
-By default, [`useAsyncData`](/docs/4.x/api/composables/use-async-data) blocks navigation until its async handler is resolved. `useLazyAsyncData` allows navigation to occur immediately while data fetching continues in the background.
+По умолчанию [`useAsyncData`](/docs/4.x/api/composables/use-async-data) блокирует навигацию до завершения. `useLazyAsyncData` переходит сразу, данные грузятся в фоне.
 ::
 
-## Usage
+## Использование
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -36,13 +36,13 @@ const { status, data: posts } = await useLazyAsyncData('posts', () => $fetch('/a
 </template>
 ```
 
-When using `useLazyAsyncData`, navigation will occur before fetching is complete. This means you must handle `pending` and `error` states directly within your component's template.
+С `useLazyAsyncData` навигация наступает до окончания загрузки — обрабатывайте `pending` и `error` в шаблоне.
 
 ::warning
-`useLazyAsyncData` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyAsyncData`.
+`useLazyAsyncData` — зарезервированное имя компилятора; не называйте свою функцию `useLazyAsyncData`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useLazyAsyncData<DataT, ErrorT> (
@@ -57,32 +57,31 @@ export function useLazyAsyncData<DataT, ErrorT> (
 ): AsyncData<DataT, ErrorT>
 ```
 
-`useLazyAsyncData` has the same signature as [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
+Сигнатура как у [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
 
-## Parameters
+## Параметры
 
-`useLazyAsyncData` accepts the same parameters as [`useAsyncData`](/docs/4.x/api/composables/use-async-data), with the `lazy` option automatically set to `true`.
+Как у [`useAsyncData`](/docs/4.x/api/composables/use-async-data), с автоматическим `lazy: true`.
 
 :read-more{to="/docs/4.x/api/composables/use-async-data#parameters"}
 
-## Return Values
+## Возвращаемые значения
 
-`useLazyAsyncData` returns the same values as [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
+Как у [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
 
 :read-more{to="/docs/4.x/api/composables/use-async-data#return-values"}
 
-## Example
+## Пример
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
-/* Navigation will occur before fetching is complete.
-  Handle 'pending' and 'error' states directly within your component's template
+/* Навигация до завершения fetch.
+  pending и error — в шаблоне
 */
 const { status, data: count } = await useLazyAsyncData('count', () => $fetch('/api/count'))
 
 watch(count, (newCount) => {
-  // Because count might start out null, you won't have access
-  // to its contents immediately, but you can watch it.
+  // count может быть null в начале
 })
 </script>
 

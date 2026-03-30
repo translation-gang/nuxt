@@ -1,23 +1,23 @@
 ---
 title: 'useRequestEvent'
-description: 'Access the incoming request event with the useRequestEvent composable.'
+description: 'Доступ к событию входящего запроса через useRequestEvent.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-Within the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context) you can use `useRequestEvent` to access the incoming request.
+В [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context) `useRequestEvent` даёт доступ к входящему запросу.
 
 ```ts
-// Get underlying request event
+// Событие запроса
 const event = useRequestEvent()
 
-// Get the URL
+// URL
 const url = event?.path
 ```
 
 ::tip
-In the browser, `useRequestEvent` will return `undefined`.
+В браузере `useRequestEvent` возвращает `undefined`.
 ::

@@ -1,6 +1,6 @@
 ---
 title: 'nuxt prepare'
-description: The prepare command creates a .nuxt directory in your application and generates types.
+description: Команда prepare создаёт каталог .nuxt в приложении и генерирует типы.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,28 +14,28 @@ npx nuxt prepare [ROOTDIR] [--dotenv] [--cwd=<directory>] [--logLevel=<silent|in
 ```
 <!--/prepare-cmd-->
 
-The `prepare` command creates a [`.nuxt`](/docs/4.x/directory-structure/nuxt) directory in your application and generates types. This can be useful in a CI environment or as a `postinstall` command in your [`package.json`](/docs/4.x/directory-structure/package).
+Команда `prepare` создаёт каталог [`.nuxt`](/docs/4.x/directory-structure/nuxt) в приложении и генерирует типы. Полезно в CI или как команда `postinstall` в [`package.json`](/docs/4.x/directory-structure/package).
 
-## Arguments
+## Аргументы
 
 <!--prepare-args-->
-| Argument      | Description                                    |
+| Аргумент      | Описание                                    |
 |---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/prepare-args-->
 
-## Options
+## Опции
 
 <!--prepare-opts-->
-| Option                               | Default | Description                                                                                                                                          |
+| Опция                                | По умолчанию | Описание                                                                                                                                          |
 |--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
+| `--dotenv`                           |         | Путь к файлу `.env` относительно корня проекта                                                                                          |
+| `--cwd=<directory>`                  |         | Рабочая директория; имеет приоритет над ROOTDIR (по умолчанию: `.`)                                                                     |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке                                                                                                                         |
+| `--envName`                          |         | Окружение для применения переопределений конфигурации (по умолчанию `production` при сборке и `development` при запуске dev-сервера) |
+| `-e, --extends=<layer-name>`         |         | Расширить конфигурацию слоем Nuxt                                                                                                                             |
 <!--/prepare-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`.
 ::

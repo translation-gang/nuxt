@@ -1,26 +1,26 @@
 ---
 title: 'useHydration'
-description: 'Allows full control of the hydration cycle to set and receive data from the server.'
+description: 'Полный контроль цикла гидратации: установка данных на сервере и получение на клиенте.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/hydrate.ts
     size: xs
 ---
 
-`useHydration` is a built-in composable that provides a way to set data on the server side every time a new HTTP request is made and receive that data on the client side. This way `useHydration` allows you to take full control of the hydration cycle.
+`useHydration` задаёт данные на сервере при каждом HTTP-запросе и восстанавливает их на клиенте — полный контроль над гидратацией.
 
 ::note
-This is an advanced composable, primarily designed for use within plugins, mostly used by Nuxt modules.
+Продвинутый композабл, в основном для плагинов и модулей Nuxt.
 ::
 
 ::note
-`useHydration` is designed to **ensure state synchronization and restoration during SSR**. If you need to create a globally reactive state that is SSR-friendly in Nuxt, [`useState`](/docs/4.x/api/composables/use-state) is the recommended choice.
+`useHydration` нужен для **синхронизации и восстановления состояния при SSR**. Для глобального реактивного SSR-friendly состояния лучше [`useState`](/docs/4.x/api/composables/use-state).
 ::
 
-## Usage
+## Использование
 
-The data returned from the `get` function on the server is stored in `nuxtApp.payload` under the unique key provided as the first parameter to `useHydration`. During hydration, this data is then retrieved on the client, preventing redundant computations or API calls.
+Результат `get` на сервере попадает в `nuxtApp.payload` под уникальным ключом. При гидратации клиент читает эти данные и не дублирует вычисления или запросы.
 
 ::code-group
 
@@ -55,20 +55,20 @@ export default defineNuxtPlugin((nuxtApp) => {
 ```
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useHydration<T> (key: string, get: () => T, set: (value: T) => void): void
 ```
 
-## Parameters
+## Параметры
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `key` | `string` | A unique key that identifies the data in your Nuxt application. |
-| `get` | `() => T` | A function executed **only on the server** (called when SSR rendering is done) to set the initial value. |
-| `set` | `(value: T) => void` | A function executed **only on the client** (called when initial Vue instance is created) to receive the data. |
+| `key` | `string` | Уникальный ключ данных в приложении. |
+| `get` | `() => T` | Вызывается **только на сервере** (после SSR) для начального значения. |
+| `set` | `(value: T) => void` | Вызывается **только на клиенте** (при создании Vue) для приёма данных. |
 
-## Return Values
+## Возвращаемые значения
 
-This composable does not return any value.
+Композабл ничего не возвращает.

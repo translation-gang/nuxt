@@ -7,7 +7,7 @@
     "directory": "docs"
   },
   "homepage": "https://nuxt.com",
-  "description": "Documentation for Nuxt in raw markdown",
+  "description": "Документация Nuxt в виде Markdown",
   "license": "MIT",
   "type": "module",
   "exports": {

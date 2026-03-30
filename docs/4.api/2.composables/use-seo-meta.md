@@ -1,22 +1,22 @@
 ---
 title: 'useSeoMeta'
-description: The useSeoMeta composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+description: Композабл useSeoMeta задаёт SEO-метатеги сайта плоским объектом с полной поддержкой TypeScript.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/unjs/unhead/blob/main/packages/vue/src/composables.ts
     size: xs
 ---
 
-This helps you avoid common mistakes, such as using `name` instead of `property`, as well as typos - with over 100+ meta tags fully typed.
+Так проще избежать типичных ошибок — например `name` вместо `property` — и опечаток: более 100 метатегов полностью типизированы.
 
 ::important
-This is the recommended way to add meta tags to your site as it is XSS safe and has full TypeScript support.
+Так рекомендуется добавлять метатеги: безопасно от XSS и с полной поддержкой TypeScript.
 ::
 
 :read-more{to="/docs/4.x/getting-started/seo-meta"}
 
-## Usage
+## Использование
 
 ```vue [app/app.vue]
 <script setup lang="ts">
@@ -31,7 +31,7 @@ useSeoMeta({
 </script>
 ```
 
-When inserting tags that are reactive, you should use the computed getter syntax (`() => value`):
+Для реактивных тегов используйте синтаксис вычисляемого геттера (`() => value`):
 
 ```vue [app/app.vue]
 <script setup lang="ts">
@@ -44,22 +44,22 @@ useSeoMeta({
 </script>
 ```
 
-## Parameters
+## Параметры
 
-There are over 100 parameters. See the [full list of parameters in the source code](https://github.com/harlan-zw/zhead/blob/main/packages/zhead/src/metaFlat.ts#L1035).
+Более 100 параметров. Полный список — в [исходном коде](https://github.com/harlan-zw/zhead/blob/main/packages/zhead/src/metaFlat.ts#L1035).
 
 :read-more{to="/docs/4.x/getting-started/seo-meta"}
 
-## Performance
+## Производительность
 
-In most instances, SEO meta tags don't need to be reactive as search engine robots primarily scan the initial page load.
+Чаще всего SEO-метатеги не нужно делать реактивными: поисковые роботы в основном смотрят на начальную загрузку страницы.
 
-For better performance, you can wrap your `useSeoMeta` calls in a server-only condition when the meta tags don't need to be reactive:
+Для лучшей производительности оборачивайте вызовы `useSeoMeta` в условие «только сервер», если реактивность не нужна:
 
 ```vue [app/app.vue]
 <script setup lang="ts">
 if (import.meta.server) {
-  // These meta tags will only be added during server-side rendering
+  // Эти метатеги добавятся только при SSR
   useSeoMeta({
     robots: 'index, follow',
     description: 'Static description that does not need reactivity',
@@ -69,7 +69,7 @@ if (import.meta.server) {
 }
 
 const dynamicTitle = ref('My title')
-// Only use reactive meta tags outside the condition when necessary
+// Реактивные метатеги — вне условия, только когда это необходимо
 useSeoMeta({
   title: () => dynamicTitle.value,
   ogTitle: () => dynamicTitle.value,
@@ -77,4 +77,4 @@ useSeoMeta({
 </script>
 ```
 
-This previously used the [`useServerSeoMeta`](/docs/4.x/api/composables/use-server-seo-meta) composable, but it has been deprecated in favor of this approach.
+Раньше для этого использовали композабл [`useServerSeoMeta`](/docs/4.x/api/composables/use-server-seo-meta), но он устарел в пользу такого подхода.

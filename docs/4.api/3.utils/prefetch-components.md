@@ -1,17 +1,17 @@
 ---
 title: 'prefetchComponents'
-description: Nuxt provides utilities to give you control over prefetching components.
+description: Утилиты Nuxt для ручного управления префетчем компонентов.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/preload.ts
     size: xs
 ---
 
 
-Prefetching component downloads the code in the background, this is based on the assumption that the component will likely be used for rendering, enabling the component to load instantly if and when the user requests it. The component is downloaded and cached for anticipated future use without the user making an explicit request for it.
+Префетч компонента загружает код в фоне в расчёте на скорое использование при рендере, чтобы при необходимости компонент подключился быстрее. Код скачивается и кэшируется без явного запроса пользователя.
 
-Use `prefetchComponents` to manually prefetch individual components that have been registered globally in your Nuxt app. By default Nuxt registers these as async components. You must use the Pascal-cased version of the component name.
+`prefetchComponents` вручную префетчит отдельные компоненты, зарегистрированные глобально в приложении Nuxt. По умолчанию Nuxt регистрирует их как асинхронные. Имя компонента указывайте в PascalCase.
 
 ```ts
 await prefetchComponents('MyGlobalComponent')
@@ -20,9 +20,9 @@ await prefetchComponents(['MyGlobalComponent1', 'MyGlobalComponent2'])
 ```
 
 ::note
-Current implementation behaves exactly the same as [`preloadComponents`](/docs/4.x/api/utils/preload-components) by preloading components instead of just prefetching we are working to improve this behavior.
+Текущая реализация ведёт себя так же, как [`preloadComponents`](/docs/4.x/api/utils/preload-components) — выполняется предзагрузка, а не только префетч; поведение планируется улучшить.
 ::
 
 ::note
-On server, `prefetchComponents` will have no effect.
+На сервере `prefetchComponents` не действует.
 ::

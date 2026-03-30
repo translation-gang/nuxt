@@ -1,6 +1,6 @@
 ---
 title: "nuxt devtools"
-description: The devtools command allows you to enable or disable Nuxt DevTools on a per-project basis.
+description: Команда devtools позволяет включать или отключать Nuxt DevTools для отдельного проекта.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,25 +14,25 @@ npx nuxt devtools <COMMAND> [ROOTDIR] [--cwd=<directory>]
 ```
 <!--/devtools-cmd-->
 
-Running `nuxt devtools enable` will install the Nuxt DevTools globally, and also enable it within the particular project you are using. It is saved as a preference in your user-level `.nuxtrc`. If you want to remove devtools support for a particular project, you can run `nuxt devtools disable`.
+Запуск `nuxt devtools enable` устанавливает Nuxt DevTools глобально и включает их в текущем проекте. Настройка сохраняется в пользовательском `.nuxtrc`. Чтобы отключить поддержку devtools в конкретном проекте, выполните `nuxt devtools disable`.
 
-## Arguments
+## Аргументы
 
 <!--devtools-args-->
-| Argument      | Description                                    |
+| Аргумент      | Описание                                    |
 |---------------|------------------------------------------------|
-| `COMMAND`     | Command to run (options: <enable\|disable>)    |
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| `COMMAND`     | Команда (варианты: <enable\|disable>)    |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/devtools-args-->
 
-## Options
+## Опции
 
 <!--devtools-opts-->
-| Option              | Default | Description                                                                      |
+| Опция              | По умолчанию | Описание                                                                      |
 |---------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>` |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
+| `--cwd=<directory>` |         | Рабочая директория; имеет приоритет над ROOTDIR (по умолчанию: `.`) |
 <!--/devtools-opts-->
 
 ::read-more{icon="i-simple-icons-nuxtdotjs" to="https://devtools.nuxt.com" target="\_blank"}
-Read more about the **Nuxt DevTools**.
+Подробнее о **Nuxt DevTools**.
 ::

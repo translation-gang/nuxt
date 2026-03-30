@@ -1,18 +1,18 @@
 ---
 title: 'useLazyFetch'
-description: This wrapper around useFetch triggers navigation immediately.
+description: Обёртка над useFetch: навигация выполняется сразу, без ожидания данных.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/fetch.ts
     size: xs
 ---
 
-`useLazyFetch` provides a wrapper around [`useFetch`](/docs/4.x/api/composables/use-fetch) that triggers navigation before the handler is resolved by setting the `lazy` option to `true`.
+`useLazyFetch` — обёртка над [`useFetch`](/docs/4.x/api/composables/use-fetch) с `lazy: true`: навигация не ждёт завершения обработчика.
 
-## Usage
+## Использование
 
-By default, [`useFetch`](/docs/4.x/api/composables/use-fetch) blocks navigation until its async handler is resolved. `useLazyFetch` allows navigation to proceed immediately, with data being fetched in the background.
+По умолчанию [`useFetch`](/docs/4.x/api/composables/use-fetch) блокирует навигацию до завершения запроса. `useLazyFetch` позволяет перейти сразу, данные подгружаются в фоне.
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -32,18 +32,18 @@ const { status, data: posts } = await useLazyFetch('/api/posts')
 ```
 
 ::note
-`useLazyFetch` has the same signature as [`useFetch`](/docs/4.x/api/composables/use-fetch).
+Сигнатура такая же, как у [`useFetch`](/docs/4.x/api/composables/use-fetch).
 ::
 
 ::warning
-Awaiting `useLazyFetch` only ensures the call is initialized. On client-side navigation, data may not be immediately available, and you must handle the `pending` state in your component's template.
+`await useLazyFetch` гарантирует только инициализацию. При клиентской навигации данные могут быть ещё недоступны — обрабатывайте `pending` в шаблоне.
 ::
 
 ::warning
-`useLazyFetch` is a reserved function name transformed by the compiler, so you should not name your own function `useLazyFetch`.
+`useLazyFetch` — зарезервированное имя, преобразуемое компилятором; не называйте свою функцию `useLazyFetch`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useLazyFetch<DataT, ErrorT> (
@@ -53,47 +53,46 @@ export function useLazyFetch<DataT, ErrorT> (
 ```
 
 ::note
-`useLazyFetch` is equivalent to `useFetch` with `lazy: true` option set. See [`useFetch`](/docs/4.x/api/composables/use-fetch) for full type definitions.
+Эквивалент `useFetch` с `lazy: true`. Полные типы — в [`useFetch`](/docs/4.x/api/composables/use-fetch).
 ::
 
-## Parameters
+## Параметры
 
-`useLazyFetch` accepts the same parameters as [`useFetch`](/docs/4.x/api/composables/use-fetch):
+Те же, что у [`useFetch`](/docs/4.x/api/composables/use-fetch):
 
-- `URL` (`string | Request | Ref<string | Request> | () => string | Request`): The URL or request to fetch.
-- `options` (object): Same as [`useFetch` options](/docs/4.x/api/composables/use-fetch#parameters), with `lazy` automatically set to `true`.
+- `URL` (`string | Request | Ref<string | Request> | () => string | Request`): URL или запрос.
+- `options`: как в [`useFetch`](/docs/4.x/api/composables/use-fetch#parameters), с автоматическим `lazy: true`.
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#parameters"}
 
-## Return Values
+## Возвращаемые значения
 
-Returns the same `AsyncData` object as [`useFetch`](/docs/4.x/api/composables/use-fetch):
+Тот же объект `AsyncData`, что у [`useFetch`](/docs/4.x/api/composables/use-fetch):
 
 | Name      | Type                                                | Description                                                                                                      |
 |-----------|-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| `data`    | `Ref<DataT \| undefined>`                           | The result of the asynchronous fetch.                                                                            |
-| `refresh` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Function to manually refresh the data.                                                                           |
-| `execute` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Alias for `refresh`.                                                                                             |
-| `error`   | `Ref<ErrorT \| undefined>`                          | Error object if the data fetching failed.                                                                        |
-| `status`  | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>`  | Status of the data request.                                                                                      |
-| `pending` | `Ref<boolean>`                                      | Boolean flag indicating whether the current request is in progress.                                              |
-| `clear`   | `() => void`                                        | Resets `data` to `undefined`, `error` to `undefined`, sets `status` to `idle`, and cancels any pending requests. |
+| `data`    | `Ref<DataT \| undefined>`                           | Результат асинхронного запроса.                                                                                  |
+| `refresh` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Ручное обновление данных.                                                                                        |
+| `execute` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Синоним `refresh`.                                                                                               |
+| `error`   | `Ref<ErrorT \| undefined>`                          | Ошибка, если запрос не удался.                                                                                   |
+| `status`  | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>`  | Статус запроса.                                                                                                  |
+| `pending` | `Ref<boolean>`                                      | Идёт ли запрос.                                                                                                  |
+| `clear`   | `() => void`                                        | Сбрасывает `data` и `error`, ставит `status` в `idle`, отменяет висящие запросы.                                 |
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#return-values"}
 
-## Examples
+## Примеры
 
-### Handling Pending State
+### Состояние pending
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
-/* Navigation will occur before fetching is complete.
- * Handle 'pending' and 'error' states directly within your component's template
+/* Навигация до завершения fetch.
+ * Состояния pending и error — в шаблоне компонента
  */
 const { status, data: posts } = await useLazyFetch('/api/posts')
 watch(posts, (newPosts) => {
-  // Because posts might start out null, you won't have access
-  // to its contents immediately, but you can watch it.
+  // posts может быть null в начале — следите через watch
 })
 </script>
 

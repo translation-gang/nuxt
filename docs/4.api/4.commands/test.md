@@ -1,6 +1,6 @@
 ---
 title: "nuxt test"
-description: The test command runs tests using @nuxt/test-utils.
+description: Команда test запускает тесты через @nuxt/test-utils.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,27 +14,27 @@ npx nuxt test [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [
 ```
 <!--/test-cmd-->
 
-The `test` command runs tests using [`@nuxt/test-utils`](/docs/getting-started/testing). This command sets `process.env.NODE_ENV` to `test` if not already set.
+Команда `test` запускает тесты с помощью [`@nuxt/test-utils`](/docs/getting-started/testing). Если `process.env.NODE_ENV` ещё не задан, команда выставляет его в `test`.
 
-## Arguments
+## Аргументы
 
 <!--test-args-->
-| Argument      | Description                                    |
+| Аргумент      | Описание                                    |
 |---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/test-args-->
 
-## Options
+## Опции
 
 <!--test-opts-->
-| Option                               | Default | Description                                                                      |
+| Опция                                | По умолчанию | Описание                                                                      |
 |--------------------------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                     |
-| `--dev`                              |         | Run in dev mode                                                                  |
-| `--watch`                            |         | Watch mode                                                                       |
+| `--cwd=<directory>`                  |         | Рабочая директория; имеет приоритет над ROOTDIR (по умолчанию: `.`) |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке                                                     |
+| `--dev`                              |         | Запуск в режиме разработки                                                                  |
+| `--watch`                            |         | Режим слежения за файлами                                                                       |
 <!--/test-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `test`.
+Эта команда устанавливает `process.env.NODE_ENV` в `test`.
 ::

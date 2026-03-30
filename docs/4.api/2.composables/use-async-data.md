@@ -1,20 +1,20 @@
 ---
 title: 'useAsyncData'
-description: useAsyncData provides access to data that resolves asynchronously in an SSR-friendly composable.
+description: Доступ к асинхронным данным в SSR-friendly композабле useAsyncData.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
     size: xs
 ---
 
-Within your pages, components, and plugins you can use useAsyncData to get access to data that resolves asynchronously.
+В страницах, компонентах и плагинах `useAsyncData` загружает данные асинхронно.
 
 ::note
-[`useAsyncData`](/docs/4.x/api/composables/use-async-data) is a composable meant to be called directly in the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context). It returns reactive composables and handles adding responses to the Nuxt payload so they can be passed from server to client **without re-fetching the data on client side** when the page hydrates.
+[`useAsyncData`](/docs/4.x/api/composables/use-async-data) вызывают в [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context). Возвращает реактивные ссылки и кладёт ответ в payload, чтобы при гидратации **не запрашивать те же данные снова на клиенте**.
 ::
 
-## Usage
+## Использование
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -26,16 +26,16 @@ const { data, status, pending, error, refresh, clear } = await useAsyncData(
 ```
 
 ::warning{to="/docs/4.x/guide/recipes/custom-usefetch#custom-usefetchuseasyncdata"}
-If you're using a custom `useAsyncData` wrapper, do not await it in the composable as that can cause unexpected behavior. See recipe for custom async data fetcher.
+Свою обёртку `useAsyncData` не `await`-те внутри композабла — см. рецепт.
 ::
 
 ::note
-`data`, `status`, `pending` and `error` are Vue refs and they should be accessed with `.value` when used within the `<script setup>`, while `refresh`/`execute` and `clear` are plain functions.
+`data`, `status`, `pending` и `error` — refs; в `<script setup>` — `.value`. `refresh`/`execute` и `clear` — функции.
 ::
 
-### Watch Params
+### Параметр watch
 
-The built-in `watch` option allows automatically rerunning the fetcher function when any changes are detected.
+Опция `watch` перезапускает fetcher при изменении источников.
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -54,16 +54,15 @@ const { data: posts } = await useAsyncData(
 </script>
 ```
 
-### Reactive Keys
+### Реактивные ключи
 
-You can use a computed ref, plain ref or a getter function as the key, allowing for dynamic data fetching that automatically updates when the key changes:
+Ключ — `computed`, `ref` или геттер: при смене ключа данные перезапрашиваются.
 
 ```vue [app/pages/[id\\].vue]
 <script setup lang="ts">
 const route = useRoute()
 const userId = computed(() => `user-${route.params.id}`)
 
-// When the route changes and userId updates, the data will be automatically refetched
 const { data: user } = useAsyncData(
   userId,
   () => fetchUserById(route.params.id),
@@ -71,9 +70,9 @@ const { data: user } = useAsyncData(
 </script>
 ```
 
-### Make your `handler` abortable
+### Прерываемый `handler`
 
-You can make your `handler` function abortable by using the `signal` provided in the second argument. This is useful for cancelling requests when they are no longer needed, such as when a user navigates away from a page. `$fetch` natively supports abort signals.
+Во втором аргументе есть `signal` — для отмены при уходе со страницы и т.п. `$fetch` поддерживает `AbortSignal`.
 
 ```ts
 const { data, error } = await useAsyncData(
@@ -81,14 +80,14 @@ const { data, error } = await useAsyncData(
   (_nuxtApp, { signal }) => $fetch('/api/users', { signal }),
 )
 
-refresh() // will actually cancel the $fetch request (if dedupe: cancel)
-refresh() // will actually cancel the $fetch request (if dedupe: cancel)
+refresh() // при dedupe: cancel отменит текущий $fetch
+refresh()
 refresh()
 
-clear() // will cancel the latest pending handler
+clear() // отменит последний висящий handler
 ```
 
-You can also pass an `AbortSignal` to the `refresh`/`execute` function to cancel individual requests manually.
+`AbortSignal` можно передать в `refresh`/`execute`:
 
 ```ts
 const { refresh } = await useAsyncData(
@@ -103,11 +102,11 @@ function handleUserAction () {
 }
 
 function handleCancel () {
-  abortController?.abort() // aborts the ongoing refresh request
+  abortController?.abort()
 }
 ```
 
-If your `handler` function does not support abort signals, you can implement your own abort logic using the `signal` provided.
+Если handler не поддерживает signal, реализуйте отмену сами:
 
 ```ts
 const { data, error } = await useAsyncData(
@@ -123,69 +122,71 @@ const { data, error } = await useAsyncData(
 )
 ```
 
-The handler signal will be aborted when:
+Сигнал handler прерывается при:
 
-- A new request is made with `dedupe: 'cancel'`
-- The `clear` function is called
-- The `options.timeout` duration is exceeded
+- новом запросе с `dedupe: 'cancel'`
+- вызове `clear`
+- превышении `options.timeout`
 
 ::warning
-[`useAsyncData`](/docs/4.x/api/composables/use-async-data) is a reserved function name transformed by the compiler, so you should not name your own function [`useAsyncData`](/docs/4.x/api/composables/use-async-data).
+[`useAsyncData`](/docs/4.x/api/composables/use-async-data) — зарезервированное имя; не называйте свою функцию так же.
 ::
 
 :read-more{to="/docs/4.x/getting-started/data-fetching#useasyncdata"}
 
 ## Params
 
-- `key`: a unique key to ensure that data fetching can be properly de-duplicated across requests. If you do not provide a key, then a key that is unique to the file name and line number of the instance of `useAsyncData` will be generated for you.
-- `handler`: an asynchronous function that must return a truthy value (for example, it should not be `undefined` or `null`) or the request may be duplicated on the client side.
+- `key`: уникальный ключ дедупликации между запросами. Если не задан — ключ по файлу и строке вызова.
+- `handler`: асинхронная функция, должна вернуть истинное значение (не `undefined`/`null`), иначе на клиенте возможен дубликат запроса.
 ::warning
-The `handler` function should be **side-effect free** to ensure predictable behavior during SSR and CSR hydration. If you need to trigger side effects, use the [`callOnce`](/docs/4.x/api/utils/call-once) utility to do so.
+`handler` лучше делать **без побочных эффектов** для предсказуемого SSR/CSR. Побочные эффекты — через [`callOnce`](/docs/4.x/api/utils/call-once).
 ::
 - `options`:
-  - `server`: whether to fetch the data on the server (defaults to `true`)
-  - `lazy`: whether to resolve the async function after loading the route, instead of blocking client-side navigation (defaults to `false`)
-  - `immediate`: when set to `false`, will prevent the request from firing immediately. (defaults to `true`)
-  - `default`: a factory function to set the default value of the `data`, before the async function resolves - useful with the `lazy: true` or `immediate: false` option
-  - `transform`: a function that can be used to alter `handler` function result after resolving
-  - `getCachedData`: Provide a function which returns cached data. An `undefined` return value will trigger a fetch. By default, this is:
+  - `server`: грузить на сервере (по умолчанию `true`)
+  - `lazy`: разрешить навигацию до завершения (по умолчанию `false`)
+  - `immediate`: `false` — не слать запрос сразу (по умолчанию `true`)
+  - `default`: фабрика значения `data` до resolve — удобно с `lazy: true` или `immediate: false`
+  - `transform`: постобработка результата `handler`
+  - `getCachedData`: функция кэша; `undefined` — идти в сеть. По умолчанию:
     ```ts
     const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating
       ? nuxtApp.payload.data[key]
       : nuxtApp.static.data[key]
     ```
-    Which only caches data when `experimental.payloadExtraction` of `nuxt.config` is enabled.
-  - `pick`: only pick specified keys in this array from the `handler` function result
-  - `watch`: watch reactive sources to auto-refresh
-  - `deep`: return data in a deep ref object. It is `false` by default to return data in a shallow ref object, which can improve performance if your data does not need to be deeply reactive.
-  - `dedupe`: avoid fetching same key more than once at a time (defaults to `cancel`). Possible options:
-    - `cancel` - cancels existing requests when a new one is made
-    - `defer` - does not make new requests at all if there is a pending request
-  - `timeout` - a number in milliseconds to wait before timing out the request (defaults to `undefined`, which means no timeout)
+    Работает при `experimental.payloadExtraction` в `nuxt.config`.
+  - `pick`: оставить только перечисленные ключи из результата
+  - `watch`: реактивные источники для автообновления
+  - `deep`: глубокий ref для `data` (`false` по умолчанию — shallow, быстрее)
+  - `dedupe`: не дублировать запросы с тем же ключом (по умолчанию `cancel`):
+    - `cancel` — отменяет предыдущий при новом
+    - `defer` — не стартует новый, пока висит старый
+  - `timeout` — таймаут в мс (`undefined` — без таймаута)
 
 ::note
-Under the hood, `lazy: false` uses `<Suspense>` to block the loading of the route before the data has been fetched. Consider using `lazy: true` and implementing a loading state instead for a snappier user experience.
+`lazy: false` использует `<Suspense>` и блокирует маршрут до загрузки. Для отзывчивости часто лучше `lazy: true` и свой индикатор загрузки.
 ::
 
 ::read-more{to="/docs/4.x/api/composables/use-lazy-async-data"}
-You can use `useLazyAsyncData` to have the same behavior as `lazy: true` with `useAsyncData`.
+То же, что `lazy: true` с `useAsyncData`, даёт `useLazyAsyncData`.
 ::
 
-:video-accordion{title="Watch a video from Alexander Lichter about client-side caching with getCachedData" videoId="aQPR0xn-MMk"}
+:video-accordion{title="Видео Александра Лихтера про клиентский кэш и getCachedData" videoId="aQPR0xn-MMk"}
 
-### Shared State and Option Consistency
+### Общее состояние и согласованность опций
 
-When using the same key for multiple `useAsyncData` calls, they will share the same `data`, `error`, `status` and `pending` refs. This ensures consistency across components but requires option consistency.
+Один ключ — общие `data`, `error`, `status`, `pending`. Опции должны быть согласованы.
 
-The following options **must be consistent** across all calls with the same key:
-- `handler` function
-- `deep` option
-- `transform` function
-- `pick` array
-- `getCachedData` function
-- `default` value
+**Обязаны совпадать** для одного ключа:
 
-The following options **can differ** without triggering warnings:
+- функция `handler`
+- `deep`
+- `transform`
+- массив `pick`
+- `getCachedData`
+- `default`
+
+**Могут отличаться** без предупреждений:
+
 - `server`
 - `lazy`
 - `immediate`
@@ -193,38 +194,36 @@ The following options **can differ** without triggering warnings:
 - `watch`
 
 ```ts
-// ❌ This will trigger a development warning
+// ❌ предупреждение в dev
 const { data: users1 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { deep: false })
 const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { deep: true })
 
-// ✅ This is allowed
+// ✅ допустимо
 const { data: users1 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { immediate: true })
 const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { immediate: false })
 ```
 
 ::tip
-Keyed state created using `useAsyncData` can be retrieved across your Nuxt application using [`useNuxtData`](/docs/4.x/api/composables/use-nuxt-data).
+Состояние по ключу читается через [`useNuxtData`](/docs/4.x/api/composables/use-nuxt-data).
 ::
 
 ## Return Values
 
-- `data`: the result of the asynchronous function that is passed in.
-- `refresh`/`execute`: a function that can be used to refresh the data returned by the `handler` function.
-- `error`: an error object if the data fetching failed.
-- `status`: a string indicating the status of the data request:
-  - `idle`: when the request has not started, such as:
-    - when `execute` has not yet been called and `{ immediate: false }` is set
-    - when rendering HTML on the server and `{ server: false }` is set
-  - `pending`: the request is in progress
-  - `success`: the request has completed successfully
-  - `error`: the request has failed
-- `pending`: a `Ref<boolean>` that is `true` while the request is in progress (that is, while `status.value === 'pending'`).
-- `clear`: a function that can be used to set `data` to `undefined` (or the value of `options.default()` if provided), set `error` to `undefined`, set `status` to `idle`, and mark any currently pending requests as cancelled.
+- `data`: результат `handler`
+- `refresh`/`execute`: повторный вызов `handler`
+- `error`: ошибка при неудаче
+- `status`:
+  - `idle`: не стартовало (`immediate: false` и `execute` ещё не вызывали; или SSR с `server: false`)
+  - `pending`: в процессе
+  - `success`: успех
+  - `error`: ошибка
+- `pending`: `true`, пока `status === 'pending'`
+- `clear`: `data` → `undefined` (или `options.default()`), `error` → `undefined`, `status` → `idle`, отмена висящих запросов
 
-By default, Nuxt waits until a `refresh` is finished before it can be executed again.
+По умолчанию Nuxt ждёт завершения текущего `refresh` перед следующим.
 
 ::note
-If you have not fetched data on the server (for example, with `server: false`), then the data _will not_ be fetched until hydration completes. This means even if you await [`useAsyncData`](/docs/4.x/api/composables/use-async-data) on the client side, `data` will remain `undefined` within `<script setup>`.
+Без серверного fetch (`server: false`) данные не запросятся до конца гидратации. Даже с `await useAsyncData` на клиенте в `<script setup>` `data` останется `undefined`.
 ::
 
 ## Type

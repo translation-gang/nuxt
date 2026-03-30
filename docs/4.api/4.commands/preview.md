@@ -1,6 +1,6 @@
 ---
 title: "nuxt preview"
-description: The preview command starts a server to preview your application after the build command.
+description: Команда preview запускает сервер для предпросмотра приложения после сборки.
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,31 +14,31 @@ npx nuxt preview [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>
 ```
 <!--/preview-cmd-->
 
-The `preview` command starts a server to preview your Nuxt application after running the `build` command. The `start` command is an alias for `preview`. When running your application in production refer to the [Deployment section](/docs/4.x/getting-started/deployment).
+Команда `preview` запускает сервер для предпросмотра приложения Nuxt после `build`. Команда `start` — псевдоним для `preview`. Для production-см. раздел [Развёртывание](/docs/4.x/getting-started/deployment).
 
-## Arguments
+## Аргументы
 
 <!--preview-args-->
-| Argument      | Description                                    |
+| Аргумент      | Описание                                    |
 |---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/preview-args-->
 
-## Options
+## Опции
 
 <!--preview-opts-->
-| Option                               | Default | Description                                                                                                                                          |
+| Опция                                | По умолчанию | Описание                                                                                                                                          |
 |--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
-| `-p, --port`                         |         | Port to listen on (use `PORT` environment variable to override)                                                                                      |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
+| `--cwd=<directory>`                  |         | Рабочая директория; имеет приоритет над ROOTDIR (по умолчанию: `.`)                                                                     |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке                                                                                                                         |
+| `--envName`                          |         | Окружение для применения переопределений конфигурации (по умолчанию `production` при сборке и `development` при запуске dev-сервера) |
+| `-e, --extends=<layer-name>`         |         | Расширить конфигурацию слоем Nuxt                                                                                                                             |
+| `-p, --port`                         |         | Порт прослушивания (переопределяется переменной окружения `PORT`)                                                                                      |
+| `--dotenv`                           |         | Путь к файлу `.env` относительно корня проекта                                                                                          |
 <!--/preview-opts-->
 
-This command sets `process.env.NODE_ENV` to `production`. To override, define `NODE_ENV` in a `.env` file or as command-line argument.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`. Чтобы переопределить, задайте `NODE_ENV` в `.env` или в аргументах командной строки.
 
 ::note
-For convenience, in preview mode, your [`.env`](/docs/4.x/directory-structure/env) file will be loaded into `process.env`. (However, in production you will need to ensure your environment variables are set yourself. For example, with Node.js 20+ you could do this by running `node --env-file .env .output/server/index.mjs` to start your server.)
+Для удобства в режиме предпросмотра файл [`.env`](/docs/4.x/directory-structure/env) загружается в `process.env`. (В production переменные окружения нужно задавать самостоятельно. Например, в Node.js 20+ можно запустить `node --env-file .env .output/server/index.mjs`.)
 ::

@@ -1,6 +1,6 @@
 ---
 title: "nuxt build"
-description: "Build your Nuxt application."
+description: "Собирает ваше приложение Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,35 +14,35 @@ npx nuxt build [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] 
 ```
 <!--/build-cmd-->
 
-The `build` command creates a `.output` directory with all your application, server and dependencies ready for production.
+Команда `build` создаёт каталог `.output` со всем приложением, сервером и зависимостями, готовыми к production.
 
-## Arguments
+## Аргументы
 
 <!--build-args-->
-| Argument      | Description                                    |
+| Аргумент      | Описание                                    |
 |---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/build-args-->
 
-## Options
+## Опции
 
 <!--build-opts-->
-| Option                               | Default | Description                                                                                                                                          |
+| Опция                                | По умолчанию | Описание                                                                                                                                          |
 |--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`)                                                                     |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                                                                                         |
-| `--prerender`                        |         | Build Nuxt and prerender static routes                                                                                                               |
-| `--preset=<preset>`                  |         | Specify Nitro server preset. Available presets depend on Nitro (e.g. `node-server`, `vercel`, `netlify`, `static`)                                  |
-| `--dotenv`                           |         | Path to `.env` file to load, relative to the root directory                                                                                          |
-| `--envName`                          |         | The environment to use when resolving configuration overrides (default is `production` when building, and `development` when running the dev server) |
-| `-e, --extends=<layer-name>`         |         | Extend from a Nuxt layer                                                                                                                             |
-| `--profile`                          |         | Profile performance (v4.4+). Writes a V8 CPU profile and JSON report on exit. Use `--profile=verbose` for a full console report.                     |
+| `--cwd=<directory>`                  |         | Рабочая директория; имеет приоритет над ROOTDIR (по умолчанию: `.`)                                                                     |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке                                                                                                                         |
+| `--prerender`                        |         | Собрать Nuxt и пререндерить статические маршруты                                                                                                               |
+| `--preset=<preset>`                  |         | Пресет сервера Nitro. Доступные пресеты зависят от Nitro (например `node-server`, `vercel`, `netlify`, `static`)                                  |
+| `--dotenv`                           |         | Путь к файлу `.env` относительно корня проекта                                                                                          |
+| `--envName`                          |         | Окружение для применения переопределений конфигурации (по умолчанию `production` при сборке и `development` при запуске dev-сервера) |
+| `-e, --extends=<layer-name>`         |         | Расширить конфигурацию слоем Nuxt                                                                                                                             |
+| `--profile`                          |         | Профилирование производительности (v4.4+). При выходе записывает CPU-профиль V8 и JSON-отчёт. Используйте `--profile=verbose` для полного вывода в консоль.                     |
 <!--/build-opts-->
 
 ::note
-This command sets `process.env.NODE_ENV` to `production`.
+Эта команда устанавливает `process.env.NODE_ENV` в `production`.
 ::
 
 ::note
-`--prerender` will always set the `preset` to `static`
+`--prerender` всегда выставляет `preset` в `static`
 ::

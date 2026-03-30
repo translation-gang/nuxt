@@ -1,18 +1,18 @@
 ---
 title: 'addRouteMiddleware'
-description: 'addRouteMiddleware() is a helper function to dynamically add middleware in your application.'
+description: 'addRouteMiddleware() — хелпер для динамического добавления middleware в приложение.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs
 ---
 
 ::note
-Route middleware are navigation guards stored in the [`app/middleware/`](/docs/4.x/directory-structure/app/middleware) directory of your Nuxt application (unless [set otherwise](/docs/4.x/api/nuxt-config#middleware)).
+Route middleware — это навигационные хранители, лежащие в каталоге [`app/middleware/`](/docs/4.x/directory-structure/app/middleware) приложения Nuxt (если не [задано иное](/docs/4.x/api/nuxt-config#middleware)).
 ::
 
-## Type
+## Тип
 
 ```ts
 function addRouteMiddleware (name: string, middleware: RouteMiddleware, options?: AddRouteMiddlewareOptions): void
@@ -23,33 +23,33 @@ interface AddRouteMiddlewareOptions {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `name`
 
-- **Type:** `string` | `RouteMiddleware`
+- **Тип:** `string` | `RouteMiddleware`
 
-Can be either a string or a function of type `RouteMiddleware`. Function takes the next route `to` as the first argument and the current route `from` as the second argument, both of which are Vue route objects.
+Может быть строкой или функцией типа `RouteMiddleware`. Функция принимает следующий маршрут `to` первым аргументом и текущий `from` вторым — оба это объекты маршрута Vue.
 
-Learn more about available properties of [route objects](/docs/4.x/api/composables/use-route).
+Подробнее о свойствах [объектов маршрута](/docs/4.x/api/composables/use-route).
 
 ### `middleware`
 
-- **Type:** `RouteMiddleware`
+- **Тип:** `RouteMiddleware`
 
-The second argument is a function of type `RouteMiddleware`. Same as above, it provides `to` and `from` route objects. It becomes optional if the first argument in `addRouteMiddleware()` is already passed as a function.
+Второй аргумент — функция типа `RouteMiddleware`. Как и выше, ей передаются объекты маршрута `to` и `from`. Он необязателен, если первый аргумент `addRouteMiddleware()` уже передан как функция.
 
 ### `options`
 
-- **Type:** `AddRouteMiddlewareOptions`
+- **Тип:** `AddRouteMiddlewareOptions`
 
-An optional `options` argument lets you set the value of `global` to `true` to indicate whether the router middleware is global or not (set to `false` by default).
+Необязательный аргумент `options` позволяет задать `global: true`, чтобы указать, глобален ли middleware маршрутизатора (по умолчанию `false`).
 
-## Examples
+## Примеры
 
-### Named Route Middleware
+### Именованный route middleware
 
-Named route middleware is defined by providing a string as the first argument and a function as the second:
+Именованный middleware задаётся строкой первым аргументом и функцией вторым:
 
 ```ts [app/plugins/my-plugin.ts]
 export default defineNuxtPlugin(() => {
@@ -59,13 +59,13 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
-When defined in a plugin, it overrides any existing middleware of the same name located in the `app/middleware/` directory.
+Если это определено в плагине, оно переопределяет существующий middleware с тем же именем в каталоге `app/middleware/`.
 
-### Global Route Middleware
+### Глобальный route middleware
 
-Global route middleware can be defined in two ways:
+Глобальный middleware можно задать двумя способами:
 
-- Pass a function directly as the first argument without a name. It will automatically be treated as global middleware and applied on every route change.
+- Передать функцию сразу первым аргументом без имени. Она будет считаться глобальным middleware и выполняться при каждой смене маршрута.
 
   ```ts [app/plugins/my-plugin.ts]
   export default defineNuxtPlugin(() => {
@@ -75,7 +75,7 @@ Global route middleware can be defined in two ways:
   })
   ```
 
-- Set an optional, third argument `{ global: true }` to indicate whether the route middleware is global.
+- Указать необязательный третий аргумент `{ global: true }`, чтобы пометить middleware как глобальный.
 
   ```ts [app/plugins/my-plugin.ts]
   export default defineNuxtPlugin(() => {

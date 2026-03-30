@@ -1,39 +1,39 @@
 ---
-navigation.title: 'Nuxt and Hydration'
-title: Nuxt and Hydration
-description: Why fixing hydration issues is important
+navigation.title: 'Nuxt и гидратация'
+title: Nuxt и гидратация
+description: Зачем важно устранять проблемы гидратации
 ---
 
-When developing, you may face hydration issues. Don't ignore those warnings.
+В разработке часто встречаются предупреждения гидратации. Их не стоит игнорировать.
 
-## Why is it important to fix them?
+## Зачем это исправлять?
 
-Hydration mismatches are not just warnings - they are indicators of serious problems that can break your application:
+Расхождения при гидратации — не просто предупреждения; это признак серьёзных проблем:
 
-### Performance Impact
+### Влияние на производительность
 
-- **Increased time to interactive**: Hydration errors force Vue to re-render the entire component tree, which will increase the time for your Nuxt app to become interactive
-- **Poor user experience**: Users may see content flashing or unexpected layout shifts
+- **Дольше до интерактивности**: ошибки гидратации заставляют Vue перерисовывать дерево компонентов
+- **Хуже UX**: мигание контента или неожиданные сдвиги вёрстки
 
-### Functionality Issues
+### Проблемы с поведением
 
-- **Broken interactivity**: Event listeners may not attach properly, leaving buttons and forms non-functional
-- **State inconsistencies**: Application state can become out of sync between what the user sees and what the application thinks is rendered
-- **SEO problems**: Search engines may index different content than what users actually see
+- **Ломается интерактивность**: обработчики могут не привязаться — кнопки и формы не работают
+- **Расхождение состояния**: то, что видит пользователь, и то, что «думает» приложение, расходятся
+- **SEO**: в индекс может попасть другой контент, чем у пользователя
 
-## How to detect them
+## Как обнаружить
 
-### Development Console Warnings
+### Предупреждения в консоли разработки
 
-Vue will log hydration mismatch warnings in the browser console during development:
+Vue логирует несовпадения гидратации в консоли браузера в dev:
 
-![Screenshot of Vue hydration mismatch warning in the browser console](/assets/docs/best-practices/vue-console-hydration.png)
+![Предупреждение Vue о несовпадении гидратации в консоли](/assets/docs/best-practices/vue-console-hydration.png)
 
-## Common reasons
+## Типичные причины
 
-### Browser-only APIs in Server Context
+### Браузерные API на сервере
 
-**Problem**: Using browser-specific APIs during server-side rendering.
+**Проблема**: браузерные API во время SSR.
 
 ```html
 <template>
@@ -41,13 +41,13 @@ Vue will log hydration mismatch warnings in the browser console during developme
 </template>
 
 <script setup>
-// This will cause hydration mismatch!
-// localStorage doesn't exist on the server!
+// Это вызовет рассогласование гидратации!
+// localStorage нет на сервере!
 const userTheme = localStorage.getItem('theme') || 'light'
 </script>
 ```
 
-**Solution**: You can use [`useCookie`](/docs/4.x/api/composables/use-cookie):
+**Решение**: [`useCookie`](/docs/4.x/api/composables/use-cookie):
 
 ```html
 <template>
@@ -55,14 +55,14 @@ const userTheme = localStorage.getItem('theme') || 'light'
 </template>
 
 <script setup>
-// This works on both server and client
+// Работает и на сервере, и на клиенте
 const userTheme = useCookie('theme', { default: () => 'light' })
 </script>
 ```
 
-### Inconsistent Data
+### Разные данные
 
-**Problem**: Different data between server and client.
+**Проблема**: разный результат на сервере и клиенте.
 
 ```html
 <template>
@@ -70,7 +70,7 @@ const userTheme = useCookie('theme', { default: () => 'light' })
 </template>
 ```
 
-**Solution**: Use SSR-friendly state:
+**Решение**: SSR-friendly состояние:
 
 ```html
 <template>
@@ -82,9 +82,9 @@ const state = useState('random', () => Math.random())
 </script>
 ```
 
-### Conditional Rendering Based on Client State
+### Условный рендер по состоянию клиента
 
-**Problem**: Using client-only conditions during SSR.
+**Проблема**: условия только для клиента во время SSR.
 
 ```html
 <template>
@@ -94,7 +94,7 @@ const state = useState('random', () => Math.random())
 </template>
 ```
 
-**Solution**: Use media queries or handle it client-side:
+**Решение**: медиазапросы или логика на клиенте:
 
 ```html
 <template>
@@ -105,9 +105,9 @@ const state = useState('random', () => Math.random())
 </template>
 ```
 
-### Third-party Libraries with Side Effects
+### Сторонние библиотеки с побочными эффектами
 
-**Problem**: Libraries that modify the DOM or have browser dependencies (this happens a LOT with tag managers).
+**Проблема**: библиотеки, меняющие DOM или зависящие от браузера (часто тег-менеджеры).
 
 ```html
 <script setup>
@@ -118,7 +118,7 @@ if (import.meta.client) {
 </script>
 ```
 
-**Solution**: Initialise libraries after hydration has completed:
+**Решение**: инициализация после гидратации:
 
 ```html
 <script setup>
@@ -129,9 +129,9 @@ onMounted(async () => {
 </script>
 ```
 
-### Dynamic Content Based on Time
+### Динамика от времени
 
-**Problem**: Content that changes based on current time.
+**Проблема**: контент зависит от текущего времени.
 
 ```html
 <template>
@@ -144,7 +144,7 @@ const greeting = hour < 12 ? 'Good morning' : 'Good afternoon'
 </script>
 ```
 
-**Solution**: Use [`NuxtTime`](/docs/4.x/api/components/nuxt-time) component or handle it client-side:
+**Решение**: компонент [`NuxtTime`](/docs/4.x/api/components/nuxt-time) или только клиент:
 
 ```html
 <template>
@@ -176,13 +176,13 @@ onMounted(() => {
 </script>
 ```
 
-## In summary
+## Кратко
 
-1. **Use SSR-friendly composables**: [`useFetch`](/docs/4.x/api/composables/use-fetch), [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useState`](/docs/4.x/api/composables/use-state)
-2. **Wrap client-only code**: Use [`ClientOnly`](/docs/4.x/api/components/client-only) component for browser-specific content
-3. **Consistent data sources**: Ensure server and client uses the same data
-4. **Avoid side effects in setup**: Move browser-dependent code to `onMounted`
+1. **SSR-friendly композаблы**: [`useFetch`](/docs/4.x/api/composables/use-fetch), [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useState`](/docs/4.x/api/composables/use-state)
+2. **Только клиент**: [`ClientOnly`](/docs/4.x/api/components/client-only) для браузер-специфичного контента
+3. **Одинаковые данные**: сервер и клиент должны опираться на одни и те же источники
+4. **Без побочных эффектов в setup**: браузерный код — в `onMounted`
 
 ::tip
-You can read the [Vue documentation on SSR hydration mismatch](https://vuejs.org/guide/scaling-up/ssr#hydration-mismatch) for a better understanding of hydration.
+Подробнее о несовпадении гидратации при SSR — в [документации Vue](https://vuejs.org/guide/scaling-up/ssr#hydration-mismatch).
 ::

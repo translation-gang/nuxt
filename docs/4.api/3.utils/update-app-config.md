@@ -1,18 +1,18 @@
 ---
 title: 'updateAppConfig'
-description: 'Update the App Config at runtime.'
+description: 'Обновление app config во время выполнения.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/config.ts
     size: xs
 ---
 
 ::note
-Updates the [`app.config`](/docs/4.x/directory-structure/app/app-config) using deep assignment. Existing (nested) properties will be preserved.
+Обновляет [`app.config`](/docs/4.x/directory-structure/app/app-config) глубоким присваиванием. Существующие (вложенные) свойства сохраняются.
 ::
 
-## Usage
+## Использование
 
 ```js
 import { updateAppConfig, useAppConfig } from '#imports'

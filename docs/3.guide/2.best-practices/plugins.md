@@ -1,20 +1,20 @@
 ---
-navigation.title: 'Nuxt Plugins'
-title: Nuxt Plugins
-description: Best practices when using Nuxt plugins.
+navigation.title: 'Плагины Nuxt'
+title: Плагины Nuxt
+description: Лучшие практики при использовании плагинов Nuxt.
 ---
 
-Plugins in Nuxt allow you to extend your application with additional functionality. However, improper use can lead to performance bottlenecks. This guide outlines best practices to optimize your Nuxt plugins.
+Плагины расширяют приложение, но при неаккуратном использовании дают узкие места по производительности. Ниже — рекомендации.
 
-## Avoid costly plugin setup
+## Избегайте тяжёлой инициализации в плагинах
 
-A large number of plugins can cause performance issues, especially if they require expensive computations or take too long to initialize. Since plugins run during the hydration phase, inefficient setups can block rendering and degrade the user experience.
+Много плагинов или долгая инициализация тормозят приложение: плагины выполняются в фазе гидратации и могут блокировать рендер и ухудшать UX.
 
-## Use Composition whenever possible
+## По возможности — композиция
 
-Whenever possible, favor composition over plugins. Just like in Vue, many utilities and composables can be used directly without the need for a plugin. This keeps your project lightweight and improves maintainability.
+Предпочитайте композаблы и утилиты отдельным плагинам — как во Vue: многое можно подключать без плагина. Проект остаётся легче и проще в поддержке.
 
-## If `async`, enable `parallel`
+## Если плагин `async`, включите `parallel`
 
-By default, all plugins loads synchronously.
-When defining asynchronous plugins, setting `parallel: true` allows multiple plugins to load concurrently, improving performance by preventing blocking operations.
+По умолчанию плагины грузятся последовательно.
+Для асинхронных плагинов `parallel: true` позволяет грузить несколько параллельно и не блокировать остальные.

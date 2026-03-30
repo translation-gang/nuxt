@@ -1,14 +1,14 @@
 ---
 title: 'definePageMeta'
-description: 'Define metadata for your page components.'
+description: 'Задаёт метаданные для компонентов страниц.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/pages/runtime/composables.ts
     size: xs
 ---
 
-`definePageMeta` is a compiler macro that you can use to set metadata for your **page** components located in the [`app/pages/`](/docs/4.x/directory-structure/app/pages) directory (unless [set otherwise](/docs/4.x/api/nuxt-config#pages)). This way you can set custom metadata for each static or dynamic route of your Nuxt application.
+`definePageMeta` — компиляторный макрос для метаданных **страничных** компонентов в [`app/pages/`](/docs/4.x/directory-structure/app/pages) (если не [задано иное](/docs/4.x/api/nuxt-config#pages)). Так задаются свои метаданные для каждого статического или динамического маршрута.
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">
@@ -20,7 +20,7 @@ definePageMeta({
 
 :read-more{to="/docs/4.x/directory-structure/app/pages#page-metadata"}
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function definePageMeta (meta: PageMeta): void
@@ -45,127 +45,127 @@ interface PageMeta {
 }
 ```
 
-## Parameters
+## Параметры
 
 ### `meta`
 
-- **Type**: `PageMeta`
+- **Тип**: `PageMeta`
 
-  An object accepting the following page metadata:
+  Объект с такими полями метаданных страницы:
 
   **`name`**
 
-  - **Type**: `string`
+  - **Тип**: `string`
 
-    You may define a name for this page's route. By default, name is generated based on path inside the [`app/pages/` directory](/docs/4.x/directory-structure/app/pages).
+    Имя маршрута этой страницы. По умолчанию имя строится по пути внутри каталога [`app/pages/`](/docs/4.x/directory-structure/app/pages).
 
   **`path`**
 
-  - **Type**: `string`
+  - **Тип**: `string`
 
-    You may define a [custom regular expression](/docs/4.x/api/utils/define-page-meta#using-a-custom-regular-expression) if you have a more complex pattern than can be expressed with the file name.
+    Можно задать [пользовательское регулярное выражение](/docs/4.x/api/utils/define-page-meta#using-a-custom-regular-expression), если шаблон сложнее, чем выражается именем файла.
 
   **`props`**
   
-  - **Type**: [`RouteRecordRaw['props']`](https://router.vuejs.org/guide/essentials/passing-props)
+  - **Тип**: [`RouteRecordRaw['props']`](https://router.vuejs.org/guide/essentials/passing-props)
 
-    Allows accessing the route `params` as props passed to the page component.
+    Параметры маршрута `params` передаются в страницу как пропсы.
 
   **`alias`**
 
-  - **Type**: `string | string[]`
+  - **Тип**: `string | string[]`
 
-    Aliases for the record. Allows defining extra paths that will behave like a copy of the record. Allows having paths shorthands like `/users/:id` and `/u/:id`. All `alias` and `path` values must share the same params.
+    Псевдонимы записи: дополнительные пути, ведущие себя как копия записи. Удобно для сокращений вроде `/users/:id` и `/u/:id`. У всех значений `alias` и `path` должны совпадать параметры.
 
   **`groups`**
 
-  - **Type**: `string[]`
+  - **Тип**: `string[]`
 
-    Route groups the page belongs to, based on the folder structure. Automatically populated for pages within [route groups](/docs/4.x/guide/directory-structure/app/pages#route-groups).
+    Группы маршрутов, к которым относится страница, по структуре папок. Автоматически заполняется для страниц внутри [групп маршрутов](/docs/4.x/guide/directory-structure/app/pages#route-groups).
 
   **`keepalive`**
 
-  - **Type**: `boolean` | [`KeepAliveProps`](https://vuejs.org/api/built-in-components#keepalive)
+  - **Тип**: `boolean` | [`KeepAliveProps`](https://vuejs.org/api/built-in-components#keepalive)
 
-    Set to `true` when you want to preserve page state across route changes or use the [`KeepAliveProps`](https://vuejs.org/api/built-in-components#keepalive) for a fine-grained control.
+    `true`, чтобы сохранять состояние страницы при смене маршрута, или [`KeepAliveProps`](https://vuejs.org/api/built-in-components#keepalive) для тонкой настройки.
 
   **`key`**
 
-  - **Type**: `false` | `string` | `((route: RouteLocationNormalizedLoaded) => string)`
+  - **Тип**: `false` | `string` | `((route: RouteLocationNormalizedLoaded) => string)`
 
-    Set `key` value when you need more control over when the `<NuxtPage>` component is re-rendered.
+    Явный `key`, когда нужно управлять перерисовкой `<NuxtPage>`.
 
   **`layout`**
 
-  - **Type**: `false` | `LayoutKey` | `Ref<LayoutKey>` | `ComputedRef<LayoutKey>`
+  - **Тип**: `false` | `LayoutKey` | `Ref<LayoutKey>` | `ComputedRef<LayoutKey>`
 
-    Set a static or dynamic name of the layout for each route. This can be set to `false` in case the default layout needs to be disabled.
+    Статическое или реактивное имя layout для маршрута. `false` отключает layout по умолчанию.
 
   **`layoutTransition`**
 
-  - **Type**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)
+  - **Тип**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)
 
-    Set name of the transition to apply for current layout. You can also set this value to `false` to disable the layout transition.
+    Имя перехода для текущего layout или `false`, чтобы отключить переход layout.
 
   **`middleware`**
 
-  - **Type**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/navigationguard) | `Array<MiddlewareKey | NavigationGuard>`
+  - **Тип**: `MiddlewareKey` | [`NavigationGuard`](https://router.vuejs.org/api/interfaces/navigationguard) | `Array<MiddlewareKey | NavigationGuard>`
 
-    Define anonymous or named middleware directly within `definePageMeta`. Learn more about [route middleware](/docs/4.x/directory-structure/app/middleware).
+    Анонимный или именованный middleware прямо в `definePageMeta`. Подробнее — [route middleware](/docs/4.x/directory-structure/app/middleware).
 
   **`pageTransition`**
 
-  - **Type**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)
+  - **Тип**: `boolean` | [`TransitionProps`](https://vuejs.org/api/built-in-components#transition)
 
-    Set name of the transition to apply for current page. You can also set this value to `false` to disable the page transition.
+    Имя перехода для страницы или `false`, чтобы отключить переход страницы.
 
   **`viewTransition`**
 
-  - **Type**: `boolean | 'always' | ViewTransitionPageOptions`
+  - **Тип**: `boolean | 'always' | ViewTransitionPageOptions`
 
-    **Experimental feature, only available when [enabled in your nuxt.config file](/docs/4.x/getting-started/transitions#view-transitions-api-experimental)**</br>
-    Enable/disable View Transitions for the current page.
-    If set to true, Nuxt will not apply the transition if the users browser matches `prefers-reduced-motion: reduce` (recommended). If set to `always`, Nuxt will always apply the transition.
+    **Экспериментально, только при [включении в nuxt.config](/docs/4.x/getting-started/transitions#view-transitions-api-experimental)**</br>
+    Включает или отключает View Transitions для страницы.
+    При `true` Nuxt не применит переход, если у пользователя `prefers-reduced-motion: reduce` (рекомендуется). При `always` переход применяется всегда.
 
-    You can also pass a `ViewTransitionPageOptions` object to configure [view transition types](/docs/4.x/getting-started/transitions#view-transition-types):
-    - `enabled`: `boolean | 'always'` - enable/disable the transition
-    - `types`: `string[] | (to, from) => string[]` - types applied to any transition involving this page
-    - `toTypes`: `string[] | (to, from) => string[]` - types applied only when navigating **to** this page
-    - `fromTypes`: `string[] | (to, from) => string[]` - types applied only when navigating **from** this page
+    Объект `ViewTransitionPageOptions` настраивает [типы view transition](/docs/4.x/getting-started/transitions#view-transition-types):
+    - `enabled`: `boolean | 'always'` — включить/выключить переход
+    - `types`: `string[] | (to, from) => string[]` — типы для любого перехода, связанного с этой страницей
+    - `toTypes`: `string[] | (to, from) => string[]` — только при переходе **на** эту страницу
+    - `fromTypes`: `string[] | (to, from) => string[]` — только при переходе **с** этой страницы
 
   **`redirect`**
 
-  - **Type**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias)
+  - **Тип**: [`RouteRecordRedirectOption`](https://router.vuejs.org/guide/essentials/redirect-and-alias)
 
-    Where to redirect if the route is directly matched. The redirection happens before any navigation guard and triggers a new navigation with the new target location.
+    Куда редиректить при прямом совпадении маршрута. Редирект до навигационных хранителей и запускает новую навигацию.
 
   **`validate`**
 
-  - **Type**: `(route: RouteLocationNormalized) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>`
+  - **Тип**: `(route: RouteLocationNormalized) => boolean | Promise<boolean> | Partial<NuxtError> | Promise<Partial<NuxtError>>`
 
-    Validate whether a given route can validly be rendered with this page. Return true if it is valid, or false if not. If another match can't be found, this will mean a 404. You can also directly return an object with `status`/`statusText` to respond immediately with an error (other matches will not be checked).
+    Проверка, можно ли отрисовать этот маршрут этой страницей. `true` — да, `false` — нет; при отсутствии другого совпадения — 404. Можно вернуть объект с `status`/`statusText` для немедленной ошибки (другие совпадения не проверяются).
 
   **`scrollToTop`**
 
-  - **Type**: `boolean | (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean`
+  - **Тип**: `boolean | (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean`
 
-    Tell Nuxt to scroll to the top before rendering the page or not. If you want to overwrite the default scroll behavior of Nuxt, you can do so in `~/router.options.ts` (see [custom routing](/docs/4.x/guide/recipes/custom-routing#using-routeroptions)) for more info.
+    Прокручивать ли вверх перед рендером страницы. Переопределить поведение по умолчанию можно в `~/router.options.ts` (см. [кастомный роутинг](/docs/4.x/guide/recipes/custom-routing#using-routeroptions)).
 
   **`[key: string]`**
 
-  - **Type**: `any`
+  - **Тип**: `any`
 
-    Apart from the above properties, you can also set **custom** metadata. You may wish to do so in a type-safe way by [augmenting the type of the `meta` object](/docs/4.x/directory-structure/app/pages/#typing-custom-metadata).
+    Помимо перечисленного, можно задать **пользовательские** метаданные. Для типобезопасности — [расширение типа объекта `meta`](/docs/4.x/directory-structure/app/pages/#typing-custom-metadata).
 
-## Examples
+## Примеры
 
-### Basic Usage
+### Базовое использование
 
-The example below demonstrates:
+Пример показывает:
 
-- how `key` can be a function that returns a value;
-- how `keepalive` property makes sure that the `<modal>` component is not cached when switching between multiple components;
-- adding `pageType` as a custom property:
+- `key` как функцию, возвращающую значение;
+- `keepalive`, чтобы `<modal>` не кэшировался при переключении между компонентами;
+- пользовательское свойство `pageType`:
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">
@@ -181,9 +181,9 @@ definePageMeta({
 </script>
 ```
 
-### Defining Middleware
+### Объявление middleware
 
-The example below shows how the middleware can be defined using a `function` directly within the `definePageMeta` or set as a `string` that matches the middleware file name located in the `app/middleware/` directory:
+Middleware можно задать функцией прямо в `definePageMeta` или строкой — именем файла в `app/middleware/`:
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">
@@ -212,13 +212,13 @@ definePageMeta({
 </script>
 ```
 
-### Using a Custom Regular Expression
+### Пользовательское регулярное выражение
 
-A custom regular expression is a good way to resolve conflicts between overlapping routes, for instance:
+Помогает разрешить конфликты перекрывающихся маршрутов.
 
-The two routes "/test-category" and "/1234-post" match both `[postId]-[postSlug].vue` and `[categorySlug].vue` page routes.
+Маршруты «/test-category» и «/1234-post» совпадают и с `[postId]-[postSlug].vue`, и с `[categorySlug].vue`.
 
-To make sure that we are only matching digits (`\d+`) for `postId` in the `[postId]-[postSlug]` route, we can add the following to the `[postId]-[postSlug].vue` page template:
+Чтобы для `postId` в `[postId]-[postSlug]` принимались только цифры (`\d+`), в шаблоне страницы `[postId]-[postSlug].vue` можно указать:
 
 ```vue [app/pages/[postId\\]-[postSlug\\].vue]
 <script setup lang="ts">
@@ -228,11 +228,11 @@ definePageMeta({
 </script>
 ```
 
-For more examples see [Vue Router's Matching Syntax](https://router.vuejs.org/guide/essentials/route-matching-syntax).
+Другие примеры — [синтаксис сопоставления Vue Router](https://router.vuejs.org/guide/essentials/route-matching-syntax).
 
-### Defining Layout
+### Задание layout
 
-You can define the layout that matches the layout's file name located (by default) in the [`app/layouts/` directory](/docs/4.x/directory-structure/app/layouts). You can also disable the layout by setting the `layout` to `false`:
+Имя layout совпадает с именем файла в [`app/layouts/`](/docs/4.x/directory-structure/app/layouts) (по умолчанию). `layout: false` отключает layout:
 
 ```vue [app/pages/some-page.vue]
 <script setup lang="ts">

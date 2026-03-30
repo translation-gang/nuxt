@@ -1,21 +1,21 @@
 ---
 title: 'prerenderRoutes'
-description: prerenderRoutes hints to Nitro to prerender an additional route.
+description: prerenderRoutes подсказывает Nitro пререндерить дополнительный маршрут.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-When prerendering, you can hint to Nitro to prerender additional paths, even if their URLs do not show up in the HTML of the generated page.
+При пререндере можно подсказать Nitro дополнительные пути, даже если их URL не встречается в HTML сгенерированной страницы.
 
 ::important
-`prerenderRoutes` can only be called within the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
+`prerenderRoutes` можно вызывать только в [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ::note
-`prerenderRoutes` has to be executed during prerendering. If the `prerenderRoutes` is used in dynamic pages/routes which are not prerendered, then it will not be executed.
+`prerenderRoutes` должен выполняться в процессе пререндера. На динамических страницах/маршрутах, которые не пререндерятся, он не сработает.
 ::
 
 ```ts
@@ -26,10 +26,10 @@ prerenderRoutes(['/', '/about'])
 ```
 
 ::note
-In the browser, or if called outside prerendering, `prerenderRoutes` will have no effect.
+В браузере или вне пререндера `prerenderRoutes` не действует.
 ::
 
-You can even prerender API routes which is particularly useful for full statically generated sites (SSG) because you can then `$fetch` data as if you have an available server!
+Можно пререндерить и API-маршруты — удобно для полностью статических сайтов (SSG), когда данные затем получают через `$fetch`, как при наличии сервера.
 
 ```ts
 prerenderRoutes('/api/content/article/name-of-article')
@@ -41,6 +41,6 @@ const articleContent = await $fetch('/api/content/article/name-of-article', {
 ```
 
 ::warning
-Prerendered API routes in production may not return the expected response headers, depending on the provider you deploy to. For example, a JSON response might be served with an `application/octet-stream` content type.
-Always manually set `responseType` when fetching prerendered API routes.
+У пререндеренных API в продакшене заголовки ответа могут отличаться от ожидаемых в зависимости от хостинга. Например, JSON может отдаваться с типом `application/octet-stream`.
+Всегда явно задавайте `responseType` при запросах к пререндеренным API.
 ::

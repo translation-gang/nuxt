@@ -1,24 +1,24 @@
 ---
 title: "refreshCookie"
-description: "Refresh useCookie values manually when a cookie has changed"
+description: "Вручную обновить значения useCookie после изменения cookie"
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/cookie.ts
     size: xs
 ---
 
 ::important
-This utility is available since [Nuxt v3.10](/blog/v3-10).
+Утилита доступна с [Nuxt v3.10](/blog/v3-10).
 ::
 
-## Purpose
+## Назначение
 
-The `refreshCookie` function is designed to refresh cookie value returned by `useCookie`.
+`refreshCookie` обновляет значение, возвращаемое `useCookie`.
 
-This is useful for updating the `useCookie` ref when we know the new cookie value has been set in the browser.
+Полезно, когда новое значение cookie уже установлено в браузере и нужно синхронизировать ref из `useCookie`.
 
-## Usage
+## Использование
 
 ```vue [app/app.vue]
 <script setup lang="ts">
@@ -34,10 +34,10 @@ const loggedIn = computed(() => !!tokenCookie.value)
 ```
 
 ::note{to="/docs/4.x/guide/going-further/experimental-features#cookiestore"}
-Since [Nuxt v3.12.0](https://github.com/nuxt/nuxt/releases/tag/v3.12.0), the experimental `cookieStore` option is enabled by default. It automatically refreshes the `useCookie` value when cookies change in the browser.
+С [Nuxt v3.12.0](https://github.com/nuxt/nuxt/releases/tag/v3.12.0) экспериментальная опция `cookieStore` включена по умолчанию: значение `useCookie` обновляется при изменении cookie в браузере.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function refreshCookie (name: string): void

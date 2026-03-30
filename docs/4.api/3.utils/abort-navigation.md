@@ -1,34 +1,34 @@
 ---
 title: 'abortNavigation'
-description: 'abortNavigation is a helper function that prevents navigation from taking place and throws an error if one is set as a parameter.'
+description: 'abortNavigation — хелпер, который отменяет навигацию и при необходимости выбрасывает ошибку, переданную параметром.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/router.ts
     size: xs
 ---
 
 ::warning
-`abortNavigation` is only usable inside a [route middleware handler](/docs/4.x/directory-structure/app/middleware).
+`abortNavigation` можно использовать только внутри [обработчика route middleware](/docs/4.x/directory-structure/app/middleware).
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function abortNavigation (err?: Error | string): false
 ```
 
-## Parameters
+## Параметры
 
 ### `err`
 
-- **Type**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | `string`
+- **Тип**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | `string`
 
-  Optional error to be thrown by `abortNavigation`.
+  Необязательная ошибка, которую выбросит `abortNavigation`.
 
-## Examples
+## Примеры
 
-The example below shows how you can use `abortNavigation` in a route middleware to prevent unauthorized route access:
+Ниже показано, как использовать `abortNavigation` в route middleware, чтобы запретить доступ к маршруту без авторизации:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -44,9 +44,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-### `err` as a String
+### `err` в виде строки
 
-You can pass the error as a string:
+Ошибку можно передать строкой:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {
@@ -58,9 +58,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 ```
 
-### `err` as an Error Object
+### `err` как объект Error
 
-You can pass the error as an [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object, e.g. caught by the `catch`-block:
+Ошибку можно передать как объект [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error), например пойманный в блоке `catch`:
 
 ```ts [app/middleware/auth.ts]
 export default defineNuxtRouteMiddleware((to, from) => {

@@ -1,6 +1,6 @@
 ---
 title: "nuxt add"
-description: "Scaffold an entity into your Nuxt application."
+description: "Создаёт сущность в вашем приложении Nuxt."
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,99 +14,99 @@ npx nuxt add <TEMPLATE> <NAME> [--cwd=<directory>] [--logLevel=<silent|info|verb
 ```
 <!--/add-cmd-->
 
-## Arguments
+## Аргументы
 
 <!--add-args-->
-| Argument   | Description                                                                                                                                                                                                      |
+| Аргумент   | Описание                                                                                                                                                                                                      |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `TEMPLATE` | Specify which template to generate (options: <api\|app\|app-config\|component\|composable\|error\|layer\|layout\|middleware\|module\|page\|plugin\|server-middleware\|server-plugin\|server-route\|server-util>) |
-| `NAME`     | Specify name of the generated file                                                                                                                                                                               |
+| `TEMPLATE` | Укажите, какой шаблон генерировать (варианты: <api\|app\|app-config\|component\|composable\|error\|layer\|layout\|middleware\|module\|page\|plugin\|server-middleware\|server-plugin\|server-route\|server-util>) |
+| `NAME`     | Имя создаваемого файла                                                                                                                                                                               |
 <!--/add-args-->
 
-## Options
+## Опции
 
 <!--add-opts-->
-| Option                               | Default | Description                              |
+| Опция                                | По умолчанию | Описание                              |
 |--------------------------------------|---------|------------------------------------------|
-| `--cwd=<directory>`                  | `.`     | Specify the working directory            |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level             |
-| `--force`                            | `false` | Force override file if it already exists |
+| `--cwd=<directory>`                  | `.`     | Рабочая директория            |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке             |
+| `--force`                            | `false` | Принудительно перезаписать файл, если он уже существует |
 <!--/add-opts-->
 
-**Modifiers:**
+**Модификаторы:**
 
-Some templates support additional modifier flags to add a suffix (like `.client` or `.get`) to their name.
+Некоторые шаблоны поддерживают дополнительные флаги-модификаторы, добавляющие суффикс (например `.client` или `.get`) к имени.
 
 ```bash [Terminal]
-# Generates `/plugins/sockets.client.ts`
+# Создаёт `/plugins/sockets.client.ts`
 npx nuxt add plugin sockets --client
 ```
 
 ## `nuxt add component`
 
-* Modifier flags: `--mode client|server` or `--client` or `--server`
+* Флаги-модификаторы: `--mode client|server` или `--client` или `--server`
 
 ```bash [Terminal]
-# Generates `app/components/TheHeader.vue`
+# Создаёт `app/components/TheHeader.vue`
 npx nuxt add component TheHeader
 ```
 
 ## `nuxt add composable`
 
 ```bash [Terminal]
-# Generates `app/composables/foo.ts`
+# Создаёт `app/composables/foo.ts`
 npx nuxt add composable foo
 ```
 
 ## `nuxt add layout`
 
 ```bash [Terminal]
-# Generates `app/layouts/custom.vue`
+# Создаёт `app/layouts/custom.vue`
 npx nuxt add layout custom
 ```
 
 ## `nuxt add plugin`
 
-* Modifier flags: `--mode client|server` or `--client`or `--server`
+* Флаги-модификаторы: `--mode client|server` или `--client` или `--server`
 
 ```bash [Terminal]
-# Generates `app/plugins/analytics.ts`
+# Создаёт `app/plugins/analytics.ts`
 npx nuxt add plugin analytics
 ```
 
 ## `nuxt add page`
 
 ```bash [Terminal]
-# Generates `app/pages/about.vue`
+# Создаёт `app/pages/about.vue`
 npx nuxt add page about
 ```
 
 ```bash [Terminal]
-# Generates `app/pages/category/[id].vue`
+# Создаёт `app/pages/category/[id].vue`
 npx nuxt add page "category/[id]"
 ```
 
 ## `nuxt add middleware`
 
-* Modifier flags: `--global`
+* Флаги-модификаторы: `--global`
 
 ```bash [Terminal]
-# Generates `app/middleware/auth.ts`
+# Создаёт `app/middleware/auth.ts`
 npx nuxt add middleware auth
 ```
 
 ## `nuxt add api`
 
-* Modifier flags: `--method` (can accept `connect`, `delete`, `get`, `head`, `options`, `patch`, `post`, `put` or `trace`) or alternatively you can directly use `--get`, `--post`, etc.
+* Флаги-модификаторы: `--method` (допустимы `connect`, `delete`, `get`, `head`, `options`, `patch`, `post`, `put` или `trace`) либо напрямую `--get`, `--post` и т.д.
 
 ```bash [Terminal]
-# Generates `server/api/hello.ts`
+# Создаёт `server/api/hello.ts`
 npx nuxt add api hello
 ```
 
 ## `nuxt add layer`
 
 ```bash [Terminal]
-# Generates `layers/subscribe/nuxt.config.ts`
+# Создаёт `layers/subscribe/nuxt.config.ts`
 npx nuxt add layer subscribe
 ```

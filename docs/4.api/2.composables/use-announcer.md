@@ -1,54 +1,54 @@
 ---
 title: 'useAnnouncer'
-description: A composable for announcing messages to screen readers.
+description: Композабл для объявлений в screen reader.
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/announcer.ts
     size: xs
 ---
 
 ::important
-This composable is available in Nuxt v3.17+.
+Доступен в Nuxt v3.17+.
 ::
 
-## Description
+## Описание
 
-A composable for announcing dynamic content changes to screen readers. Unlike [`useRouteAnnouncer`](/docs/api/composables/use-route-announcer) which automatically announces route changes, `useAnnouncer` gives you manual control over what and when to announce.
+Объявляет динамические изменения контента для screen reader. В отличие от [`useRouteAnnouncer`](/docs/api/composables/use-route-announcer), который объявляет смену маршрута, `useAnnouncer` даёт ручной контроль над текстом и моментом объявления.
 
-Use this for in-page updates like form validation, async operations, toast notifications, and live content changes.
+Для обновлений на странице: валидация форм, асинхронные операции, тосты, живой контент.
 
-## Parameters
+## Параметры
 
-- `politeness`: Sets the default urgency for screen reader announcements: `off` (disable the announcement), `polite` (waits for silence), or `assertive` (interrupts immediately). (default `polite`)
+- `politeness`: срочность по умолчанию: `off`, `polite` или `assertive`. По умолчанию `polite`.
 
-## Properties
+## Свойства
 
 ### `message`
 
 - **type**: `Ref<string>`
-- **description**: The current message to announce
+- **description**: Текущее сообщение для объявления
 
 ### `politeness`
 
 - **type**: `Ref<'polite' | 'assertive' | 'off'>`
-- **description**: Screen reader announcement urgency level
+- **description**: Уровень срочности объявления
 
-## Methods
+## Методы
 
 ### `set(message, politeness = "polite")`
 
-Sets the message to announce with its urgency level.
+Сообщение и уровень срочности.
 
 ### `polite(message)`
 
-Sets the message with `politeness = "polite"`. Use for non-urgent updates that can wait for the screen reader to finish its current task.
+С `politeness = "polite"`. Для некритичных обновлений, когда можно дождаться окончания текущей речи.
 
 ### `assertive(message)`
 
-Sets the message with `politeness = "assertive"`. Use for urgent updates that should interrupt the screen reader immediately.
+С `politeness = "assertive"`. Для срочных обновлений с немедленным прерыванием.
 
-## Example
+## Пример
 
 ```vue [app/pages/contact.vue]
 <script setup lang="ts">
@@ -65,9 +65,9 @@ async function submitForm () {
 </script>
 ```
 
-## Use Cases
+## Сценарии
 
-### Form Validation
+### Валидация формы
 
 ```vue [app/components/LoginForm.vue]
 <script setup lang="ts">
@@ -87,7 +87,7 @@ function validateForm () {
 </script>
 ```
 
-### Loading States
+### Состояния загрузки
 
 ```vue [app/pages/dashboard.vue]
 <script setup lang="ts">
@@ -105,7 +105,7 @@ watch(status, (newStatus) => {
 </script>
 ```
 
-### Search Results
+### Результаты поиска
 
 ```vue [app/components/Search.vue]
 <script setup lang="ts">
@@ -120,9 +120,9 @@ watch(results, (newResults) => {
 ```
 
 ::callout
-You need to add the [`<NuxtAnnouncer>`](/docs/4.x/api/components/nuxt-announcer) component to your app for the announcements to be rendered in the DOM.
+Добавьте в приложение компонент [`<NuxtAnnouncer>`](/docs/4.x/api/components/nuxt-announcer), чтобы объявления попадали в DOM.
 ::
 
 ::callout
-For automatic announcements of route/page changes, use [`useRouteAnnouncer`](/docs/4.x/api/composables/use-route-announcer) with the [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer) component instead.
+Для автоматических объявлений смены маршрута/страницы используйте [`useRouteAnnouncer`](/docs/4.x/api/composables/use-route-announcer) и [`<NuxtRouteAnnouncer>`](/docs/4.x/api/components/nuxt-route-announcer).
 ::

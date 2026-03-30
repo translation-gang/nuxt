@@ -1,65 +1,65 @@
 ---
-title: 'Nuxt Directory Structure'
-description: 'Learn about the directory structure of a Nuxt application and how to use it.'
+title: 'Структура каталогов Nuxt'
+description: 'Узнайте о структуре каталогов приложения Nuxt и о том, как ею пользоваться.'
 navigation: false
 ---
 
-Nuxt applications have a specific directory structure that is used to organize the code. This structure is designed to be easy to understand and to be used in a consistent way.
+У приложений Nuxt есть определённая структура каталогов для организации кода. Она рассчитана на простоту понимания и единообразное использование.
 
-## Root Directory
+## Корневой каталог
 
-The root directory of a Nuxt application is the directory that contains the `nuxt.config.ts` file. This file is used to configure the Nuxt application.
+Корневой каталог приложения Nuxt — это каталог, в котором лежит файл `nuxt.config.ts`. Он задаёт конфигурацию приложения Nuxt.
 
-## App Directory
+## Каталог app
 
-The `app/` directory is the main directory of the Nuxt application. It contains the following subdirectories:
-- [`assets/`](/docs/4.x/directory-structure/app/assets): website's assets that the build tool (Vite or webpack) will process
-- [`components/`](/docs/4.x/directory-structure/app/components): Vue components of the application
-- [`composables/`](/docs/4.x/directory-structure/app/composables): add your Vue composables
-- [`layouts/`](/docs/4.x/directory-structure/app/layouts): Vue components that wrap around your pages and avoid re-rendering between pages
-- [`middleware/`](/docs/4.x/directory-structure/app/middleware): run code before navigating to a particular route
-- [`pages/`](/docs/4.x/directory-structure/app/pages): file-based routing to create routes within your web application
-- [`plugins/`](/docs/4.x/directory-structure/app/plugins): use Vue plugins and more at the creation of your Nuxt application
-- [`utils/`](/docs/4.x/directory-structure/app/utils): add functions throughout your application that can be used in your components, composables, and pages.
+Каталог `app/` — основной каталог приложения Nuxt. В нём находятся следующие подкаталоги:
+- [`assets/`](/docs/4.x/directory-structure/app/assets): ресурсы сайта, которые обработает сборщик (Vite или webpack)
+- [`components/`](/docs/4.x/directory-structure/app/components): Vue-компоненты приложения
+- [`composables/`](/docs/4.x/directory-structure/app/composables): ваши Vue composables
+- [`layouts/`](/docs/4.x/directory-structure/app/layouts): Vue-компоненты-обёртки для страниц без лишнего перерендера при смене страницы
+- [`middleware/`](/docs/4.x/directory-structure/app/middleware): код до перехода на конкретный маршрут
+- [`pages/`](/docs/4.x/directory-structure/app/pages): файловая маршрутизация для маршрутов веб-приложения
+- [`plugins/`](/docs/4.x/directory-structure/app/plugins): плагины Vue и другое при создании приложения Nuxt
+- [`utils/`](/docs/4.x/directory-structure/app/utils): функции для компонентов, composables и страниц.
 
-This directory also includes specific files:
-- [`app.config.ts`](/docs/4.x/directory-structure/app/app-config): a reactive configuration within your application
-- [`app.vue`](/docs/4.x/directory-structure/app/app): the root component of your Nuxt application
-- [`error.vue`](/docs/4.x/directory-structure/app/error): the error page of your Nuxt application
+В этом каталоге также есть отдельные файлы:
+- [`app.config.ts`](/docs/4.x/directory-structure/app/app-config): реактивная конфигурация внутри приложения
+- [`app.vue`](/docs/4.x/directory-structure/app/app): корневой компонент приложения Nuxt
+- [`error.vue`](/docs/4.x/directory-structure/app/error): страница ошибки приложения Nuxt
 
-## Public Directory
+## Каталог public
 
-The [`public/`](/docs/4.x/directory-structure/public) directory is the directory that contains the public files of the Nuxt application. Files contained within this directory are served at the root and are not modified by the build process.
+Каталог [`public/`](/docs/4.x/directory-structure/public) содержит публичные файлы приложения Nuxt. Они отдаются с корня и не изменяются процессом сборки.
 
-This is suitable for files that have to keep their names (e.g. `robots.txt`) _or_ likely won't change (e.g. `favicon.ico`).
+Подходит для файлов, которым важны имена (например, `robots.txt`) _или_ которые редко меняются (например, `favicon.ico`).
 
-## Server Directory
+## Каталог server
 
-The [`server/`](/docs/4.x/directory-structure/server) directory is the directory that contains the server-side code of the Nuxt application. It contains the following subdirectories:
-- [`api/`](/docs/4.x/directory-structure/server#server-routes): contains the API routes of the application.
-- [`routes/`](/docs/4.x/directory-structure/server#server-routes): contains the server routes of the application (e.g. dynamic `/sitemap.xml`).
-- [`middleware/`](/docs/4.x/directory-structure/server#server-middleware): run code before a server route is processed
-- [`plugins/`](/docs/4.x/directory-structure/server#server-plugins): use plugins and more at the creation of the Nuxt server
-- [`utils/`](/docs/4.x/directory-structure/server#server-utilities): add functions throughout your application that can be used in your server  code.
+Каталог [`server/`](/docs/4.x/directory-structure/server) содержит серверный код приложения Nuxt. В нём такие подкаталоги:
+- [`api/`](/docs/4.x/directory-structure/server#server-routes): маршруты API приложения.
+- [`routes/`](/docs/4.x/directory-structure/server#server-routes): серверные маршруты (например, динамический `/sitemap.xml`).
+- [`middleware/`](/docs/4.x/directory-structure/server#server-middleware): код до обработки серверного маршрута
+- [`plugins/`](/docs/4.x/directory-structure/server#server-plugins): плагины и другое при создании сервера Nuxt
+- [`utils/`](/docs/4.x/directory-structure/server#server-utilities): функции для серверного кода.
 
-## Shared Directory
+## Каталог shared
 
-The [`shared/`](/docs/4.x/directory-structure/shared) directory is the directory that contains the shared code of the Nuxt application and Nuxt server. This code can be used in both the Vue app and the Nitro server.
+Каталог [`shared/`](/docs/4.x/directory-structure/shared) содержит общий код приложения Nuxt и сервера. Его можно использовать и во Vue-приложении, и на сервере Nitro.
 
-## Content Directory
+## Каталог content
 
-The [`content/`](/docs/4.x/directory-structure/content) directory is enabled by the [Nuxt Content](https://content.nuxt.com) module. It is used to create a file-based CMS for your application using Markdown files.
+Каталог [`content/`](/docs/4.x/directory-structure/content) подключается модулем [Nuxt Content](https://content.nuxt.com). С его помощью на основе Markdown-файлов строится файловая CMS для приложения.
 
-## Modules Directory
+## Каталог modules
 
-The [`modules/`](/docs/4.x/directory-structure/modules) directory is the directory that contains the local modules of the Nuxt application. Modules are used to extend the functionality of the Nuxt application.
+Каталог [`modules/`](/docs/4.x/directory-structure/modules) содержит локальные модули приложения Nuxt. Модули расширяют возможности Nuxt.
 
-## Layers Directory
+## Каталог layers
 
-The [`layers/`](/docs/4.x/directory-structure/layers) directory allows you to organize and share reusable code, components, composables, and configurations. Layers within this directory are automatically registered in your project.
+Каталог [`layers/`](/docs/4.x/directory-structure/layers) помогает организовать и переиспользовать код, компоненты, composables и конфигурации. Слои в этом каталоге автоматически регистрируются в проекте.
 
-## Nuxt Files
+## Файлы Nuxt
 
-- [`nuxt.config.ts`](/docs/4.x/directory-structure/nuxt-config) file is the main configuration file for the Nuxt application.
-- [`.nuxtrc`](/docs/4.x/directory-structure/nuxtrc) file is another syntax for configuring the Nuxt application (useful for global configurations).
-- [`.nuxtignore`](/docs/4.x/directory-structure/nuxtignore) file is used to ignore files in the root directory during the build phase.
+- [`nuxt.config.ts`](/docs/4.x/directory-structure/nuxt-config) — основной файл конфигурации приложения Nuxt.
+- [`.nuxtrc`](/docs/4.x/directory-structure/nuxtrc) — альтернативный плоский синтаксис конфигурации (удобно для глобальных настроек).
+- [`.nuxtignore`](/docs/4.x/directory-structure/nuxtignore) — игнорирование файлов в корне на этапе сборки.

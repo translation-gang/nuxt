@@ -1,49 +1,47 @@
 ---
 title: 'useNuxtData'
-description: 'Access the current cached value of data fetching composables.'
+description: 'Доступ к текущему кэшированному значению композаблов загрузки данных.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/asyncData.ts
     size: xs
 ---
 
 ::note
-`useNuxtData` gives you access to the current cached value of [`useAsyncData`](/docs/4.x/api/composables/use-async-data) , [`useLazyAsyncData`](/docs/4.x/api/composables/use-lazy-async-data), [`useFetch`](/docs/4.x/api/composables/use-fetch) and [`useLazyFetch`](/docs/4.x/api/composables/use-lazy-fetch) with explicitly provided key.
+`useNuxtData` открывает текущий кэш [`useAsyncData`](/docs/4.x/api/composables/use-async-data), [`useLazyAsyncData`](/docs/4.x/api/composables/use-lazy-async-data), [`useFetch`](/docs/4.x/api/composables/use-fetch) и [`useLazyFetch`](/docs/4.x/api/composables/use-lazy-fetch), если при загрузке явно передан ключ.
 ::
 
-## Usage
+## Использование
 
-The `useNuxtData` composable is used to access the current cached value of data-fetching composables such as `useAsyncData`, `useLazyAsyncData`, `useFetch`, and `useLazyFetch`. By providing the key used during the data fetch, you can retrieve the cached data and use it as needed.
+По ключу из `useAsyncData`, `useLazyAsyncData`, `useFetch` или `useLazyFetch` можно прочитать закэшированные данные — удобно для переиспользования, оптимистичных обновлений и каскадных обновлений.
 
-This is particularly useful for optimizing performance by reusing already-fetched data or implementing features like Optimistic Updates or cascading data updates.
+Ключ должен быть явно задан при первом вызове композабла загрузки.
 
-To use `useNuxtData`, ensure that the data-fetching composable (`useFetch`, `useAsyncData`, etc.) has been called with an explicitly provided key.
+:video-accordion{title="Видео LearnVue про useNuxtData" videoId="e-_u6swXRWk"}
 
-:video-accordion{title="Watch a video from LearnVue about useNuxtData" videoId="e-_u6swXRWk"}
+## Параметры
 
-## Params
+- `key`: Уникальный ключ кэша; должен совпадать с ключом при первоначальной загрузке.
 
-- `key`: The unique key that identifies the cached data. This key should match the one used during the original data fetch.
+## Возвращаемые значения
 
-## Return Values
+- `data`: Реактивная ссылка на кэш по ключу. Если кэша нет — `null`. `Ref` обновляется при изменении кэша.
 
-- `data`: A reactive reference to the cached data associated with the provided key. If no cached data exists, the value will be `null`. This `Ref` automatically updates if the cached data changes, allowing seamless reactivity in your components.
+## Пример
 
-## Example
-
-The example below shows how you can use cached data as a placeholder while the most recent data is being fetched from the server.
+Кэш как плейсхолдер, пока грузятся свежие данные:
 
 ```vue [app/pages/posts.vue]
 <script setup lang="ts">
-// We can access same data later using 'posts' key
+// Позже те же данные по ключу 'posts'
 const { data } = await useFetch('/api/posts', { key: 'posts' })
 </script>
 ```
 
 ```vue [app/pages/posts/[id\\].vue]
 <script setup lang="ts">
-// Access to the cached value of useFetch in posts.vue (parent route)
+// Кэш из useFetch в posts.vue (родительский маршрут)
 const { data: posts } = useNuxtData('posts')
 
 const route = useRoute()
@@ -51,22 +49,19 @@ const route = useRoute()
 const { data } = useLazyFetch(`/api/posts/${route.params.id}`, {
   key: `post-${route.params.id}`,
   default () {
-    // Find the individual post from the cache and set it as the default value.
+    // Запись из кэша как значение по умолчанию
     return posts.value.find(post => post.id === route.params.id)
   },
 })
 </script>
 ```
 
-## Optimistic Updates
+## Оптимистичные обновления
 
-The example below shows how implementing Optimistic Updates can be achieved using useNuxtData.
-
-Optimistic Updates is a technique where the user interface is updated immediately, assuming a server operation will succeed. If the operation eventually fails, the UI is rolled back to its previous state.
+Обновление UI сразу, с откатом при ошибке сервера:
 
 ```vue [app/pages/todos.vue]
 <script setup lang="ts">
-// We can access same data later using 'todos' key
 const { data } = await useAsyncData('todos', (_nuxtApp, { signal }) => $fetch('/api/todos', { signal }))
 </script>
 ```
@@ -76,7 +71,6 @@ const { data } = await useAsyncData('todos', (_nuxtApp, { signal }) => $fetch('/
 const newTodo = ref('')
 let previousTodos = []
 
-// Access to the cached value of useAsyncData in todos.vue
 const { data: todos } = useNuxtData('todos')
 
 async function addTodo () {
@@ -86,18 +80,13 @@ async function addTodo () {
       todo: newTodo.value,
     },
     onRequest () {
-      // Store the previously cached value to restore if fetch fails.
       previousTodos = todos.value
-
-      // Optimistically update the todos.
       todos.value = [...todos.value, newTodo.value]
     },
     onResponseError () {
-      // Rollback the data if the request failed.
       todos.value = previousTodos
     },
     async onResponse () {
-      // Invalidate todos in the background if the request succeeded.
       await refreshNuxtData('todos')
     },
   })
@@ -105,7 +94,7 @@ async function addTodo () {
 </script>
 ```
 
-## Type
+## Тип
 
 ```ts [Signature]
 export function useNuxtData<DataT = any> (key: string): { data: Ref<DataT | undefined> }

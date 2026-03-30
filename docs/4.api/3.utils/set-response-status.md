@@ -1,19 +1,19 @@
 ---
 title: 'setResponseStatus'
-description: setResponseStatus sets the status (and optionally the statusText) of the response.
+description: setResponseStatus задаёт код статуса ответа (и при необходимости statusText).
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/app/composables/ssr.ts
     size: xs
 ---
 
-Nuxt provides composables and utilities for first-class server-side-rendering support.
+В Nuxt есть composables и утилиты для полноценного SSR.
 
-`setResponseStatus` sets the status (and optionally the statusText) of the response.
+`setResponseStatus` задаёт HTTP-статус (и опционально `statusText`) ответа.
 
 ::important
-`setResponseStatus` can only be called in the [Nuxt context](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
+`setResponseStatus` можно вызывать только в [контексте Nuxt](/docs/4.x/guide/going-further/nuxt-app#the-nuxt-context).
 ::
 
 ```ts
@@ -30,7 +30,7 @@ if (event) {
 ```
 
 ::note
-In the browser, `setResponseStatus` will have no effect.
+В браузере `setResponseStatus` не действует.
 ::
 
 :read-more{to="/docs/4.x/getting-started/error-handling"}

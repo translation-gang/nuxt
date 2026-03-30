@@ -1,6 +1,6 @@
 ---
 title: 'nuxt build-module'
-description: 'Nuxt command to build your Nuxt module before publishing.'
+description: 'Команда Nuxt для сборки модуля Nuxt перед публикацией.'
 links:
   - label: Source
     icon: i-simple-icons-github
@@ -14,29 +14,29 @@ npx nuxt build-module [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|ver
 ```
 <!--/build-module-cmd-->
 
-The `build-module` command runs `@nuxt/module-builder` to generate `dist` directory within your `rootDir` that contains the full build for your **nuxt-module**.
+Команда `build-module` запускает `@nuxt/module-builder` и создаёт каталог `dist` в вашем `rootDir` с полной сборкой **nuxt-module**.
 
-## Arguments
+## Аргументы
 
 <!--build-module-args-->
-| Argument      | Description                                    |
+| Аргумент      | Описание                                    |
 |---------------|------------------------------------------------|
-| `ROOTDIR="."` | Specifies the working directory (default: `.`) |
+| `ROOTDIR="."` | Рабочая директория (по умолчанию: `.`) |
 <!--/build-module-args-->
 
-## Options
+## Опции
 
 <!--build-module-opts-->
-| Option                               | Default | Description                                                                      |
+| Опция                                | По умолчанию | Описание                                                                      |
 |--------------------------------------|---------|----------------------------------------------------------------------------------|
-| `--cwd=<directory>`                  |         | Specify the working directory, this takes precedence over ROOTDIR (default: `.`) |
-| `--logLevel=<silent\|info\|verbose>` |         | Specify build-time log level                                                     |
-| `--build`                            | `false` | Build module for distribution                                                    |
-| `--stub`                             | `false` | Stub dist instead of actually building it for development                        |
-| `--sourcemap`                        | `false` | Generate sourcemaps                                                              |
-| `--prepare`                          | `false` | Prepare module for local development                                             |
+| `--cwd=<directory>`                  |         | Рабочая директория; имеет приоритет над ROOTDIR (по умолчанию: `.`) |
+| `--logLevel=<silent\|info\|verbose>` |         | Уровень логирования при сборке                                                     |
+| `--build`                            | `false` | Собрать модуль для распространения                                                    |
+| `--stub`                             | `false` | Заглушка dist вместо полноценной сборки для разработки                        |
+| `--sourcemap`                        | `false` | Генерировать sourcemaps                                                              |
+| `--prepare`                          | `false` | Подготовить модуль для локальной разработки                                             |
 <!--/build-module-opts-->
 
 ::read-more{to="https://github.com/nuxt/module-builder" icon="i-simple-icons-github" target="\_blank"}
-Read more about `@nuxt/module-builder`.
+Подробнее о `@nuxt/module-builder`.
 ::

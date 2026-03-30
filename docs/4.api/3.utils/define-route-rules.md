@@ -1,18 +1,18 @@
 ---
 title: 'defineRouteRules'
-description: 'Define route rules for hybrid rendering at the page level.'
+description: 'Правила маршрутов для гибридного рендеринга на уровне страницы.'
 links:
-  - label: Source
+  - label: Исходный код
     icon: i-simple-icons-github
     to: https://github.com/nuxt/nuxt/blob/main/packages/nuxt/src/pages/runtime/composables.ts
     size: xs
 ---
 
 ::read-more{to="/docs/4.x/guide/going-further/experimental-features#inlinerouterules" icon="i-lucide-star"}
-This feature is experimental and in order to use it you must enable the `experimental.inlineRouteRules` option in your `nuxt.config`.
+Функция экспериментальная: включите в `nuxt.config` опцию `experimental.inlineRouteRules`.
 ::
 
-## Usage
+## Использование
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
@@ -26,7 +26,7 @@ defineRouteRules({
 </template>
 ```
 
-Will be translated to:
+Преобразуется в:
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
@@ -37,16 +37,16 @@ export default defineNuxtConfig({
 ```
 
 ::note
-When running [`nuxt build`](/docs/4.x/api/commands/build), the home page will be pre-rendered in `.output/public/index.html` and statically served.
+При [`nuxt build`](/docs/4.x/api/commands/build) главная страница пререндерится в `.output/public/index.html` и отдаётся статически.
 ::
 
-## Notes
+## Замечания
 
-- A rule defined in `~/pages/foo/bar.vue` will be applied to `/foo/bar` requests.
-- A rule in `~/pages/foo/[id].vue` will be applied to `/foo/**` requests.
+- Правило в `~/pages/foo/bar.vue` применяется к запросам `/foo/bar`.
+- Правило в `~/pages/foo/[id].vue` — к запросам `/foo/**`.
 
-For more control, such as if you are using a custom `path` or `alias` set in the page's [`definePageMeta`](/docs/4.x/api/utils/define-page-meta), you should set `routeRules` directly within your `nuxt.config`.
+Для тонкой настройки при кастомном `path` или `alias` в [`definePageMeta`](/docs/4.x/api/utils/define-page-meta) задавайте `routeRules` прямо в `nuxt.config`.
 
 ::read-more{to="/docs/4.x/guide/concepts/rendering#hybrid-rendering" icon="i-lucide-medal"}
-Read more about the `routeRules`.
+Подробнее о `routeRules`.
 ::
