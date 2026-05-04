@@ -79,4 +79,4 @@ import { useRoute } from '#app'
 
 Браузеры не отправляют [фрагменты URL](https://url.spec.whatwg.org/#concept-url-fragment) (например `#foo`) в запросе. Использование `route.fullPath` в шаблоне может вызвать ошибки гидратации: на клиенте фрагмент будет, на сервере — нет.
 
-:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/type-aliases/routelocationnormalizedloaded"}
+:read-more{icon="i-simple-icons-vuedotjs" to="https://router.vuejs.org/api/type-aliases/RouteLocationNormalizedLoaded.html"}

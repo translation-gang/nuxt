@@ -40,5 +40,5 @@ npx nuxt preview [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>
 Команда устанавливает `process.env.NODE_ENV` в `production`. Чтобы переопределить, задайте `NODE_ENV` в `.env` или аргументом командной строки.
 
 ::note
-В режиме preview файл [`.env`](/docs/4.x/directory-structure/env) подхватывается в `process.env`. В production переменные окружения нужно задать самостоятельно (например, Node.js 20+: `node --env-file .env .output/server/index.mjs`).
+В режиме preview файл [`.env`](/docs/4.x/directory-structure/env) подхватывается в `process.env`. В production переменные окружения нужно задать самостоятельно (например, Node.js 20+: `NODE_ENV=production node --env-file .env .output/server/index.mjs`).
 ::
