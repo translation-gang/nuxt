@@ -23,17 +23,17 @@ links:
 
 ### `isLoading`
 
-- **тип:** `Ref<boolean>`
+- **тип:** `Readonly<ShallowRef<boolean>>`
 - **описание:** идёт ли сейчас загрузка
 
 ### `error`
 
-- **тип:** `Ref<boolean>`
+- **тип:** `Readonly<ShallowRef<boolean>>`
 - **описание:** флаг ошибки (см. `finish` с `{ error: true }`)
 
 ### `progress`
 
-- **тип:** `Ref<number>`
+- **тип:** `Readonly<ShallowRef<number>>`
 - **описание:** текущий прогресс от `0` до `100`
 
 ## Методы
