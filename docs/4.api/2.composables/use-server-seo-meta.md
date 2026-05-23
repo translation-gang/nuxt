@@ -8,17 +8,23 @@ links:
     size: xs
 ---
 
-Как и [`useSeoMeta`](/docs/4.x/api/composables/use-seo-meta), `useServerSeoMeta` задаёт SEO-метатеги сайта плоским объектом с полной поддержкой TypeScript.
+::warning
+`useServerSeoMeta` is deprecated. Wrap [`useSeoMeta`](/docs/4.x/api/composables/use-seo-meta) in an `if (import.meta.server)` block instead. The auto-import is removed under `future.compatibilityVersion: 5`.
+::
+
+`useServerSeoMeta` lets you define your site's SEO meta tags as a flat object with full TypeScript support, exactly like [`useSeoMeta`](/docs/4.x/api/composables/use-seo-meta), but it only runs server-side and is tree-shaken from the client bundle.
 
 :read-more{to="/docs/4.x/api/composables/use-seo-meta"}
 
-Чаще всего метатеги не требуют реактивности — роботы смотрят только первоначальную загрузку. [`useServerSeoMeta`](/docs/4.x/api/composables/use-server-seo-meta) ориентирован на производительность: на клиенте ничего не делает (или возвращает объект `head`).
+For new code, use the server-only pattern directly:
 
 ```vue [app/app.vue]
 <script setup lang="ts">
-useServerSeoMeta({
-  robots: 'index, follow',
-})
+if (import.meta.server) {
+  useSeoMeta({
+    robots: 'index, follow',
+  })
+}
 </script>
 ```
 
