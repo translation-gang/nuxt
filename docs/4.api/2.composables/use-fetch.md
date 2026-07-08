@@ -241,7 +241,7 @@ const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating
 - `error`: ошибка
 
 ::note
-Если на сервере данные не запрашивались (например, `server: false`), они _не_ загрузятся до завершения гидратации. Даже при `await useFetch` на клиенте в `<script setup>` `data` может оставаться `null`.
+Если на сервере данные не запрашивались (например, `server: false`), они _не_ загрузятся до завершения гидратации. Даже при `await useFetch` на клиенте в `<script setup>` `data` может оставаться `undefined`.
 ::
 
 ### Примеры
