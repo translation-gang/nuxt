@@ -20,6 +20,9 @@ surround: false
   ::card{icon="i-lucide-code" title="Плагины, компоненты и другое" to="/docs/4.x/guide/modules/recipes-basics"}
   Подключение плагинов, компонентов, композаблов и серверных маршрутов из модуля.
   ::
+  ::card{icon="i-lucide-link" title="Зависимости от других модулей" to="/docs/4.x/guide/modules/module-dependencies"}
+  Объявление зависимостей от других модулей с ограничениями версий и слиянием конфигурации.
+  ::
   ::card{icon="i-lucide-layers" title="Хуки и расширение типов" to="/docs/4.x/guide/modules/recipes-advanced"}
   Хуки жизненного цикла, виртуальные файлы и TypeScript в модулях.
   ::

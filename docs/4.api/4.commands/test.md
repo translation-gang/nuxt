@@ -14,7 +14,7 @@ npx nuxt test [ROOTDIR] [--cwd=<directory>] [--logLevel=<silent|info|verbose>] [
 ```
 <!--/test-cmd-->
 
-Команда `test` запускает тесты через [`@nuxt/test-utils`](/docs/getting-started/testing). Устанавливает `process.env.NODE_ENV` в `test`, если не задано иначе.
+Команда `test` запускает тесты через [`@nuxt/test-utils`](/docs/4.x/getting-started/testing). Устанавливает `process.env.NODE_ENV` в `test`, если не задано иначе.
 
 ## Аргументы
 

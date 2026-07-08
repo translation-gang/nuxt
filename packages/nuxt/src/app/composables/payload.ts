@@ -26,8 +26,8 @@ export async function loadPayload (url: string, opts: LoadPayloadOptions = {}): 
   }
   return null
 }
-let linkRelType: string | undefined
-function detectLinkRelType () {
+let linkRelType: 'preload' | 'prefetch' | undefined
+function detectLinkRelType (): 'preload' | 'prefetch' {
   if (import.meta.server) { return 'preload' }
   if (linkRelType) { return linkRelType }
   const relList = document.createElement('link').relList
@@ -55,8 +55,14 @@ export function preloadPayload (url: string, opts: LoadPayloadOptions = {}): Pro
       linkEl.href = payloadURL
       document.head.appendChild(linkEl)
       return new Promise<void>((resolve, reject) => {
-        linkEl.addEventListener('load', () => resolve())
-        linkEl.addEventListener('error', () => reject())
+        const cleanup = () => {
+          linkEl.removeEventListener('load', onLoad)
+          linkEl.removeEventListener('error', onError)
+        }
+        const onLoad = () => { cleanup(); resolve() }
+        const onError = () => { cleanup(); reject() }
+        linkEl.addEventListener('load', onLoad)
+        linkEl.addEventListener('error', onError)
       })
     }
   })
