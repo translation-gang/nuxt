@@ -892,6 +892,7 @@ export async function bundle (nuxt: Nuxt & { _nitro?: Nitro }): Promise<void> {
 
   // nuxt dev
   if (nuxt.options.dev) {
+    let nitroBuilt = false
     for (const builder of ['webpack', 'rspack'] as const) {
       nuxt.hook(`${builder}:compile`, ({ name, compiler }) => {
         if (name === 'server') {
@@ -899,7 +900,9 @@ export async function bundle (nuxt: Nuxt & { _nitro?: Nitro }): Promise<void> {
           nitro.options.virtual['#build/dist/server/server.mjs'] = () => memfs.readFileSync(join(nuxt.options.buildDir, 'dist/server/server.mjs'), 'utf-8')
         }
       })
-      nuxt.hook(`${builder}:compiled`, () => { nuxt.server.reload() })
+      nuxt.hook(`${builder}:compiled`, () => {
+        if (nitroBuilt) { nitro.hooks.callHook('rollup:reload') }
+      })
     }
     nuxt.hook('vite:compiled', () => { nuxt.server.reload() })
 
@@ -917,7 +920,10 @@ export async function bundle (nuxt: Nuxt & { _nitro?: Nitro }): Promise<void> {
     })
     nuxt.server = createDevServer(nitro)
 
-    const waitUntilCompile = new Promise<void>(resolve => nitro.hooks.hook('compiled', () => resolve()))
+    const waitUntilCompile = new Promise<void>(resolve => nitro.hooks.hook('compiled', () => {
+      nitroBuilt = true
+      resolve()
+    }))
     nuxt.hook('build:done', () => waitUntilCompile)
   }
 }
