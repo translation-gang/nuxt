@@ -252,6 +252,9 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>({
           to.meta.layoutProps = initialLayoutProps
         }
         nuxtApp._processingMiddleware = true
+        if (import.meta.server) {
+          nuxtApp._middlewareTo = to
+        }
 
         if (import.meta.client || !nuxtApp.ssrContext?.islandContext) {
           const middlewareEntries = new Set<RouteGuard>([...globalMiddleware, ...nuxtApp._middleware.global])
@@ -285,6 +288,7 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>({
                   },
                 })
                 delete nuxtApp._processingMiddleware
+                delete nuxtApp._middlewareTo
                 return nuxtApp.runWithContext(() => showError(error))
               }
             }
@@ -294,7 +298,12 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>({
         }
       })
 
-      router.afterEach(() => { delete nuxtApp._processingMiddleware })
+      router.afterEach(() => {
+        delete nuxtApp._processingMiddleware
+        if (import.meta.server) {
+          delete nuxtApp._middlewareTo
+        }
+      })
 
       await router.replace(initialURL)
       if (!isEqual(route.fullPath, initialURL)) {
