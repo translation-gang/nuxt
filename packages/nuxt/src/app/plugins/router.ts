@@ -125,14 +125,17 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>({
     const baseURL = useRuntimeConfig().app.baseURL
 
     const route: Route = reactive(getRouteFromPath(initialURL))
+    let navigationCounter = 0
     async function handleNavigation (url: string | Partial<Route>, replace?: boolean): Promise<void> {
+      const navigationId = ++navigationCounter
       try {
         // Resolve route
         const to = getRouteFromPath(url)
 
-        // Run beforeEach hooks
+        // Run beforeEach hooks, bailing if a later navigation supersedes this one (#31762)
         for (const middleware of hooks['navigate:before']) {
           const result = await middleware(to, route)
+          if (navigationId !== navigationCounter) { return }
           // Cancel navigation
           if (result === false || result instanceof Error) { return }
           // Redirect
@@ -141,6 +144,7 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>({
 
         for (const handler of hooks['resolve:before']) {
           await handler(to, route)
+          if (navigationId !== navigationCounter) { return }
         }
         // Perform navigation
         Object.assign(route, to)
