@@ -21,7 +21,10 @@ export async function loadPayload (url: string, opts: LoadPayloadOptions = {}): 
   if (import.meta.server || !payloadExtraction) { return null }
   if (await shouldLoadPayload(url)) {
     const payloadURL = await _getPayloadURL(url, opts)
-    return await _importPayload(payloadURL) || null
+    // cached (`isr`/`swr`/`cache`) payloads are mutable within a deploy, so `?buildId`
+    // cannot invalidate them - defer to normal HTTP cache semantics instead
+    const cache: RequestCache = getRouteRules({ path: url }).payload ? 'default' : 'force-cache'
+    return await _importPayload(payloadURL, cache) || null
   }
   return null
 }
@@ -86,11 +89,11 @@ async function _getPayloadURL (url: string, opts: LoadPayloadOptions = {}) {
   return joinURL(baseOrCdnURL, u.pathname, filename + (hash ? `?${hash}` : ''))
 }
 
-async function _importPayload (payloadURL: string) {
+async function _importPayload (payloadURL: string, cache: RequestCache) {
   if (import.meta.server || !payloadExtraction) { return null }
   try {
     if (renderJsonPayloads) {
-      const res = await fetch(payloadURL, import.meta.dev ? {} : { cache: 'force-cache' })
+      const res = await fetch(payloadURL, import.meta.dev ? {} : { cache })
       if (!res.ok) {
         if (import.meta.dev) {
           console.warn(`[nuxt] Cannot load payload ${payloadURL}: ${res.status} ${res.statusText}`)
@@ -181,7 +184,10 @@ export async function getNuxtClientPayload () {
 
   const inlineData = await parsePayload(el.textContent || '')
 
-  const externalData = el.dataset.src ? await _importPayload(el.dataset.src) : undefined
+  // `prerenderedAt` is only set for build-time prerendered HTML - without it, the page
+  // was rendered at runtime (`isr`/`swr`/`cache`) and the external payload must match
+  // the HTML we were just served, so revalidate instead of trusting the browser cache
+  const externalData = el.dataset.src ? await _importPayload(el.dataset.src, inlineData.prerenderedAt ? 'force-cache' : 'no-cache') : undefined
 
   payloadCache = {
     ...inlineData,
