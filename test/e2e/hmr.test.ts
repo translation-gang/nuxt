@@ -230,6 +230,20 @@ test.describe('vite-only HMR tests', () => {
     await expect.soft(button).toHaveText('1')
   })
 
+  test('HMR for pages using JSX (#30709)', async ({ page, goto }) => {
+    const pagePath = join(fixtureDir, 'pages/jsx.vue')
+    const pageContents = readFileSync(join(sourceDir, 'pages/jsx.vue'), 'utf8')
+    writeFileSync(pagePath, pageContents)
+
+    await goto('/jsx')
+    await expect(page.getByTestId('jsx-content')).toHaveText('jsx: original')
+
+    writeFileSync(pagePath, pageContents.replace('jsx: original', 'jsx: updated'))
+    await expect(page.getByTestId('jsx-content')).toHaveText('jsx: updated', { timeout: 10000 })
+
+    expect(page).toHaveNoErrorsOrWarnings()
+  })
+
   test('HMR for routes', async ({ page, goto }) => {
     await goto('/routes')
 
