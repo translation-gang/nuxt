@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { Plugin } from 'vite'
 import { dirname, relative } from 'pathe'
 import { genArrayFromRaw, genImport, genObjectFromRawEntries } from 'knitwork'
@@ -5,6 +6,7 @@ import { filename as _filename } from 'pathe/utils'
 import type { Nuxt, NuxtPage } from '@nuxt/schema'
 import MagicString from 'magic-string'
 import { findStaticImports } from 'mlly'
+import genericNames from 'generic-names'
 
 import { IS_CSS_RE, isCSS, isVue, parseModuleId } from '../utils/index.ts'
 import { resolveClientEntry } from '../utils/config.ts'
@@ -16,6 +18,32 @@ const QUERY_RE = /\?.+$/
 const MACRO_QUERY_RE = /[?&]macro(?:=|&|$)/
 const NUXT_COMPONENT_QUERY_RE = /[?&]nuxt_component=/
 const STYLE_QUERY_RE = /[?&]type=style/
+
+/**
+ * Wrap a string `generateScopedName` pattern into a function that strips any
+ * Vite query string (e.g. `?inline&used`) from the resource path before it is
+ * hashed.
+ *
+ * When `features.inlineStyles` is enabled, this plugin imports CSS files with
+ * `?inline&used` appended to the module id. For string patterns Vite delegates
+ * scoped-name generation to `generic-names`, which folds the full resource path
+ * (query included) into the `[hash]`. The client build processes the same file
+ * without the query, so it produces a different hash and therefore different
+ * class names, leaving the SSR markup mismatched against the inlined `<style>`
+ * tags (see https://github.com/nuxt/nuxt/issues/35591 and
+ * https://github.com/vitejs/vite/issues/22957).
+ *
+ * Delegating to `generic-names` with `process.cwd()` (the same context Vite
+ * uses) means the generated names stay byte-identical to the client build for
+ * every supported token, not just `[local]`/`[hash]`.
+ */
+function wrapStringGenerateScopedName (
+  pattern: string,
+  hashPrefix: string,
+): (localName: string, resourcePath: string) => string {
+  const generate = genericNames(pattern, { context: process.cwd(), hashPrefix })
+  return (localName, resourcePath) => generate(localName, resourcePath.replace(QUERY_RE, ''))
+}
 
 export function SSRStylesPlugin (nuxt: Nuxt): Plugin | undefined {
   if (nuxt.options.dev) { return }
@@ -146,6 +174,13 @@ export function SSRStylesPlugin (nuxt: Nuxt): Plugin | undefined {
 
   return {
     name: 'ssr-styles',
+    config (config) {
+      if (!nuxt.options.features.inlineStyles) { return }
+      const modules = config.css?.modules
+      if (typeof modules !== 'object' || !modules || typeof modules.generateScopedName !== 'string') { return }
+      const hashPrefix = typeof modules.hashPrefix === 'string' ? modules.hashPrefix : ''
+      modules.generateScopedName = wrapStringGenerateScopedName(modules.generateScopedName, hashPrefix)
+    },
     configResolved (config) {
       // TODO: remove when adopting vite environment api
       if (!config.build.ssr || nuxt.options.experimental.viteEnvironmentApi) {
