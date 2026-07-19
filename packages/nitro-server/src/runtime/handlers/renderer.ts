@@ -274,20 +274,17 @@ async function renderRoute (event: H3Event, ssrError: (NuxtPayload['error'] & { 
 
   if (!NO_SCRIPTS) {
     // 4. Resource Hints
-    // Remove lazy hydrated modules from ssrContext.modules so they don't get preloaded
-    // (CSS links are already added above, this only affects JS preloads)
-    if (ssrContext['~lazyHydratedModules']) {
-      for (const id of ssrContext['~lazyHydratedModules']) {
-        ssrContext.modules?.delete(id)
-      }
-    }
-
-    // TODO: add priorities based on Capo
+    // Excluding lazy hydrated modules keeps their JS chunks from being preloaded, but also
+    // resurfaces their CSS as hints, so filter out anything already linked as a stylesheet.
+    const dependencyOptions = ssrContext['~lazyHydratedModules']?.size
+      ? { exclude: ssrContext['~lazyHydratedModules'] }
+      : undefined
+    const stylesheetHrefs = new Set(link.map(l => l.href))
     ssrContext.head.push({
-      link: getPreloadLinks(ssrContext, renderer.rendererContext) as Link[],
-    }, headEntryOptions)
-    ssrContext.head.push({
-      link: getPrefetchLinks(ssrContext, renderer.rendererContext) as Link[],
+      link: [
+        ...getPreloadLinks(ssrContext, renderer.rendererContext, dependencyOptions) as Link[],
+        ...getPrefetchLinks(ssrContext, renderer.rendererContext, dependencyOptions) as Link[],
+      ].filter(l => !stylesheetHrefs.has(l.href)),
     }, headEntryOptions)
     // 5. Payloads
     ssrContext.head.push({
