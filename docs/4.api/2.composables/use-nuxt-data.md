@@ -22,6 +22,12 @@ links:
 
 :video-accordion{title="Видео LearnVue про useNuxtData" videoId="e-_u6swXRWk"}
 
+## Тип
+
+```ts [Signature]
+export function useNuxtData<DataT = any> (key: string): { data: Ref<DataT | undefined> }
+```
+
 ## Параметры
 
 - `key`: уникальный ключ закэшированных данных (тот же, что при вызове useFetch/useAsyncData и т.д.).
@@ -94,10 +100,4 @@ async function addTodo () {
   })
 }
 </script>
-```
-
-## Тип
-
-```ts [Signature]
-export function useNuxtData<DataT = any> (key: string): { data: Ref<DataT | undefined> }
 ```

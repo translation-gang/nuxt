@@ -10,7 +10,7 @@ links:
 
 Nuxt предоставляет утилиты для работы с [модулями Nuxt](/modules).
 
-## nuxt module add
+## `nuxt module add`
 
 <!--module-add-cmd-->
 ```bash [Terminal]
@@ -50,7 +50,7 @@ npx nuxt module add <MODULENAME> [--cwd=<directory>] [--logLevel=<silent|info|ve
 npx nuxt module add pinia
 ```
 
-## nuxt module search
+## `nuxt module search`
 
 <!--module-search-cmd-->
 ```bash [Terminal]

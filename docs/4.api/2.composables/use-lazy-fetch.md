@@ -23,6 +23,9 @@ const { status, data: posts } = await useLazyFetch('/api/posts')
   <div v-if="status === 'pending'">
     Загрузка ...
   </div>
+  <div v-else-if="status === 'error'">
+    Error loading posts
+  </div>
   <div v-else>
     <div v-for="post in posts">
       <!-- ... -->
@@ -46,10 +49,10 @@ await `useLazyFetch` только инициирует запрос. При кл
 ## Тип
 
 ```ts [Signature]
-export function useLazyFetch<DataT, ErrorT> (
+export function useLazyFetch<ResT, ErrorT = NuxtError<unknown>, DataT = ResT> (
   url: string | Request | Ref<string | Request> | (() => string | Request),
-  options?: UseFetchOptions<DataT>,
-): Promise<AsyncData<DataT, ErrorT>>
+  options?: UseFetchOptions<ResT, DataT>,
+): AsyncData<DataT, ErrorT> & Promise<AsyncData<DataT, ErrorT>>
 ```
 
 ::note
@@ -76,7 +79,7 @@ export function useLazyFetch<DataT, ErrorT> (
 | `execute`| то же                                              | Алиас для `refresh`. |
 | `error`  | `Ref<ErrorT \| undefined>`                          | Ошибка при сбое загрузки. |
 | `status` | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>` | Статус запроса. |
-| `pending`| `Ref<boolean>`                                     | Флаг: идёт ли в данный момент запрос. |
+| `pending`| `Ref<boolean>`                                     | `true`, пока запрос выполняется. См. [`useFetch`](/docs/4.x/api/composables/use-fetch#return-values). |
 | `clear`  | `() => void`                                       | Сброс данных, ошибки, статуса и отмена запросов. |
 
 :read-more{to="/docs/4.x/api/composables/use-fetch#return-values"}
@@ -87,8 +90,8 @@ export function useLazyFetch<DataT, ErrorT> (
 
 ```vue [app/pages/index.vue]
 <script setup lang="ts">
-/* Навигация произойдёт до завершения загрузки.
- * Обрабатывайте состояния 'pending' и 'error' в шаблоне.
+/* useLazyFetch lets navigation continue before the fetch completes.
+ * Handle loading and error states in the template.
  */
 const { status, data: posts } = await useLazyFetch('/api/posts')
 watch(posts, (newPosts) => {
@@ -99,6 +102,9 @@ watch(posts, (newPosts) => {
 <template>
   <div v-if="status === 'pending'">
     Загрузка ...
+  </div>
+  <div v-else-if="status === 'error'">
+    Error loading posts
   </div>
   <div v-else>
     <div v-for="post in posts">

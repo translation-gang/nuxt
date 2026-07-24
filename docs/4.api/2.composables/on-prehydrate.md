@@ -46,8 +46,8 @@ export function onPrehydrate (callback: string | ((el: HTMLElement) => void), ke
 <script setup lang="ts">
 declare const window: Window
 // ---cut---
-// код до гидрации Nuxt
 onPrehydrate(() => {
+  // Runs in the browser, right before Nuxt hydrates
   console.log(window)
 })
 
@@ -67,3 +67,13 @@ const prehydrateId = onPrehydrate((el) => {})
   </div>
 </template>
 ```
+
+Под капотом коллбэк сериализуется и минифицируется на этапе сборки, затем встраивается как тег `<script>` в HTML, отрендеренный на сервере, прямо перед закрывающим `</body>`. Для примера выше отрендеренный HTML включает что-то вроде:
+
+```html
+<div data-prehydrate-id=":b3qlvSiBeH:"> Hi there </div>
+<script>(()=>{console.log(window)})()</script>
+<script>document.querySelectorAll('[data-prehydrate-id*=":b3qlvSiBeH:"]').forEach(el=>{console.log(el.outerHTML)})</script>
+```
+
+Когда коллбэк принимает параметр `el`, корневой элемент компонента помечается атрибутом `data-prehydrate-id`, чтобы встроенный скрипт мог его найти.

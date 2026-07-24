@@ -14,7 +14,7 @@ links:
 
 ## Тип
 
-```ts
+```ts [Signature]
 function addRouteMiddleware (name: string, middleware: RouteMiddleware, options?: AddRouteMiddlewareOptions): void
 function addRouteMiddleware (middleware: RouteMiddleware): void
 

@@ -30,6 +30,10 @@ const { data, status, pending, error, refresh, clear } = await useAsyncData(
 ::
 
 ::note
+`await` для `useAsyncData` не обязателен. На сервере Nuxt в любом случае ждёт разрешения промиса перед рендером, поэтому HTML всегда содержит данные. `await` влияет на то, что происходит после вызова: с ним выполнение приостанавливается, пока `data` не заполнится, и клиентская навигация блокируется до готовности данных; без него выполнение продолжается сразу, `data` начинается со значения по умолчанию до завершения запроса, а при клиентской навигации состояния загрузки и ошибки обрабатываются самостоятельно через ref-ы `status` и `error`. Эффект похож на опцию [`lazy`](#parameters), хотя `lazy` — явный способ включить неблокирующую навигацию.
+::
+
+::note
 `data`, `status`, `pending` и `error` — это ref-ы Vue, к ним нужно обращаться через `.value` внутри `<script setup>`, тогда как `refresh`/`execute` и `clear` — обычные функции.
 ::
 
@@ -75,7 +79,7 @@ const { data: user } = useAsyncData(
 
 Обработчик можно сделать отменяемым, используя `signal` из второго аргумента. Это полезно для отмены запросов при уходе пользователя со страницы. `$fetch` поддерживает abort signals.
 
-```ts
+```ts [app/pages/index.vue]
 const { data, error } = await useAsyncData(
   'users',
   (_nuxtApp, { signal }) => $fetch('/api/users', { signal }),
@@ -88,7 +92,7 @@ clear() // отменяет последний ожидающий обработ
 
 В `refresh`/`execute` можно передать `AbortSignal`, чтобы вручную отменять отдельные запросы.
 
-```ts
+```ts [app/pages/index.vue]
 const { refresh } = await useAsyncData(
   'users',
   (_nuxtApp, { signal }) => $fetch('/api/users', { signal }),
@@ -107,7 +111,7 @@ function handleCancel () {
 
 Если ваш `handler` не поддерживает abort signals, можно реализовать свою логику отмены, используя переданный `signal`.
 
-```ts
+```ts [app/pages/index.vue]
 const { data, error } = await useAsyncData(
   'users',
   (_nuxtApp, { signal }) => {
@@ -228,28 +232,29 @@ const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch(
 ```ts [Signature]
 export type AsyncDataHandler<ResT> = (nuxtApp: NuxtApp, options: { signal: AbortSignal }) => Promise<ResT>
 
-export function useAsyncData<DataT, DataE> (
-  handler: AsyncDataHandler<DataT>,
-  options?: AsyncDataOptions<DataT>,
-): AsyncData<DataT, DataE>
-export function useAsyncData<DataT, DataE> (
+export function useAsyncData<ResT, DataE = unknown, DataT = ResT> (
+  handler: AsyncDataHandler<ResT>,
+  options?: AsyncDataOptions<ResT, DataT>,
+): AsyncData<DataT, DataE> & Promise<AsyncData<DataT, DataE>>
+export function useAsyncData<ResT, DataE = unknown, DataT = ResT> (
   key: MaybeRefOrGetter<string>,
-  handler: AsyncDataHandler<DataT>,
-  options?: AsyncDataOptions<DataT>,
-): Promise<AsyncData<DataT, DataE>>
+  handler: AsyncDataHandler<ResT>,
+  options?: AsyncDataOptions<ResT, DataT>,
+): AsyncData<DataT, DataE> & Promise<AsyncData<DataT, DataE>>
 
-type AsyncDataOptions<DataT> = {
+type AsyncDataOptions<ResT, DataT = ResT> = {
   server?: boolean
   lazy?: boolean
   immediate?: boolean
   deep?: boolean
   dedupe?: 'cancel' | 'defer'
-  default?: () => DataT | Ref<DataT> | null
-  transform?: (input: DataT) => DataT | Promise<DataT>
+  default?: () => DataT | Ref<DataT>
+  transform?: (input: ResT) => DataT | Promise<DataT>
   pick?: string[]
   watch?: MultiWatchSources
   getCachedData?: (key: string, nuxtApp: NuxtApp, ctx: AsyncDataRequestContext) => DataT | undefined
   timeout?: number
+  enabled?: MaybeRefOrGetter<boolean>
 }
 
 type AsyncDataRequestContext = {
@@ -277,3 +282,117 @@ type AsyncDataRequestStatus = 'idle' | 'pending' | 'success' | 'error'
 ```
 
 :read-more{to="/docs/4.x/getting-started/data-fetching"}
+
+## Parameters
+
+- `key`: a unique key to ensure that data fetching can be properly de-duplicated across requests. If you do not provide a key, then a key that is unique to the file name and line number of the instance of `useAsyncData` will be generated for you.
+- `handler`: an asynchronous function that must return a truthy value (for example, it should not be `undefined` or `null`) or the request may be duplicated on the client side.
+::warning
+The `handler` function should be **side-effect free** to ensure predictable behavior during SSR and CSR hydration. If you need to trigger side effects, use the [`callOnce`](/docs/4.x/api/utils/call-once) utility to do so.
+::
+- `options` (object): Configuration for the asynchronous function call. All options can be a static value, a `ref`, or a computed value.
+
+| Option                                                                    | Type                                        | Default    | Description                                                                                                                                                                                                                                                                          |
+|---------------------------------------------------------------------------|---------------------------------------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `server`                                                                  | `boolean`                                   | `true`     | Whether to call the function on the server.                                                                                                                                                                                                                                          |
+| `lazy`                                                                    | `boolean`                                   | `false`    | If true, resolves after route loads (does not block navigation).                                                                                                                                                                                                                     |
+| `immediate`                                                               | `boolean`                                   | `true`     | If false, prevents function from being called immediately.                                                                                                                                                                                                                           |
+| `default`                                                                 | `() => DataT`                               | -          | Factory for default value of `data` before async resolves.                                                                                                                                                                                                                           |
+| `timeout` :badge[v4.2]{color="info" size="xs" class="align-middle"}       | `number`                                    | -          | A number in milliseconds to wait before timing out the call (defaults to `undefined`, which means no timeout)                                                                                                                                                                        |
+| `transform`                                                               | `(input: DataT) => DataT \| Promise<DataT>` | -          | Function to transform the result after resolving.                                                                                                                                                                                                                                    |
+| `getCachedData` :badge[v3.8]{color="info" size="xs" class="align-middle"} | `(key, nuxtApp, ctx) => DataT \| undefined` | -          | Function to return cached data. See below for default.                                                                                                                                                                                                                               |
+| `pick`                                                                    | `string[]`                                  | -          | Only pick specified keys from the result.                                                                                                                                                                                                                                            |
+| `watch`                                                                   | `MultiWatchSources`                         | -          | Array of reactive sources to watch and auto-refresh.                                                                                                                                                                                                                                 |
+| `deep` :badge[v3.8]{color="info" size="xs" class="align-middle"}          | `boolean`                                   | `false`    | Return data in a deep ref object. Defaults to `false` for improved performance (shallow ref object).                                                                                                                                                                                 |
+| `dedupe` :badge[v3.9]{color="info" size="xs" class="align-middle"}        | `'cancel' \| 'defer'`                       | `'cancel'` | Policy when triggering an execution more than once at a time.                                                                                                                                                                                                                        |
+| `enabled` :badge[v4.5]{color="info" size="xs" class="align-middle"}       | `boolean`                                   | `true`     | Barrier that gates whether the `handler` may run. While `false`, every execution is blocked (initial fetch, `execute`/`refresh`, and watch triggers), and switching `true` → `false` cancels any in-flight request without clearing `data`. Re-enabling does not refetch on its own. |
+
+::note
+All options can be given a `computed` or `ref` value. These will be watched and new requests made automatically with any new values if they are updated.
+::
+
+**getCachedData default:**
+
+```ts [Default getCachedData Implementation]
+const getDefaultCachedData = (key, nuxtApp, ctx) => nuxtApp.isHydrating
+  ? nuxtApp.payload.data[key]
+  : nuxtApp.static.data[key]
+```
+This only caches data when `experimental.payloadExtraction` in `nuxt.config` is enabled.
+
+::note
+Under the hood, `lazy: false` uses `<Suspense>` to block the loading of the route before the data has been fetched. Consider using `lazy: true` and implementing a loading state instead for a snappier user experience.
+::
+
+::read-more{to="/docs/4.x/api/composables/use-lazy-async-data"}
+You can use `useLazyAsyncData` to have the same behavior as `lazy: true` with `useAsyncData`.
+::
+
+:video-accordion{title="Watch a video from Alexander Lichter about client-side caching with getCachedData" videoId="aQPR0xn-MMk"}
+
+### Shared State and Option Consistency
+
+When multiple `useAsyncData` calls use the same key, they share the same `data`, `error`, `status`, and `pending` refs. Keep the options listed below consistent across these calls.
+
+The following options **must be consistent** across all calls with the same key:
+- `handler` function
+- `deep` option
+- `transform` function
+- `pick` array
+- `getCachedData` function
+- `default` value
+
+The following options **can differ** without triggering warnings:
+- `server`
+- `lazy`
+- `immediate`
+- `dedupe`
+- `watch`
+- `enabled`
+
+```ts [app/pages/index.vue]
+// ❌ This will trigger a development warning
+const { data: users1 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { deep: false })
+const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { deep: true })
+
+// ✅ This is allowed
+const { data: users1 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { immediate: true })
+const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch('/api/users', { signal }), { immediate: false })
+```
+
+::tip
+Keyed state created using `useAsyncData` can be retrieved across your Nuxt application using [`useNuxtData`](/docs/4.x/api/composables/use-nuxt-data).
+::
+
+## Return Values
+
+This composable returns a `Promise` that can be awaited, which makes it possible to use `data` directly within the `<script setup>` (i.e. a value will be present, instead of being undefined). You can also directly pull the values without awaiting the return value, in which case `data` can be undefined within `<script setup>` until the fetch completes.
+
+::tip
+Even if you do not await the return value, during SSR Nuxt will wait for the request to finish and send the resolved data to the client.
+::
+
+::note
+If you have not fetched data on the server (for example, with `server: false`), then the data _will not_ be fetched until hydration completes. This means even if you await [`useAsyncData`](/docs/4.x/api/composables/use-async-data) on the client side, `data` will remain `undefined` within `<script setup>`.
+::
+
+| Name      | Type                                                | Description                                                                                                                                                       |
+|-----------|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `data`    | `Ref<DataT \| undefined>`                           | The result of the asynchronous function that is passed in.                                                                                                        |
+| `refresh` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Function to manually refresh the data. By default, Nuxt waits until a `refresh` is finished before it can be executed again.                                      |
+| `execute` | `(opts?: AsyncDataExecuteOptions) => Promise<void>` | Alias for `refresh`.                                                                                                                                              |
+| `error`   | `Ref<ErrorT \| undefined>`                          | Error object if the asynchronous function threw an error.                                                                                                         |
+| `status`  | `Ref<'idle' \| 'pending' \| 'success' \| 'error'>`  | Status of the asynchronous function call. Use it to distinguish `idle`, `pending`, `success`, and `error`.                                                        |
+| `pending` | `Ref<boolean>`                                      | `true` while a request is in flight. With [`experimental.pendingWhenIdle`](/docs/4.x/guide/going-further/experimental-features#pendingwhenidle), it is also `true` when `status` is `idle` and no cached data is available. |
+| `clear`   | `() => void`                                        | Resets `data` to `undefined` (or the value of `options.default()` if provided), `error` to `undefined`, set `status` to `idle`, and cancels any pending calls.    |
+
+::tip
+Functions from the `Promise` (`then`, `catch`, and `finally`) can safely be destructured, if you did not await the return value.
+::
+
+### Status Values
+
+- `idle`: Function has not been called yet (e.g. `{ immediate: false }` or `{ server: false }` on server render)
+- `pending`: Function has been called and the promise is pending
+- `success`: Function returned a value
+- `error`: Function threw an error

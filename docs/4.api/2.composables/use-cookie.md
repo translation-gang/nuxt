@@ -12,7 +12,7 @@ links:
 
 В страницах, компонентах и плагинах можно использовать `useCookie` для чтения и записи cookies с учётом SSR.
 
-```ts
+```ts [Usage]
 const cookie = useCookie(name, options)
 ```
 
@@ -107,7 +107,7 @@ counter.value ||= Math.round(Math.random() * 1000)
 
 ### Только чтение
 
-```vue
+```vue [app/app.vue]
 <script setup lang="ts">
 const user = useCookie(
   'userInfo',
@@ -130,7 +130,7 @@ if (user.value) {
 
 ### Записываемые cookies
 
-```vue
+```vue [app/app.vue]
 <script setup lang="ts">
 const list = useCookie(
   'list',
@@ -167,7 +167,7 @@ function save () {
 
 ### Обновление срока действия cookie
 
-```vue
+```vue [app/app.vue]
 <script setup lang="ts">
 const session = useCookie(
   'session', {
@@ -185,6 +185,22 @@ session.value = 'active'
 <template>
   <div>Сессия: {{ session }}</div>
 </template>
+```
+
+### Динамический срок действия через getter
+
+Используйте функцию для `expires`, если нужно вычислять новую дату истечения при каждой записи cookie (например, скользящие сессии или токены):
+
+```vue [app/app.vue]
+<script setup lang="ts">
+const token = useCookie('token', {
+  // Re-evaluated on every write — keep this getter pure
+  expires: () => new Date(Date.now() + 60 * 60 * 1000), // 1 hour from now
+})
+
+// Assigning a new value also refreshes the cookie expiration
+token.value = 'new-token'
+</script>
 ```
 
 ### Cookies в API-маршрутах

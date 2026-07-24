@@ -33,6 +33,24 @@ if (!data.value) {
 </script>
 ```
 
+### Причины ошибок (cause)
+
+При создании ошибки можно передать `cause`, чтобы сохранить исходную ошибку, которую вы оборачиваете:
+
+```ts
+try {
+  await fetchMovie(route.params.slug)
+} catch (cause) {
+  throw createError({
+    status: 500,
+    message: 'Could not load movie',
+    cause,
+  })
+}
+```
+
+В режиме разработки цепочка причин доступна на [странице ошибки](/docs/4.x/getting-started/error-handling#error-page) через свойство `cause`, сериализованное как `{ name, message, stack, cause }` (примитивные причины передаются как есть; остальные значения опускаются). В production причины никогда не включаются в ответы об ошибках и в payload страницы ошибки.
+
 ## В API-маршрутах
 
 `createError` используется для вызова обработки ошибок в серверных API-маршрутах.

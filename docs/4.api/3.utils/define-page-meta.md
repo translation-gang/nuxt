@@ -73,7 +73,7 @@ interface PageMeta {
   - **Тип**: `string | string[]`
   Псевдонимы маршрута — дополнительные пути, ведущие на ту же страницу (например `/users/:id` и `/u/:id`). Параметры у `alias` и `path` должны совпадать.
 
-  **`groups`**
+  **`groups`** :badge[v4.3]{color="info" size="xs" class="align-middle"}
 
   - **Тип**: `string[]`
   Группы маршрутов по структуре папок. Заполняется автоматически для [route groups](/docs/4.x/guide/directory-structure/app/pages#route-groups).
