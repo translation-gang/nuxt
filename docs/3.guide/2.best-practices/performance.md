@@ -292,6 +292,6 @@ onLoaded((gtag) => {
 
 ## Полезные материалы
 
-1. [Мгновенная загрузка по паттерну PRPL](https://web.dev/articles/apply-instant-loading-with-prpl)
+1. [Apply instant loading with the PRPL pattern](https://web.dev/articles/apply-instant-loading-with-prpl)
 2. [Perceived performance](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Performance/Perceived_performance)
 3. [Understanding Critical Rendering Path](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path)
