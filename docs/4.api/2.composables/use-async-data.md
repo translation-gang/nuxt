@@ -207,7 +207,7 @@ const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch(
 Состояние по ключу читается через [`useNuxtData`](/docs/4.x/api/composables/use-nuxt-data).
 ::
 
-## Return Values
+## Возвращаемые значения
 
 - `data`: результат `handler`
 - `refresh`/`execute`: повторный вызов `handler`
@@ -226,7 +226,7 @@ const { data: users2 } = useAsyncData('users', (_nuxtApp, { signal }) => $fetch(
 Без серверного fetch (`server: false`) данные не запросятся до конца гидратации. Даже с `await useAsyncData` на клиенте в `<script setup>` `data` останется `undefined`.
 ::
 
-## Type
+## Тип
 
 ```ts [Signature]
 export type AsyncDataHandler<ResT> = (nuxtApp: NuxtApp, options: { signal: AbortSignal }) => Promise<ResT>

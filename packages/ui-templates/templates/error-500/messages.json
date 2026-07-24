@@ -1,6 +1,6 @@
 {
   "status": 500,
-  "statusText": "Internal server error",
-  "description": "This page is temporarily unavailable.",
-  "refresh": "Refresh this page"
+  "statusText": "Внутренняя ошибка сервера",
+  "description": "Страница временно недоступна.",
+  "refresh": "Обновить страницу"
 }
