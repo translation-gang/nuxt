@@ -1,25 +1,25 @@
 ---
 navigation.title: 'Dev Containers'
 title: Dev Containers
-description: Set up or open a Nuxt project in a dev container for a consistent development environment.
+description: Настройте или откройте проект Nuxt в dev container для единообразной среды разработки.
 ---
 
-## Setting Up a Dev Container
+## Настройка dev container
 
-If you're starting a new Nuxt project and want to develop inside a dev container, you can add the configuration yourself.
+Если вы начинаете новый проект Nuxt и хотите разрабатывать в dev container, добавьте конфигурацию сами.
 
 ::read-more{to="https://code.visualstudio.com/docs/devcontainers/containers" target="_blank"}
-Read more about dev containers
+Подробнее о dev containers
 ::
 
-### Prerequisites
+### Требования
 
-- [Visual Studio Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [Docker Engine](https://docs.docker.com/engine/)
+- [Visual Studio Code](https://code.visualstudio.com/) с [расширением Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) или [Docker Engine](https://docs.docker.com/engine/)
 
-### Create the Configuration
+### Создание конфигурации
 
-Create a `.devcontainer/` folder in your project root with these two files:
+Создайте в корне проекта каталог `.devcontainer/` с двумя файлами:
 
 ```json [devcontainer.json]
 {
@@ -55,55 +55,55 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 ```
 
-This configuration uses Node.js LTS and enables pnpm via corepack. It forwards port 3000 for the Nuxt dev server and persists `node_modules` in a Docker volume to avoid reinstallation on container restarts.
+Конфигурация использует Node.js LTS и включает pnpm через corepack. Пробрасывает порт 3000 для dev-сервера Nuxt и сохраняет `node_modules` в Docker volume, чтобы не переустанавливать зависимости при перезапуске контейнера.
 
 ::tip
-To use a different package manager, replace `corepack enable` with your preferred manager (for example, `npm install -g yarn`) and update the `postStartCommand` accordingly.
+Чтобы использовать другой менеджер пакетов, замените `corepack enable` на нужный (например, `npm install -g yarn`) и обновите `postStartCommand`.
 ::
 
-## Opening an Existing Dev Container
+## Открытие существующего dev container
 
-If a project already includes a dev container configuration, you can open it using any of these methods:
+Если в проекте уже есть конфигурация dev container, откройте его одним из способов:
 
-### 1. VS Code Prompt
+### 1. Подсказка VS Code
 
-When you open the project in VS Code, you should see a notification in the bottom right corner:
+Когда вы открываете проект в VS Code, в правом нижнем углу появится уведомление:
 
 > "Reopen in Dev Containers"
 
-Click this button to build and open the project in a dev container.
+Нажмите эту кнопку, чтобы собрать и открыть проект в dev container.
 
-### 2. Command Palette
+### 2. Палитра команд
 
-If you dismiss the prompt or want to manually trigger it:
+Если вы закрыли подсказку или хотите запустить вручную:
 
-1. Open the Command Palette (`Cmd+Shift+P` on Mac, `Ctrl+Shift+P` on Windows/Linux)
-2. Search for **"Dev Containers: Reopen in Container"**
-3. Select it
+1. Откройте палитру команд (`Cmd+Shift+P` на Mac, `Ctrl+Shift+P` на Windows/Linux)
+2. Найдите **"Dev Containers: Reopen in Container"**
+3. Выберите команду
 
-VS Code will build the container and reopen your project.
+VS Code соберёт контейнер и снова откроет проект.
 
 ### 3. Dev Containers CLI
 
-For advanced users or CI workflows, you can use the Dev Containers CLI directly:
+Для продвинутых сценариев или CI используйте Dev Containers CLI напрямую:
 
 ```bash
-# Install the CLI (if not already installed)
+# Установите CLI (если ещё не установлен)
 npm install -g @devcontainers/cli
 
-# Build and open the project in a container
+# Соберите и откройте проект в контейнере
 devcontainer up --workspace-folder .
 
-# After making changes to .devcontainer, rebuild
+# После изменений в .devcontainer пересоберите
 devcontainer build
 ```
 
-## Next Steps
+## Следующие шаги
 
-Once the container is running:
+Когда контейнер запущен:
 
 ```bash
 pnpm dev
 ```
 
-Your Nuxt app will be available at <http://localhost:3000>.
+Приложение Nuxt будет доступно по адресу <http://localhost:3000>.

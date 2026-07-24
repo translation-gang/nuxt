@@ -94,7 +94,7 @@ export const useAPI = createUseFetch(callerOptions => ({
 ```
 
 ::important
-The **function signature** (override mode) is required here so that [`useNuxtApp()`](/docs/4.x/api/composables/use-nuxt-app) is called in the setup context (at the composable call site) rather than in the module scope, where no Nuxt instance is available.
+Здесь нужна **сигнатура-функция** (режим переопределения), чтобы [`useNuxtApp()`](/docs/4.x/api/composables/use-nuxt-app) вызывался в контексте setup (в месте вызова композабла), а не в области модуля, где экземпляр Nuxt недоступен.
 ::
 
 :read-more{to="/docs/4.x/guide/recipes/custom-usefetch"}

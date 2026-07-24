@@ -39,7 +39,7 @@ const { status, data: posts } = await useLazyFetch('/api/posts')
 ::
 
 ::warning
-await `useLazyFetch` только инициирует запрос. При клиентской навигации данные могут быть ещё не готовы — обрабатывайте состояние `pending` в шаблоне.
+await `useLazyFetch` только инициирует запрос. При клиентской навигации проверяйте в шаблоне `status === 'pending'` и `status === 'error'` до использования результата.
 ::
 
 ::warning

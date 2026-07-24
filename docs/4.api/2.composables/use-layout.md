@@ -1,6 +1,6 @@
 ---
 title: "useLayout"
-description: useLayout returns the layout resolved for the current route.
+description: useLayout возвращает макет, выбранный для текущего маршрута.
 minimalVersion: "4.5"
 links:
   - label: Source
@@ -9,19 +9,19 @@ links:
     size: xs
 ---
 
-## Description
+## Описание
 
-`useLayout` returns a computed ref with the layout resolved for the current route, using the same chain as [`<NuxtLayout>`](/docs/4.x/api/components/nuxt-layout): the page's `layout` meta first, then the `appLayout` set via [route rules](/docs/4.x/guide/concepts/rendering#hybrid-rendering), then `'default'`.
+`useLayout` возвращает computed ref с макетом для текущего маршрута по той же цепочке, что и [`<NuxtLayout>`](/docs/4.x/api/components/nuxt-layout): сначала `layout` из meta страницы, затем `appLayout` из [route rules](/docs/4.x/guide/concepts/rendering#hybrid-rendering), затем `'default'`.
 
-Within a rendered `<NuxtLayout>` it reflects the enclosing layout; outside of one (for example in `app.vue`) it returns the layout that would be resolved for the current route.
+Внутри отрендеренного `<NuxtLayout>` отражает оборачивающий макет; вне его (например, в `app.vue`) возвращает макет, который был бы выбран для текущего маршрута.
 
-Unlike reading `route.meta.layout` directly, this accounts for a layout set through route rules and stays in sync as the route changes.
+В отличие от прямого чтения `route.meta.layout`, учитывает макет из route rules и остаётся синхронизированным при смене маршрута.
 
-## Return Values
+## Возвращаемые значения
 
-A read-only computed ref resolving to the layout name (a `string`), or `false` when the layout is disabled.
+Read-only computed ref с именем макета (`string`) или `false`, если макет отключён.
 
-## Example
+## Пример
 
 ```vue [app.vue]
 <script setup lang="ts">

@@ -135,7 +135,7 @@ interface PageMeta {
 
   - **Тип**: `boolean | (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean`
 
-    Tell Nuxt to scroll to the top before rendering the page or not. Navigation is independent from rendering, so scroll behavior is always triggered even when the page doesn't re-render (e.g. when using a fixed [`key`](/docs/4.x/api/utils/define-page-meta#key)). Set `scrollToTop: false` to disable scrolling in such cases. If you want to overwrite the default scroll behavior of Nuxt, you can do so in `~/router.options.ts` (see [custom routing](/docs/4.x/guide/recipes/custom-routing#using-routeroptions)) for more info.
+    Указывает Nuxt прокручивать страницу вверх перед рендером или нет. Навигация не зависит от рендера, поэтому прокрутка срабатывает даже когда страница не перерисовывается (например, при фиксированном [`key`](/docs/4.x/api/utils/define-page-meta#key)). Задайте `scrollToTop: false`, чтобы отключить прокрутку в таких случаях. Чтобы переопределить поведение прокрутки по умолчанию, настройте его в `~/router.options.ts` (см. [кастомный роутинг](/docs/4.x/guide/recipes/custom-routing#using-routeroptions)).
 
   **`[key: string]`**
 
