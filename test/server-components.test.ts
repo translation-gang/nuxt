@@ -5,17 +5,17 @@ import { isWindows } from 'std-env'
 import { normalize } from 'pathe'
 import { $fetch, fetch, setup, startServer } from '@nuxt/test-utils/e2e'
 import type { NuxtIslandResponse } from 'nuxt/app'
-import { computeIslandHash, filterIslandProps } from '../packages/nuxt/src/app/island-hash'
+import { computeIslandHash, serializeIslandProps } from '../packages/nuxt/src/app/island-hash'
 
 import { isDev, isWebpack } from './matrix'
 import { renderPage } from './utils'
 
 function islandURL (name: string, opts: { props?: Record<string, any>, context?: Record<string, any> } = {}) {
-  const filtered = filterIslandProps(opts.props ?? {})
+  const serializedProps = serializeIslandProps(opts.props)
   const ctx = opts.context ?? {}
-  const hashId = computeIslandHash(name, filtered, ctx, undefined)
+  const hashId = computeIslandHash(name, serializedProps, ctx, undefined)
   const query: Record<string, any> = { ...ctx }
-  if (opts.props) { query.props = JSON.stringify(opts.props) }
+  if (opts.props) { query.props = serializedProps }
   return withQuery(`/__nuxt_island/${name}_${hashId}.json`, query)
 }
 
@@ -477,6 +477,32 @@ describe('hash binding', () => {
     expect(res.status).toBe(200)
   })
 
+  it('accepts props that change during JSON serialization', async () => {
+    const res = await fetch(islandURL('PureComponent', {
+      props: {
+        bool: false,
+        number: 1,
+        str: 's',
+        obj: { optional: undefined, callback: () => {}, items: [undefined] },
+      },
+    }))
+    expect(res.status).toBe(200)
+  })
+
+  // External island clients (e.g. `@nuxtjs/og-image`) build the URL hash from the props object
+  // and send `JSON.stringify(props)`. `computeIslandHash` over the serialized string and the
+  // client's object hash converge (asserted in island-hash.test.ts); here we send the raw
+  // `JSON.stringify(props)` the external client emits rather than `serializeIslandProps`.
+  it('accepts a request whose props were serialized by an external client', async () => {
+    const name = 'PureComponent'
+    const props = { bool: false, number: 1, str: 's', obj: {} }
+    const hashId = computeIslandHash(name, JSON.stringify(props), {}, undefined)
+    const res = await fetch(withQuery(`/__nuxt_island/${name}_${hashId}.json`, {
+      props: JSON.stringify(props),
+    }))
+    expect(res.status).toBe(200)
+  })
+
   it('rejects a request whose URL hash was computed over different props', async () => {
     // Compute a valid hash for one set of props, then swap the actual query props.
     const url = islandURL('PureComponent', {
@@ -541,7 +567,7 @@ describe('page-island middleware', () => {
 
 describe.skipIf(isDev || isWebpack)('regressions', () => {
   // https://github.com/nuxt/nuxt/issues/26527
-  it.fails('renders <Counter nuxt-client /> when nested two levels deep in server components', async () => {
+  it('renders <Counter nuxt-client /> when nested two levels deep in server components', async () => {
     const { page } = await renderPage('/nested-nuxt-client')
 
     await page.locator('.server-inner-counter .sugar-counter button').waitFor({ timeout: 5_000 })

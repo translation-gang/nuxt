@@ -196,7 +196,7 @@ test.describe('vite-only HMR tests', () => {
     })
 
     // Wait for HMR to process the new route
-    await expect(() => consoleLogs.some(log => log.text.includes('hmr'))).toBeWithPolling(true)
+    await expect(() => consoleLogs.some(log => log.text.includes('[vite] hot updated'))).toBeWithPolling(true)
 
     await expect.soft(button).toHaveText('1')
   })
@@ -225,9 +225,23 @@ test.describe('vite-only HMR tests', () => {
     })
 
     // Wait for HMR to process the new route
-    await expect(() => consoleLogs.some(log => log.text.includes('hmr'))).toBeWithPolling(true)
+    await expect(() => consoleLogs.some(log => log.text.includes('[vite] hot updated'))).toBeWithPolling(true)
 
     await expect.soft(button).toHaveText('1')
+  })
+
+  test('HMR for pages using JSX (#30709)', async ({ page, goto }) => {
+    const pagePath = join(fixtureDir, 'pages/jsx.vue')
+    const pageContents = readFileSync(join(sourceDir, 'pages/jsx.vue'), 'utf8')
+    writeFileSync(pagePath, pageContents)
+
+    await goto('/jsx')
+    await expect(page.getByTestId('jsx-content')).toHaveText('jsx: original')
+
+    writeFileSync(pagePath, pageContents.replace('jsx: original', 'jsx: updated'))
+    await expect(page.getByTestId('jsx-content')).toHaveText('jsx: updated', { timeout: 10000 })
+
+    expect(page).toHaveNoErrorsOrWarnings()
   })
 
   test('HMR for routes', async ({ page, goto }) => {
@@ -249,7 +263,7 @@ test.describe('vite-only HMR tests', () => {
     })
 
     // Wait for HMR to process the new route
-    await expect(() => consoleLogs.some(log => log.text.includes('hmr'))).toBeWithPolling(true)
+    await expect(() => consoleLogs.some(log => log.text.includes('[vite] hot updated'))).toBeWithPolling(true)
 
     // Navigate to the new route
     await page.locator('a[href="/routes/non-existent"]').click()
